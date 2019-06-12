@@ -46,8 +46,23 @@
 #include <exception>
 #include <memory>
 #include <stdexcept>
-
+#include <iostream>
+#include <string>
+#include <iomanip>
 #include <stdio.h>
+
+#include <SimpleMath.h>
+#include <SpriteBatch.h>
+#include <SpriteFont.h>
+#include <GeometricPrimitive.h>
+#include <PrimitiveBatch.h>
+#include <VertexTypes.h>
+#include <WICTextureLoader.h>
+#include <CommonStates.h>
+#include <Effects.h>
+#include <Model.h>
+#include <Mouse.h>
+#include <Keyboard.h>
 
 #ifdef _DEBUG
 #include <dxgidebug.h>
