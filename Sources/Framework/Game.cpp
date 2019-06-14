@@ -171,8 +171,8 @@ void Game::OnResuming()
 
 void Game::OnWindowSizeChanged(int width, int height)
 {
-    m_width = max(width, 1);
-    m_height = max(height, 1);
+    m_width = std::max(width, 1);
+    m_height = std::max(height, 1);
 	
 	DirectX11::Get().CreateResources();
     // TODO: ゲームウィンドウのサイズが再変更された場合

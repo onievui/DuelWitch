@@ -1,4 +1,4 @@
-#include "ModelObject.h"
+#include "Player.h"
 #include <Framework\DirectX11.h>
 
 
@@ -6,7 +6,7 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-ModelObject::ModelObject() 
+Player::Player() 
 	: m_model()
 	, m_states()
 	, m_transform() {
@@ -16,14 +16,14 @@ ModelObject::ModelObject()
 /// <summary>
 /// デストラクタ
 /// </summary>
-ModelObject::~ModelObject() {
+Player::~Player() {
 }
 
 /// <summary>
 /// モデルオブジェクトを更新する
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
-void ModelObject::Update(const DX::StepTimer& timer) {
+void Player::Update(const DX::StepTimer& timer) {
 	float elapsedTime = float(timer.GetElapsedSeconds());
 
 	auto keyState = DirectX::Keyboard::Get().GetState();
@@ -112,7 +112,7 @@ void ModelObject::Update(const DX::StepTimer& timer) {
 /// <summary>
 /// モデルオブジェクトを解放する
 /// </summary>
-void ModelObject::Lost() {
+void Player::Lost() {
 	m_states.reset();
 	m_model.reset();
 }
@@ -122,7 +122,7 @@ void ModelObject::Lost() {
 /// </summary>
 /// <param name="fileName">ファイル名</param>
 /// <param name="directory">ディレクトリ名</param>
-void ModelObject::Create(const std::wstring& fileName, const std::wstring& directory) {
+void Player::Create(const std::wstring& fileName, const std::wstring& directory) {
 	// デバイスの取得
 	auto device = DirectX11::Get().GetDevice().Get();
 
@@ -155,7 +155,7 @@ void ModelObject::Create(const std::wstring& fileName, const std::wstring& direc
 /// </summary>
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">プロジェクション行列</param>
-void ModelObject::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
+void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	auto context = DirectX11::Get().GetContext().Get();
 	m_model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
 }
@@ -166,6 +166,6 @@ void ModelObject::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 /// <returns>
 /// モデルオブジェクトの行列
 /// </returns>
-const DirectX::SimpleMath::Matrix& ModelObject::GetMatrix() const {
+const DirectX::SimpleMath::Matrix& Player::GetMatrix() const {
 	return m_world;
 }

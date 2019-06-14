@@ -1,8 +1,15 @@
 #include "TargetCamera.h"
-#include "ModelObject.h"
+#include <Framework\DirectX11.h>
+#include "IObject.h"
 
 
-TargetCamera::TargetCamera(int width, int height, ModelObject* targetObject) 
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="width">画面の横幅</param>
+/// <param name="height">画面の縦幅</param>
+/// <param name="targetObject">追従するオブジェクト</param>
+TargetCamera::TargetCamera(int width, int height, IObject* targetObject)
 	: m_targetObject(targetObject)
 	, m_pos()
 	, m_lerpSpeed(0.05f) {
@@ -14,7 +21,18 @@ TargetCamera::TargetCamera(int width, int height, ModelObject* targetObject)
 	m_targetMatrix = m_targetObject->GetMatrix();
 }
 
-TargetCamera::TargetCamera(ModelObject* targetObject, DirectX::SimpleMath::Vector3 eye,
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="targetObject">追従するオブジェクト</param>
+/// <param name="eye">視点の相対座標</param>
+/// <param name="target">注視点の相対座標</param>
+/// <param name="up">カメラの上方向</param>
+/// <param name="fov">画角</param>
+/// <param name="aspectRatio">アスペクト比</param>
+/// <param name="nearPlane">前面クリップ面</param>
+/// <param name="farPlane">後方クリップ面</param>
+TargetCamera::TargetCamera(IObject* targetObject, DirectX::SimpleMath::Vector3 eye,
 	DirectX::SimpleMath::Vector3 target, DirectX::SimpleMath::Vector3 up,
 	float fov, float aspectRatio, float nearPlane, float farPlane)
 	: m_targetObject(targetObject)
@@ -27,6 +45,9 @@ TargetCamera::TargetCamera(ModelObject* targetObject, DirectX::SimpleMath::Vecto
 	m_targetMatrix = m_targetObject->GetMatrix();
 }
 
+/// <summary>
+/// ターゲットカメラを更新する
+/// </summary>
 void TargetCamera::Update() {
 	m_targetMatrix = DirectX::SimpleMath::Matrix::Lerp(m_targetMatrix, m_targetObject->GetMatrix(), m_lerpSpeed);
 	m_pos = DirectX::SimpleMath::Vector3::Transform(m_eye, m_targetMatrix);
@@ -36,14 +57,32 @@ void TargetCamera::Update() {
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_pos, target, up);
 }
 
-DirectX::SimpleMath::Matrix TargetCamera::GetViewMatrix() const {
+/// <summary>
+/// ターゲットカメラのビュー行列を取得する
+/// </summary>
+/// <returns>
+/// ビュー行列
+/// </returns>
+const DirectX::SimpleMath::Matrix& TargetCamera::GetViewMatrix() const {
 	return m_view;
 }
 
-DirectX::SimpleMath::Matrix TargetCamera::GetProjectionMatrix() const {
+/// <summary>
+/// ターゲットカメラの射影行列を取得する
+/// </summary>
+/// <returns>
+/// 射影行列
+/// </returns>
+const DirectX::SimpleMath::Matrix& TargetCamera::GetProjectionMatrix() const {
 	return m_proj;
 }
 
-DirectX::SimpleMath::Vector3 TargetCamera::GetEyePosition() const {
+/// <summary>
+/// ターゲットカメラの位置を取得する
+/// </summary>
+/// <returns>
+/// 位置
+/// </returns>
+const DirectX::SimpleMath::Vector3& TargetCamera::GetEyePosition() const {
 	return m_pos;
 }

@@ -3,7 +3,7 @@
 #include "MyGame.h"
 #include "DebugCamera.h"
 #include "GridFloor.h"
-#include "ModelObject.h"
+#include "Player.h"
 #include "Element.h"
 #include "TargetCamera.h"
 #include "Field.h"
@@ -50,7 +50,7 @@ void MyGame::CreateResources()
 		float(m_width) / float(m_height), 0.1f, 500.0f);
 	
 	// モデルオブジェクトを生成する
-	m_model = std::make_unique<ModelObject>();
+	m_model = std::make_unique<Player>();
 	m_model->Create(L"bloom.cmo", L"Resources/Models/Protected");
 	// エレメントを作成する
 	m_element = std::make_unique<Element>();

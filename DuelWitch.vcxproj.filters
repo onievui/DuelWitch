@@ -42,9 +42,6 @@
     <ClCompile Include="Sources\Game\GridFloor.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\ModelObject.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Game\MyGame.cpp">
       <Filter>Game</Filter>
     </ClCompile>
@@ -66,6 +63,9 @@
     <ClCompile Include="Sources\Framework\DirectX11.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Player.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -84,9 +84,6 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\GridFloor.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\ModelObject.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\MyGame.h">
@@ -113,5 +110,19 @@
     <ClInclude Include="Sources\Framework\DirectX11.h">
       <Filter>Framework</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game\IObject.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Player.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\skydome.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

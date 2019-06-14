@@ -57,6 +57,8 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\MeshContentTask.props" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\ShaderGraphContentTask.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -179,11 +181,14 @@
     <ClCompile Include="Sources\Game\Field.cpp" />
     <ClCompile Include="Sources\Game\FixCamera.cpp" />
     <ClCompile Include="Sources\Game\GridFloor.cpp" />
-    <ClCompile Include="Sources\Game\ModelObject.cpp" />
+    <ClCompile Include="Sources\Game\Player.cpp" />
     <ClCompile Include="Sources\Game\MyGame.cpp" />
     <ClCompile Include="Sources\Game\TargetCamera.cpp" />
     <ClCompile Include="Sources\Game\Transform.cpp" />
-    <ClCompile Include="Sources\pch\pch.cpp" />
+    <ClCompile Include="Sources\pch\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Framework\DirectX11.h" />
@@ -196,13 +201,28 @@
     <ClInclude Include="Sources\Game\Field.h" />
     <ClInclude Include="Sources\Game\FixCamera.h" />
     <ClInclude Include="Sources\Game\GridFloor.h" />
-    <ClInclude Include="Sources\Game\ModelObject.h" />
+    <ClInclude Include="Sources\Game\IObject.h" />
+    <ClInclude Include="Sources\Game\Player.h" />
     <ClInclude Include="Sources\Game\MyGame.h" />
     <ClInclude Include="Sources\Game\TargetCamera.h" />
     <ClInclude Include="Sources\Game\Transform.h" />
     <ClInclude Include="Sources\pch\pch.h" />
   </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
+      <FileType>Document</FileType>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\skydome.FBX">
+      <FileType>Document</FileType>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
+    </MeshContentTask>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\MeshContentTask.targets" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\ShaderGraphContentTask.targets" />
   </ImportGroup>
 </Project>

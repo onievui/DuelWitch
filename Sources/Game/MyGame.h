@@ -10,7 +10,7 @@
 
 class DebugCamera;
 class GridFloor;
-class ModelObject;
+class Player;
 class Element;
 class TargetCamera;
 class Field;
@@ -70,7 +70,7 @@ private:
 	std::unique_ptr<Field> m_field;
 
 	// ƒ‚ƒfƒ‹
-	std::unique_ptr<ModelObject> m_model;
+	std::unique_ptr<Player> m_model;
 	// ƒGƒŒƒƒ“ƒg
 	std::unique_ptr<Element> m_element;
 
