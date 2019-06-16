@@ -4,7 +4,7 @@
 #include "DebugCamera.h"
 #include "GridFloor.h"
 #include "Player.h"
-#include "Element.h"
+#include "ElementManager.h"
 #include "TargetCamera.h"
 #include "Field.h"
 
@@ -52,9 +52,9 @@ void MyGame::CreateResources()
 	// モデルオブジェクトを生成する
 	m_model = std::make_unique<Player>();
 	m_model->Create(L"bloom.cmo", L"Resources/Models/Protected");
-	// エレメントを作成する
-	m_element = std::make_unique<Element>();
-	m_element->Create(DirectX::SimpleMath::Vector3::Zero);
+	// エレメントマネージャを作成する
+	m_elementManager = std::make_unique<ElementManager>();
+	m_elementManager->Initialize();
 
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(m_width, m_height);
@@ -73,8 +73,17 @@ void MyGame::CreateResources()
 // ゲームを更新する
 void MyGame::Update(const DX::StepTimer& timer) 
 {
+	// プレイヤーの更新
 	m_model->Update(timer);
-	m_element->Update(timer);
+	// エレメントマネージャの更新
+	m_elementManager->Update(timer);
+
+	if (timer.GetFrameCount() % 30 == 0) {
+		DirectX::SimpleMath::Vector3 area_offset(0, 0, 80);
+		DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3::One*-3.0f+area_offset;
+		DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3::One*3.0f + area_offset;
+		m_elementManager->CreateElement(area_start, area_end, 1);
+	}
 
 	// デバッグカメラの更新
 	m_debugCamera->Update();
@@ -114,7 +123,7 @@ void MyGame::Render(const DX::StepTimer& timer)
 	// モデルを描画する
 	m_model->Render(m_view, m_projection);
 	// エレメントを描画する
-	m_element->Render(m_view, m_projection);
+	m_elementManager->Render(m_view, m_projection);
 
 	// スプライトバッチを終了する
 	GetSpriteBatch()->End();

@@ -14,6 +14,24 @@
     <Filter Include="Framework">
       <UniqueIdentifier>{456606c3-8c98-4f2e-afba-88b00e300d51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Field">
+      <UniqueIdentifier>{8b26e416-b95f-4651-843f-7c80ea3d0292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Camera">
+      <UniqueIdentifier>{f8c123b2-be52-42e4-8bf9-5f6258d06dbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Manager">
+      <UniqueIdentifier>{62df1444-d1b5-4c52-930c-6ad4fb26d77e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Factory">
+      <UniqueIdentifier>{eab97cfd-ae66-4aec-b145-4a73a6307736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scene">
+      <UniqueIdentifier>{00948bf6-4ead-40b9-876b-3e63f482983b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object">
+      <UniqueIdentifier>{4bb48832-8494-452a-a067-e3b794838c8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -30,28 +48,7 @@
     <ClCompile Include="Sources\pch\pch.cpp">
       <Filter>pch</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\Element.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\Field.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FixCamera.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\GridFloor.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Game\MyGame.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\TargetCamera.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\Transform.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\DebugCamera.cpp">
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Framework\Game.cpp">
@@ -63,36 +60,51 @@
     <ClCompile Include="Sources\Framework\DirectX11.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Field.cpp">
+      <Filter>Game\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\GridFloor.cpp">
+      <Filter>Game\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FixCamera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\DebugCamera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Element.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
     <ClCompile Include="Sources\Game\Player.cpp">
-      <Filter>Game</Filter>
+      <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Transform.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\TargetCamera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\ElementFactory.cpp">
+      <Filter>Game\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\ElementManager.cpp">
+      <Filter>Game\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Framework\RandMt.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\SceneManager.cpp">
+      <Filter>Game\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\PlayScene.cpp">
+      <Filter>Game\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
       <Filter>pch</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\DebugCamera.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Element.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Field.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FixCamera.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\GridFloor.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Game\MyGame.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\TargetCamera.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Transform.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\Game.h">
@@ -110,11 +122,53 @@
     <ClInclude Include="Sources\Framework\DirectX11.h">
       <Filter>Framework</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game\Field.h">
+      <Filter>Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\GridFloor.h">
+      <Filter>Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FixCamera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\DebugCamera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\TargetCamera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Element.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
     <ClInclude Include="Sources\Game\IObject.h">
-      <Filter>Game</Filter>
+      <Filter>Game\Object</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\Player.h">
-      <Filter>Game</Filter>
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Transform.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ElementManager.h">
+      <Filter>Game\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ElementFactory.h">
+      <Filter>Game\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Framework\RandMt.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\IScene.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ISceneRequest.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\SceneManager.h">
+      <Filter>Game\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\PlayScene.h">
+      <Filter>Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,10 @@
 /// <summary>
 /// エレメントクラス
 /// </summary>
-class Element : public IObject{
+class Element : public IObject {
+private:
+	static constexpr float ELEMENT_RADIUS = 1.5f;
+
 public:
 	Element();
 	~Element();
@@ -20,16 +23,17 @@ public:
 	// エレメントを開放する
 	void Lost() override;
 	// エレメントを生成する
-	void Create(const DirectX::SimpleMath::Vector3& pos);
+	void Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector4& color);
 	// エレメントを描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
 
 public:
 	// エレメントの行列を取得する
 	const DirectX::SimpleMath::Matrix& GetMatrix() const;
-
-private:
-	static constexpr float ELEMENT_RADIUS = 1.5f;
+	// エレメントを使用しているかどうか取得する
+	bool IsUsed() const;
+	// エレメントを使用するかどうか設定する
+	void IsUsed(bool isUsed);
 
 private:
 	// オブジェクト
@@ -38,6 +42,10 @@ private:
 	Transform                                    m_transform;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix                  m_world;
+	// 色
+	DirectX::SimpleMath::Vector4                 m_color;
+	// 使用しているかどうか
+	bool                                         m_isUsed;
 };
 
 

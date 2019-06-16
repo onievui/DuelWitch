@@ -11,7 +11,7 @@
 class DebugCamera;
 class GridFloor;
 class Player;
-class Element;
+class ElementManager;
 class TargetCamera;
 class Field;
 
@@ -47,9 +47,7 @@ private:
 	// 射影行列
 	DirectX::SimpleMath::Matrix m_projection;
 
-	// スプライトバッチ
-	DirectX::SpriteBatch* m_spriteBatch;
-	// エフェクトファクトリインターフェース(m_fxFactory)
+	// エフェクトファクトリインタフェース(m_fxFactory)
 	std::unique_ptr<DirectX::IEffectFactory> m_effectFactory;
 	// コモンステート
 	std::unique_ptr <DirectX::CommonStates> m_commonStates;
@@ -71,8 +69,8 @@ private:
 
 	// モデル
 	std::unique_ptr<Player> m_model;
-	// エレメント
-	std::unique_ptr<Element> m_element;
+	// エレメントマネージャ
+	std::unique_ptr<ElementManager> m_elementManager;
 
 	// DirectX11クラスのインスタンスを取得する
 	DirectX11& m_directX = DirectX11::Get();

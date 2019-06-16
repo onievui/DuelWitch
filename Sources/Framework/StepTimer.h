@@ -187,14 +187,6 @@ namespace DX
         uint64_t m_targetElapsedTicks;
     };
 
-	//inline void ThrowIfFailed(HRESULT hr)
-	//{
-	//	if (FAILED(hr))
-	//	{
-	//		// DirectX APIエラーをキャッチするためブレイクポイントをこの行に設定する
-	//		throw std::exception();
-	//	}
-	//}
 }
 
 #endif	// DX_HELPER_DEFINED
