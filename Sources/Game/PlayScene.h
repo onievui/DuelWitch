@@ -11,6 +11,7 @@ class ISceneRequest;
 class DebugCamera;
 class GridFloor;
 class Player;
+class Element;
 class ElementManager;
 class TargetCamera;
 class Field;
@@ -26,7 +27,7 @@ public:
 	~PlayScene();
 public:
 	// プレイシーンを初期化する
-	void Initialize(ISceneRequest* sceneRequest) override;
+	void Initialize(ISceneRequest* pSceneRequest) override;
 	// プレイシーンを更新する
 	void Update(const DX::StepTimer& timer) override;
 	// プレイシーンを描画する
@@ -36,33 +37,31 @@ public:
 
 private:
 	// リクエストシーンインタフェース
-	ISceneRequest* m_sceneRequest;
+	ISceneRequest*                           m_pSceneRequest;
 	// スプライトフォント
-	std::unique_ptr<DirectX::SpriteFont> m_font;
-	// エフェクトファクトリインタフェース(m_fxFactory)
+	std::unique_ptr<DirectX::SpriteFont>     m_font;
+	// エフェクトファクトリインタフェース
 	std::unique_ptr<DirectX::IEffectFactory> m_effectFactory;
 	// コモンステート
-	std::unique_ptr <DirectX::CommonStates> m_commonStates;
-
-	// キーボード
-	std::unique_ptr<DirectX::Keyboard> m_keyboard;
-	// マウス
-	std::unique_ptr<DirectX::Mouse> m_mouse;
+	std::unique_ptr <DirectX::CommonStates>  m_commonStates;
 
 	// デバッグカメラ
-	std::unique_ptr<DebugCamera> m_debugCamera;
+	std::unique_ptr<DebugCamera>             m_debugCamera;
 	// ターゲットカメラ
-	std::unique_ptr<TargetCamera> m_targetCamera;
+	std::unique_ptr<TargetCamera>            m_targetCamera;
 	// グリッド床
-	std::unique_ptr<GridFloor> m_gridFloor;
+	std::unique_ptr<GridFloor>               m_gridFloor;
 
 	// フィールド
-	std::unique_ptr<Field> m_field;
+	std::unique_ptr<Field>                   m_field;
 
 	// モデル
-	std::unique_ptr<Player> m_model;
+	std::unique_ptr<Player>                  m_player;
 	// エレメントマネージャ
-	std::unique_ptr<ElementManager> m_elementManager;
+	std::unique_ptr<ElementManager>          m_elementManager;
+	// エレメント
+	std::vector<Element*>*                   m_pElements;
+	
 };
 
 

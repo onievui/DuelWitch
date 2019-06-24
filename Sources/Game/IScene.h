@@ -14,7 +14,7 @@ class ISceneRequest;
 class IScene {
 public:
 	// シーンを初期化する
-	virtual void Initialize(ISceneRequest* sceneRequest) = 0;
+	virtual void Initialize(ISceneRequest* pSceneRequest) = 0;
 	// シーンを更新する
 	virtual void Update(const DX::StepTimer& timer) = 0;
 	// シーンを描画する

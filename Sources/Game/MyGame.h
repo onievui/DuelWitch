@@ -7,12 +7,6 @@
 #include <Framework\Game.h>
 
 
-//class DebugCamera;
-//class GridFloor;
-//class Player;
-//class ElementManager;
-//class TargetCamera;
-//class Field;
 class SceneManager;
 
 

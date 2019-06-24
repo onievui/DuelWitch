@@ -6,11 +6,12 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Player::Player() 
+Player::Player()
 	: m_model()
 	, m_states()
-	, m_transform() {
-	
+	, m_transform()
+	, m_sphereCollider(&m_transform, 1.5f, DirectX::SimpleMath::Vector3(0,0.5f,0)) {
+
 }
 
 /// <summary>
@@ -158,6 +159,7 @@ void Player::Create(const std::wstring& fileName, const std::wstring& directory)
 void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	auto context = DirectX11::Get().GetContext().Get();
 	m_model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
+	m_sphereCollider.Render(view, proj);
 }
 
 /// <summary>
@@ -168,4 +170,14 @@ void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 /// </returns>
 const DirectX::SimpleMath::Matrix& Player::GetMatrix() const {
 	return m_world;
+}
+
+/// <summary>
+/// プレイヤーの当たり判定を取得する
+/// </summary>
+/// <returns>
+/// 当たり判定
+/// </returns>
+const SphereCollider* Player::GetCollider() const {
+	return &m_sphereCollider;
 }

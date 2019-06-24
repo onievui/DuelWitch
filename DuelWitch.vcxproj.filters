@@ -32,6 +32,9 @@
     <Filter Include="Game\Object">
       <UniqueIdentifier>{4bb48832-8494-452a-a067-e3b794838c8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Collider">
+      <UniqueIdentifier>{69626ec8-61e9-4f50-baf3-211e61961de8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\PlayScene.cpp">
       <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\SphereCollider.cpp">
+      <Filter>Game\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\PlayScene.h">
       <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\SphereCollider.h">
+      <Filter>Game\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

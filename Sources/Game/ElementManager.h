@@ -5,6 +5,7 @@
 #include <Framework\StepTimer.h>
 
 
+class IObject;
 class Element;
 class ElementFactory;
 
@@ -29,6 +30,8 @@ public:
 public:
 	// エレメントを生成する
 	void CreateElement(const DirectX::SimpleMath::Vector3& areaStart, const DirectX::SimpleMath::Vector3& areaEnd, const int num);
+	// エレメントを取得する
+	std::vector<Element*>* GetElements();
 
 private:
 	// 生成済みエレメント

@@ -4,6 +4,7 @@
 #include "DebugCamera.h"
 #include "GridFloor.h"
 #include "Player.h"
+#include "Element.h"
 #include "ElementManager.h"
 #include "TargetCamera.h"
 #include "Field.h"
@@ -24,9 +25,9 @@ PlayScene::~PlayScene() {
 /// <summary>
 ///	プレイシーンを初期化する
 /// </summary>
-/// <param name="sceneRequest"></param>
-void PlayScene::Initialize(ISceneRequest* sceneRequest) {
-	m_sceneRequest = sceneRequest;
+/// <param name="pSceneRequest"></param>
+void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
+	m_pSceneRequest = pSceneRequest;
 	DirectX11& directX = DirectX11::Get();
 	// コモンステートを生成する
 	m_commonStates = std::make_unique<DirectX::CommonStates>(directX.GetDevice().Get());
@@ -34,15 +35,16 @@ void PlayScene::Initialize(ISceneRequest* sceneRequest) {
 	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX.GetDevice().Get());
 
 	// モデルオブジェクトを生成する
-	m_model = std::make_unique<Player>();
-	m_model->Create(L"bloom.cmo", L"Resources/Models/Protected");
+	m_player = std::make_unique<Player>();
+	m_player->Create(L"bloom.cmo", L"Resources/Models/Protected");
 	// エレメントマネージャを作成する
 	m_elementManager = std::make_unique<ElementManager>();
 	m_elementManager->Initialize();
+	m_pElements = m_elementManager->GetElements();
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX.GetWidth(), directX.GetHeight());
 	//ターゲットカメラを生成する
-	m_targetCamera = std::make_unique<TargetCamera>(m_model.get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
+	m_targetCamera = std::make_unique<TargetCamera>(m_player.get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
 		Math::HarfPI*0.5f, float(directX.GetWidth()) / float(directX.GetHeight()), 0.1f, 10000.0f);
 	//グリッド床を生成する
@@ -51,6 +53,7 @@ void PlayScene::Initialize(ISceneRequest* sceneRequest) {
 	m_field = std::make_unique<Field>();
 	// スプライトフォントを生成する
 	//m_font = std::make_unique<DirectX::SpriteFont>(DirectX11::Get().GetDevice().Get(), L"myfile.spritefont");
+	
 }
 
 /// <summary>
@@ -59,15 +62,29 @@ void PlayScene::Initialize(ISceneRequest* sceneRequest) {
 /// <param name="timer"></param>
 void PlayScene::Update(const DX::StepTimer& timer) {
 	// プレイヤーの更新
-	m_model->Update(timer);
+	m_player->Update(timer);
 	// エレメントマネージャの更新
 	m_elementManager->Update(timer);
 
 	if (timer.GetFrameCount() % 30 == 0) {
 		DirectX::SimpleMath::Vector3 area_offset(0, 0, 80);
-		DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3::One*-3.0f + area_offset;
-		DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3::One*3.0f + area_offset;
+		DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3::One*-3 + area_offset;
+		DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3::One*3 + area_offset;
 		m_elementManager->CreateElement(area_start, area_end, 1);
+	}
+
+	// 当たり判定
+	const SphereCollider* player_collider = m_player->GetCollider();
+	for (auto& element : *m_pElements) {
+		// 未使用なら飛ばす
+		if (!element) {
+			continue;
+		}
+		const SphereCollider* element_collider = element->GetCollider();
+		if (player_collider->Collision(element_collider)) {
+			element->IsUsed(false);
+		}
+
 	}
 
 	// フィールドの更新
@@ -97,7 +114,7 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	// フィールドを描画する
 	m_field->Render(view, projection);
 	// モデルを描画する
-	m_model->Render(view, projection);
+	m_player->Render(view, projection);
 	// エレメントを描画する
 	m_elementManager->Render(view, projection);
 	

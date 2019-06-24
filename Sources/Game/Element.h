@@ -2,9 +2,12 @@
 #ifndef ELEMENT_DEFINED
 #define ELEMENT_DEFINED
 
+
 #include <Framework\StepTimer.h>
 #include "IObject.h"
 #include "Transform.h"
+#include "SphereCollider.h"
+
 
 /// <summary>
 /// エレメントクラス
@@ -29,7 +32,9 @@ public:
 
 public:
 	// エレメントの行列を取得する
-	const DirectX::SimpleMath::Matrix& GetMatrix() const;
+	const DirectX::SimpleMath::Matrix& GetMatrix() const override;
+	// エレメントの当たり判定を取得する
+	const SphereCollider* GetCollider() const override;
 	// エレメントを使用しているかどうか取得する
 	bool IsUsed() const;
 	// エレメントを使用するかどうか設定する
@@ -40,6 +45,8 @@ private:
 	std::unique_ptr<DirectX::GeometricPrimitive> m_object;
 	// 姿勢
 	Transform                                    m_transform;
+	// 球当たり判定
+	SphereCollider                               m_sphereCollider;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix                  m_world;
 	// 色

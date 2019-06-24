@@ -5,6 +5,7 @@
 #include <Framework\StepTimer.h>
 #include "IObject.h"
 #include "Transform.h"
+#include "SphereCollider.h"
 
 
 /// <summary>
@@ -27,6 +28,8 @@ public:
 public:
 	// プレイヤーの行列を取得する
 	const DirectX::SimpleMath::Matrix& GetMatrix() const override;
+	// プレイヤーの当たり判定を取得する
+	const SphereCollider* GetCollider() const override;
 
 private:
 	// コモンステート
@@ -35,6 +38,8 @@ private:
 	std::unique_ptr<DirectX::Model>        m_model;
 	// 姿勢
 	Transform                              m_transform;
+	// 球当たり判定
+	SphereCollider                         m_sphereCollider;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix            m_world;
 };

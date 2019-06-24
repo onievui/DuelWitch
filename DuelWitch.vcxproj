@@ -188,6 +188,7 @@
     <ClCompile Include="Sources\Game\MyGame.cpp" />
     <ClCompile Include="Sources\Game\PlayScene.cpp" />
     <ClCompile Include="Sources\Game\SceneManager.cpp" />
+    <ClCompile Include="Sources\Game\SphereCollider.cpp" />
     <ClCompile Include="Sources\Game\TargetCamera.cpp" />
     <ClCompile Include="Sources\Game\Transform.cpp" />
     <ClCompile Include="Sources\pch\pch.cpp">
@@ -202,6 +203,7 @@
     <ClInclude Include="Sources\Framework\RandMt.h" />
     <ClInclude Include="Sources\Framework\StepTimer.h" />
     <ClInclude Include="Sources\Framework\Window.h" />
+    <ClInclude Include="Sources\Game\SphereCollider.h" />
     <ClInclude Include="Sources\Game\DebugCamera.h" />
     <ClInclude Include="Sources\Game\Element.h" />
     <ClInclude Include="Sources\Game\ElementFactory.h" />

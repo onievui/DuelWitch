@@ -5,8 +5,9 @@
 /// コンストラクタ
 /// </summary>
 Element::Element()
-	: m_object() 
+	: m_object()
 	, m_transform()
+	, m_sphereCollider(&m_transform, ELEMENT_RADIUS)
 	, m_color()
 	, m_isUsed(false) {
 }
@@ -61,6 +62,16 @@ void Element::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Sim
 /// </returns>
 const DirectX::SimpleMath::Matrix& Element::GetMatrix() const {
 	return m_world;
+}
+
+/// <summary>
+/// エレメントの当たり判定を取得する
+/// </summary>
+/// <returns>
+/// 当たり判定
+/// </returns>
+const SphereCollider* Element::GetCollider() const {
+	return &m_sphereCollider;
 }
 
 /// <summary>

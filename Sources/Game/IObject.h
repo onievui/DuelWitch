@@ -2,7 +2,11 @@
 #ifndef IOBJECT_DEFINED
 #define IOBJECT_DEFINED
 
+
 #include <Framework\StepTimer.h>
+
+
+class SphereCollider;
 
 
 /// <summary>
@@ -23,6 +27,8 @@ public:
 public:
 	// オブジェクトの行列を取得する
 	virtual const DirectX::SimpleMath::Matrix& GetMatrix() const = 0;
+	// オブジェクトの当たり判定を取得する
+	virtual const SphereCollider* GetCollider() const = 0;
 };
 
 

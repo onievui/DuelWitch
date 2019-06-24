@@ -37,6 +37,9 @@ void ElementManager::Update(const DX::StepTimer& timer) {
 	for (auto& element : m_elements) {
 		if (element) {
 			element->Update(timer);
+			if (!element->IsUsed()) {
+				element = nullptr;
+			}
 		}
 	}
 }
@@ -75,4 +78,14 @@ void ElementManager::CreateElement(const DirectX::SimpleMath::Vector3& areaStart
 			}
 		}
 	}
+}
+
+/// <summary>
+/// エレメントを取得する
+/// </summary>
+/// <returns>
+/// エレメントの配列
+/// </returns>
+std::vector<Element*>* ElementManager::GetElements() {
+	return &m_elements;
 }
