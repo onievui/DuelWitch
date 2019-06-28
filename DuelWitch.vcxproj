@@ -177,6 +177,7 @@
     <ClCompile Include="Sources\Framework\Game.cpp" />
     <ClCompile Include="Sources\Framework\RandMt.cpp" />
     <ClCompile Include="Sources\Framework\Window.cpp" />
+    <ClCompile Include="Sources\Game\Camera.cpp" />
     <ClCompile Include="Sources\Game\DebugCamera.cpp" />
     <ClCompile Include="Sources\Game\Element.cpp" />
     <ClCompile Include="Sources\Game\ElementFactory.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Sources\Framework\RandMt.h" />
     <ClInclude Include="Sources\Framework\StepTimer.h" />
     <ClInclude Include="Sources\Framework\Window.h" />
+    <ClInclude Include="Sources\Game\Camera.h" />
     <ClInclude Include="Sources\Game\IMagic.h" />
     <ClInclude Include="Sources\Game\MagicFactory.h" />
     <ClInclude Include="Sources\Game\MagicManager.h" />

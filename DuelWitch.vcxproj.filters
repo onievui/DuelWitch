@@ -114,6 +114,9 @@
     <ClCompile Include="Sources\Game\MagicManager.cpp">
       <Filter>Game\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Camera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\MagicFactory.h">
       <Filter>Game\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Camera.h">
+      <Filter>Game\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ public:
 	// コンストラクタ
 	FixCamera(int width, int height);
 	FixCamera(DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 target,
-		DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::UnitY, float fov = 3.14f / 4.0f,
+		DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::UnitY, float fov = DirectX::XM_PIDIV4,
 		float aspectRatio = 800.0f/600.0f, float nearPlane = 0.1f, float farPlane = 100.0f);
 	// 固定カメラを更新する
 	void Update();

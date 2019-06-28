@@ -174,9 +174,11 @@ void Player::Move(const DX::StepTimer& timer) {
 void Player::CastMagic(const DX::StepTimer& timer) {
 	float elapsedTime = float(timer.GetElapsedSeconds());
 
-	auto mouseState = DirectX::Mouse::Get().GetState();
+	static DirectX::Mouse::ButtonStateTracker tracker;
+	auto mouse_state = DirectX::Mouse::Get().GetState();
+	tracker.Update(mouse_state);
 
-	if (mouseState.leftButton) {
+	if (tracker.leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
 		DirectX::SimpleMath::Vector3 vec = DirectX::SimpleMath::Vector3::UnitZ;
 		DirectX::SimpleMath::Vector3 rot = m_transform.GetRotation();
 		DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
