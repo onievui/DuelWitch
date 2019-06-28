@@ -13,6 +13,8 @@ class GridFloor;
 class Player;
 class Element;
 class ElementManager;
+class IMagic;
+class MagicManager;
 class TargetCamera;
 class Field;
 
@@ -61,6 +63,10 @@ private:
 	std::unique_ptr<ElementManager>          m_elementManager;
 	// エレメント
 	std::vector<Element*>*                   m_pElements;
+	// 魔法マネージャ
+	std::unique_ptr<MagicManager>            m_magicManager;
+	// 魔法
+	std::vector<IMagic*>*                    m_pMagics;
 	
 };
 

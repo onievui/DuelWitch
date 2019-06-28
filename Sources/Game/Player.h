@@ -8,12 +8,15 @@
 #include "SphereCollider.h"
 
 
+class MagicManager;
+
+
 /// <summary>
 /// プレイヤークラス
 /// </summary>
 class Player : public IObject {
 public:
-	Player();
+	Player(MagicManager* magicManager);
 	~Player();
 
 	// プレイヤーを更新する
@@ -32,6 +35,12 @@ public:
 	const SphereCollider* GetCollider() const override;
 
 private:
+	// 移動を行う
+	void Move(const DX::StepTimer& timer);
+	// 魔法を唱える
+	void CastMagic(const DX::StepTimer& timer);
+
+private:
 	// コモンステート
 	std::unique_ptr<DirectX::CommonStates> m_states;
 	// モデル
@@ -42,6 +51,8 @@ private:
 	SphereCollider                         m_sphereCollider;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix            m_world;
+	// 魔法マネージャ
+	MagicManager*                          m_pMagicManager;
 };
 
 

@@ -1,16 +1,19 @@
 #include "Player.h"
 #include <Framework\DirectX11.h>
-
+#include "MagicManager.h"
+#include "MagicFactory.h"
 
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Player::Player()
+/// <param name="magicManager">魔法マネージャ</param>
+Player::Player(MagicManager* magicManager)
 	: m_model()
 	, m_states()
 	, m_transform()
-	, m_sphereCollider(&m_transform, 1.5f, DirectX::SimpleMath::Vector3(0,0.5f,0)) {
+	, m_sphereCollider(&m_transform, 1.5f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
+	, m_pMagicManager(magicManager) {
 
 }
 
@@ -25,89 +28,11 @@ Player::~Player() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void Player::Update(const DX::StepTimer& timer) {
-	float elapsedTime = float(timer.GetElapsedSeconds());
+	// 移動を行う
+	Move(timer);
+	// 魔法を発動する
+	CastMagic(timer);
 
-	auto keyState = DirectX::Keyboard::Get().GetState();
-
-	constexpr float moveSpeed = 8.0f;
-	constexpr float rotSpeed = 2.0f;
-	constexpr float rotZLimit = Math::QuarterPI*0.5f;
-	constexpr float rotXLimit = Math::QuarterPI*0.5f;
-	constexpr float rotYLimit = Math::QuarterPI*0.25f;
-	constexpr float lerpSpeed = 0.025f;
-
-	auto pos = m_transform.GetPosition();
-	auto rot = m_transform.GetRotation();
-
-	// 移動
-	if (keyState.Left) {
-		//pos += DirectX::SimpleMath::Vector3(sinf(rot.y + Math::HarfPI)*moveSpeed*elapsedTime,
-		//	0.0f, cosf(rot.y + Math::HarfPI)*moveSpeed*elapsedTime);
-		rot.z = Math::Lerp(rot.z, -rotZLimit, lerpSpeed);
-		rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
-	}
-	else if (keyState.Right) {
-		//pos += DirectX::SimpleMath::Vector3(sinf(rot.y - Math::HarfPI)*moveSpeed*elapsedTime,
-		//	0.0f, cosf(rot.y - Math::HarfPI)*moveSpeed*elapsedTime);
-		rot.z = Math::Lerp(rot.z, rotZLimit, lerpSpeed);
-		rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
-	}
-	else {
-		rot.z = Math::Lerp(rot.z, 0.0f, lerpSpeed);
-		rot.y = Math::Lerp(rot.y, 0.0f, lerpSpeed);
-	}
-
-	if (keyState.Up) {
-		//pos += DirectX::SimpleMath::Vector3(0.0f, moveSpeed*elapsedTime, 0.0f);
-		rot.x = Math::Lerp(rot.x, -rotXLimit, lerpSpeed);
-	}
-	else if (keyState.Down) {
-		//pos += DirectX::SimpleMath::Vector3(0.0f, -moveSpeed*elapsedTime, 0.0f);
-		rot.x = Math::Lerp(rot.x, rotXLimit, lerpSpeed);
-	}
-	else {
-		rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
-	}
-
-	DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
-	pos += DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ*moveSpeed*elapsedTime,
-		DirectX::SimpleMath::Matrix::CreateFromQuaternion(quaternion));
-
-	//if (keyState.Up) {
-	//	pos += DirectX::SimpleMath::Vector3(sinf(rot.y)*moveSpeed*elapsedTime,
-	//		0.0f, cosf(rot.y)*moveSpeed*elapsedTime);
-	//}
-	//else if (keyState.Down) {
-	//	pos += DirectX::SimpleMath::Vector3(-sinf(rot.y)*moveSpeed*elapsedTime,
-	//		0.0f, -cosf(rot.y)*moveSpeed*elapsedTime);
-	//}
-
-
-	// 回転
-	//if (keyState.A) {
-	//	rot.y += rotSpeed*elapsedTime;
-	//}
-	//else if (keyState.D) {
-	//	rot.y -= rotSpeed*elapsedTime;
-	//}
-
-	//if (keyState.W) {
-	//	rot.x += rotSpeed*elapsedTime;
-	//}
-	//else if (keyState.S) {
-	//	rot.x -= rotSpeed*elapsedTime;
-	//}
-
-	//if (keyState.E) {
-	//	rot.z += rotSpeed * elapsedTime;
-	//}
-	//else if (keyState.Q) {
-	//	rot.z -= rotSpeed * elapsedTime;
-	//}
-
-	m_transform.SetPosition(pos);
-	m_transform.SetRotation(rot);
-	m_world = m_transform.GetMatrix();
 }
 
 /// <summary>
@@ -180,4 +105,82 @@ const DirectX::SimpleMath::Matrix& Player::GetMatrix() const {
 /// </returns>
 const SphereCollider* Player::GetCollider() const {
 	return &m_sphereCollider;
+}
+
+/// <summary>
+/// 移動を行う
+/// </summary>
+/// <param name="timer">タイマー</param>
+void Player::Move(const DX::StepTimer& timer) {
+	float elapsedTime = float(timer.GetElapsedSeconds());
+
+	auto keyState = DirectX::Keyboard::Get().GetState();
+
+	constexpr float moveSpeed = 8.0f;
+	constexpr float rotSpeed = 2.0f;
+	constexpr float rotZLimit = Math::QuarterPI*0.5f;
+	constexpr float rotXLimit = Math::QuarterPI*0.5f;
+	constexpr float rotYLimit = Math::QuarterPI*0.25f;
+	constexpr float lerpSpeed = 0.025f;
+
+	auto pos = m_transform.GetPosition();
+	auto rot = m_transform.GetRotation();
+
+	// 移動
+	if (keyState.A || keyState.Left) {
+		//pos += DirectX::SimpleMath::Vector3(sinf(rot.y + Math::HarfPI)*moveSpeed*elapsedTime,
+		//	0.0f, cosf(rot.y + Math::HarfPI)*moveSpeed*elapsedTime);
+		rot.z = Math::Lerp(rot.z, -rotZLimit, lerpSpeed);
+		rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
+	}
+	else if (keyState.D || keyState.Right) {
+		//pos += DirectX::SimpleMath::Vector3(sinf(rot.y - Math::HarfPI)*moveSpeed*elapsedTime,
+		//	0.0f, cosf(rot.y - Math::HarfPI)*moveSpeed*elapsedTime);
+		rot.z = Math::Lerp(rot.z, rotZLimit, lerpSpeed);
+		rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
+	}
+	//押していないときは戻す
+	else {
+		rot.z = Math::Lerp(rot.z, 0.0f, lerpSpeed);
+		rot.y = Math::Lerp(rot.y, 0.0f, lerpSpeed);
+	}
+
+	if (keyState.W || keyState.Up) {
+		//pos += DirectX::SimpleMath::Vector3(0.0f, moveSpeed*elapsedTime, 0.0f);
+		rot.x = Math::Lerp(rot.x, -rotXLimit, lerpSpeed);
+	}
+	else if (keyState.S || keyState.Down) {
+		//pos += DirectX::SimpleMath::Vector3(0.0f, -moveSpeed*elapsedTime, 0.0f);
+		rot.x = Math::Lerp(rot.x, rotXLimit, lerpSpeed);
+	}
+	//押していないときは戻す
+	else {
+		rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
+	}
+
+	DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	pos += DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ*moveSpeed*elapsedTime,
+		DirectX::SimpleMath::Matrix::CreateFromQuaternion(quaternion));
+
+	m_transform.SetPosition(pos);
+	m_transform.SetRotation(rot);
+	m_world = m_transform.GetMatrix();
+}
+
+/// <summary>
+/// 魔法を唱える
+/// </summary>
+/// <param name="timer">タイマー</param>
+void Player::CastMagic(const DX::StepTimer& timer) {
+	float elapsedTime = float(timer.GetElapsedSeconds());
+
+	auto mouseState = DirectX::Mouse::Get().GetState();
+
+	if (mouseState.leftButton) {
+		DirectX::SimpleMath::Vector3 vec = DirectX::SimpleMath::Vector3::UnitZ;
+		DirectX::SimpleMath::Vector3 rot = m_transform.GetRotation();
+		DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+		vec = DirectX::SimpleMath::Vector3::Transform(vec, DirectX::SimpleMath::Matrix::CreateFromQuaternion(quaternion));
+		m_pMagicManager->CreateMagic(MagicFactory::MagicID::Normal, m_transform.GetPosition(), vec);
+	}
 }

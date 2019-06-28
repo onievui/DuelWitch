@@ -21,12 +21,15 @@ public:
 	RandMt& operator=(RandMt&&) = delete;
 
 public:
-	// 乱数の取得
-	static int GetRand(const int _range);
+	// 乱数の取得（整数）
+	static int GetRand(int range);
+	// 乱数の取得（実数）
+	static float GetRand(float range);
 
 private:
-	std::random_device  m_seed;
-	static std::mt19937 m_mt;
+	static RandMt m_randMt;
+	static std::random_device  m_seed;
+	static std::mt19937        m_mt;
 };
 
 

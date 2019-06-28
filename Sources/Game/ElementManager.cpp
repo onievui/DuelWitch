@@ -66,14 +66,14 @@ void ElementManager::Render(const DirectX::SimpleMath::Matrix& view, const Direc
 void ElementManager::CreateElement(const DirectX::SimpleMath::Vector3& areaStart, const DirectX::SimpleMath::Vector3& areaEnd, const int num) {
 	for (int i = 0; i < num; ++i) {
 		DirectX::SimpleMath::Vector3 pos = DirectX::SimpleMath::Vector3(
-			areaStart.x + (areaEnd.x - areaStart.x)*RandMt::GetRand(10001) / 10000.0f,
-			areaStart.y + (areaEnd.y - areaStart.y)*RandMt::GetRand(10001) / 10000.0f,
-			areaStart.z + (areaEnd.z - areaStart.z)*RandMt::GetRand(10001) / 10000.0f
+			areaStart.x + (areaEnd.x - areaStart.x)*RandMt::GetRand(1.0f),
+			areaStart.y + (areaEnd.y - areaStart.y)*RandMt::GetRand(1.0f),
+			areaStart.z + (areaEnd.z - areaStart.z)*RandMt::GetRand(1.0f)
 		);
-		Element* createdElement = m_elementFactory->Create(ElementFactory::ElementID::Fire, pos);
+		Element* created_element = m_elementFactory->Create(ElementFactory::ElementID::Fire, pos);
 		for (auto& element : m_elements) {
 			if (!element) {
-				element = createdElement;
+				element = created_element;
 				break;
 			}
 		}

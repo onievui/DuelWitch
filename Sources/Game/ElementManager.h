@@ -2,12 +2,13 @@
 #ifndef ELEMENT_MANAGER_DEFINED
 #define ELEMENT_MANAGER_DEFINED
 
+
 #include <Framework\StepTimer.h>
 
 
-class IObject;
 class Element;
 class ElementFactory;
+
 
 /// <summary>
 /// エレメントマネージャクラス
@@ -40,7 +41,6 @@ private:
 	std::unique_ptr<ElementFactory> m_elementFactory;
 
 };
-
 
 
 #endif // !ELEMENT_MANAGER_DEFINED

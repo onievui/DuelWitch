@@ -107,10 +107,12 @@ LRESULT CALLBACK Window::WndowProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 		::PostQuitMessage(0);
 		break;
 
+
+
 	case WM_SYSKEYDOWN:
 		if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000) 
 		{
-			// 古典的な ALT+ENTER フルスクリーン トグルを実装する
+			// ALT+ENTER フルスクリーン トグルを実装する
 			if (s_fullscreen) 
 			{
 				SetWindowLongPtr(hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);

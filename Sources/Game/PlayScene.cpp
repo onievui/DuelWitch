@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "Element.h"
 #include "ElementManager.h"
+#include "IMagic.h"
+#include "MagicManager.h"
 #include "TargetCamera.h"
 #include "Field.h"
 
@@ -34,13 +36,19 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	// エフェクトファクトリを生成する
 	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX.GetDevice().Get());
 
-	// モデルオブジェクトを生成する
-	m_player = std::make_unique<Player>();
-	m_player->Create(L"bloom.cmo", L"Resources/Models/Protected");
 	// エレメントマネージャを作成する
 	m_elementManager = std::make_unique<ElementManager>();
 	m_elementManager->Initialize();
 	m_pElements = m_elementManager->GetElements();
+	// 魔法マネージャを生成する
+	m_magicManager = std::make_unique<MagicManager>();
+	m_magicManager->Initialize();
+	m_pMagics = m_magicManager->GetMagics();
+
+	// プレイヤーを生成する
+	m_player = std::make_unique<Player>(m_magicManager.get());
+	m_player->Create(L"bloom.cmo", L"Resources/Models/Protected");
+
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX.GetWidth(), directX.GetHeight());
 	//ターゲットカメラを生成する
@@ -65,6 +73,8 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	m_player->Update(timer);
 	// エレメントマネージャの更新
 	m_elementManager->Update(timer);
+	// 魔法マネージャの更新
+	m_magicManager->Update(timer);
 
 	if (timer.GetFrameCount() % 30 == 0) {
 		DirectX::SimpleMath::Vector3 area_offset(0, 0, 80);
@@ -117,6 +127,8 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	m_player->Render(view, projection);
 	// エレメントを描画する
 	m_elementManager->Render(view, projection);
+	// 魔法を描画する
+	m_magicManager->Render(view, projection);
 	
 	spriteBatch->End();
 }

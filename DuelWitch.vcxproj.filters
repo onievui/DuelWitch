@@ -105,6 +105,15 @@
     <ClCompile Include="Sources\Game\SphereCollider.cpp">
       <Filter>Game\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\NormalMagic.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\MagicFactory.cpp">
+      <Filter>Game\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\MagicManager.cpp">
+      <Filter>Game\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -178,6 +187,18 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\SphereCollider.h">
       <Filter>Game\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\IMagic.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\NormalMagic.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\MagicManager.h">
+      <Filter>Game\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\MagicFactory.h">
+      <Filter>Game\Factory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

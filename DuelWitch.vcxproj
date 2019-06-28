@@ -184,6 +184,9 @@
     <ClCompile Include="Sources\Game\Field.cpp" />
     <ClCompile Include="Sources\Game\FixCamera.cpp" />
     <ClCompile Include="Sources\Game\GridFloor.cpp" />
+    <ClCompile Include="Sources\Game\MagicFactory.cpp" />
+    <ClCompile Include="Sources\Game\MagicManager.cpp" />
+    <ClCompile Include="Sources\Game\NormalMagic.cpp" />
     <ClCompile Include="Sources\Game\Player.cpp" />
     <ClCompile Include="Sources\Game\MyGame.cpp" />
     <ClCompile Include="Sources\Game\PlayScene.cpp" />
@@ -203,6 +206,10 @@
     <ClInclude Include="Sources\Framework\RandMt.h" />
     <ClInclude Include="Sources\Framework\StepTimer.h" />
     <ClInclude Include="Sources\Framework\Window.h" />
+    <ClInclude Include="Sources\Game\IMagic.h" />
+    <ClInclude Include="Sources\Game\MagicFactory.h" />
+    <ClInclude Include="Sources\Game\MagicManager.h" />
+    <ClInclude Include="Sources\Game\NormalMagic.h" />
     <ClInclude Include="Sources\Game\SphereCollider.h" />
     <ClInclude Include="Sources\Game\DebugCamera.h" />
     <ClInclude Include="Sources\Game\Element.h" />
