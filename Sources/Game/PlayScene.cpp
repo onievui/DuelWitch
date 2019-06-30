@@ -55,6 +55,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_targetCamera = std::make_unique<TargetCamera>(m_player.get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
 		Math::HarfPI*0.5f, float(directX.GetWidth()) / float(directX.GetHeight()), 0.1f, 10000.0f);
+
+	m_player->SetCamera(m_targetCamera.get());
+
 	//グリッド床を生成する
 	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 200.0f, 50);
 	// フィールドを生成する

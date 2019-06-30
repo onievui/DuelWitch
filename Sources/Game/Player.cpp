@@ -2,6 +2,7 @@
 #include <Framework\DirectX11.h>
 #include "MagicManager.h"
 #include "MagicFactory.h"
+#include "Camera.h"
 
 
 /// <summary>
@@ -13,8 +14,9 @@ Player::Player(MagicManager* magicManager)
 	, m_states()
 	, m_transform()
 	, m_sphereCollider(&m_transform, 1.5f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
-	, m_pMagicManager(magicManager) {
-
+	, m_pMagicManager(magicManager)
+	, m_pCamera() {
+	m_mouseTracker = std::make_unique<DirectX::Mouse::ButtonStateTracker>();
 }
 
 /// <summary>
@@ -108,6 +110,14 @@ const SphereCollider* Player::GetCollider() const {
 }
 
 /// <summary>
+/// カメラを設定する
+/// </summary>
+/// <param name="camera">カメラへのポインタ</param>
+void Player::SetCamera(Camera* camera) {
+	m_pCamera = camera;
+}
+
+/// <summary>
 /// 移動を行う
 /// </summary>
 /// <param name="timer">タイマー</param>
@@ -174,15 +184,38 @@ void Player::Move(const DX::StepTimer& timer) {
 void Player::CastMagic(const DX::StepTimer& timer) {
 	float elapsedTime = float(timer.GetElapsedSeconds());
 
-	static DirectX::Mouse::ButtonStateTracker tracker;
+	//static DirectX::Mouse::ButtonStateTracker tracker;
 	auto mouse_state = DirectX::Mouse::Get().GetState();
-	tracker.Update(mouse_state);
-
-	if (tracker.leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
-		DirectX::SimpleMath::Vector3 vec = DirectX::SimpleMath::Vector3::UnitZ;
-		DirectX::SimpleMath::Vector3 rot = m_transform.GetRotation();
-		DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
-		vec = DirectX::SimpleMath::Vector3::Transform(vec, DirectX::SimpleMath::Matrix::CreateFromQuaternion(quaternion));
-		m_pMagicManager->CreateMagic(MagicFactory::MagicID::Normal, m_transform.GetPosition(), vec);
+	m_mouseTracker->Update(mouse_state);
+	// タッチパッドだと左クリックが正常に反応していない？
+	if (m_mouseTracker->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
+		// レイの作成
+		auto ray = m_pCamera->ScreenPointToRay(DirectX::SimpleMath::Vector3((float)mouse_state.x, (float)mouse_state.y, 0));
+		// 平面の作成
+		auto plane = CreatePlaneForMagic();
+		float distance;
+		if (ray.Intersects(plane, distance)) {
+			auto ray_pos = ray.position + ray.direction * distance;
+			auto& player_pos = m_transform.GetPosition();
+			auto direction = ray_pos - player_pos;
+			direction.Normalize();
+			m_pMagicManager->CreateMagic(MagicFactory::MagicID::Normal, player_pos, direction);
+		}
 	}
+}
+
+/// <summary>
+/// 魔法のためのレイ用平面の作成
+/// </summary>
+/// <returns>
+/// 平面
+/// </returns>
+DirectX::SimpleMath::Plane Player::CreatePlaneForMagic() {
+	auto& rot = m_transform.GetRotation();
+	auto quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	auto plane_normal = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ,
+		DirectX::SimpleMath::Matrix::CreateFromQuaternion(quaternion));
+	auto plane_pos = m_transform.GetPosition() + DirectX::SimpleMath::Vector3::UnitZ * 20;
+	auto plane = DirectX::SimpleMath::Plane(plane_pos, DirectX::SimpleMath::Vector3::UnitZ);
+	return plane;
 }

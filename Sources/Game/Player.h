@@ -9,6 +9,7 @@
 
 
 class MagicManager;
+class Camera;
 
 
 /// <summary>
@@ -33,16 +34,22 @@ public:
 	const DirectX::SimpleMath::Matrix& GetMatrix() const override;
 	// プレイヤーの当たり判定を取得する
 	const SphereCollider* GetCollider() const override;
+	// カメラを設定する
+	void SetCamera(Camera* camera);
 
 private:
 	// 移動を行う
 	void Move(const DX::StepTimer& timer);
 	// 魔法を唱える
 	void CastMagic(const DX::StepTimer& timer);
+	// 魔法のためのレイ用平面の作成
+	DirectX::SimpleMath::Plane CreatePlaneForMagic();
 
 private:
 	// コモンステート
 	std::unique_ptr<DirectX::CommonStates> m_states;
+	// マウストラッカー
+	std::unique_ptr<DirectX::Mouse::ButtonStateTracker> m_mouseTracker;
 	// モデル
 	std::unique_ptr<DirectX::Model>        m_model;
 	// 姿勢
@@ -53,6 +60,8 @@ private:
 	DirectX::SimpleMath::Matrix            m_world;
 	// 魔法マネージャ
 	MagicManager*                          m_pMagicManager;
+	// カメラ
+	Camera*                                m_pCamera;
 };
 
 

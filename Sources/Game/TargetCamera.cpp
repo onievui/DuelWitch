@@ -62,26 +62,6 @@ void TargetCamera::Update() {
 }
 
 /// <summary>
-/// ターゲットカメラのビュー行列を取得する
-/// </summary>
-/// <returns>
-/// ビュー行列
-/// </returns>
-const DirectX::SimpleMath::Matrix& TargetCamera::GetViewMatrix() const {
-	return m_view;
-}
-
-/// <summary>
-/// ターゲットカメラの射影行列を取得する
-/// </summary>
-/// <returns>
-/// 射影行列
-/// </returns>
-const DirectX::SimpleMath::Matrix& TargetCamera::GetProjectionMatrix() const {
-	return m_proj;
-}
-
-/// <summary>
 /// ターゲットカメラの位置を取得する
 /// </summary>
 /// <returns>

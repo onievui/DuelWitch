@@ -35,7 +35,7 @@ void MagicFactory::Initialize() {
 /// <returns>
 /// –‚–@
 /// </returns>
-IMagic* MagicFactory::Create(MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vec) {
+IMagic* MagicFactory::Create(MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	int index = 0;
 	for (auto& magic : m_magics) {
 		if (!magic->IsUsed()) {
@@ -50,16 +50,16 @@ IMagic* MagicFactory::Create(MagicID id, const DirectX::SimpleMath::Vector3& pos
 
 	switch (id) {
 	case MagicID::Normal:
-		m_magics[index]->Create(pos, vec, DirectX::SimpleMath::Vector4(DirectX::Colors::White));
+		m_magics[index]->Create(pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::White));
 		break;
 	case MagicID::Fire:
-		m_magics[index]->Create(pos, vec, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
+		m_magics[index]->Create(pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
 		break;
 	case MagicID::Thunder:
-		m_magics[index]->Create(pos, vec, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
+		m_magics[index]->Create(pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
 		break;
 	case MagicID::Freeze:
-		m_magics[index]->Create(pos, vec, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue));
+		m_magics[index]->Create(pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue));
 		break;
 	default:
 		return nullptr;

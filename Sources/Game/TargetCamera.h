@@ -2,15 +2,17 @@
 #ifndef TARGET_CAMERA_DEFINED
 #define TARGET_CAMERA_DEFINED
 
-//#include "DirectX11.h"
-//#include <SimpleMath.h>
+
+#include "Camera.h"
+
 
 class IObject;
+
 
 /// <summary>
 /// 追従カメラクラス
 /// </summary>
-class TargetCamera {
+class TargetCamera : public Camera {
 public:
 	// コンストラクタ
 	TargetCamera(int width, int height, IObject* targetObject);
@@ -19,22 +21,12 @@ public:
 		float aspectRatio = 800.0f / 600.0f, float nearPlane = 0.1f, float farPlane = 100.0f);
 	// ターゲットカメラを更新する
 	void Update();
-	// ターゲットカメラのビュー行列を取得する
-	const DirectX::SimpleMath::Matrix& GetViewMatrix() const;
-	// ターゲットカメラの射影行列を取得する
-	const DirectX::SimpleMath::Matrix& GetProjectionMatrix() const;
 	// ターゲットカメラの位置を取得する
-	const DirectX::SimpleMath::Vector3& GetEyePosition() const;
+	const DirectX::SimpleMath::Vector3& GetEyePosition() const override;
 
 
 
 private:
-	// ビュー行列
-	DirectX::SimpleMath::Matrix  m_view;
-	// プロジェクション行列
-	DirectX::SimpleMath::Matrix  m_proj;
-	// ビューポート行列
-	DirectX::SimpleMath::Matrix m_viewport;
 	// 追従するオブジェクト
 	IObject*					 m_targetObject;
 	DirectX::SimpleMath::Matrix  m_targetMatrix;

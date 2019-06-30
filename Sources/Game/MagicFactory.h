@@ -29,7 +29,7 @@ public:
 	// 魔法ファクトリを初期化する
 	void Initialize();
 	// 魔法を生成する
-	IMagic* Create(MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vec);
+	IMagic* Create(MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 
 private:
 	// 管理する魔法

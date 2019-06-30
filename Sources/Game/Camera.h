@@ -17,15 +17,15 @@ public:
 		return m_proj;
 	}
 	// カメラの位置を取得する
-	const DirectX::SimpleMath::Vector3& GetEyePosition() const {
+	virtual const DirectX::SimpleMath::Vector3& GetEyePosition() const {
 		return m_eye;
 	}
 	// カメラの位置を設定する
-	void SetEyePosition(DirectX::SimpleMath::Vector3 eye) {
+	virtual void SetEyePosition(DirectX::SimpleMath::Vector3 eye) {
 		m_eye = eye;
 	}
 	// カメラの注視点を設定する
-	void SetTargetPosition(DirectX::SimpleMath::Vector3 target) {
+	virtual void SetTargetPosition(DirectX::SimpleMath::Vector3 target) {
 		m_target = target;
 	}
 
@@ -48,21 +48,18 @@ public:
 	// ビューポート座標からスクリーン座標に変換する
 	DirectX::SimpleMath::Vector3 ViewportToScreenPoint(const DirectX::SimpleMath::Vector3& point) const;
 
-private:
+protected:
 	// カメラの位置
 	DirectX::SimpleMath::Vector3 m_eye;
 	// ビュー行列
-	DirectX::SimpleMath::Matrix m_view;
+	DirectX::SimpleMath::Matrix  m_view;
 	// プロジェクション行列
-	DirectX::SimpleMath::Matrix m_proj;
+	DirectX::SimpleMath::Matrix  m_proj;
 	// ビューポート行列
-	DirectX::SimpleMath::Matrix m_viewport;
+	DirectX::SimpleMath::Matrix  m_viewport;
 	// 注視点
 	DirectX::SimpleMath::Vector3 m_target;
 };
-
-
-
 
 
 #endif // !CAMERA_DEFINED

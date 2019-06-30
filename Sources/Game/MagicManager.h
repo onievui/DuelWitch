@@ -30,7 +30,7 @@ public:
 
 public:
 	// –‚–@‚ğ¶¬‚·‚é
-	void CreateMagic(MagicFactory::MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vec);
+	void CreateMagic(MagicFactory::MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 	// –‚–@‚ğæ“¾‚·‚é
 	std::vector<IMagic*>* GetMagics();
 

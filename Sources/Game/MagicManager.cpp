@@ -66,8 +66,8 @@ void MagicManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// <param name="id">–‚–@‚ÌID</param>
 /// <param name="pos">À•W</param>
 /// <param name="vec">Œü‚«</param>
-void MagicManager::CreateMagic(MagicFactory::MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vec) {
-	IMagic* created_magic = m_magicFactory->Create(id, pos, vec);
+void MagicManager::CreateMagic(MagicFactory::MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	IMagic* created_magic = m_magicFactory->Create(id, pos, dir);
 	for (auto& magic : m_magics) {
 		if (!magic) {
 			magic = created_magic;
