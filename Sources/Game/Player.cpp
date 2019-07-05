@@ -199,7 +199,7 @@ void Player::CastMagic(const DX::StepTimer& timer) {
 			auto& player_pos = m_transform.GetPosition();
 			auto direction = ray_pos - player_pos;
 			direction.Normalize();
-			m_pMagicManager->CreateMagic(MagicFactory::MagicID::Normal, player_pos, direction);
+			m_pMagicManager->CreateMagic(MagicFactory::MagicID::Fire, player_pos, direction);
 		}
 	}
 }

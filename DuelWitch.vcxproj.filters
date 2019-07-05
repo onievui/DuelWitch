@@ -35,6 +35,9 @@
     <Filter Include="Game\Collider">
       <UniqueIdentifier>{69626ec8-61e9-4f50-baf3-211e61961de8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Strategy">
+      <UniqueIdentifier>{be172b32-fe44-4e85-9fd4-7c77efbd196b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -116,6 +119,12 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\Camera.cpp">
       <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\NormalMagicShooter.cpp">
+      <Filter>Game\Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FireMagicShooter.cpp">
+      <Filter>Game\Strategy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +214,15 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\Camera.h">
       <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\IMagicShooter.h">
+      <Filter>Game\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\NormalMagicShooter.h">
+      <Filter>Game\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FireMagicShooter.h">
+      <Filter>Game\Strategy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

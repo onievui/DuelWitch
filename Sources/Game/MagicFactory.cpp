@@ -31,7 +31,7 @@ void MagicFactory::Initialize() {
 /// </summary>
 /// <param name="id">–‚–@ID</param>
 /// <param name="pos">À•W</param>
-/// <param name="vec">Œü‚«</param>
+/// <param name="dir">Œü‚«</param>
 /// <returns>
 /// –‚–@
 /// </returns>

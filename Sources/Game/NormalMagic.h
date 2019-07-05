@@ -14,7 +14,7 @@
 /// </summary>
 class NormalMagic : public IMagic {
 private:
-	static constexpr float NORMAL_MAGIC_RADIUS = 1.5f;
+	static constexpr float NORMAL_MAGIC_RADIUS = 0.8f;
 
 public:
 	NormalMagic();
@@ -56,9 +56,10 @@ private:
 	DirectX::SimpleMath::Vector4                 m_color;
 	// égópÇµÇƒÇ¢ÇÈÇ©Ç«Ç§Ç©
 	bool                                         m_isUsed;
+	// ê∂ë∂éûä‘
+	float                                        m_lifeTime;
 };
 
 
 #endif // !NORMAL_MAGIC_DEFINED
-
 

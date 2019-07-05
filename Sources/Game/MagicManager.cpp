@@ -1,5 +1,8 @@
 #include "MagicManager.h"
 #include "IMagic.h"
+#include "IMagicShooter.h"
+#include "NormalMagicShooter.h"
+#include "FireMagicShooter.h"
 
 
 /// <summary>
@@ -7,7 +10,8 @@
 /// </summary>
 MagicManager::MagicManager() 
 	: m_magics()
-	, m_magicFactory() {
+	, m_magicFactory()
+	, m_magicShooters() {
 
 }
 
@@ -27,6 +31,9 @@ void MagicManager::Initialize() {
 	m_magics.resize(MagicFactory::MAGIC_MAX_NUM, nullptr);
 	m_magicFactory = std::make_unique<MagicFactory>();
 	m_magicFactory->Initialize();
+	m_magicShooters.resize(2);
+	m_magicShooters[(int)MagicFactory::MagicID::Normal] = std::make_unique<NormalMagicShooter>(this);
+	m_magicShooters[(int)MagicFactory::MagicID::Fire]   = std::make_unique<FireMagicShooter>(this);
 }
 
 
@@ -67,13 +74,7 @@ void MagicManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// <param name="pos">ç¿ïW</param>
 /// <param name="vec">å¸Ç´</param>
 void MagicManager::CreateMagic(MagicFactory::MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	IMagic* created_magic = m_magicFactory->Create(id, pos, dir);
-	for (auto& magic : m_magics) {
-		if (!magic) {
-			magic = created_magic;
-			break;
-		}
-	}
+	m_magicShooters[(int)id]->Create(m_magicFactory.get(), pos, dir);
 }
 
 

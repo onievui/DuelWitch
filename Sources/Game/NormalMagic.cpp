@@ -25,7 +25,10 @@ NormalMagic::~NormalMagic() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void NormalMagic::Update(const DX::StepTimer& timer) {
-	timer;
+	m_lifeTime -= float(timer.GetElapsedSeconds());
+	if (m_lifeTime < 0) {
+		m_isUsed = false;
+	}
 	DirectX::SimpleMath::Vector3 pos = m_transform.GetPosition();
 	pos += m_vel;
 	m_transform.SetPosition(pos);
@@ -52,6 +55,7 @@ void NormalMagic::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX:
 	m_color = color;
 	m_vel = vel;
 	m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), NORMAL_MAGIC_RADIUS);
+	m_lifeTime = 10.0f;
 }
 
 /// <summary>

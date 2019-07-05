@@ -8,6 +8,7 @@
 
 
 class IMagic;
+class IMagicShooter;
 
 
 /// <summary>
@@ -36,9 +37,11 @@ public:
 
 private:
 	// 生成済み魔法
-	std::vector<IMagic*> m_magics;
+	std::vector<IMagic*>                           m_magics;
 	// 魔法ファクトリ
-	std::unique_ptr<MagicFactory> m_magicFactory;
+	std::unique_ptr<MagicFactory>                  m_magicFactory;
+	// 魔法発射クラス
+	std::vector<std::unique_ptr<IMagicShooter>>    m_magicShooters;
 
 };
 
