@@ -10,6 +10,7 @@
 
 class MagicManager;
 class Camera;
+class Command;
 
 
 /// <summary>
@@ -24,6 +25,8 @@ enum class PlayerID {
 /// プレイヤークラス
 /// </summary>
 class Player : public IObject {
+	friend class Command;
+
 public:
 	// 進行方向
 	enum class MoveDirection {
@@ -57,12 +60,12 @@ public:
 	void CollisionPlayer(const Player& player);
 
 private:
-	// 移動を行う
-	void Move(const DX::StepTimer& timer);
-	// 魔法を唱える
-	void CastMagic(const DX::StepTimer& timer);
-	// 魔法のためのレイ用平面の作成
-	DirectX::SimpleMath::Plane CreatePlaneForMagic();
+	//// 移動を行う
+	//void Move(const DX::StepTimer& timer);
+	//// 魔法を唱える
+	//void CastMagic(const DX::StepTimer& timer);
+	//// 魔法のためのレイ用平面の作成
+	//DirectX::SimpleMath::Plane CreatePlaneForMagic();
 
 private:
 	// コモンステート
@@ -81,6 +84,10 @@ private:
 	SphereCollider                         m_sphereCollider;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix            m_world;
+	// 移動コマンド
+	std::unique_ptr<Command>               m_moveCommand;
+	// 詠唱コマンド
+	std::unique_ptr<Command>               m_castCommand;
 	// 魔法マネージャ
 	MagicManager*                          m_pMagicManager;
 	// カメラ

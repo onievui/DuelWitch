@@ -38,6 +38,9 @@
     <Filter Include="Game\Collision">
       <UniqueIdentifier>{69626ec8-61e9-4f50-baf3-211e61961de8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Command">
+      <UniqueIdentifier>{9a0eadae-73bd-4bc6-9511-961f906a3b7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -125,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\FireMagicShooter.cpp">
       <Filter>Game\Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\MoveCommand.cpp">
+      <Filter>Game\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\CastMagicCommand.cpp">
+      <Filter>Game\Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +232,15 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\FireMagicShooter.h">
       <Filter>Game\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\MoveCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Command.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\CastMagicCommand.h">
+      <Filter>Game\Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
