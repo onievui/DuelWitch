@@ -3,6 +3,7 @@
 #include "MagicManager.h"
 #include "MagicFactory.h"
 #include "IMagic.h"
+#include "Player.h"
 
 
 /// <summary>
@@ -17,9 +18,11 @@ FireMagicShooter::FireMagicShooter(MagicManager* magicManager)
 /// 魔法の生成
 /// </summary>
 /// <param name="magicFactory">魔法ファクトリへのポインタ</param>
+/// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">向き</param>
-void FireMagicShooter::Create(MagicFactory* magicFactory, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+void FireMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
+	const DirectX::SimpleMath::Vector3& dir) {
 	constexpr float angle = Math::PI / 36;
 	int count = 0;
 	auto quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, -angle);
@@ -27,7 +30,7 @@ void FireMagicShooter::Create(MagicFactory* magicFactory, const DirectX::SimpleM
 	quaternion.Inverse(quaternion);
 	for (auto& magic : *m_pMagicManager->GetMagics()) {
 		if (!magic) {
-			magic = magicFactory->Create(MagicFactory::MagicID::Fire, pos, direction);
+			magic = magicFactory->Create(MagicFactory::MagicID::Fire, playerId, pos, direction);
 			++count;
 			if (count == 3) {
 				break;

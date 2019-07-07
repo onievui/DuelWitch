@@ -32,11 +32,11 @@
     <Filter Include="Game\Object">
       <UniqueIdentifier>{4bb48832-8494-452a-a067-e3b794838c8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Collider">
-      <UniqueIdentifier>{69626ec8-61e9-4f50-baf3-211e61961de8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Strategy">
       <UniqueIdentifier>{be172b32-fe44-4e85-9fd4-7c77efbd196b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Collision">
+      <UniqueIdentifier>{69626ec8-61e9-4f50-baf3-211e61961de8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +106,7 @@
       <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Game\SphereCollider.cpp">
-      <Filter>Game\Collider</Filter>
+      <Filter>Game\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Game\NormalMagic.cpp">
       <Filter>Game\Object</Filter>
@@ -198,7 +198,7 @@
       <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\SphereCollider.h">
-      <Filter>Game\Collider</Filter>
+      <Filter>Game\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\IMagic.h">
       <Filter>Game\Object</Filter>

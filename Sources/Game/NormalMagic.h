@@ -26,7 +26,7 @@ public:
 	// 通常魔法を開放する
 	void Lost() override;
 	// 通常魔法を生成する
-	void Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
 		const DirectX::SimpleMath::Vector4& color) override;
 	// 通常魔法を描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
@@ -36,6 +36,8 @@ public:
 	const DirectX::SimpleMath::Matrix& GetMatrix() const override;
 	// 通常魔法の当たり判定を取得する
 	const SphereCollider* GetCollider() const override;
+	// プレイヤーIDを取得する
+	PlayerID GetPlayerID() const override;
 	// 通常魔法を使用しているかどうか取得する
 	bool IsUsed() const;
 	// 通常魔法を使用するかどうか設定する
@@ -44,6 +46,8 @@ public:
 private:
 	// オブジェクト
 	std::unique_ptr<DirectX::GeometricPrimitive> m_object;
+	// プレイヤーID
+	PlayerID                                     m_playerId;
 	// 姿勢
 	Transform                                    m_transform;
 	// 速度

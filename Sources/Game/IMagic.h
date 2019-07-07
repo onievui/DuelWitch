@@ -6,6 +6,9 @@
 #include "IObject.h"
 
 
+enum class PlayerID;
+
+
 /// <summary>
 /// 魔法クラス
 /// </summary>
@@ -19,12 +22,14 @@ public:
 	// 魔法を開放する
 	virtual void Lost() = 0;
 	// 魔法を生成する
-	virtual void Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+	virtual void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
 		const DirectX::SimpleMath::Vector4& color) = 0;
 	// 魔法を描画する
 	virtual void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const = 0;
 
 public:
+	// プレイヤーIDを取得する
+	virtual PlayerID GetPlayerID() const = 0;
 	// エレメントを使用しているかどうか取得する
 	virtual bool IsUsed() const = 0;
 	// エレメントを使用するかどうか設定する

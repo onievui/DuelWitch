@@ -1,6 +1,7 @@
 #include "MagicFactory.h"
 #include "IMagic.h"
 #include "NormalMagic.h"
+#include "Player.h"
 
 
 /// <summary>
@@ -30,12 +31,13 @@ void MagicFactory::Initialize() {
 /// 魔法の生成処理
 /// </summary>
 /// <param name="id">魔法ID</param>
+/// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">向き</param>
 /// <returns>
 /// 魔法
 /// </returns>
-IMagic* MagicFactory::Create(MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	int index = 0;
 	for (auto& magic : m_magics) {
 		if (!magic->IsUsed()) {
@@ -50,16 +52,16 @@ IMagic* MagicFactory::Create(MagicID id, const DirectX::SimpleMath::Vector3& pos
 
 	switch (id) {
 	case MagicID::Normal:
-		m_magics[index]->Create(pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::White));
+		m_magics[index]->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::White));
 		break;
 	case MagicID::Fire:
-		m_magics[index]->Create(pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
+		m_magics[index]->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
 		break;
 	case MagicID::Thunder:
-		m_magics[index]->Create(pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
+		m_magics[index]->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
 		break;
 	case MagicID::Freeze:
-		m_magics[index]->Create(pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue));
+		m_magics[index]->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue));
 		break;
 	default:
 		return nullptr;

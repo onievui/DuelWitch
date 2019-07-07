@@ -1,5 +1,6 @@
 #include "NormalMagic.h"
 #include <Framework/DirectX11.h>
+#include "Player.h"
 
 
 /// <summary>
@@ -7,6 +8,7 @@
 /// </summary>
 NormalMagic::NormalMagic()
 	: m_object()
+	, m_playerId()
 	, m_transform()
 	, m_vel()
 	, m_sphereCollider(&m_transform, NORMAL_MAGIC_RADIUS)
@@ -46,11 +48,13 @@ void NormalMagic::Lost() {
 /// <summary>
 /// 通常魔法を生成する
 /// </summary>
+/// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="vel">速度</param>
 /// <param name="color">色</param>
-void NormalMagic::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
 	const DirectX::SimpleMath::Vector4& color) {
+	m_playerId = playerId;
 	m_transform.SetPosition(pos);
 	m_color = color;
 	m_vel = vel;
@@ -85,6 +89,16 @@ const DirectX::SimpleMath::Matrix& NormalMagic::GetMatrix() const {
 /// </returns>
 const SphereCollider* NormalMagic::GetCollider() const {
 	return &m_sphereCollider;
+}
+
+/// <summary>
+/// プレイヤーIDを取得する
+/// </summary>
+/// <returns>
+/// プレイヤーID
+/// </returns>
+PlayerID NormalMagic::GetPlayerID() const {
+	return m_playerId;
 }
 
 /// <summary>

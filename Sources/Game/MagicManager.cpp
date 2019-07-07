@@ -71,10 +71,11 @@ void MagicManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// 魔法を生成する
 /// </summary>
 /// <param name="id">魔法のID</param>
+/// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="vec">向き</param>
-void MagicManager::CreateMagic(MagicFactory::MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	m_magicShooters[(int)id]->Create(m_magicFactory.get(), pos, dir);
+void MagicManager::CreateMagic(MagicFactory::MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	m_magicShooters[(int)id]->Create(m_magicFactory.get(), playerId, pos, dir);
 }
 
 

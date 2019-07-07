@@ -2,7 +2,10 @@
 #ifndef MAGIC_FACTORY_DEFINED
 #define MAGIC_FACTORY_DEFINED
 
+
 class IMagic;
+enum class PlayerID;
+
 
 /// <summary>
 /// 魔法ファクトリクラス
@@ -29,7 +32,7 @@ public:
 	// 魔法ファクトリを初期化する
 	void Initialize();
 	// 魔法を生成する
-	IMagic* Create(MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
+	IMagic* Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 
 private:
 	// 管理する魔法

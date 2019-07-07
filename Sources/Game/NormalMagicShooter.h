@@ -19,7 +19,8 @@ public:
 
 public:
 	// 魔法を更新する
-	virtual void Create(MagicFactory* magicFactory, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
+	void Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
+		const DirectX::SimpleMath::Vector3& dir) override;
 
 private:
 	// 魔法マネージャへのポインタ

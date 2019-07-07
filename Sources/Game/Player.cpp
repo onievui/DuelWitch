@@ -9,10 +9,15 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="magicManager">魔法マネージャ</param>
-Player::Player(MagicManager* magicManager)
+/// <param name="id">プレイヤーID</param>
+/// <param name="pos">初期座標</param>
+/// <param name="direction">進行方向</param>
+Player::Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMath::Vector3& pos, MoveDirection direction)
 	: m_model()
 	, m_states()
-	, m_transform()
+	, m_id(id)
+	, m_direction(direction)
+	, m_transform(pos, DirectX::SimpleMath::Vector3(0, (m_direction == MoveDirection::Forward ? 0 : Math::PI), 0))
 	, m_sphereCollider(&m_transform, 1.5f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
 	, m_pMagicManager(magicManager)
 	, m_pCamera() {
@@ -110,11 +115,35 @@ const SphereCollider* Player::GetCollider() const {
 }
 
 /// <summary>
+/// プレイヤーIDを取得する
+/// </summary>
+/// <returns>
+/// プレイヤーID
+/// </returns>
+PlayerID Player::GetPlayerID() const {
+	return m_id;
+}
+
+/// <summary>
 /// カメラを設定する
 /// </summary>
 /// <param name="camera">カメラへのポインタ</param>
 void Player::SetCamera(Camera* camera) {
 	m_pCamera = camera;
+}
+
+/// <summary>
+/// プレイヤー同士の衝突処理を行う
+/// </summary>
+/// <param name="player">相手プレイヤー</param>
+void Player::CollisionPlayer(const Player& player) {
+	constexpr float reflect_distance = 0.25f;
+
+	auto my_pos = m_transform.GetPosition();
+	auto other_pos = player.m_transform.GetPosition();
+	float angle = std::atan2f(my_pos.y - other_pos.y, my_pos.x - other_pos.x);
+	my_pos += DirectX::SimpleMath::Vector3(std::cosf(angle), std::sinf(angle), 0.0f)*reflect_distance;
+	m_transform.SetPosition(my_pos);
 }
 
 /// <summary>
@@ -141,18 +170,33 @@ void Player::Move(const DX::StepTimer& timer) {
 		//pos += DirectX::SimpleMath::Vector3(sinf(rot.y + Math::HarfPI)*moveSpeed*elapsedTime,
 		//	0.0f, cosf(rot.y + Math::HarfPI)*moveSpeed*elapsedTime);
 		rot.z = Math::Lerp(rot.z, -rotZLimit, lerpSpeed);
-		rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
+		if (m_direction == MoveDirection::Forward) {
+			rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
+		}
+		else {
+			rot.y = Math::Lerp(rot.y, Math::PI + rotYLimit, lerpSpeed);
+		}
 	}
 	else if (keyState.D || keyState.Right) {
 		//pos += DirectX::SimpleMath::Vector3(sinf(rot.y - Math::HarfPI)*moveSpeed*elapsedTime,
 		//	0.0f, cosf(rot.y - Math::HarfPI)*moveSpeed*elapsedTime);
 		rot.z = Math::Lerp(rot.z, rotZLimit, lerpSpeed);
-		rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
+		if (m_direction == MoveDirection::Forward) {
+			rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
+		}
+		else {
+			rot.y = Math::Lerp(rot.y, Math::PI - rotYLimit, lerpSpeed);
+		}
 	}
 	//押していないときは戻す
 	else {
 		rot.z = Math::Lerp(rot.z, 0.0f, lerpSpeed);
-		rot.y = Math::Lerp(rot.y, 0.0f, lerpSpeed);
+		if (m_direction == MoveDirection::Forward) {
+			rot.y = Math::Lerp(rot.y, 0.0f, lerpSpeed);
+		}
+		else {
+			rot.y = Math::Lerp(rot.y, Math::PI, lerpSpeed);
+		}
 	}
 
 	if (keyState.W || keyState.Up) {
@@ -168,7 +212,14 @@ void Player::Move(const DX::StepTimer& timer) {
 		rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
 	}
 
-	DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	DirectX::SimpleMath::Quaternion quaternion;
+	if (m_direction == MoveDirection::Forward) {
+		quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	}
+	else {
+		quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	}
+
 	pos += DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ*moveSpeed*elapsedTime,
 		DirectX::SimpleMath::Matrix::CreateFromQuaternion(quaternion));
 
@@ -182,6 +233,8 @@ void Player::Move(const DX::StepTimer& timer) {
 /// </summary>
 /// <param name="timer">タイマー</param>
 void Player::CastMagic(const DX::StepTimer& timer) {
+	if (m_id == PlayerID::Player2)
+		return;
 	float elapsedTime = float(timer.GetElapsedSeconds());
 
 	//static DirectX::Mouse::ButtonStateTracker tracker;
@@ -199,7 +252,7 @@ void Player::CastMagic(const DX::StepTimer& timer) {
 			auto& player_pos = m_transform.GetPosition();
 			auto direction = ray_pos - player_pos;
 			direction.Normalize();
-			m_pMagicManager->CreateMagic(MagicFactory::MagicID::Fire, player_pos, direction);
+			m_pMagicManager->CreateMagic(MagicFactory::MagicID::Fire, m_id, player_pos, direction);
 		}
 	}
 }
@@ -215,7 +268,8 @@ DirectX::SimpleMath::Plane Player::CreatePlaneForMagic() {
 	auto quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
 	auto plane_normal = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ,
 		DirectX::SimpleMath::Matrix::CreateFromQuaternion(quaternion));
-	auto plane_pos = m_transform.GetPosition() + DirectX::SimpleMath::Vector3::UnitZ * 20;
+	auto plane_pos = m_transform.GetPosition() + DirectX::SimpleMath::Vector3::UnitZ *
+		(m_direction == MoveDirection::Forward ? 20.0f : -20.0f);
 	auto plane = DirectX::SimpleMath::Plane(plane_pos, DirectX::SimpleMath::Vector3::UnitZ);
 	return plane;
 }

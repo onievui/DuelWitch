@@ -39,24 +39,28 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	// エレメントマネージャを作成する
 	m_elementManager = std::make_unique<ElementManager>();
 	m_elementManager->Initialize();
-	m_pElements = m_elementManager->GetElements();
 	// 魔法マネージャを生成する
 	m_magicManager = std::make_unique<MagicManager>();
 	m_magicManager->Initialize();
 	m_pMagics = m_magicManager->GetMagics();
 
 	// プレイヤーを生成する
-	m_player = std::make_unique<Player>(m_magicManager.get());
-	m_player->Create(L"bloom.cmo", L"Resources/Models/Protected");
+	m_players.emplace_back(std::make_unique<Player>(m_magicManager.get(), PlayerID::Player1,
+		DirectX::SimpleMath::Vector3::Zero, Player::MoveDirection::Forward));
+	m_players.emplace_back(std::make_unique<Player>(m_magicManager.get(), PlayerID::Player2,
+		DirectX::SimpleMath::Vector3(0, 0, 150), Player::MoveDirection::Backward));
+	m_players[0]->Create(L"bloom.cmo", L"Resources/Models/Protected");
+	m_players[1]->Create(L"bloom.cmo", L"Resources/Models/Protected");
 
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX.GetWidth(), directX.GetHeight());
 	//ターゲットカメラを生成する
-	m_targetCamera = std::make_unique<TargetCamera>(m_player.get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
+	m_targetCamera = std::make_unique<TargetCamera>(m_players[0].get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
 		Math::HarfPI*0.5f, float(directX.GetWidth()) / float(directX.GetHeight()), 0.1f, 10000.0f);
 
-	m_player->SetCamera(m_targetCamera.get());
+	m_players[0]->SetCamera(m_targetCamera.get());
+	m_players[1]->SetCamera(m_targetCamera.get());
 
 	//グリッド床を生成する
 	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 200.0f, 50);
@@ -73,7 +77,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 /// <param name="timer"></param>
 void PlayScene::Update(const DX::StepTimer& timer) {
 	// プレイヤーの更新
-	m_player->Update(timer);
+	for (auto& player : m_players) {
+		player->Update(timer);
+	}
 	// エレメントマネージャの更新
 	m_elementManager->Update(timer);
 	// 魔法マネージャの更新
@@ -87,18 +93,53 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	}
 
 	// 当たり判定
-	const SphereCollider* player_collider = m_player->GetCollider();
-	for (auto& element : *m_pElements) {
+	// プレイヤーとエレメントの当たり判定
+	for (auto& element : *m_elementManager->GetElements()) {
 		// 未使用なら飛ばす
 		if (!element) {
 			continue;
 		}
 		const SphereCollider* element_collider = element->GetCollider();
-		if (player_collider->Collision(element_collider)) {
-			element->IsUsed(false);
+		for (auto& player : m_players) {
+			if (player->GetCollider()->Collision(element_collider)) {
+				element->IsUsed(false);
+			}
 		}
-
 	}
+
+	// プレイヤ―と魔法の当たり判定
+	for (auto& magic : *m_magicManager->GetMagics()) {
+		// 未使用なら飛ばす
+		if (!magic) {
+			continue;
+		}
+		const SphereCollider* magic_collider = magic->GetCollider();
+		for (auto& player : m_players) {
+			// 自身の魔法とは判定しない
+			if (player->GetPlayerID() == magic->GetPlayerID()) {
+				continue;
+			}
+			if (player->GetCollider()->Collision(magic_collider)) {
+				magic->IsUsed(false);
+			}
+		}
+	}
+
+	// プレイヤー同士の当たり判定
+	for (auto& player1 : m_players) {
+		const SphereCollider* player_collider1 = player1->GetCollider();
+		for (auto& player2 : m_players) {
+			if (player1.get() == player2.get()) {
+				continue;
+			}
+			if (player_collider1->Collision(player2->GetCollider())) {
+				player1->CollisionPlayer(*player2);
+				player2->CollisionPlayer(*player1);
+			}
+		}
+	}
+
+
 
 	// フィールドの更新
 	m_field->Update();
@@ -126,8 +167,10 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	m_gridFloor->Render(view, projection);
 	// フィールドを描画する
 	m_field->Render(view, projection);
-	// モデルを描画する
-	m_player->Render(view, projection);
+	// プレイヤーを描画する
+	for (auto& player : m_players) {
+		player->Render(view, projection);
+	}
 	// エレメントを描画する
 	m_elementManager->Render(view, projection);
 	// 魔法を描画する

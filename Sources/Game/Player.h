@@ -13,11 +13,26 @@ class Camera;
 
 
 /// <summary>
+/// プレイヤーID
+/// </summary>
+enum class PlayerID {
+	Player1,
+	Player2
+};
+
+/// <summary>
 /// プレイヤークラス
 /// </summary>
 class Player : public IObject {
 public:
-	Player(MagicManager* magicManager);
+	// 進行方向
+	enum class MoveDirection {
+		Forward,
+		Backward
+	};
+
+public:
+	Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMath::Vector3& pos, MoveDirection direction);
 	~Player();
 
 	// プレイヤーを更新する
@@ -34,8 +49,12 @@ public:
 	const DirectX::SimpleMath::Matrix& GetMatrix() const override;
 	// プレイヤーの当たり判定を取得する
 	const SphereCollider* GetCollider() const override;
+	// プレイヤーIDを取得する
+	PlayerID GetPlayerID() const;
 	// カメラを設定する
 	void SetCamera(Camera* camera);
+	// プレイヤー同士の衝突処理を行う
+	void CollisionPlayer(const Player& player);
 
 private:
 	// 移動を行う
@@ -52,6 +71,10 @@ private:
 	std::unique_ptr<DirectX::Mouse::ButtonStateTracker> m_mouseTracker;
 	// モデル
 	std::unique_ptr<DirectX::Model>        m_model;
+	// プレイヤーID
+	PlayerID                               m_id;
+	// 進行方向
+	MoveDirection                          m_direction;
 	// 姿勢
 	Transform                              m_transform;
 	// 球当たり判定

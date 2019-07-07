@@ -9,6 +9,7 @@
 
 class IMagic;
 class IMagicShooter;
+enum class PlayerID;
 
 
 /// <summary>
@@ -31,7 +32,7 @@ public:
 
 public:
 	// –‚–@‚ğ¶¬‚·‚é
-	void CreateMagic(MagicFactory::MagicID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
+	void CreateMagic(MagicFactory::MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 	// –‚–@‚ğæ“¾‚·‚é
 	std::vector<IMagic*>* GetMagics();
 

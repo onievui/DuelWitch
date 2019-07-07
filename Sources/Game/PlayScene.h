@@ -57,12 +57,10 @@ private:
 	// フィールド
 	std::unique_ptr<Field>                   m_field;
 
-	// モデル
-	std::unique_ptr<Player>                  m_player;
+	// プレイヤー
+	std::vector<std::unique_ptr<Player>>     m_players;
 	// エレメントマネージャ
 	std::unique_ptr<ElementManager>          m_elementManager;
-	// エレメント
-	std::vector<Element*>*                   m_pElements;
 	// 魔法マネージャ
 	std::unique_ptr<MagicManager>            m_magicManager;
 	// 魔法

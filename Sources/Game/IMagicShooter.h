@@ -4,7 +4,7 @@
 
 
 class MagicFactory;
-
+enum class PlayerID;
 
 /// <summary>
 /// 魔法発射クラス
@@ -15,7 +15,8 @@ public:
 
 public:
 	// 魔法を更新する
-	virtual void Create(MagicFactory* magicFactory, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) = 0;
+	virtual void Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
+		const DirectX::SimpleMath::Vector3& dir) = 0;
 
 };
 

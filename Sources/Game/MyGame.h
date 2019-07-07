@@ -35,17 +35,6 @@ private:
 	int m_width;
 	// 高さ
 	int m_height;
-	//// ワールド行列
-	//DirectX::SimpleMath::Matrix m_world;
-	//// ビュー行列
-	//DirectX::SimpleMath::Matrix m_view;
-	//// 射影行列
-	//DirectX::SimpleMath::Matrix m_projection;
-	//
-	//// エフェクトファクトリインタフェース(m_fxFactory)
-	//std::unique_ptr<DirectX::IEffectFactory> m_effectFactory;
-	//// コモンステート
-	//std::unique_ptr <DirectX::CommonStates> m_commonStates;
 
 	// キーボード
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
@@ -54,21 +43,6 @@ private:
 
 	// シーンマネージャ
 	std::unique_ptr<SceneManager> m_sceneManager;
-
-	//// デバッグカメラ
-	//std::unique_ptr<DebugCamera> m_debugCamera;
-	//// ターゲットカメラ
-	//std::unique_ptr<TargetCamera> m_targetCamera;
-	//// グリッド床
-	//std::unique_ptr<GridFloor> m_gridFloor;
-	//
-	//// フィールド
-	//std::unique_ptr<Field> m_field;
-	//
-	//// モデル
-	//std::unique_ptr<Player> m_model;
-	//// エレメントマネージャ
-	//std::unique_ptr<ElementManager> m_elementManager;
 
 	// DirectX11クラスのインスタンスを取得する
 	DirectX11& m_directX = DirectX11::Get();
