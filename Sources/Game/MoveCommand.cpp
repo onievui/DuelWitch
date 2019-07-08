@@ -67,8 +67,7 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 
 	DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
 
-	pos += DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ*moveSpeed*elapsedTime,
-		DirectX::SimpleMath::Matrix::CreateFromQuaternion(quaternion));
+	pos += DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ*moveSpeed*elapsedTime, quaternion);
 
 	ref_transform.SetPosition(pos);
 	ref_transform.SetRotation(rot);

@@ -135,6 +135,9 @@
     <ClCompile Include="Sources\Game\CastMagicCommand.cpp">
       <Filter>Game\Command</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\AICastMagicCommand.cpp">
+      <Filter>Game\Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -240,6 +243,9 @@
       <Filter>Game\Command</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\CastMagicCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\AICastMagicCommand.h">
       <Filter>Game\Command</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,8 +7,6 @@
 /// <param name="player">プレイヤー</param>
 /// <param name="timer">タイマー</param>
 void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
-	if (player.GetPlayerID() == PlayerID::Player2)
-		return;
 	float elapsedTime = float(timer.GetElapsedSeconds());
 	elapsedTime;
 

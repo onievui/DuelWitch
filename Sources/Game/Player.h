@@ -60,12 +60,6 @@ public:
 	void CollisionPlayer(const Player& player);
 
 private:
-	//// 移動を行う
-	//void Move(const DX::StepTimer& timer);
-	//// 魔法を唱える
-	//void CastMagic(const DX::StepTimer& timer);
-	//// 魔法のためのレイ用平面の作成
-	//DirectX::SimpleMath::Plane CreatePlaneForMagic();
 
 private:
 	// コモンステート
