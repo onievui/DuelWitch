@@ -51,6 +51,8 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 		DirectX::SimpleMath::Vector3(0, 0, 150), Player::MoveDirection::Backward));
 	m_players[0]->Create(L"bloom.cmo", L"Resources/Models/Protected");
 	m_players[1]->Create(L"bloom.cmo", L"Resources/Models/Protected");
+	m_players[0]->SetOtherPlayer(m_players[1].get());
+	m_players[1]->SetOtherPlayer(m_players[0].get());
 
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX.GetWidth(), directX.GetHeight());

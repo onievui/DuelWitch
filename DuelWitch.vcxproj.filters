@@ -138,6 +138,12 @@
     <ClCompile Include="Sources\Game\AICastMagicCommand.cpp">
       <Filter>Game\Command</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\AIMoveCommand.cpp">
+      <Filter>Game\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FireMagic.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -247,6 +253,12 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\AICastMagicCommand.h">
       <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\AIMoveCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FireMagic.h">
+      <Filter>Game\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 #include <Framework\DirectX11.h>
 #include "Command.h"
 #include "MoveCommand.h"
+#include "AIMoveCommand.h"
 #include "CastMagicCommand.h"
 #include "AICastMagicCommand.h"
 #include "MagicManager.h"
@@ -25,12 +26,12 @@ Player::Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMat
 	, m_sphereCollider(&m_transform, 1.5f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
 	, m_pMagicManager(magicManager)
 	, m_pCamera() {
-	m_mouseTracker = std::make_unique<DirectX::Mouse::ButtonStateTracker>();
-	m_moveCommand = std::make_unique<MoveCommand>();
 	if (id == PlayerID::Player1) {
+		m_moveCommand = std::make_unique<MoveCommand>();
 		m_castCommand = std::make_unique<CastMagicCommand>();
 	}
 	else {
+		m_moveCommand = std::make_unique<AIMoveCommand>();
 		m_castCommand = std::make_unique<AICastMagicCommand>();
 	}
 }
@@ -48,11 +49,9 @@ Player::~Player() {
 void Player::Update(const DX::StepTimer& timer) {
 	// 移動を行う
 	m_moveCommand->Execute(*this, timer);
-	//Move(timer);
 
 	// 魔法を発動する
 	m_castCommand->Execute(*this, timer);
-	//CastMagic(timer);
 
 }
 
@@ -136,6 +135,14 @@ const SphereCollider* Player::GetCollider() const {
 /// </returns>
 PlayerID Player::GetPlayerID() const {
 	return m_id;
+}
+
+/// <summary>
+/// 敵プレイヤーを設定する
+/// </summary>
+/// <param name="otherPlayer">敵プレイヤーへのポインタ</param>
+void Player::SetOtherPlayer(Player* otherPlayer) {
+	m_otherPlayer = otherPlayer;
 }
 
 /// <summary>

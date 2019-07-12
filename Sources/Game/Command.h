@@ -23,6 +23,10 @@ protected:
 	Transform& GetTransform(Player& player) {
 		return player.m_transform;
 	}
+	// プレイヤーの姿勢を取得する
+	const Transform& GetTransform(const Player& player) {
+		return player.m_transform;
+	}
 	// プレイヤーの行列を取得する
 	DirectX::SimpleMath::Matrix& GetWorld(Player& player) {
 		return player.m_world;
@@ -30,10 +34,6 @@ protected:
 	// プレイヤーの進行方向を取得する
 	Player::MoveDirection& GetMoveDirection(Player& player) {
 		return player.m_direction;
-	}
-	// マウストラッカーを取得する
-	DirectX::Mouse::ButtonStateTracker& GetMouseTracker(Player& player) {
-		return *player.m_mouseTracker.get();
 	}
 	// カメラを取得する
 	Camera& GetCamera(Player& player) {
@@ -43,7 +43,10 @@ protected:
 	MagicManager& GetMagicManager(Player& player) {
 		return *player.m_pMagicManager;
 	}
-
+	// 敵プレイヤーを取得する
+	const Player& GetOtherPlayer(Player& player) {
+		return *player.m_otherPlayer;
+	}
 };
 
 

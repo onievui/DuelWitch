@@ -1,14 +1,14 @@
-#include "MoveCommand.h"
+#include "AIMoveCommand.h"
 #include <Framework\DirectX11.h>
 
+
 /// <summary>
-/// 移動コマンドを処理する
+/// AI移動コマンドを処理する
 /// </summary>
 /// <param name="player">プレイヤー</param>
 /// <param name="timer">タイマー</param>
-void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
+void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	float elapsedTime = float(timer.GetElapsedSeconds());
-	auto keyState = DirectX::Keyboard::Get().GetState();
 
 	constexpr float moveSpeed = 16.0f;
 	constexpr float rotSpeed = 2.0f;
@@ -18,31 +18,35 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	constexpr float lerpSpeed = 0.025f;
 
 	auto& ref_transform = GetTransform(player);
-	auto& ref_direction = GetMoveDirection(player);
+	const auto& ref_direction = GetMoveDirection(player);
+	const auto& other_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
 
 	auto pos = ref_transform.GetPosition();
 	auto rot = ref_transform.GetRotation();
 
 	// 移動
-	if (keyState.A || keyState.Left) {
-		rot.z = Math::Lerp(rot.z, -rotZLimit, lerpSpeed);
-		if (ref_direction == Player::MoveDirection::Forward) {
-			rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
+	constexpr float nearDistance = 2.0f;
+	auto distance = other_pos - pos;
+	if (std::fabsf(distance.x) < nearDistance) {
+		if (distance.x > 0) {
+			rot.z = Math::Lerp(rot.z, -rotZLimit, lerpSpeed);
+			if (ref_direction == Player::MoveDirection::Forward) {
+				rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
+			}
+			else {
+				rot.y = Math::Lerp(rot.y, Math::PI + rotYLimit, lerpSpeed);
+			}
 		}
 		else {
-			rot.y = Math::Lerp(rot.y, Math::PI + rotYLimit, lerpSpeed);
+			rot.z = Math::Lerp(rot.z, rotZLimit, lerpSpeed);
+			if (ref_direction == Player::MoveDirection::Forward) {
+				rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
+			}
+			else {
+				rot.y = Math::Lerp(rot.y, Math::PI - rotYLimit, lerpSpeed);
+			}
 		}
 	}
-	else if (keyState.D || keyState.Right) {
-		rot.z = Math::Lerp(rot.z, rotZLimit, lerpSpeed);
-		if (ref_direction == Player::MoveDirection::Forward) {
-			rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
-		}
-		else {
-			rot.y = Math::Lerp(rot.y, Math::PI - rotYLimit, lerpSpeed);
-		}
-	}
-	//押していないときは戻す
 	else {
 		rot.z = Math::Lerp(rot.z, 0.0f, lerpSpeed);
 		if (ref_direction == Player::MoveDirection::Forward) {
@@ -53,13 +57,14 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		}
 	}
 
-	if (keyState.W || keyState.Up) {
-		rot.x = Math::Lerp(rot.x, -rotXLimit, lerpSpeed);
+	if (std::fabsf(distance.y) < nearDistance) {
+		if (distance.y > 0) {
+			rot.x = Math::Lerp(rot.x, rotXLimit, lerpSpeed);
+		}
+		else {
+			rot.x = Math::Lerp(rot.x, -rotXLimit, lerpSpeed);
+		}
 	}
-	else if (keyState.S || keyState.Down) {
-		rot.x = Math::Lerp(rot.x, rotXLimit, lerpSpeed);
-	}
-	//押していないときは戻す
 	else {
 		rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
 	}

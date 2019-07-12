@@ -28,7 +28,7 @@ MagicManager::~MagicManager() {
 /// </summary>
 void MagicManager::Initialize() {
 	m_magics.clear();
-	m_magics.resize(MagicFactory::MAGIC_MAX_NUM, nullptr);
+	m_magics.resize(MagicFactory::GetAllMagicMaxNum(), nullptr);
 	m_magicFactory = std::make_unique<MagicFactory>();
 	m_magicFactory->Initialize();
 	m_magicShooters.resize(2);

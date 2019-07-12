@@ -1,6 +1,7 @@
 #include "MagicFactory.h"
 #include "IMagic.h"
 #include "NormalMagic.h"
+#include "FireMagic.h"
 #include "Player.h"
 
 
@@ -21,9 +22,14 @@ MagicFactory::~MagicFactory() {
 /// </summary>
 void MagicFactory::Initialize() {
 	m_magics.clear();
-	m_magics.resize(MAGIC_MAX_NUM);
-	for (auto& magic : m_magics) {
-		magic = std::make_unique<NormalMagic>();
+	m_magics.resize(GetAllMagicMaxNum());
+	for (auto itr = m_magics.begin() + MagicBeginIndex[(int)MagicID::Normal], end = itr + MagicMaxNum[(int)MagicID::Normal];
+		itr != end; ++itr) {
+		*itr = std::make_unique<NormalMagic>();
+	}
+	for (auto itr = m_magics.begin() + MagicBeginIndex[(int)MagicID::Fire], end = itr + MagicMaxNum[(int)MagicID::Fire];
+		itr != end; ++itr) {
+		*itr = std::make_unique<FireMagic>();
 	}
 }
 
@@ -38,37 +44,49 @@ void MagicFactory::Initialize() {
 /// 魔法
 /// </returns>
 IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	int index = 0;
-	for (auto& magic : m_magics) {
-		if (!magic->IsUsed()) {
-			break;
-		}
-		++index;
-	}
+	// 使用していないオブジェクトを探す
+	auto begin = m_magics.begin() + MagicBeginIndex[(int)id];
+	auto end = begin + MagicMaxNum[(int)id];
+	auto itr = std::find_if(begin, end, [](auto& element) {return !element->IsUsed(); });
 
-	if (index == MAGIC_MAX_NUM) {
+	// これ以上生成できないならnullptrを返す
+	if (itr == end) {
 		return nullptr;
 	}
 
 	switch (id) {
 	case MagicID::Normal:
-		m_magics[index]->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::White));
+		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::White));
 		break;
 	case MagicID::Fire:
-		m_magics[index]->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
+		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
 		break;
 	case MagicID::Thunder:
-		m_magics[index]->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
+		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
 		break;
 	case MagicID::Freeze:
-		m_magics[index]->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue));
+		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue));
 		break;
 	default:
 		return nullptr;
 	}
 
-	m_magics[index]->IsUsed(true);
+	(*itr)->IsUsed(true);
 
-	return m_magics[index].get();
+	return itr->get();
+}
+
+/// <summary>
+/// 全魔法の最大出現数を取得する
+/// </summary>
+/// <returns>
+/// 全魔法の最大出現数
+/// </returns>
+int MagicFactory::GetAllMagicMaxNum() {
+	int total = 0;
+	for (auto& num : MagicMaxNum) {
+		total += num;
+	}
+	return total;
 }
 

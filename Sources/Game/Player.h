@@ -54,6 +54,8 @@ public:
 	const SphereCollider* GetCollider() const override;
 	// プレイヤーIDを取得する
 	PlayerID GetPlayerID() const;
+	// 敵プレイヤーを設定する
+	void SetOtherPlayer(Player* otherPlayer);
 	// カメラを設定する
 	void SetCamera(Camera* camera);
 	// プレイヤー同士の衝突処理を行う
@@ -64,8 +66,6 @@ private:
 private:
 	// コモンステート
 	std::unique_ptr<DirectX::CommonStates> m_states;
-	// マウストラッカー
-	std::unique_ptr<DirectX::Mouse::ButtonStateTracker> m_mouseTracker;
 	// モデル
 	std::unique_ptr<DirectX::Model>        m_model;
 	// プレイヤーID
@@ -82,6 +82,8 @@ private:
 	std::unique_ptr<Command>               m_moveCommand;
 	// 詠唱コマンド
 	std::unique_ptr<Command>               m_castCommand;
+	// 敵プレイヤー
+	Player*                                m_otherPlayer;
 	// 魔法マネージャ
 	MagicManager*                          m_pMagicManager;
 	// カメラ

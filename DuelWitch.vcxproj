@@ -178,6 +178,7 @@
     <ClCompile Include="Sources\Framework\RandMt.cpp" />
     <ClCompile Include="Sources\Framework\Window.cpp" />
     <ClCompile Include="Sources\Game\AICastMagicCommand.cpp" />
+    <ClCompile Include="Sources\Game\AIMoveCommand.cpp" />
     <ClCompile Include="Sources\Game\Camera.cpp" />
     <ClCompile Include="Sources\Game\CastMagicCommand.cpp" />
     <ClCompile Include="Sources\Game\DebugCamera.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="Sources\Game\ElementFactory.cpp" />
     <ClCompile Include="Sources\Game\ElementManager.cpp" />
     <ClCompile Include="Sources\Game\Field.cpp" />
+    <ClCompile Include="Sources\Game\FireMagic.cpp" />
     <ClCompile Include="Sources\Game\FireMagicShooter.cpp" />
     <ClCompile Include="Sources\Game\FixCamera.cpp" />
     <ClCompile Include="Sources\Game\GridFloor.cpp" />
@@ -213,8 +215,10 @@
     <ClInclude Include="Sources\Framework\StepTimer.h" />
     <ClInclude Include="Sources\Framework\Window.h" />
     <ClInclude Include="Sources\Game\AICastMagicCommand.h" />
+    <ClInclude Include="Sources\Game\AIMoveCommand.h" />
     <ClInclude Include="Sources\Game\Camera.h" />
     <ClInclude Include="Sources\Game\CastMagicCommand.h" />
+    <ClInclude Include="Sources\Game\FireMagic.h" />
     <ClInclude Include="Sources\Game\FireMagicShooter.h" />
     <ClInclude Include="Sources\Game\Command.h" />
     <ClInclude Include="Sources\Game\IMagic.h" />

@@ -2,6 +2,13 @@
 
 
 /// <summary>
+///	コンストラクタ
+/// </summary>
+CastMagicCommand::CastMagicCommand() {
+	m_mouseTracker = std::make_unique<DirectX::Mouse::ButtonStateTracker>();
+}
+
+/// <summary>
 /// 魔法詠唱コマンドを処理する
 /// </summary>
 /// <param name="player">プレイヤー</param>
@@ -11,11 +18,10 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 	elapsedTime;
 
 	auto& ref_transform = GetTransform(player);
-	auto& mouse_tracker = GetMouseTracker(player);
 	auto mouse_state = DirectX::Mouse::Get().GetState();
-	mouse_tracker.Update(mouse_state);
+	m_mouseTracker->Update(mouse_state);
 	// タッチパッドだと左クリックが正常に反応していない？
-	if (mouse_tracker.leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
+	if (m_mouseTracker->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
 		// レイの作成
 		auto ray = GetCamera(player).ScreenPointToRay(DirectX::SimpleMath::Vector3((float)mouse_state.x, (float)mouse_state.y, 0));
 		// 平面の作成
