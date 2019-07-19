@@ -1,4 +1,5 @@
-#include "NormalMagicShooter.h"
+#include <Framework\DirectX11.h>
+#include "ThunderMagicShooter.h"
 #include "MagicManager.h"
 #include "MagicFactory.h"
 #include "IMagic.h"
@@ -9,22 +10,24 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="magicManager"></param>
-NormalMagicShooter::NormalMagicShooter(MagicManager* magicManager)
+ThunderMagicShooter::ThunderMagicShooter(MagicManager* magicManager)
 	: m_pMagicManager(magicManager) {
 }
 
 /// <summary>
-/// 通常魔法を発射する
+/// 雷魔法を発射する
 /// </summary>
 /// <param name="magicFactory">魔法ファクトリへのポインタ</param>
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">向き</param>
-void NormalMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
+void ThunderMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
 	const DirectX::SimpleMath::Vector3& dir) {
+	auto direction = dir;
+	direction.y = 0.0f;
 	for (auto& magic : *m_pMagicManager->GetMagics()) {
 		if (!magic) {
-			magic = magicFactory->Create(MagicFactory::MagicID::Normal, playerId, pos, dir);
+			magic = magicFactory->Create(MagicFactory::MagicID::Thunder, playerId, pos, direction);
 			break;
 		}
 	}

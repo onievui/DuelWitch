@@ -20,7 +20,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 	auto& ref_transform = GetTransform(player);
 	auto mouse_state = DirectX::Mouse::Get().GetState();
 	m_mouseTracker->Update(mouse_state);
-	// タッチパッドだと左クリックが正常に反応していない？
+	// タッチパッドだと左クリックが正常に反応しない
 	if (m_mouseTracker->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
 		// レイの作成
 		auto ray = GetCamera(player).ScreenPointToRay(DirectX::SimpleMath::Vector3((float)mouse_state.x, (float)mouse_state.y, 0));
@@ -32,7 +32,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 			auto& player_pos = ref_transform.GetPosition();
 			auto direction = ray_pos - player_pos;
 			direction.Normalize();
-			GetMagicManager(player).CreateMagic(MagicFactory::MagicID::Fire, player.GetPlayerID(), player_pos, direction);
+			GetMagicManager(player).CreateMagic(MagicFactory::MagicID::Freeze, player.GetPlayerID(), player_pos, direction);
 		}
 	}
 }

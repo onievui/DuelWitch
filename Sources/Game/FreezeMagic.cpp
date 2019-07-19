@@ -1,4 +1,4 @@
-#include "FireMagic.h"
+#include "FreezeMagic.h"
 #include <Framework/DirectX11.h>
 #include "Player.h"
 
@@ -6,12 +6,12 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-FireMagic::FireMagic()
+FreezeMagic::FreezeMagic()
 	: m_object()
 	, m_playerId()
 	, m_transform()
 	, m_vel()
-	, m_sphereCollider(&m_transform, FIRE_MAGIC_RADIUS)
+	, m_sphereCollider(&m_transform, FREEZE_MAGIC_RADIUS)
 	, m_color()
 	, m_isUsed(false) {
 }
@@ -19,94 +19,76 @@ FireMagic::FireMagic()
 /// <summary>
 /// デストラクタ
 /// </summary>
-FireMagic::~FireMagic() {
+FreezeMagic::~FreezeMagic() {
 }
 
 /// <summary>
-/// 炎魔法を更新する
+/// 氷魔法を更新する
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
-void FireMagic::Update(const DX::StepTimer& timer) {
+void FreezeMagic::Update(const DX::StepTimer& timer) {
 	m_lifeTime -= float(timer.GetElapsedSeconds());
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
-	DirectX::SimpleMath::Vector3 pos = m_transform.GetPosition();
-	pos += m_vel;
+	DirectX::SimpleMath::Vector3 pos = *m_pPlayerPos;
+	//pos += m_vel;
 	m_transform.SetPosition(pos);
 
 	m_world = m_transform.GetMatrix();
 }
 
 /// <summary>
-/// 炎魔法を開放する
+/// 氷魔法を開放する
 /// </summary>
-void FireMagic::Lost() {
+void FreezeMagic::Lost() {
 	m_object.reset();
 }
 
 /// <summary>
-/// 炎魔法を生成する
+/// 氷魔法を生成する
 /// </summary>
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="vel">速度</param>
 /// <param name="color">色</param>
-void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+void FreezeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
 	const DirectX::SimpleMath::Vector4& color) {
 	m_playerId = playerId;
 	m_transform.SetPosition(pos);
-
-	// 方向ベクトルを元に円錐の回転角度を求める
-	float rot_x = 0;
-	if (vel.z > 0) {
-		rot_x = acos(vel.y);
-	}
-	else {
-		rot_x = -acos(vel.y);
-	}
-	float rot_z = 0;
-	if (vel.x > 0) {
-		rot_z = -acos(1 - vel.x);
-	}
-	else {
-		rot_z = acos(1 + vel.x);
-	}
-	m_transform.SetRotation(DirectX::SimpleMath::Vector3(rot_x, 0, rot_z));
-
+	m_pPlayerPos = &pos;
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), FIRE_MAGIC_RADIUS);
-	m_object = DirectX::GeometricPrimitive::CreateCone(DirectX11::Get().GetContext().Get(), FIRE_MAGIC_RADIUS, FIRE_MAGIC_RADIUS*2);
-	m_lifeTime = 8.0f;
+	m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), FREEZE_MAGIC_RADIUS);
+	m_lifeTime = 6.0f;
 }
 
 /// <summary>
-/// 炎魔法を描画する
+/// 氷魔法を描画する
 /// </summary>
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
-void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
+void FreezeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	m_object->Draw(m_world, view, proj, m_color, nullptr, true);
 }
 
 /// <summary>
-/// 炎魔法の行列を取得する
+/// 氷魔法の行列を取得する
 /// </summary>
 /// <returns>
 /// 行列
 /// </returns>
-const DirectX::SimpleMath::Matrix& FireMagic::GetMatrix() const {
+const DirectX::SimpleMath::Matrix& FreezeMagic::GetMatrix() const {
 	return m_world;
 }
 
 /// <summary>
-/// 炎魔法の当たり判定を取得する
+/// 氷魔法の当たり判定を取得する
 /// </summary>
 /// <returns>
 /// 当たり判定
 /// </returns>
-const SphereCollider* FireMagic::GetCollider() const {
+const SphereCollider* FreezeMagic::GetCollider() const {
 	return &m_sphereCollider;
 }
 
@@ -116,25 +98,25 @@ const SphereCollider* FireMagic::GetCollider() const {
 /// <returns>
 /// プレイヤーID
 /// </returns>
-PlayerID FireMagic::GetPlayerID() const {
+PlayerID FreezeMagic::GetPlayerID() const {
 	return m_playerId;
 }
 
 /// <summary>
-/// 炎魔法を使用しているかどうか取得する
+/// 氷魔法を使用しているかどうか取得する
 /// </summary>
 /// <returns>
 /// true : 使用している
 /// false : 使用していない
 /// </returns>
-bool FireMagic::IsUsed() const {
+bool FreezeMagic::IsUsed() const {
 	return m_isUsed;
 }
 
 /// <summary>
-/// 炎魔法を使用するかどうか設定する
+/// 氷魔法を使用するかどうか設定する
 /// </summary>
 /// <param name="isUsed">true : 使用する, false : 使用しない</param>
-void FireMagic::IsUsed(bool isUsed) {
+void FreezeMagic::IsUsed(bool isUsed) {
 	m_isUsed = isUsed;
 }

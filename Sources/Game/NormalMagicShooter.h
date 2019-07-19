@@ -10,7 +10,7 @@ class MagicManager;
 
 
 /// <summary>
-/// 魔法発射クラス
+/// 通常魔法発射クラス
 /// </summary>
 class NormalMagicShooter : public IMagicShooter {
 public:
@@ -18,7 +18,7 @@ public:
 	NormalMagicShooter(MagicManager* magicManager);
 
 public:
-	// 魔法を更新する
+	// 通常魔法を発射する
 	void Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
 		const DirectX::SimpleMath::Vector3& dir) override;
 

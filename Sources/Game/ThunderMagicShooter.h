@@ -1,6 +1,6 @@
 #pragma once
-#ifndef FIRE_MAGIC_SHOOTER_DEFINED
-#define FIRE_MAGIC_SHOOTER_DEFINED
+#ifndef THUNDER_MAGIC_SHOOTER_DEFINED
+#define THUNDER_MAGIC_SHOOTER_DEFINED
 
 
 #include "IMagicShooter.h"
@@ -11,15 +11,15 @@ enum class PlayerID;
 
 
 /// <summary>
-/// 炎魔法発射クラス
+/// 雷魔法発射クラス
 /// </summary>
-class FireMagicShooter : public IMagicShooter {
+class ThunderMagicShooter : public IMagicShooter {
 public:
 	// コンストラクタ
-	FireMagicShooter(MagicManager* magicManager);
+	ThunderMagicShooter(MagicManager* magicManager);
 
 public:
-	// 炎魔法を発射する
+	// 雷魔法を発射する
 	void Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 
 private:
@@ -29,6 +29,5 @@ private:
 };
 
 
-#endif // !FIRE_MAGIC_SHOOTER_DEFINED
-
+#endif // !THUNDER_MAGIC_SHOOTER_DEFINED
 

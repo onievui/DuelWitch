@@ -3,6 +3,8 @@
 #include "IMagicShooter.h"
 #include "NormalMagicShooter.h"
 #include "FireMagicShooter.h"
+#include "ThunderMagicShooter.h"
+#include "FreezeMagicShooter.h"
 
 
 /// <summary>
@@ -28,12 +30,14 @@ MagicManager::~MagicManager() {
 /// </summary>
 void MagicManager::Initialize() {
 	m_magics.clear();
-	m_magics.resize(MagicFactory::GetAllMagicMaxNum(), nullptr);
+	m_magics.resize(MagicFactory::GetMagicMaxNum(), nullptr);
 	m_magicFactory = std::make_unique<MagicFactory>();
 	m_magicFactory->Initialize();
-	m_magicShooters.resize(2);
-	m_magicShooters[(int)MagicFactory::MagicID::Normal] = std::make_unique<NormalMagicShooter>(this);
-	m_magicShooters[(int)MagicFactory::MagicID::Fire]   = std::make_unique<FireMagicShooter>(this);
+	m_magicShooters.resize(4);
+	m_magicShooters[(int)MagicFactory::MagicID::Normal]  = std::make_unique<NormalMagicShooter>(this);
+	m_magicShooters[(int)MagicFactory::MagicID::Fire]    = std::make_unique<FireMagicShooter>(this);
+	m_magicShooters[(int)MagicFactory::MagicID::Thunder] = std::make_unique<ThunderMagicShooter>(this);
+	m_magicShooters[(int)MagicFactory::MagicID::Freeze]  = std::make_unique<FreezeMagicShooter>(this);
 }
 
 

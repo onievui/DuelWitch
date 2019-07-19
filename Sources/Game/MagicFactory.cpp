@@ -2,6 +2,8 @@
 #include "IMagic.h"
 #include "NormalMagic.h"
 #include "FireMagic.h"
+#include "ThunderMagic.h"
+#include "FreezeMagic.h"
 #include "Player.h"
 
 
@@ -22,15 +24,12 @@ MagicFactory::~MagicFactory() {
 /// </summary>
 void MagicFactory::Initialize() {
 	m_magics.clear();
-	m_magics.resize(GetAllMagicMaxNum());
-	for (auto itr = m_magics.begin() + MagicBeginIndex[(int)MagicID::Normal], end = itr + MagicMaxNum[(int)MagicID::Normal];
-		itr != end; ++itr) {
-		*itr = std::make_unique<NormalMagic>();
-	}
-	for (auto itr = m_magics.begin() + MagicBeginIndex[(int)MagicID::Fire], end = itr + MagicMaxNum[(int)MagicID::Fire];
-		itr != end; ++itr) {
-		*itr = std::make_unique<FireMagic>();
-	}
+	m_magics.resize(GetMagicMaxNum());
+
+	InitializeMagic<NormalMagic>(MagicID::Normal);
+	InitializeMagic<FireMagic>(MagicID::Fire);
+	InitializeMagic<ThunderMagic>(MagicID::Thunder);
+	InitializeMagic<FreezeMagic>(MagicID::Freeze);
 }
 
 /// <summary>
@@ -45,8 +44,8 @@ void MagicFactory::Initialize() {
 /// </returns>
 IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	// 使用していないオブジェクトを探す
-	auto begin = m_magics.begin() + MagicBeginIndex[(int)id];
-	auto end = begin + MagicMaxNum[(int)id];
+	auto begin = m_magics.begin() + MAGIC_BEGIN_INDEX[(int)id];
+	auto end = begin + MAGIC_NUM[(int)id];
 	auto itr = std::find_if(begin, end, [](auto& element) {return !element->IsUsed(); });
 
 	// これ以上生成できないならnullptrを返す
@@ -65,7 +64,8 @@ IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::Simpl
 		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
 		break;
 	case MagicID::Freeze:
-		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue));
+		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue) +
+			DirectX::SimpleMath::Vector4(0,0,0,-0.8f));
 		break;
 	default:
 		return nullptr;
@@ -82,9 +82,9 @@ IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::Simpl
 /// <returns>
 /// 全魔法の最大出現数
 /// </returns>
-int MagicFactory::GetAllMagicMaxNum() {
+int MagicFactory::GetMagicMaxNum() {
 	int total = 0;
-	for (auto& num : MagicMaxNum) {
+	for (auto& num : MAGIC_NUM) {
 		total += num;
 	}
 	return total;

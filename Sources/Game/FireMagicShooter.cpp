@@ -15,7 +15,7 @@ FireMagicShooter::FireMagicShooter(MagicManager* magicManager)
 }
 
 /// <summary>
-/// 魔法の生成
+/// 炎魔法を発射する
 /// </summary>
 /// <param name="magicFactory">魔法ファクトリへのポインタ</param>
 /// <param name="playerId">プレイヤーID</param>

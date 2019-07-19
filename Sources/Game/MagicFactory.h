@@ -2,7 +2,6 @@
 #ifndef MAGIC_FACTORY_DEFINED
 #define MAGIC_FACTORY_DEFINED
 
-#include <numeric>
 
 class IMagic;
 enum class PlayerID;
@@ -23,7 +22,7 @@ public:
 
 private:
 	// 各魔法の最大出現数
-	static constexpr int MagicMaxNum[] = {
+	static constexpr int MAGIC_NUM[] = {
 		30,
 		30,
 		10,
@@ -31,7 +30,7 @@ private:
 	};
 
 	// 配列のインデックス初期位置
-	static constexpr int MagicBeginIndex[] = {
+	static constexpr int MAGIC_BEGIN_INDEX[] = {
 		0,
 		30,
 		60,
@@ -49,8 +48,12 @@ public:
 	// 魔法を生成する
 	IMagic* Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 	// 全魔法の最大出現数を取得する
-	static int GetAllMagicMaxNum();
+	static int GetMagicMaxNum();
 	
+private:
+	template <class T>
+	// 各魔法を初期化する
+	void InitializeMagic(MagicID id);
 
 private:
 	// 管理する魔法
@@ -60,3 +63,19 @@ private:
 
 
 #endif // !MAGIC_FACTORY_DEFINED
+
+
+/// <summary>
+/// 魔法クラス
+/// </summary>
+template<class T>
+/// <summary>
+/// 各魔法を初期化する
+/// </summary>
+/// <param name="id">魔法のID</param>
+inline void MagicFactory::InitializeMagic(MagicID id) {
+	for (auto itr = m_magics.begin() + MAGIC_BEGIN_INDEX[(int)id], end = itr + MAGIC_NUM[(int)id];
+		itr != end; ++itr) {
+		*itr = std::make_unique<T>();
+	}
+}

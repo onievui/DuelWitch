@@ -144,6 +144,18 @@
     <ClCompile Include="Sources\Game\FireMagic.cpp">
       <Filter>Game\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\ThunderMagic.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FreezeMagic.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\ThunderMagicShooter.cpp">
+      <Filter>Game\Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FreezeMagicShooter.cpp">
+      <Filter>Game\Strategy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -259,6 +271,18 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\FireMagic.h">
       <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ThunderMagic.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FreezeMagic.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ThunderMagicShooter.h">
+      <Filter>Game\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FreezeMagicShooter.h">
+      <Filter>Game\Strategy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

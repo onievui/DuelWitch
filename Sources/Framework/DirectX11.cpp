@@ -127,7 +127,7 @@ void DirectX11::CreateResources()
 	}
 	else 
 	{
-		// まず、D3DデバイスからDirectX Graphics Interface(DXGI)デバイスを検索する
+		// D3DデバイスからDirectX Graphics Interface(DXGI)デバイスを検索する
 		Microsoft::WRL::ComPtr<IDXGIDevice1> dxgiDevice;
 		DX::ThrowIfFailed(m_device.As(&dxgiDevice));
 

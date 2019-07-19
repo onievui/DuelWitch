@@ -6,6 +6,7 @@
 class MagicFactory;
 enum class PlayerID;
 
+
 /// <summary>
 /// –‚–@”­ŽËƒNƒ‰ƒX
 /// </summary>
