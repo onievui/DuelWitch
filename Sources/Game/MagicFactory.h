@@ -51,9 +51,9 @@ public:
 	static int GetMagicMaxNum();
 	
 private:
-	template <class T>
+	template <class T, class... Args>
 	// 各魔法を初期化する
-	void InitializeMagic(MagicID id);
+	void InitializeMagic(MagicID id, Args&&... args);
 
 private:
 	// 管理する魔法
@@ -68,14 +68,14 @@ private:
 /// <summary>
 /// 魔法クラス
 /// </summary>
-template<class T>
+template<class T, class... Args>
 /// <summary>
 /// 各魔法を初期化する
 /// </summary>
 /// <param name="id">魔法のID</param>
-inline void MagicFactory::InitializeMagic(MagicID id) {
+inline void MagicFactory::InitializeMagic(MagicID id, Args&&... args) {
 	for (auto itr = m_magics.begin() + MAGIC_BEGIN_INDEX[(int)id], end = itr + MAGIC_NUM[(int)id];
 		itr != end; ++itr) {
-		*itr = std::make_unique<T>();
+		*itr = std::make_unique<T>(args...);
 	}
 }

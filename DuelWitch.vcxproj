@@ -229,6 +229,7 @@
     <ClInclude Include="Sources\Game\FreezeMagicShooter.h" />
     <ClInclude Include="Sources\Game\IMagic.h" />
     <ClInclude Include="Sources\Game\IMagicShooter.h" />
+    <ClInclude Include="Sources\Game\Magic.h" />
     <ClInclude Include="Sources\Game\MagicFactory.h" />
     <ClInclude Include="Sources\Game\MagicManager.h" />
     <ClInclude Include="Sources\Game\MoveCommand.h" />

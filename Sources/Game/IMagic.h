@@ -6,11 +6,12 @@
 #include "IObject.h"
 
 
+class SphereCollider;
 enum class PlayerID;
 
 
 /// <summary>
-/// 魔法クラス
+/// 魔法インタフェースクラス
 /// </summary>
 class IMagic : public IObject {
 public:
@@ -30,9 +31,12 @@ public:
 public:
 	// プレイヤーIDを取得する
 	virtual PlayerID GetPlayerID() const = 0;
-	// エレメントを使用しているかどうか取得する
+	// プレイヤーとの衝突処理
+	virtual void HitPlayer(const SphereCollider& collider) = 0;
+
+	// 魔法を使用しているかどうか取得する
 	virtual bool IsUsed() const = 0;
-	// エレメントを使用するかどうか設定する
+	// 魔法を使用するかどうか設定する
 	virtual void IsUsed(bool isUsed) = 0;
 };
 

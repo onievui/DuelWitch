@@ -7,13 +7,8 @@
 /// コンストラクタ
 /// </summary>
 ThunderMagic::ThunderMagic()
-	: m_object()
-	, m_playerId()
-	, m_transform()
-	, m_vel()
-	, m_sphereCollider(&m_transform, THUNDER_MAGIC_RADIUS)
-	, m_color()
-	, m_isUsed(false) {
+	: Magic()
+	, m_object() {
 }
 
 /// <summary>
@@ -59,7 +54,7 @@ void ThunderMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3&
 	m_color = color;
 	m_vel = vel;
 	m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), THUNDER_MAGIC_RADIUS);
-	m_lifeTime = 10.0f;
+	m_lifeTime = 5.0f;
 }
 
 /// <summary>
@@ -72,50 +67,11 @@ void ThunderMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 }
 
 /// <summary>
-/// 雷魔法の行列を取得する
+/// プレイヤーとの衝突処理
 /// </summary>
-/// <returns>
-/// 行列
-/// </returns>
-const DirectX::SimpleMath::Matrix& ThunderMagic::GetMatrix() const {
-	return m_world;
-}
-
-/// <summary>
-/// 雷魔法の当たり判定を取得する
-/// </summary>
-/// <returns>
-/// 当たり判定
-/// </returns>
-const SphereCollider* ThunderMagic::GetCollider() const {
-	return &m_sphereCollider;
-}
-
-/// <summary>
-/// プレイヤーIDを取得する
-/// </summary>
-/// <returns>
-/// プレイヤーID
-/// </returns>
-PlayerID ThunderMagic::GetPlayerID() const {
-	return m_playerId;
-}
-
-/// <summary>
-/// 雷魔法を使用しているかどうか取得する
-/// </summary>
-/// <returns>
-/// true : 使用している
-/// false : 使用していない
-/// </returns>
-bool ThunderMagic::IsUsed() const {
-	return m_isUsed;
-}
-
-/// <summary>
-/// 雷魔法を使用するかどうか設定する
-/// </summary>
-/// <param name="isUsed">true : 使用する, false : 使用しない</param>
-void ThunderMagic::IsUsed(bool isUsed) {
-	m_isUsed = isUsed;
+/// <param name="collider">プレイヤーの当たり判定</param>
+void ThunderMagic::HitPlayer(const SphereCollider& collider) {
+	auto direction = collider.GetTransform()->GetPosition() - m_transform.GetPosition();
+	direction.Normalize();
+	m_vel = Math::Lerp(m_vel, direction * THUNDER_MAGIC_CHASE_SPEED, 0.5f);
 }

@@ -7,13 +7,8 @@
 /// コンストラクタ
 /// </summary>
 FireMagic::FireMagic()
-	: m_object()
-	, m_playerId()
-	, m_transform()
-	, m_vel()
-	, m_sphereCollider(&m_transform, FIRE_MAGIC_RADIUS)
-	, m_color()
-	, m_isUsed(false) {
+	: Magic()
+	, m_object() {
 }
 
 /// <summary>
@@ -91,50 +86,10 @@ void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::S
 }
 
 /// <summary>
-/// 炎魔法の行列を取得する
+/// プレイヤーとの衝突処理
 /// </summary>
-/// <returns>
-/// 行列
-/// </returns>
-const DirectX::SimpleMath::Matrix& FireMagic::GetMatrix() const {
-	return m_world;
-}
-
-/// <summary>
-/// 炎魔法の当たり判定を取得する
-/// </summary>
-/// <returns>
-/// 当たり判定
-/// </returns>
-const SphereCollider* FireMagic::GetCollider() const {
-	return &m_sphereCollider;
-}
-
-/// <summary>
-/// プレイヤーIDを取得する
-/// </summary>
-/// <returns>
-/// プレイヤーID
-/// </returns>
-PlayerID FireMagic::GetPlayerID() const {
-	return m_playerId;
-}
-
-/// <summary>
-/// 炎魔法を使用しているかどうか取得する
-/// </summary>
-/// <returns>
-/// true : 使用している
-/// false : 使用していない
-/// </returns>
-bool FireMagic::IsUsed() const {
-	return m_isUsed;
-}
-
-/// <summary>
-/// 炎魔法を使用するかどうか設定する
-/// </summary>
-/// <param name="isUsed">true : 使用する, false : 使用しない</param>
-void FireMagic::IsUsed(bool isUsed) {
-	m_isUsed = isUsed;
+/// <param name="collider">プレイヤーの当たり判定</param>
+void FireMagic::HitPlayer(const SphereCollider& collider) {
+	collider;
+	m_isUsed = false;
 }

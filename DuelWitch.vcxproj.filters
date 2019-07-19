@@ -284,6 +284,9 @@
     <ClInclude Include="Sources\Game\FreezeMagicShooter.h">
       <Filter>Game\Strategy</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game\Magic.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">

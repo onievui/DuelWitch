@@ -4,17 +4,17 @@
 
 
 #include <Framework\StepTimer.h>
-#include "IMagic.h"
-#include "Transform.h"
-#include "SphereCollider.h"
+#include "Magic.h"
 
 
 /// <summary>
 /// 雷魔法クラス
 /// </summary>
-class ThunderMagic : public IMagic {
+class ThunderMagic : public Magic {
 private:
-	static constexpr float THUNDER_MAGIC_RADIUS = 0.8f;
+	static constexpr float THUNDER_MAGIC_RADIUS          = 0.8f;
+	static constexpr float THUNDER_MAGIC_COLLIDER_RADIUS = 6.5f;
+	static constexpr float THUNDER_MAGIC_CHASE_SPEED     = 0.5f;
 
 public:
 	ThunderMagic();
@@ -32,36 +32,13 @@ public:
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
 
 public:
-	// 雷魔法の行列を取得する
-	const DirectX::SimpleMath::Matrix& GetMatrix() const override;
-	// 雷魔法の当たり判定を取得する
-	const SphereCollider* GetCollider() const override;
-	// プレイヤーIDを取得する
-	PlayerID GetPlayerID() const override;
-	// 雷魔法を使用しているかどうか取得する
-	bool IsUsed() const;
-	// 雷魔法を使用するかどうか設定する
-	void IsUsed(bool isUsed);
+	// プレイヤーとの衝突処理
+	void HitPlayer(const SphereCollider& collider) override;
 
 private:
 	// オブジェクト
 	std::unique_ptr<DirectX::GeometricPrimitive> m_object;
-	// プレイヤーID
-	PlayerID                                     m_playerId;
-	// 姿勢
-	Transform                                    m_transform;
-	// 速度
-	DirectX::SimpleMath::Vector3                 m_vel;
-	// 球当たり判定
-	SphereCollider                               m_sphereCollider;
-	// ワールド行列
-	DirectX::SimpleMath::Matrix                  m_world;
-	// 色
-	DirectX::SimpleMath::Vector4                 m_color;
-	// 使用しているかどうか
-	bool                                         m_isUsed;
-	// 生存時間
-	float                                        m_lifeTime;
+
 };
 
 

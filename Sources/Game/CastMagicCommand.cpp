@@ -32,7 +32,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 			auto& player_pos = ref_transform.GetPosition();
 			auto direction = ray_pos - player_pos;
 			direction.Normalize();
-			GetMagicManager(player).CreateMagic(MagicFactory::MagicID::Freeze, player.GetPlayerID(), player_pos, direction);
+			GetMagicManager(player).CreateMagic(MagicFactory::MagicID::Thunder, player.GetPlayerID(), player_pos, direction);
 		}
 	}
 }

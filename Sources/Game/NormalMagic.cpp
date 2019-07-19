@@ -7,13 +7,8 @@
 /// コンストラクタ
 /// </summary>
 NormalMagic::NormalMagic()
-	: m_object()
-	, m_playerId()
-	, m_transform()
-	, m_vel()
-	, m_sphereCollider(&m_transform, NORMAL_MAGIC_RADIUS)
-	, m_color()
-	, m_isUsed(false) {
+	: Magic()
+	, m_object() {
 }
 
 /// <summary>
@@ -72,50 +67,10 @@ void NormalMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 }
 
 /// <summary>
-/// 通常魔法の行列を取得する
+/// プレイヤーとの衝突処理
 /// </summary>
-/// <returns>
-/// 行列
-/// </returns>
-const DirectX::SimpleMath::Matrix& NormalMagic::GetMatrix() const {
-	return m_world;
-}
-
-/// <summary>
-/// 通常魔法の当たり判定を取得する
-/// </summary>
-/// <returns>
-/// 当たり判定
-/// </returns>
-const SphereCollider* NormalMagic::GetCollider() const {
-	return &m_sphereCollider;
-}
-
-/// <summary>
-/// プレイヤーIDを取得する
-/// </summary>
-/// <returns>
-/// プレイヤーID
-/// </returns>
-PlayerID NormalMagic::GetPlayerID() const {
-	return m_playerId;
-}
-
-/// <summary>
-/// 通常魔法を使用しているかどうか取得する
-/// </summary>
-/// <returns>
-/// true : 使用している
-/// false : 使用していない
-/// </returns>
-bool NormalMagic::IsUsed() const {
-	return m_isUsed;
-}
-
-/// <summary>
-/// 通常魔法を使用するかどうか設定する
-/// </summary>
-/// <param name="isUsed">true : 使用する, false : 使用しない</param>
-void NormalMagic::IsUsed(bool isUsed) {
-	m_isUsed = isUsed;
+/// <param name="collider">プレイヤーの当たり判定</param>
+void NormalMagic::HitPlayer(const SphereCollider& collider) {
+	collider;
+	m_isUsed = false;
 }

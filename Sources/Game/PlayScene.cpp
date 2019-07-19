@@ -122,7 +122,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 				continue;
 			}
 			if (player->GetCollider()->Collision(magic_collider)) {
-				magic->IsUsed(false);
+				magic->HitPlayer(*player->GetCollider());
 			}
 		}
 	}
