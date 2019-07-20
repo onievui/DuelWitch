@@ -10,6 +10,7 @@ FreezeMagic::FreezeMagic()
 	: Magic()
 	, m_object()
 	, m_pPlayerPos() {
+	m_sphereCollider.SetRadius(FREEZE_MAGIC_RADIUS);
 }
 
 /// <summary>

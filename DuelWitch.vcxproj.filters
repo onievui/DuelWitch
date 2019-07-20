@@ -41,6 +41,9 @@
     <Filter Include="Game\Command">
       <UniqueIdentifier>{9a0eadae-73bd-4bc6-9511-961f906a3b7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Object\Magic">
+      <UniqueIdentifier>{4f33ca50-14ab-4439-86c0-6896d7f98a78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -111,9 +114,6 @@
     <ClCompile Include="Sources\Game\SphereCollider.cpp">
       <Filter>Game\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\NormalMagic.cpp">
-      <Filter>Game\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Game\MagicFactory.cpp">
       <Filter>Game\Factory</Filter>
     </ClCompile>
@@ -141,19 +141,28 @@
     <ClCompile Include="Sources\Game\AIMoveCommand.cpp">
       <Filter>Game\Command</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\FireMagic.cpp">
-      <Filter>Game\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\ThunderMagic.cpp">
-      <Filter>Game\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FreezeMagic.cpp">
-      <Filter>Game\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Game\ThunderMagicShooter.cpp">
       <Filter>Game\Strategy</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Game\FreezeMagicShooter.cpp">
+      <Filter>Game\Strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FireMagic.cpp">
+      <Filter>Game\Object\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FreezeMagic.cpp">
+      <Filter>Game\Object\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\NormalMagic.cpp">
+      <Filter>Game\Object\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\ThunderMagic.cpp">
+      <Filter>Game\Object\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\ThunderStrikeMagic.cpp">
+      <Filter>Game\Object\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\ThunderStrikeMagicShooter.cpp">
       <Filter>Game\Strategy</Filter>
     </ClCompile>
   </ItemGroup>
@@ -230,12 +239,6 @@
     <ClInclude Include="Sources\Game\SphereCollider.h">
       <Filter>Game\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\IMagic.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\NormalMagic.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Game\MagicManager.h">
       <Filter>Game\Manager</Filter>
     </ClInclude>
@@ -269,23 +272,35 @@
     <ClInclude Include="Sources\Game\AIMoveCommand.h">
       <Filter>Game\Command</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\FireMagic.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\ThunderMagic.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FreezeMagic.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Game\ThunderMagicShooter.h">
       <Filter>Game\Strategy</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\FreezeMagicShooter.h">
       <Filter>Game\Strategy</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game\FireMagic.h">
+      <Filter>Game\Object\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FreezeMagic.h">
+      <Filter>Game\Object\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\IMagic.h">
+      <Filter>Game\Object\Magic</Filter>
+    </ClInclude>
     <ClInclude Include="Sources\Game\Magic.h">
-      <Filter>Game\Object</Filter>
+      <Filter>Game\Object\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\NormalMagic.h">
+      <Filter>Game\Object\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ThunderStrikeMagic.h">
+      <Filter>Game\Object\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ThunderMagic.h">
+      <Filter>Game\Object\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ThunderStrikeMagicShooter.h">
+      <Filter>Game\Strategy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

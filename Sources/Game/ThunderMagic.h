@@ -7,6 +7,9 @@
 #include "Magic.h"
 
 
+class MagicManager;
+
+
 /// <summary>
 /// 雷魔法クラス
 /// </summary>
@@ -17,7 +20,7 @@ private:
 	static constexpr float THUNDER_MAGIC_CHASE_SPEED     = 0.5f;
 
 public:
-	ThunderMagic();
+	ThunderMagic(MagicManager* magicManager);
 	~ThunderMagic();
 
 public:
@@ -38,7 +41,12 @@ public:
 private:
 	// オブジェクト
 	std::unique_ptr<DirectX::GeometricPrimitive> m_object;
-
+	// 魔法マネージャへのポインタ
+	MagicManager*                                m_pMagicManager;
+	// 落雷生成用タイマー作動フラグ
+	bool                                         m_startTimer;
+	// 落雷生成用タイマー
+	float                                        m_time;
 };
 
 

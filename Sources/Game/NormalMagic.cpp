@@ -9,6 +9,7 @@
 NormalMagic::NormalMagic()
 	: Magic()
 	, m_object() {
+	m_sphereCollider.SetRadius(NORMAL_MAGIC_RADIUS);
 }
 
 /// <summary>

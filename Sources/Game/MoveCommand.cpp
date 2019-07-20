@@ -15,7 +15,7 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	constexpr float rotZLimit = Math::QuarterPI*0.5f;
 	constexpr float rotXLimit = Math::QuarterPI*0.5f;
 	constexpr float rotYLimit = Math::QuarterPI*0.25f;
-	constexpr float lerpSpeed = 0.025f;
+	constexpr float lerpSpeed = 0.040f;
 
 	auto& ref_transform = GetTransform(player);
 	auto& ref_direction = GetMoveDirection(player);

@@ -205,6 +205,8 @@
     <ClCompile Include="Sources\Game\TargetCamera.cpp" />
     <ClCompile Include="Sources\Game\ThunderMagic.cpp" />
     <ClCompile Include="Sources\Game\ThunderMagicShooter.cpp" />
+    <ClCompile Include="Sources\Game\ThunderStrikeMagic.cpp" />
+    <ClCompile Include="Sources\Game\ThunderStrikeMagicShooter.cpp" />
     <ClCompile Include="Sources\Game\Transform.cpp" />
     <ClCompile Include="Sources\pch\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -253,6 +255,8 @@
     <ClInclude Include="Sources\Game\TargetCamera.h" />
     <ClInclude Include="Sources\Game\ThunderMagic.h" />
     <ClInclude Include="Sources\Game\ThunderMagicShooter.h" />
+    <ClInclude Include="Sources\Game\ThunderStrikeMagic.h" />
+    <ClInclude Include="Sources\Game\ThunderStrikeMagicShooter.h" />
     <ClInclude Include="Sources\Game\Transform.h" />
     <ClInclude Include="Sources\pch\pch.h" />
   </ItemGroup>

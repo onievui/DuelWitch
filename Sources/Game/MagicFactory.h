@@ -4,6 +4,7 @@
 
 
 class IMagic;
+class MagicManager;
 enum class PlayerID;
 
 
@@ -14,10 +15,11 @@ class MagicFactory {
 public:	
 	// 魔法のID
 	enum class MagicID {
-		Normal,		// 通常魔法
-		Fire,       // ファイアの魔法
-		Thunder,	// サンダーの魔法
-		Freeze,     // フリーズの魔法
+		Normal,		    // 通常魔法
+		Fire,           // 炎魔法
+		Thunder,	    // 雷魔法
+		ThunderStrike,	// 落雷魔法
+		Freeze,         // 氷魔法
 	};
 
 private:
@@ -25,6 +27,7 @@ private:
 	static constexpr int MAGIC_NUM[] = {
 		30,
 		30,
+		10,
 		10,
 		10,
 	};
@@ -35,6 +38,7 @@ private:
 		30,
 		60,
 		70,
+		80,
 	};
 
 public:
@@ -44,7 +48,7 @@ public:
 
 public:
 	// 魔法ファクトリを初期化する
-	void Initialize();
+	void Initialize(MagicManager* magicManager);
 	// 魔法を生成する
 	IMagic* Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 	// 全魔法の最大出現数を取得する
@@ -62,12 +66,6 @@ private:
 };
 
 
-#endif // !MAGIC_FACTORY_DEFINED
-
-
-/// <summary>
-/// 魔法クラス
-/// </summary>
 template<class T, class... Args>
 /// <summary>
 /// 各魔法を初期化する
@@ -79,3 +77,7 @@ inline void MagicFactory::InitializeMagic(MagicID id, Args&&... args) {
 		*itr = std::make_unique<T>(args...);
 	}
 }
+
+
+#endif // !MAGIC_FACTORY_DEFINED
+

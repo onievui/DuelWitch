@@ -31,7 +31,7 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	}
 
 	direction.Normalize();
-	GetMagicManager(player).CreateMagic(MagicFactory::MagicID::Fire, player.GetPlayerID(), pos, direction);
+	GetMagicManager(player).CreateMagic(MagicFactory::MagicID::Thunder, player.GetPlayerID(), pos, direction);
 
 	constexpr float castDelay = 2.0f;
 	m_waitTime = castDelay;

@@ -3,6 +3,7 @@
 #include "NormalMagic.h"
 #include "FireMagic.h"
 #include "ThunderMagic.h"
+#include "ThunderStrikeMagic.h"
 #include "FreezeMagic.h"
 #include "Player.h"
 
@@ -19,16 +20,19 @@ MagicFactory::MagicFactory() {
 MagicFactory::~MagicFactory() {
 }
 
+
 /// <summary>
 /// 魔法ファクトリを初期化する
 /// </summary>
-void MagicFactory::Initialize() {
+/// <param name="magicManager">魔法マネージャ</param>
+void MagicFactory::Initialize(MagicManager* magicManager) {
 	m_magics.clear();
 	m_magics.resize(GetMagicMaxNum());
 
 	InitializeMagic<NormalMagic>(MagicID::Normal);
 	InitializeMagic<FireMagic>(MagicID::Fire);
-	InitializeMagic<ThunderMagic>(MagicID::Thunder);
+	InitializeMagic<ThunderMagic>(MagicID::Thunder, magicManager);
+	InitializeMagic<ThunderStrikeMagic>(MagicID::ThunderStrike);
 	InitializeMagic<FreezeMagic>(MagicID::Freeze);
 }
 
@@ -61,6 +65,9 @@ IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::Simpl
 		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
 		break;
 	case MagicID::Thunder:
+		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
+		break;
+	case MagicID::ThunderStrike:
 		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
 		break;
 	case MagicID::Freeze:

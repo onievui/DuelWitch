@@ -65,7 +65,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_players[1]->SetCamera(m_targetCamera.get());
 
 	//グリッド床を生成する
-	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 200.0f, 50);
+	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 400.0f, 200);
 	// フィールドを生成する
 	m_field = std::make_unique<Field>();
 	// スプライトフォントを生成する
