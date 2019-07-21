@@ -3,6 +3,7 @@
 #define PLAYER_DEFINED
 
 #include <Framework\StepTimer.h>
+#include <list>
 #include "IObject.h"
 #include "Transform.h"
 #include "SphereCollider.h"
@@ -11,6 +12,7 @@
 class MagicManager;
 class Camera;
 class Command;
+enum class ElementID;
 
 
 /// <summary>
@@ -58,6 +60,8 @@ public:
 	void SetOtherPlayer(Player* otherPlayer);
 	// カメラを設定する
 	void SetCamera(Camera* camera);
+	// エレメントの取得処理を行う
+	void GetElement(ElementID elementId);
 	// プレイヤー同士の衝突処理を行う
 	void CollisionPlayer(const Player& player);
 
@@ -72,6 +76,8 @@ private:
 	PlayerID                               m_id;
 	// 進行方向
 	MoveDirection                          m_direction;
+	// 所持エレメント
+	std::list<ElementID>                   m_haveElements;
 	// 姿勢
 	Transform                              m_transform;
 	// 球当たり判定

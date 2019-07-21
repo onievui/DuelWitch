@@ -104,6 +104,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		const SphereCollider* element_collider = element->GetCollider();
 		for (auto& player : m_players) {
 			if (player->GetCollider()->Collision(element_collider)) {
+				player->GetElement(element->GetID());
 				element->IsUsed(false);
 			}
 		}

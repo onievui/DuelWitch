@@ -20,6 +20,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 	auto& ref_transform = GetTransform(player);
 	auto mouse_state = DirectX::Mouse::Get().GetState();
 	m_mouseTracker->Update(mouse_state);
+
 	// タッチパッドだと左クリックが正常に反応しない
 	if (m_mouseTracker->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
 		// レイの作成
@@ -32,7 +33,16 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 			auto& player_pos = ref_transform.GetPosition();
 			auto direction = ray_pos - player_pos;
 			direction.Normalize();
-			GetMagicManager(player).CreateMagic(MagicFactory::MagicID::Thunder, player.GetPlayerID(), player_pos, direction);
+			auto& ref_have_elements = GetHaveElements(player);
+			// エレメントがないなら通常魔法を発射する
+			if (ref_have_elements.empty()) {
+				GetMagicManager(player).CreateMagic(MagicFactory::MagicID::Normal, player.GetPlayerID(), player_pos, direction);
+			}
+			else {
+				auto element_id = GetHaveElements(player).front();
+				GetHaveElements(player).pop_front();
+				GetMagicManager(player).CreateMagic(element_id, player.GetPlayerID(), player_pos, direction);
+			}
 		}
 	}
 }

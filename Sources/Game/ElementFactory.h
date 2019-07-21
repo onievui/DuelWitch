@@ -4,6 +4,15 @@
 
 class Element;
 
+
+// エレメントのID
+enum class ElementID {
+	Fire,       // 炎エレメント
+	Thunder,	// 雷エレメント
+	Freeze,     // 氷エレメント
+};
+
+
 /// <summary>
 /// エレメントファクトリクラス
 /// </summary>
@@ -11,12 +20,6 @@ class ElementFactory {
 public:
 	// エレメントの最大出現数
 	static constexpr int ELEMENT_MAX_NUM = 30;
-	// エレメントのID
-	enum class ElementID {
-		Fire,       //ファイアエレメント
-		Thunder,	//サンダーエレメント
-		Freeze,     //フリーズエレメント
-	};
 
 public:
 	// コンストラクタ

@@ -11,9 +11,15 @@
 /// </summary>
 class AIMoveCommand : public Command {
 public:
+	AIMoveCommand() : m_totalElapsedTime() {}
+
+public:
 	// AI移動コマンドを処理する
 	void Execute(Player& player, const DX::StepTimer& timer) override;
 
+private:
+	// 総経過時間
+	float m_totalElapsedTime;
 };
 
 

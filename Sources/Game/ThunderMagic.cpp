@@ -99,7 +99,7 @@ void ThunderMagic::HitPlayer(const SphereCollider& collider) {
 		return;
 	}
 	// ˆê’è‹——£‚Ü‚Å‹ß‚Ã‚¢‚½‚ç‘¦Žž”­ŽË
-	if (DirectX::SimpleMath::Vector2(direction.x, direction.z).Length() < 4.5f) {
+	if (DirectX::SimpleMath::Vector2(direction.x, direction.z).Length() < 3.0f) {
 		m_isUsed = false;
 	}
 	direction.Normalize();

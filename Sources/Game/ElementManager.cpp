@@ -70,7 +70,7 @@ void ElementManager::CreateElement(const DirectX::SimpleMath::Vector3& areaStart
 			areaStart.y + (areaEnd.y - areaStart.y)*RandMt::GetRand(1.0f),
 			areaStart.z + (areaEnd.z - areaStart.z)*RandMt::GetRand(1.0f)
 		);
-		Element* created_element = m_elementFactory->Create(ElementFactory::ElementID::Fire, pos);
+		Element* created_element = m_elementFactory->Create(ElementID(RandMt::GetRand(3)), pos);
 		for (auto& element : m_elements) {
 			if (!element) {
 				element = created_element;

@@ -53,10 +53,8 @@ private:
 	std::unique_ptr<TargetCamera>            m_targetCamera;
 	// グリッド床
 	std::unique_ptr<GridFloor>               m_gridFloor;
-
 	// フィールド
 	std::unique_ptr<Field>                   m_field;
-
 	// プレイヤー
 	std::vector<std::unique_ptr<Player>>     m_players;
 	// エレメントマネージャ

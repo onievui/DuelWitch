@@ -10,6 +10,7 @@
 class IMagic;
 class IMagicShooter;
 enum class PlayerID;
+enum class ElementID;
 
 
 /// <summary>
@@ -33,8 +34,13 @@ public:
 public:
 	// 魔法を生成する
 	void CreateMagic(MagicFactory::MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
+	void CreateMagic(ElementID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 	// 魔法を取得する
 	std::vector<IMagic*>* GetMagics();
+
+private:
+	// エレメントIDから魔法IDに変換する
+	MagicFactory::MagicID ElementID2MagicID(ElementID elementId);
 
 private:
 	// 生成済み魔法

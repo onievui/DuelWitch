@@ -74,5 +74,6 @@ void ThunderStrikeMagic::Render(const DirectX::SimpleMath::Matrix& view, const D
 /// </summary>
 /// <param name="collider">ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è</param>
 void ThunderStrikeMagic::HitPlayer(const SphereCollider& collider) {
+	collider;
 	m_isUsed = false;
 }

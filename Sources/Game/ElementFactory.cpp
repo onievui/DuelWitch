@@ -34,34 +34,30 @@ void ElementFactory::Initialize() {
 /// エレメント
 /// </returns>
 Element* ElementFactory::Create(ElementID id, const DirectX::SimpleMath::Vector3& position) {
-	int index = 0;
-	for (auto& element : m_elements) {
-		if (!element->IsUsed()) {
-			break;
-		}
-		++index;
-	}
+	// 使用していないオブジェクトを探す
+	auto itr = std::find_if(m_elements.begin(), m_elements.end(), [](auto& element) {return !element->IsUsed(); });
 
-	if (index == ELEMENT_MAX_NUM) {
+	// これ以上生成できないならnullptrを返す
+	if (itr == m_elements.end()) {
 		return nullptr;
 	}
-
+	
 	switch (id) {
 	case ElementID::Fire:
-		m_elements[index]->Create(position, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
+		(*itr)->Create(id, position, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
 		break;
 	case ElementID::Thunder:
-		m_elements[index]->Create(position, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
+		(*itr)->Create(id, position, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
 		break;
 	case ElementID::Freeze:
-		m_elements[index]->Create(position, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue));
+		(*itr)->Create(id, position, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue));
 		break;
 	default:
 		return nullptr;
 	}
 
-	m_elements[index]->IsUsed(true);
+	(*itr)->IsUsed(true);
 
-	return m_elements[index].get();
+	return itr->get();
 }
 

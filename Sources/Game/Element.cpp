@@ -6,6 +6,7 @@
 /// </summary>
 Element::Element()
 	: m_object()
+	, m_id()
 	, m_transform()
 	, m_sphereCollider(&m_transform, ELEMENT_RADIUS)
 	, m_color()
@@ -37,10 +38,13 @@ void Element::Lost() {
 /// <summary>
 /// エレメントを生成する
 /// </summary>
+/// <param name="id">エレメントID</param>
 /// <param name="pos">座標</param>
 /// <param name="color">色</param>
-void Element::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector4& color) {
+void Element::Create(ElementID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector4& color) {
+	m_id = id;
 	m_transform.SetPosition(pos);
+	m_world = m_transform.GetMatrix();
 	m_color = color;
 	m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), ELEMENT_RADIUS);
 }
@@ -72,6 +76,16 @@ const DirectX::SimpleMath::Matrix& Element::GetMatrix() const {
 /// </returns>
 const SphereCollider* Element::GetCollider() const {
 	return &m_sphereCollider;
+}
+
+/// <summary>
+/// エレメントのIDを取得する
+/// </summary>
+/// <returns>
+/// エレメントID
+/// </returns>
+ElementID Element::GetID() const {
+	return m_id;
 }
 
 /// <summary>

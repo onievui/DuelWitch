@@ -35,6 +35,10 @@ protected:
 	Player::MoveDirection& GetMoveDirection(Player& player) {
 		return player.m_direction;
 	}
+	// プレイヤーの所持エレメントを取得する
+	std::list<ElementID>& GetHaveElements(Player& player) {
+		return player.m_haveElements;
+	}
 	// カメラを取得する
 	Camera& GetCamera(Player& player) {
 		return *player.m_pCamera;

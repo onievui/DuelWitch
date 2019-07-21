@@ -1,9 +1,9 @@
 #include "RandMt.h"
 
 
-RandMt             RandMt::m_randMt;
 std::mt19937       RandMt::m_mt;
 std::random_device RandMt::m_seed;
+RandMt             RandMt::m_randMt;
 
 
 /// <summary>

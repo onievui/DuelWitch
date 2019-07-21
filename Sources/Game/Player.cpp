@@ -22,6 +22,7 @@ Player::Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMat
 	, m_states()
 	, m_id(id)
 	, m_direction(direction)
+	, m_haveElements()
 	, m_transform(pos, DirectX::SimpleMath::Vector3(0, (m_direction == MoveDirection::Forward ? 0 : Math::PI), 0))
 	, m_sphereCollider(&m_transform, 1.5f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
 	, m_pMagicManager(magicManager)
@@ -151,6 +152,14 @@ void Player::SetOtherPlayer(Player* otherPlayer) {
 /// <param name="camera">カメラへのポインタ</param>
 void Player::SetCamera(Camera* camera) {
 	m_pCamera = camera;
+}
+
+/// <summary>
+/// エレメントの取得処理を行う
+/// </summary>
+/// <param name="elementId">エレメントID</param>
+void Player::GetElement(ElementID elementId) {
+	m_haveElements.push_back(elementId);
 }
 
 /// <summary>

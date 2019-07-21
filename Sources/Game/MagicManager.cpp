@@ -1,4 +1,5 @@
 #include "MagicManager.h"
+#include "ElementFactory.h"
 #include "IMagic.h"
 #include "IMagicShooter.h"
 #include "NormalMagicShooter.h"
@@ -76,12 +77,23 @@ void MagicManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// <summary>
 /// 魔法を生成する
 /// </summary>
-/// <param name="id">魔法のID</param>
+/// <param name="id">魔法ID</param>
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="vec">向き</param>
 void MagicManager::CreateMagic(MagicFactory::MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	m_magicShooters[(int)id]->Create(m_magicFactory.get(), playerId, pos, dir);
+}
+
+/// <summary>
+/// 魔法を生成する
+/// </summary>
+/// <param name="id">エレメントID</param>
+/// <param name="playerId">プレイヤーID</param>
+/// <param name="pos">座標</param>
+/// <param name="dir">向き</param>
+void MagicManager::CreateMagic(ElementID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	CreateMagic(ElementID2MagicID(id), playerId, pos, dir);
 }
 
 
@@ -93,4 +105,24 @@ void MagicManager::CreateMagic(MagicFactory::MagicID id, PlayerID playerId, cons
 /// </returns>
 std::vector<IMagic*>* MagicManager::GetMagics() {
 	return &m_magics;
+}
+
+/// <summary>
+/// エレメントIDから魔法IDに変換する
+/// </summary>
+/// <param name="elementId">エレメントID</param>
+/// <returns>
+/// 魔法ID
+/// </returns>
+MagicFactory::MagicID MagicManager::ElementID2MagicID(ElementID elementId) {
+	switch (elementId) {
+	case ElementID::Fire:
+		return MagicFactory::MagicID::Fire;
+	case ElementID::Thunder:
+		return MagicFactory::MagicID::Thunder;
+	case ElementID::Freeze:
+		return MagicFactory::MagicID::Freeze;
+	default:
+		return MagicFactory::MagicID::Normal;
+	}
 }
