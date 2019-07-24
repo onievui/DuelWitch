@@ -26,74 +26,123 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	auto rot = ref_transform.GetRotation();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
+
 	m_totalElapsedTime += elapsedTime;
+	// 10ïbÇ≈ê‹ÇËï‘Çµ
 	if (m_totalElapsedTime > 10.0f) {
 		m_totalElapsedTime -= 10.0f;
-		if (ref_direction == Player::MoveDirection::Forward) {
-			ref_direction = Player::MoveDirection::Backward;
-		}
-		else {
-			ref_direction = Player::MoveDirection::Forward;
-		}
+		ref_direction = (ref_direction == Player::MoveDirection::Forward ? Player::MoveDirection::Backward : Player::MoveDirection::Forward);
 	}
 
 	// à⁄ìÆ
 	constexpr float nearDistance = 1.8f;
+	bool is_forward = ref_direction == Player::MoveDirection::Forward;
 	auto distance = other_pos - pos;
-	if (std::fabsf(distance.x) < nearDistance) {
-		if (distance.x > 0) {
-			rot.z = Math::Lerp(rot.z, -rotZLimit, lerpSpeed);
-			if (ref_direction == Player::MoveDirection::Forward) {
-				rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
-				move.x = 1.0f;
+	// Ç∑ÇÍà·Ç¢å„ÇÃèÍçá
+	if (distance.z < 0 == is_forward) {
+		// íÜêSÇ…ãﬂÇ√Ç≠
+		if (fabsf(pos.x) > 0.3f) {
+			// êiÇ›ÇΩÇ¢ï˚å¸ÇÃîªíË
+			if (pos.x > 0 == is_forward) {
+				rot.z = Math::Lerp(rot.z, -rotZLimit, lerpSpeed);
+				if (is_forward) {
+					rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
+				}
+				else {
+					rot.y = Math::Lerp(rot.y, Math::PI - rotYLimit, lerpSpeed);
+				}
 			}
 			else {
-				rot.y = Math::Lerp(rot.y, Math::PI + rotYLimit, lerpSpeed);
-				move.x = -1.0f;
+				rot.z = Math::Lerp(rot.z, rotZLimit, lerpSpeed);
+				if (is_forward) {
+					rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
+				}
+				else {
+					rot.y = Math::Lerp(rot.y, Math::PI + rotYLimit, lerpSpeed);
+				}
 			}
+			move.x = (pos.x > 0 ? -1.0f : 1.0f);
 		}
 		else {
-			rot.z = Math::Lerp(rot.z, rotZLimit, lerpSpeed);
-			if (ref_direction == Player::MoveDirection::Forward) {
-				rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
-				move.x = -1.0f;
+			rot.z = Math::Lerp(rot.z, 0.0f, lerpSpeed);
+			if (is_forward) {
+				rot.y = Math::Lerp(rot.y, 0.0f, lerpSpeed);
 			}
 			else {
-				rot.y = Math::Lerp(rot.y, Math::PI - rotYLimit, lerpSpeed);
-				move.x = 1.0f;
+				rot.y = Math::Lerp(rot.y, Math::PI, lerpSpeed);
 			}
 		}
-	}
-	else {
-		rot.z = Math::Lerp(rot.z, 0.0f, lerpSpeed);
-		if (ref_direction == Player::MoveDirection::Forward) {
-			rot.y = Math::Lerp(rot.y, 0.0f, lerpSpeed);
+
+		if (fabsf(pos.y) > 0.5f) {
+			if (pos.y > 0) {
+				rot.x = Math::Lerp(rot.x, rotXLimit, lerpSpeed);
+				move.y = -1.0f;
+			}
+			else {
+				rot.x = Math::Lerp(rot.x, -rotXLimit, lerpSpeed);
+				move.y = 1.0f;
+			}
 		}
 		else {
-			rot.y = Math::Lerp(rot.y, Math::PI, lerpSpeed);
+			rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
 		}
 	}
-
-	if (std::fabsf(distance.y) < nearDistance) {
-		if (distance.y > 0) {
-			rot.x = Math::Lerp(rot.x, rotXLimit, lerpSpeed);
-			move.y = -1.0f;
+	// Ç∑ÇÍà·Ç¢ëOÇÃèÍçá
+	else {
+		if (fabsf(distance.x) < nearDistance) {
+			if (distance.x < 0 == is_forward) {
+				rot.z = Math::Lerp(rot.z, -rotZLimit, lerpSpeed);
+				if (is_forward) {
+					rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
+					move.x = 1.0f;
+				}
+				else {
+					rot.y = Math::Lerp(rot.y, Math::PI + rotYLimit, lerpSpeed);
+					move.x = -1.0f;
+				}
+			}
+			else {
+				rot.z = Math::Lerp(rot.z, rotZLimit, lerpSpeed);
+				if (is_forward) {
+					rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
+					move.x = -1.0f;
+				}
+				else {
+					rot.y = Math::Lerp(rot.y, Math::PI - rotYLimit, lerpSpeed);
+					move.x = 1.0f;
+				}
+			}
 		}
 		else {
-			rot.x = Math::Lerp(rot.x, -rotXLimit, lerpSpeed);
-			move.y = 1.0f;
+			rot.z = Math::Lerp(rot.z, 0.0f, lerpSpeed);
+			if (is_forward) {
+				rot.y = Math::Lerp(rot.y, 0.0f, lerpSpeed);
+			}
+			else {
+				rot.y = Math::Lerp(rot.y, Math::PI, lerpSpeed);
+			}
+		}
+
+		if (fabsf(distance.y) < nearDistance) {
+			if (distance.y > 0) {
+				rot.x = Math::Lerp(rot.x, rotXLimit, lerpSpeed);
+				move.y = -1.0f;
+			}
+			else {
+				rot.x = Math::Lerp(rot.x, -rotXLimit, lerpSpeed);
+				move.y = 1.0f;
+			}
+		}
+		else {
+			rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
 		}
 	}
-	else {
-		rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
-	}
-
 	//auto quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
 
 	//pos += DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ*moveSpeed*elapsedTime, quaternion);
 	move.Normalize();
 	move *= moveSpeedXY;
-	if (ref_direction == Player::MoveDirection::Forward) {
+	if (is_forward) {
 		move.z = 1.0f;
 	}
 	else {
