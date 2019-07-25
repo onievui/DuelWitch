@@ -104,8 +104,8 @@ void FireMagic::HitPlayer(const SphereCollider& collider) {
 /// <param name="other">衝突した魔法</param>
 void FireMagic::HitMagic(const IMagic* other) {
 	auto other_id = other->GetID();
-	// 雷・落雷魔法と衝突したら消える
-	if (other_id == MagicID::Thunder || other_id == MagicID::ThunderStrike) {
+	// 落雷魔法と衝突したら消える
+	if (other_id == MagicID::ThunderStrike) {
 		m_isUsed = false;
 	}
 }

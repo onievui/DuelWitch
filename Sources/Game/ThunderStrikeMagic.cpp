@@ -68,8 +68,8 @@ void ThunderStrikeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Ve
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void ThunderStrikeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	m_object->Draw(m_world, view, proj, DirectX::Colors::White, nullptr, true);
-	m_sphereCollider.Render(view, proj, m_color);
+	m_object->Draw(m_world, view, proj, m_color, nullptr, true);
+	//m_sphereCollider.Render(view, proj, m_color);
 }
 
 /// <summary>

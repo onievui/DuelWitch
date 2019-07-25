@@ -88,11 +88,11 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	m_magicManager->Update(timer);
 
 	if (timer.GetFrameCount() % 600 == 0) {
-		DirectX::SimpleMath::Vector3 area_offset(0, 0, 23);
+		DirectX::SimpleMath::Vector3 area_offset(0, 0, 24);
 		DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3::One*-3;
 		DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3::One*3;
 		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 3);
-		area_offset.z = 127.0f;
+		area_offset.z = 126.0f;
 		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 3);
 	}
 
@@ -150,6 +150,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 			}
 			if (player->GetCollider()->Collision(magic_collider)) {
 				magic->HitPlayer(*player->GetCollider());
+				player->HitMagic(magic);
 			}
 		}
 	}
@@ -162,8 +163,8 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 				continue;
 			}
 			if (player_collider1->Collision(player2->GetCollider())) {
-				player1->CollisionPlayer(*player2);
-				player2->CollisionPlayer(*player1);
+				player1->HitPlayer(*player2);
+				player2->HitPlayer(*player1);
 			}
 		}
 	}

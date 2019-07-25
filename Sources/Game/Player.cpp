@@ -5,6 +5,7 @@
 #include "AIMoveCommand.h"
 #include "CastMagicCommand.h"
 #include "AICastMagicCommand.h"
+#include "IMagic.h"
 #include "MagicManager.h"
 #include "MagicFactory.h"
 #include "Camera.h"
@@ -54,6 +55,7 @@ void Player::Update(const DX::StepTimer& timer) {
 	// 魔法を発動する
 	m_castCommand->Execute(*this, timer);
 
+	m_damageTimer -= float(timer.GetElapsedSeconds());
 }
 
 /// <summary>
@@ -104,8 +106,11 @@ void Player::Create(const std::wstring& fileName, const std::wstring& directory)
 /// <param name="proj">プロジェクション行列</param>
 void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	auto context = DirectX11::Get().GetContext().Get();
-	m_model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
-	m_sphereCollider.Render(view, proj);
+	if (m_damageTimer <= 0.0f || sin(m_damageTimer*Math::PI2*2)>0) {
+		m_model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
+		m_sphereCollider.Render(view, proj);
+	}
+
 }
 
 /// <summary>
@@ -166,7 +171,7 @@ void Player::GetElement(ElementID elementId) {
 /// プレイヤー同士の衝突処理を行う
 /// </summary>
 /// <param name="player">相手プレイヤー</param>
-void Player::CollisionPlayer(const Player& player) {
+void Player::HitPlayer(const Player& player) {
 	constexpr float reflect_distance = 0.25f;
 
 	auto my_pos = m_transform.GetPosition();
@@ -175,5 +180,16 @@ void Player::CollisionPlayer(const Player& player) {
 	float angle = std::atan2f(my_pos.y - other_pos.y, my_pos.x - other_pos.x);
 	my_pos += DirectX::SimpleMath::Vector3(std::cosf(angle), std::sinf(angle), 0.0f)*reflect_distance;
 	m_transform.SetPosition(my_pos);
+}
+
+/// <summary>
+/// 魔法との衝突処理を行う
+/// </summary>
+/// <param name="magic">魔法</param>
+void Player::HitMagic(const IMagic* magic) {
+	magic;
+	if (m_damageTimer <= 0.0f) {
+		m_damageTimer = 3.0f;
+	}
 }
 

@@ -10,6 +10,7 @@
 
 
 class MagicManager;
+class IMagic;
 class Camera;
 class Command;
 enum class ElementID;
@@ -63,9 +64,9 @@ public:
 	// エレメントの取得処理を行う
 	void GetElement(ElementID elementId);
 	// プレイヤー同士の衝突処理を行う
-	void CollisionPlayer(const Player& player);
-
-private:
+	void HitPlayer(const Player& player);
+	// 魔法との衝突処理を行う
+	void HitMagic(const IMagic* magic);
 
 private:
 	// コモンステート
@@ -88,6 +89,10 @@ private:
 	std::unique_ptr<Command>               m_moveCommand;
 	// 詠唱コマンド
 	std::unique_ptr<Command>               m_castCommand;
+
+	// ダメージ演出用タイマー
+	float                                  m_damageTimer;
+
 	// 敵プレイヤー
 	Player*                                m_otherPlayer;
 	// 魔法マネージャ
