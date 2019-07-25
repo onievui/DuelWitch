@@ -17,7 +17,7 @@ enum class ElementID;
 /// </summary>
 class Element : public IObject {
 private:
-	static constexpr float ELEMENT_RADIUS = 1.5f;
+	static constexpr float ELEMENT_RADIUS = 0.75f;
 
 public:
 	Element();

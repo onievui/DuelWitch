@@ -64,37 +64,21 @@ void ElementManager::Render(const DirectX::SimpleMath::Matrix& view, const Direc
 /// <param name="areaEnd">¶¬”ÍˆÍ‚ÌI“_</param>
 /// <param name="num">¶¬ŒÂ”</param>
 void ElementManager::CreateElement(const DirectX::SimpleMath::Vector3& areaStart, const DirectX::SimpleMath::Vector3& areaEnd, const int num) {
+	int rand = RandMt::GetRand(3);
 	for (int i = 0; i < num; ++i) {
 		DirectX::SimpleMath::Vector3 pos = DirectX::SimpleMath::Vector3(
 			areaStart.x + (areaEnd.x - areaStart.x)*RandMt::GetRand(1.0f),
 			areaStart.y + (areaEnd.y - areaStart.y)*RandMt::GetRand(1.0f),
 			areaStart.z + (areaEnd.z - areaStart.z)*RandMt::GetRand(1.0f)
 		);
-		int rand = RandMt::GetRand(6);
-		ElementID id = ElementID::Fire;
-		switch (rand) {
-		case 0:
-		case 1:
-		case 2:
-			id = ElementID::Fire;
-			break;
-		case 3:
-		case 4:
-			id = ElementID::Thunder;
-			break;
-		case 5:
-			id = ElementID::Freeze;
-			break;
-		default:
-			break;
-		}
-		Element* created_element = m_elementFactory->Create(id, pos);
+		Element* created_element = m_elementFactory->Create(ElementID(rand), pos);
 		for (auto& element : m_elements) {
 			if (!element) {
 				element = created_element;
 				break;
 			}
 		}
+		rand = (rand + 1) % 3;
 	}
 }
 

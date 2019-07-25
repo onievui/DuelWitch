@@ -57,7 +57,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX.GetWidth(), directX.GetHeight());
 	//ターゲットカメラを生成する
-	m_targetCamera = std::make_unique<TargetCamera>(m_players[1].get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
+	m_targetCamera = std::make_unique<TargetCamera>(m_players[0].get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
 		Math::HarfPI*0.5f, float(directX.GetWidth()) / float(directX.GetHeight()), 0.1f, 10000.0f);
 
@@ -91,9 +91,9 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		DirectX::SimpleMath::Vector3 area_offset(0, 0, 23);
 		DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3::One*-3;
 		DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3::One*3;
-		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 4);
+		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 3);
 		area_offset.z = 127.0f;
-		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 4);
+		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 3);
 	}
 
 	// 当たり判定

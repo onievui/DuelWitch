@@ -27,7 +27,13 @@ SphereCollider::SphereCollider(const Transform* pTransform, float radius, const 
 /// fase : Õ“Ë‚µ‚Ä‚¢‚È‚¢
 /// </returns>
 bool SphereCollider::Collision(const SphereCollider* other) const {
-	DirectX::SimpleMath::Vector3 d = (m_pTransform->GetPosition() + m_offset) - (other->m_pTransform->GetPosition() + other->m_offset);
+	auto& rot = m_pTransform->GetRotation();
+	auto offset = DirectX::SimpleMath::Vector3::Transform(m_offset,
+		DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(rot.y, rot.z, rot.z));
+	auto& rot2 = other->m_pTransform->GetRotation();
+	auto offset2 = DirectX::SimpleMath::Vector3::Transform(other->m_offset,
+		DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(rot2.y, rot2.z, rot2.z));
+	DirectX::SimpleMath::Vector3 d = (m_pTransform->GetPosition() + offset) - (other->m_pTransform->GetPosition() + offset2);
 	float dist2 = d.x*d.x + d.y*d.y + d.z*d.z;
 	return dist2 <= (m_radius + other->m_radius)*(m_radius + other->m_radius);
 }
@@ -44,8 +50,11 @@ void SphereCollider::Render(const DirectX::SimpleMath::Matrix& view, const Direc
 	if (!m_debugSphere) {
 		m_debugSphere = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get());
 	}
-	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateScale(m_radius);
-	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_pTransform->GetPosition() + m_offset);
+	auto matrix = DirectX::SimpleMath::Matrix::CreateScale(m_radius);
+	auto& rot = m_pTransform->GetRotation();
+	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_offset);
+	matrix *= DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_pTransform->GetPosition());
 	m_debugSphere->Draw(matrix, view, proj, color, nullptr, true);
 }
 

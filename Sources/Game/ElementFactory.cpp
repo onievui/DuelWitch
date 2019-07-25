@@ -42,15 +42,24 @@ Element* ElementFactory::Create(ElementID id, const DirectX::SimpleMath::Vector3
 		return nullptr;
 	}
 	
+	DirectX::SimpleMath::Vector4 color;
+	constexpr float alpha_rate = 0.8f;
+
 	switch (id) {
 	case ElementID::Fire:
-		(*itr)->Create(id, position, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
+		color = DirectX::Colors::Red;
+		color.w *= alpha_rate;
+		(*itr)->Create(id, position, color);
 		break;
 	case ElementID::Thunder:
-		(*itr)->Create(id, position, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
+		color = DirectX::Colors::Yellow;
+		color.w *= alpha_rate;
+		(*itr)->Create(id, position, color);
 		break;
 	case ElementID::Freeze:
-		(*itr)->Create(id, position, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue));
+		color = DirectX::Colors::SkyBlue;
+		color.w *= alpha_rate;
+		(*itr)->Create(id, position, color);
 		break;
 	default:
 		return nullptr;

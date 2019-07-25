@@ -25,6 +25,9 @@ Element::~Element() {
 /// <param name="timer">ステップタイマー</param>
 void Element::Update(const DX::StepTimer& timer) {
 	timer;
+	auto rot = m_transform.GetRotation();
+	rot.y += float(timer.GetElapsedSeconds())*Math::HarfPI;
+	m_transform.SetRotation(rot);
 	m_world = m_transform.GetMatrix();
 }
 
@@ -46,7 +49,7 @@ void Element::Create(ElementID id, const DirectX::SimpleMath::Vector3& pos, cons
 	m_transform.SetPosition(pos);
 	m_world = m_transform.GetMatrix();
 	m_color = color;
-	m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), ELEMENT_RADIUS);
+	m_object = DirectX::GeometricPrimitive::CreateCube(DirectX11::Get().GetContext().Get(), ELEMENT_RADIUS*2);
 }
 
 /// <summary>
@@ -55,7 +58,7 @@ void Element::Create(ElementID id, const DirectX::SimpleMath::Vector3& pos, cons
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void Element::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	m_object->Draw(m_world, view, proj, m_color, nullptr, true);
+	m_object->Draw(m_world, view, proj, m_color, nullptr, false);
 }
 
 /// <summary>

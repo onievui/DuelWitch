@@ -10,6 +10,7 @@ FireMagic::FireMagic()
 	: Magic()
 	, m_object() {
 	m_sphereCollider.SetRadius(FIRE_MAGIC_RADIUS);
+	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, -FIRE_MAGIC_RADIUS/2, 0));
 }
 
 /// <summary>
@@ -84,6 +85,7 @@ void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& po
 /// <param name="proj">éÀâeçsóÒ</param>
 void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	m_object->Draw(m_world, view, proj, m_color, nullptr, true);
+	m_sphereCollider.Render(view, proj);
 }
 
 /// <summary>
