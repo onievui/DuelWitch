@@ -76,3 +76,15 @@ void NormalMagic::HitPlayer(const SphereCollider& collider) {
 	collider;
 	m_isUsed = false;
 }
+
+/// <summary>
+/// –‚–@‚Æ‚ÌÕ“Ëˆ—
+/// </summary>
+/// <param name="other">Õ“Ë‚µ‚½–‚–@</param>
+void NormalMagic::HitMagic(const IMagic* other) {
+	auto other_id = other->GetID();
+	// •X–‚–@‚ÆÕ“Ë‚µ‚½‚çÁ‚¦‚é
+	if (other_id == MagicID::Freeze) {
+		m_isUsed = false;
+	}
+}

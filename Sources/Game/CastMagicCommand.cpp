@@ -36,7 +36,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 			auto& ref_have_elements = GetHaveElements(player);
 			// ƒGƒŒƒƒ“ƒg‚ª‚È‚¢‚È‚ç’Êí–‚–@‚ğ”­Ë‚·‚é
 			if (ref_have_elements.empty()) {
-				GetMagicManager(player).CreateMagic(MagicID::Normal, player.GetPlayerID(), player_pos, direction);
+				GetMagicManager(player).CreateMagic(MagicID::Normal , player.GetPlayerID(), player_pos, direction);
 			}
 			else {
 				auto element_id = GetHaveElements(player).front();

@@ -108,3 +108,13 @@ void ThunderMagic::HitPlayer(const SphereCollider& collider) {
 	// 敵プレイヤーに接近したらタイマー作動
 	m_startTimer = true;
 }
+
+/// <summary>
+/// 魔法との衝突処理
+/// </summary>
+/// <param name="other">衝突した魔法</param>
+void ThunderMagic::HitMagic(const IMagic* other) {
+	auto other_id = other->GetID();
+	other_id;
+}
+

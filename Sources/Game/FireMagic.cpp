@@ -86,7 +86,7 @@ void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& po
 /// <param name="proj">射影行列</param>
 void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	m_object->Draw(m_world, view, proj, m_color, nullptr, true);
-	m_sphereCollider.Render(view, proj);
+	//m_sphereCollider.Render(view, proj);
 }
 
 /// <summary>
@@ -96,4 +96,16 @@ void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::S
 void FireMagic::HitPlayer(const SphereCollider& collider) {
 	collider;
 	m_isUsed = false;
+}
+
+/// <summary>
+/// 魔法との衝突処理
+/// </summary>
+/// <param name="other">衝突した魔法</param>
+void FireMagic::HitMagic(const IMagic* other) {
+	auto other_id = other->GetID();
+	// 雷・落雷魔法と衝突したら消える
+	if (other_id == MagicID::Thunder || other_id == MagicID::ThunderStrike) {
+		m_isUsed = false;
+	}
 }

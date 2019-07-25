@@ -122,15 +122,15 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		for (auto end = magics->end(); itr != end;) {
 			auto* collider = (*itr)->GetCollider();
 			auto next = std::find_if(itr + 1, end, pred);
-			for (auto itr2 = next; itr2 != end;) {
+			for (auto itr2 = next; itr2 != end;	itr2 = std::find_if(itr2 + 1, end, pred)) {
 				// 同一プレイヤーの魔法なら判定しない
 				if ((*itr)->GetPlayerID() == (*itr2)->GetPlayerID()) {
 					continue;
 				}
 				if (collider->Collision((*itr2)->GetCollider())) {
-
+					(*itr)->HitMagic(*itr2);
+					(*itr2)->HitMagic(*itr);
 				}
-				itr2 = std::find_if(itr2 + 1, end, pred);
 			}
 			itr = next;
 		}
