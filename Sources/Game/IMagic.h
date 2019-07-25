@@ -7,6 +7,7 @@
 
 
 class SphereCollider;
+enum class MagicID;
 enum class PlayerID;
 
 
@@ -29,10 +30,14 @@ public:
 	virtual void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const = 0;
 
 public:
+	// 魔法IDを取得する
+	virtual MagicID GetID() const = 0;
 	// プレイヤーIDを取得する
 	virtual PlayerID GetPlayerID() const = 0;
 	// プレイヤーとの衝突処理
 	virtual void HitPlayer(const SphereCollider& collider) = 0;
+	// 魔法との衝突処理
+	virtual void HitMagic(const IMagic* other) = 0;
 
 	// 魔法を使用しているかどうか取得する
 	virtual bool IsUsed() const = 0;

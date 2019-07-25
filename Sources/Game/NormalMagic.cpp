@@ -1,5 +1,6 @@
 #include "NormalMagic.h"
 #include <Framework/DirectX11.h>
+#include "MagicFactory.h"
 #include "Player.h"
 
 
@@ -7,7 +8,7 @@
 /// コンストラクタ
 /// </summary>
 NormalMagic::NormalMagic()
-	: Magic()
+	: Magic(MagicID::Normal)
 	, m_object() {
 	m_sphereCollider.SetRadius(NORMAL_MAGIC_RADIUS);
 }

@@ -16,8 +16,9 @@ public:
 	virtual ~Magic() = default;
 
 protected:
-	Magic() 
-		: m_playerId()
+	Magic(MagicID id) 
+		: m_id(id)
+		, m_playerId()
 		, m_transform()
 		, m_sphereCollider(&m_transform, 0.0f)
 		, m_world()
@@ -48,16 +49,22 @@ public:
 	const DirectX::SimpleMath::Matrix& GetMatrix() const { return m_world; }
 	// オブジェクトの当たり判定を取得する
 	const SphereCollider* GetCollider() const { return &m_sphereCollider; }
+	// 魔法IDを取得する
+	MagicID GetID() const { return m_id; }
 	// プレイヤーIDを取得する
 	PlayerID GetPlayerID() const { return m_playerId; }
 	// プレイヤーとの衝突処理
 	virtual void HitPlayer(const SphereCollider& collider) { collider; }
+	// 魔法との衝突処理
+	virtual void HitMagic(const IMagic* other) { other; }
 	// 魔法を使用しているかどうか取得する
 	bool IsUsed() const { return m_isUsed; }
 	// 魔法を使用するかどうか設定する
 	void IsUsed(bool isUsed) { m_isUsed = isUsed; }
 
 protected:
+	// 魔法ID
+	MagicID                                      m_id;
 	// プレイヤーID
 	PlayerID                                     m_playerId;
 	// 姿勢

@@ -103,12 +103,36 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		if (!element) {
 			continue;
 		}
-		const SphereCollider* element_collider = element->GetCollider();
+		auto* element_collider = element->GetCollider();
 		for (auto& player : m_players) {
 			if (player->GetCollider()->Collision(element_collider)) {
 				player->GetElement(element->GetID());
 				element->IsUsed(false);
 			}
+		}
+	}
+
+	// 魔法同士の当たり判定
+	{
+		auto magics = m_magicManager->GetMagics();
+		// 未使用なら飛ばす処理を定義
+		auto pred = [](auto& element) {return element; };
+		// 魔法同士の当たり判定
+		auto itr = std::find_if(magics->begin(), magics->end(), pred);
+		for (auto end = magics->end(); itr != end;) {
+			auto* collider = (*itr)->GetCollider();
+			auto next = std::find_if(itr + 1, end, pred);
+			for (auto itr2 = next; itr2 != end;) {
+				// 同一プレイヤーの魔法なら判定しない
+				if ((*itr)->GetPlayerID() == (*itr2)->GetPlayerID()) {
+					continue;
+				}
+				if (collider->Collision((*itr2)->GetCollider())) {
+
+				}
+				itr2 = std::find_if(itr2 + 1, end, pred);
+			}
+			itr = next;
 		}
 	}
 
@@ -118,7 +142,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		if (!magic) {
 			continue;
 		}
-		const SphereCollider* magic_collider = magic->GetCollider();
+		auto* magic_collider = magic->GetCollider();
 		for (auto& player : m_players) {
 			// 自身の魔法とは判定しない
 			if (player->GetPlayerID() == magic->GetPlayerID()) {
@@ -132,7 +156,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 
 	// プレイヤー同士の当たり判定
 	for (auto& player1 : m_players) {
-		const SphereCollider* player_collider1 = player1->GetCollider();
+		auto* player_collider1 = player1->GetCollider();
 		for (auto& player2 : m_players) {
 			if (player1.get() == player2.get()) {
 				continue;

@@ -1,5 +1,5 @@
 #include "CastMagicCommand.h"
-
+#include "MagicFactory.h"
 
 /// <summary>
 ///	コンストラクタ
@@ -36,7 +36,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 			auto& ref_have_elements = GetHaveElements(player);
 			// エレメントがないなら通常魔法を発射する
 			if (ref_have_elements.empty()) {
-				GetMagicManager(player).CreateMagic(MagicFactory::MagicID::Normal, player.GetPlayerID(), player_pos, direction);
+				GetMagicManager(player).CreateMagic(MagicID::Normal, player.GetPlayerID(), player_pos, direction);
 			}
 			else {
 				auto element_id = GetHaveElements(player).front();

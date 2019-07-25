@@ -1,5 +1,6 @@
 #include "FireMagic.h"
 #include <Framework/DirectX11.h>
+#include "MagicFactory.h"
 #include "Player.h"
 
 
@@ -7,7 +8,7 @@
 /// コンストラクタ
 /// </summary>
 FireMagic::FireMagic()
-	: Magic()
+	: Magic(MagicID::Fire)
 	, m_object() {
 	m_sphereCollider.SetRadius(FIRE_MAGIC_RADIUS);
 	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, -FIRE_MAGIC_RADIUS/2, 0));

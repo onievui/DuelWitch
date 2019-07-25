@@ -1,5 +1,6 @@
 #include "AICastMagicCommand.h"
 #include <Framework\DirectX11.h>
+#include "MagicFactory.h"
 
 
 /// <summary>
@@ -34,7 +35,7 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	auto& ref_have_elements = GetHaveElements(player);
 	// ƒGƒŒƒƒ“ƒg‚ª‚È‚¢‚È‚ç’Êí–‚–@‚ğ”­Ë‚·‚é
 	if (ref_have_elements.empty()) {
-		GetMagicManager(player).CreateMagic(MagicFactory::MagicID::Normal, player.GetPlayerID(), pos, direction);
+		GetMagicManager(player).CreateMagic(MagicID::Normal, player.GetPlayerID(), pos, direction);
 	}
 	else {
 		auto element_id = GetHaveElements(player).front();

@@ -1,5 +1,6 @@
 #include "FreezeMagic.h"
 #include <Framework/DirectX11.h>
+#include "MagicFactory.h"
 #include "Player.h"
 
 
@@ -7,7 +8,7 @@
 /// コンストラクタ
 /// </summary>
 FreezeMagic::FreezeMagic()
-	: Magic()
+	: Magic(MagicID::Freeze)
 	, m_object()
 	, m_pPlayerPos() {
 	m_sphereCollider.SetRadius(FREEZE_MAGIC_RADIUS);

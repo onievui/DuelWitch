@@ -27,7 +27,7 @@ void ThunderStrikeMagicShooter::Create(MagicFactory* magicFactory, PlayerID play
 	position.y = 55.0f;
 	for (auto& magic : *m_pMagicManager->GetMagics()) {
 		if (!magic) {
-			magic = magicFactory->Create(MagicFactory::MagicID::ThunderStrike, playerId, position, dir*10.0f);
+			magic = magicFactory->Create(MagicID::ThunderStrike, playerId, position, dir*10.0f);
 			break;
 		}
 	}

@@ -1,4 +1,5 @@
 #include "MagicManager.h"
+#include "MagicFactory.h"
 #include "ElementFactory.h"
 #include "IMagic.h"
 #include "IMagicShooter.h"
@@ -36,11 +37,11 @@ void MagicManager::Initialize() {
 	m_magicFactory = std::make_unique<MagicFactory>();
 	m_magicFactory->Initialize(this);
 	m_magicShooters.resize(5);
-	m_magicShooters[(int)MagicFactory::MagicID::Normal]        = std::make_unique<NormalMagicShooter>(this);
-	m_magicShooters[(int)MagicFactory::MagicID::Fire]          = std::make_unique<FireMagicShooter>(this);
-	m_magicShooters[(int)MagicFactory::MagicID::Thunder]       = std::make_unique<ThunderMagicShooter>(this);
-	m_magicShooters[(int)MagicFactory::MagicID::ThunderStrike] = std::make_unique<ThunderStrikeMagicShooter>(this);
-	m_magicShooters[(int)MagicFactory::MagicID::Freeze]        = std::make_unique<FreezeMagicShooter>(this);
+	m_magicShooters[(int)MagicID::Normal]        = std::make_unique<NormalMagicShooter>(this);
+	m_magicShooters[(int)MagicID::Fire]          = std::make_unique<FireMagicShooter>(this);
+	m_magicShooters[(int)MagicID::Thunder]       = std::make_unique<ThunderMagicShooter>(this);
+	m_magicShooters[(int)MagicID::ThunderStrike] = std::make_unique<ThunderStrikeMagicShooter>(this);
+	m_magicShooters[(int)MagicID::Freeze]        = std::make_unique<FreezeMagicShooter>(this);
 }
 
 
@@ -81,7 +82,7 @@ void MagicManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="vec">向き</param>
-void MagicManager::CreateMagic(MagicFactory::MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+void MagicManager::CreateMagic(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	m_magicShooters[(int)id]->Create(m_magicFactory.get(), playerId, pos, dir);
 }
 
@@ -114,15 +115,15 @@ std::vector<IMagic*>* MagicManager::GetMagics() {
 /// <returns>
 /// 魔法ID
 /// </returns>
-MagicFactory::MagicID MagicManager::ElementID2MagicID(ElementID elementId) {
+MagicID MagicManager::ElementID2MagicID(ElementID elementId) {
 	switch (elementId) {
 	case ElementID::Fire:
-		return MagicFactory::MagicID::Fire;
+		return MagicID::Fire;
 	case ElementID::Thunder:
-		return MagicFactory::MagicID::Thunder;
+		return MagicID::Thunder;
 	case ElementID::Freeze:
-		return MagicFactory::MagicID::Freeze;
+		return MagicID::Freeze;
 	default:
-		return MagicFactory::MagicID::Normal;
+		return MagicID::Normal;
 	}
 }

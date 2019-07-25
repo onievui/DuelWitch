@@ -25,7 +25,7 @@ void FreezeMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, c
 	const DirectX::SimpleMath::Vector3& dir) {
 	for (auto& magic : *m_pMagicManager->GetMagics()) {
 		if (!magic) {
-			magic = magicFactory->Create(MagicFactory::MagicID::Freeze, playerId, pos, dir);
+			magic = magicFactory->Create(MagicID::Freeze, playerId, pos, dir);
 			break;
 		}
 	}

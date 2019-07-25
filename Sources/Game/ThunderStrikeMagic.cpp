@@ -1,14 +1,14 @@
 #include "ThunderStrikeMagic.h"
 #include <Framework/DirectX11.h>
+#include "MagicFactory.h"
 #include "Player.h"
-#include "MagicManager.h"
 
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
 ThunderStrikeMagic::ThunderStrikeMagic()
-	: Magic()
+	: Magic(MagicID::ThunderStrike)
 	, m_object() {
 	m_sphereCollider.SetRadius(THUNDER_STRIKE_MAGIC_RADIUS);
 }

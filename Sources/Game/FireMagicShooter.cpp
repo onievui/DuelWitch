@@ -30,7 +30,7 @@ void FireMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, con
 	quaternion.Inverse(quaternion);
 	for (auto& magic : *m_pMagicManager->GetMagics()) {
 		if (!magic) {
-			magic = magicFactory->Create(MagicFactory::MagicID::Fire, playerId, pos, direction);
+			magic = magicFactory->Create(MagicID::Fire, playerId, pos, direction);
 			++count;
 			if (count == 3) {
 				break;

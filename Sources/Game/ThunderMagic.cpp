@@ -1,7 +1,8 @@
 #include "ThunderMagic.h"
 #include <Framework/DirectX11.h>
-#include "Player.h"
+#include "MagicFactory.h"
 #include "MagicManager.h"
+#include "Player.h"
 
 
 /// <summary>
@@ -9,7 +10,7 @@
 /// </summary>
 /// <param name="magicManager">魔法マネージャ</param>
 ThunderMagic::ThunderMagic(MagicManager* magicManager)
-	: Magic()
+	: Magic(MagicID::Thunder)
 	, m_object()
 	, m_pMagicManager(magicManager)
 	, m_startTimer() 
@@ -47,7 +48,7 @@ void ThunderMagic::Update(const DX::StepTimer& timer) {
 
 	// 消滅・タイマーのカウントが達したら落雷魔法を生成する
 	if (!m_isUsed) {
-		m_pMagicManager->CreateMagic(MagicFactory::MagicID::ThunderStrike, m_playerId, pos, DirectX::SimpleMath::Vector3::Down);
+		m_pMagicManager->CreateMagic(MagicID::ThunderStrike, m_playerId, pos, DirectX::SimpleMath::Vector3::Down);
 	}
 
 	m_world = m_transform.GetMatrix();

@@ -27,7 +27,7 @@ void ThunderMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, 
 	direction.y = 0.0f;
 	for (auto& magic : *m_pMagicManager->GetMagics()) {
 		if (!magic) {
-			magic = magicFactory->Create(MagicFactory::MagicID::Thunder, playerId, pos, direction);
+			magic = magicFactory->Create(MagicID::Thunder, playerId, pos, direction);
 			break;
 		}
 	}

@@ -8,20 +8,20 @@ class MagicManager;
 enum class PlayerID;
 
 
+// 魔法のID
+enum class MagicID {
+	Normal,		    // 通常魔法
+	Fire,           // 炎魔法
+	Thunder,	    // 雷魔法
+	ThunderStrike,	// 落雷魔法
+	Freeze,         // 氷魔法
+};
+
+
 /// <summary>
 /// 魔法ファクトリクラス
 /// </summary>
 class MagicFactory {
-public:	
-	// 魔法のID
-	enum class MagicID {
-		Normal,		    // 通常魔法
-		Fire,           // 炎魔法
-		Thunder,	    // 雷魔法
-		ThunderStrike,	// 落雷魔法
-		Freeze,         // 氷魔法
-	};
-
 private:
 	// 各魔法の最大出現数
 	static constexpr int MAGIC_NUM[] = {
