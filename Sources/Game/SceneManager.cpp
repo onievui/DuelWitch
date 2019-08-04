@@ -46,6 +46,7 @@ void SceneManager::Update(const DX::StepTimer& timer) {
 		ChangeScene();
 	}
 
+	// 一番新しいシーンを更新する
 	m_activeScene.back()->Update(timer);
 }
 
@@ -54,9 +55,9 @@ void SceneManager::Update(const DX::StepTimer& timer) {
 /// </summary>
 /// <param name="spriteBatch"></param>
 void SceneManager::Render(DirectX::SpriteBatch* spriteBatch) {
-	// 有効なシーンを下から描画する
-	for (auto& scene : m_activeScene) {
-		scene->Render(spriteBatch);
+	// 有効なシーンを古いものから描画する
+	for (std::list<std::unique_ptr<IScene>>::iterator itr = m_activeScene.begin(); itr != m_activeScene.end(); ++itr) {
+		(*itr)->Render(spriteBatch);
 	}
 }
 
@@ -80,6 +81,6 @@ void SceneManager::ChangeScene() {
 		}
 	}
 	m_activeScene.push_back(m_sceneCreateFunc[requestData.first]());
-	m_activeScene.back()->Initialize((ISceneRequest*)this);
+	m_activeScene.back()->Initialize(static_cast<ISceneRequest*>(this));
 	m_requestQueue.pop();
 }

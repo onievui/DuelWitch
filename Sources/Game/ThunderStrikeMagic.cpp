@@ -86,15 +86,15 @@ void ThunderStrikeMagic::HitPlayer(const SphereCollider& collider) {
 /// </summary>
 /// <param name="other">è’ìÀÇµÇΩñÇñ@</param>
 void ThunderStrikeMagic::HitMagic(const IMagic* other) {
-	auto other_id = other->GetID();
+	MagicID other_id = other->GetID();
 	// ïXñÇñ@Ç∆è’ìÀÇµÇΩÇÁíµÇÀï‘ÇÈ
 	if (other_id == MagicID::Freeze) {
-		auto collider = other->GetCollider();
-		auto& rot = collider->GetTransform()->GetRotation();
-		auto offset = DirectX::SimpleMath::Vector3::Transform(collider->GetOffset(),
+		const SphereCollider* collider = other->GetCollider();
+		const DirectX::SimpleMath::Vector3& rot = collider->GetTransform()->GetRotation();
+		DirectX::SimpleMath::Vector3 offset = DirectX::SimpleMath::Vector3::Transform(collider->GetOffset(),
 			DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z));
-		auto pos = offset + collider->GetTransform()->GetPosition();
-		auto direction = m_transform.GetPosition() - pos;
+		DirectX::SimpleMath::Vector3 pos = offset + collider->GetTransform()->GetPosition();
+		DirectX::SimpleMath::Vector3 direction = m_transform.GetPosition() - pos;
 		direction.y *= 0.0f;
 		direction.Normalize();
 

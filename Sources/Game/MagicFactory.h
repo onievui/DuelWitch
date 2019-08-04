@@ -15,6 +15,8 @@ enum class MagicID {
 	Thunder,	    // 雷魔法
 	ThunderStrike,	// 落雷魔法
 	Freeze,         // 氷魔法
+
+	Num
 };
 
 
@@ -24,7 +26,7 @@ enum class MagicID {
 class MagicFactory {
 private:
 	// 各魔法の最大出現数
-	static constexpr int MAGIC_NUM[] = {
+	static constexpr int MAGIC_NUM[static_cast<int>(MagicID::Num)] = {
 		30,
 		30,
 		10,
@@ -33,7 +35,7 @@ private:
 	};
 
 	// 配列のインデックス初期位置
-	static constexpr int MAGIC_BEGIN_INDEX[] = {
+	static constexpr int MAGIC_BEGIN_INDEX[static_cast<int>(MagicID::Num)] = {
 		0,
 		30,
 		60,
@@ -72,8 +74,8 @@ template<class T, class... Args>
 /// </summary>
 /// <param name="id">魔法のID</param>
 inline void MagicFactory::InitializeMagic(MagicID id, Args&&... args) {
-	for (auto itr = m_magics.begin() + MAGIC_BEGIN_INDEX[(int)id], end = itr + MAGIC_NUM[(int)id];
-		itr != end; ++itr) {
+	for (std::vector<std::unique_ptr<IMagic>>::iterator itr = m_magics.begin() + MAGIC_BEGIN_INDEX[static_cast<int>(id)],
+		end = itr + MAGIC_NUM[static_cast<int>(id)]; itr != end; ++itr) {
 		*itr = std::make_unique<T>(args...);
 	}
 }

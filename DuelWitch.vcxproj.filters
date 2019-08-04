@@ -165,6 +165,9 @@
     <ClCompile Include="Sources\Game\ThunderStrikeMagicShooter.cpp">
       <Filter>Game\Strategy</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Collision.cpp">
+      <Filter>Game\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -301,6 +304,12 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\ThunderStrikeMagicShooter.h">
       <Filter>Game\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Collider.h">
+      <Filter>Game\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Collision.h">
+      <Filter>Game\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

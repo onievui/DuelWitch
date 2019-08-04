@@ -7,8 +7,8 @@
 /// <param name="player">プレイヤー</param>
 /// <param name="timer">タイマー</param>
 void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
-	float elapsedTime = float(timer.GetElapsedSeconds());
-	auto keyState = DirectX::Keyboard::Get().GetState();
+	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
+	DirectX::Keyboard::State keyState = DirectX::Keyboard::Get().GetState();
 
 	constexpr float moveSpeed = 16.0f;
 	constexpr float moveSpeedXY = 0.3f;
@@ -18,11 +18,11 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	constexpr float rotYLimit = Math::QuarterPI*0.25f;
 	constexpr float lerpSpeed = 0.040f;
 
-	auto& ref_transform = GetTransform(player);
-	auto& ref_direction = GetMoveDirection(player);
+	Transform& ref_transform = GetTransform(player);
+	Player::MoveDirection& ref_direction = GetMoveDirection(player);
 
-	auto pos = ref_transform.GetPosition();
-	auto rot = ref_transform.GetRotation();
+	DirectX::SimpleMath::Vector3 pos = ref_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 rot = ref_transform.GetRotation();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
 	m_totalElapsedTime += elapsedTime;
@@ -83,7 +83,7 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
 	}
 
-	//auto quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	//DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
 
 	//pos += DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ*moveSpeed*elapsedTime, quaternion);
 	move.Normalize();

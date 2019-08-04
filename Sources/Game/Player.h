@@ -49,6 +49,7 @@ public:
 	void Create(const std::wstring& fileName, const std::wstring& directory = L"");
 	// プレイヤーを描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
+	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const;
 
 public:
 	// プレイヤーの行列を取得する
@@ -92,6 +93,8 @@ private:
 
 	// ダメージ演出用タイマー
 	float                                  m_damageTimer;
+	// エレメントUI画像
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_textures[3];
 
 	// 敵プレイヤー
 	Player*                                m_otherPlayer;

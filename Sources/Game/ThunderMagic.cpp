@@ -94,7 +94,7 @@ void ThunderMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// </summary>
 /// <param name="collider">プレイヤーの当たり判定</param>
 void ThunderMagic::HitPlayer(const SphereCollider& collider) {
-	auto direction = collider.GetTransform()->GetPosition() - m_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 direction = collider.GetTransform()->GetPosition() - m_transform.GetPosition();
 	// 反対方向なら処理しない
 	if (direction.z*m_vel.z < 0) {
 		return;
@@ -114,7 +114,7 @@ void ThunderMagic::HitPlayer(const SphereCollider& collider) {
 /// </summary>
 /// <param name="other">衝突した魔法</param>
 void ThunderMagic::HitMagic(const IMagic* other) {
-	auto other_id = other->GetID();
+	MagicID other_id = other->GetID();
 	other_id;
 }
 

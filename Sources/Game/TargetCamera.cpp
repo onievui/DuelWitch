@@ -17,7 +17,7 @@ TargetCamera::TargetCamera(int width, int height, IObject* targetObject)
 	m_target = DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f);
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, DirectX::SimpleMath::Vector3::UnitY);
 	m_proj = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(Math::HarfPI*0.5f,
-		float(width) / float(height), 0.1f, 100.0f);
+		static_cast<float>(width) / static_cast<float>(height), 0.1f, 100.0f);
 	m_targetMatrix = m_targetObject->GetMatrix();
 }
 
@@ -44,8 +44,8 @@ TargetCamera::TargetCamera(IObject* targetObject, DirectX::SimpleMath::Vector3 e
 	m_proj = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(fov, aspectRatio, nearPlane, farPlane);
 	m_viewport= DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(0.5f, -0.5f, 1.0f)) *
 		DirectX::SimpleMath::Matrix::CreateTranslation(DirectX::SimpleMath::Vector3(0.5f, 0.5f, 0.0f)) *
-		DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(float(DirectX11::Get().GetWidth()),
-			float(DirectX11::Get().GetHeight()), 1.0f));
+		DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(static_cast<float>(DirectX11::Get().GetWidth()),
+			static_cast<float>(DirectX11::Get().GetHeight()), 1.0f));
 	m_targetMatrix = m_targetObject->GetMatrix();
 }
 
@@ -55,9 +55,9 @@ TargetCamera::TargetCamera(IObject* targetObject, DirectX::SimpleMath::Vector3 e
 void TargetCamera::Update() {
 	m_targetMatrix = DirectX::SimpleMath::Matrix::Lerp(m_targetMatrix, m_targetObject->GetMatrix(), m_lerpSpeed);
 	m_pos = DirectX::SimpleMath::Vector3::Transform(m_eye, m_targetMatrix);
-	auto target = DirectX::SimpleMath::Vector3::Transform(m_target, m_targetMatrix);
-	//auto up = DirectX::SimpleMath::Vector3::TransformNormal(DirectX::SimpleMath::Vector3::UnitY, m_targetMatrix);
-	auto up = DirectX::SimpleMath::Vector3::UnitY;
+	DirectX::SimpleMath::Vector3 target = DirectX::SimpleMath::Vector3::Transform(m_target, m_targetMatrix);
+	//DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::TransformNormal(DirectX::SimpleMath::Vector3::UnitY, m_targetMatrix);
+	DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::UnitY;
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_pos, target, up);
 }
 

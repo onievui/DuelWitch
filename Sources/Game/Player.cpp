@@ -55,7 +55,7 @@ void Player::Update(const DX::StepTimer& timer) {
 	// 魔法を発動する
 	m_castCommand->Execute(*this, timer);
 
-	m_damageTimer -= float(timer.GetElapsedSeconds());
+	m_damageTimer -= static_cast<float>(timer.GetElapsedSeconds());
 }
 
 /// <summary>
@@ -73,12 +73,12 @@ void Player::Lost() {
 /// <param name="directory">ディレクトリ名</param>
 void Player::Create(const std::wstring& fileName, const std::wstring& directory) {
 	// デバイスの取得
-	auto device = DirectX11::Get().GetDevice().Get();
+	ID3D11Device* device = DirectX11::Get().GetDevice().Get();
 
 	// コモンステートを作成する
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 	// エフェクトファクトリーを作成する
-	auto fxFactory = std::make_unique<DirectX::EffectFactory>(device);
+	std::unique_ptr<DirectX::EffectFactory> fxFactory = std::make_unique<DirectX::EffectFactory>(device);
 	// 読み込むのファイルのディレクトリを設定する
 	dynamic_cast<DirectX::EffectFactory*>(fxFactory.get())->SetDirectory(directory.c_str());
 	// CMOを読み込んでモデルを作成する
@@ -97,6 +97,10 @@ void Player::Create(const std::wstring& fileName, const std::wstring& directory)
 		}
 	});
 
+	//テクスチャのロード
+	DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element1.png", nullptr, m_textures[0].GetAddressOf());
+	DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element2.png", nullptr, m_textures[1].GetAddressOf());
+	DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element3.png", nullptr, m_textures[2].GetAddressOf());
 }
 
 /// <summary>
@@ -105,10 +109,26 @@ void Player::Create(const std::wstring& fileName, const std::wstring& directory)
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">プロジェクション行列</param>
 void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	auto context = DirectX11::Get().GetContext().Get();
+	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
 	if (m_damageTimer <= 0.0f || sin(m_damageTimer*Math::PI2*2)>0) {
 		m_model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
 		m_sphereCollider.Render(view, proj);
+	}
+}
+
+void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const {
+	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
+	if (m_damageTimer <= 0.0f || sin(m_damageTimer*Math::PI2 * 2) > 0) {
+		m_model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
+		m_sphereCollider.Render(view, proj);
+	}
+	if (m_id == PlayerID::Player2)
+		return;
+	int i = m_haveElements.size() - 1;
+	for (std::list<ElementID>::const_reverse_iterator itr = m_haveElements.rbegin(); itr != m_haveElements.rend(); ++itr) {
+		spriteBatch->Draw(m_textures[static_cast<int>(*itr)].Get(), DirectX::SimpleMath::Vector2(20 + i * 40.0f, 630.0f), nullptr,
+			DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2(1.5f, 1.5f));
+		--i;
 	}
 
 }
@@ -174,8 +194,8 @@ void Player::GetElement(ElementID elementId) {
 void Player::HitPlayer(const Player& player) {
 	constexpr float reflect_distance = 0.25f;
 
-	auto my_pos = m_transform.GetPosition();
-	auto other_pos = player.m_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 my_pos = m_transform.GetPosition();
+	const DirectX::SimpleMath::Vector3& other_pos = player.m_transform.GetPosition();
 	// 相手プレイヤーと判定方向に進む
 	float angle = std::atan2f(my_pos.y - other_pos.y, my_pos.x - other_pos.x);
 	my_pos += DirectX::SimpleMath::Vector3(std::cosf(angle), std::sinf(angle), 0.0f)*reflect_distance;
@@ -187,7 +207,9 @@ void Player::HitPlayer(const Player& player) {
 /// </summary>
 /// <param name="magic">魔法</param>
 void Player::HitMagic(const IMagic* magic) {
-	magic;
+	if (magic->GetID() == MagicID::Thunder) {
+		return;
+	}
 	if (m_damageTimer <= 0.0f) {
 		m_damageTimer = 3.0f;
 	}

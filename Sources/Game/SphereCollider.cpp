@@ -13,29 +13,10 @@ std::unique_ptr<DirectX::GeometricPrimitive> SphereCollider::m_debugSphere = nul
 /// <param name="radius">半径</param>
 /// <param name="offset">座標のオフセット</param>
 SphereCollider::SphereCollider(const Transform* pTransform, float radius, const DirectX::SimpleMath::Vector3& offset) 
-	: m_pTransform(pTransform)
+	: Collider(Collider::Type::Sphere)
+	, m_pTransform(pTransform)
 	, m_radius(radius)
 	, m_offset(offset) {
-}
-
-/// <summary>
-/// 衝突判定
-/// </summary>
-/// <param name="other">他オブジェクトの当たり判定</param>
-/// <returns>
-/// true : 衝突している
-/// fase : 衝突していない
-/// </returns>
-bool SphereCollider::Collision(const SphereCollider* other) const {
-	auto& rot = m_pTransform->GetRotation();
-	auto offset = DirectX::SimpleMath::Vector3::Transform(m_offset,
-		DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(rot.y, rot.z, rot.z));
-	auto& rot2 = other->m_pTransform->GetRotation();
-	auto offset2 = DirectX::SimpleMath::Vector3::Transform(other->m_offset,
-		DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(rot2.y, rot2.z, rot2.z));
-	DirectX::SimpleMath::Vector3 d = (m_pTransform->GetPosition() + offset) - (other->m_pTransform->GetPosition() + offset2);
-	float dist2 = d.x*d.x + d.y*d.y + d.z*d.z;
-	return dist2 <= (m_radius + other->m_radius)*(m_radius + other->m_radius);
 }
 
 /// <summary>
@@ -50,8 +31,8 @@ void SphereCollider::Render(const DirectX::SimpleMath::Matrix& view, const Direc
 	if (!m_debugSphere) {
 		m_debugSphere = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get());
 	}
-	auto matrix = DirectX::SimpleMath::Matrix::CreateScale(m_radius);
-	auto& rot = m_pTransform->GetRotation();
+	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateScale(m_radius);
+	const DirectX::SimpleMath::Vector3& rot = m_pTransform->GetRotation();
 	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_offset);
 	matrix *= DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
 	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_pTransform->GetPosition());

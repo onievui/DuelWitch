@@ -6,7 +6,7 @@ FixCamera::FixCamera(int width, int height) {
 	m_target = DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f);
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, DirectX::SimpleMath::Vector3::UnitY);
 	m_proj = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(3.14f / 4.0f,
-		float(width) / float(height), 0.1f, 100.0f);
+		static_cast<float>(width) / static_cast<float>(height), 0.1f, 100.0f);
 }
 
 FixCamera::FixCamera(DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 target,

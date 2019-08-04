@@ -20,8 +20,8 @@ ElementFactory::~ElementFactory() {
 void ElementFactory::Initialize() {
 	m_elements.clear();
 	m_elements.resize(ELEMENT_MAX_NUM);
-	for (auto& element : m_elements) {
-		element = std::make_unique<Element>();
+	for (std::vector<std::unique_ptr<Element>>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
+		(*itr) = std::make_unique<Element>();
 	}
 }
 
@@ -35,7 +35,8 @@ void ElementFactory::Initialize() {
 /// </returns>
 Element* ElementFactory::Create(ElementID id, const DirectX::SimpleMath::Vector3& position) {
 	// 使用していないオブジェクトを探す
-	auto itr = std::find_if(m_elements.begin(), m_elements.end(), [](auto& element) {return !element->IsUsed(); });
+	std::vector<std::unique_ptr<Element>>::iterator itr = std::find_if(m_elements.begin(), m_elements.end(),
+		[](std::unique_ptr<Element>& element) {return !element->IsUsed(); });
 
 	// これ以上生成できないならnullptrを返す
 	if (itr == m_elements.end()) {

@@ -1,22 +1,25 @@
 #pragma once
-#ifndef SPHERE_COLLIDER
-#define SPHERE_COLLIDER
+#ifndef SPHERE_COLLIDER_DEFINED
+#define SPHERE_COLLIDER_DEFINED
+
+
+#include "Collider.h"
 
 
 class Transform;
+class Collision;
 
 
 /// <summary>
 /// 球当たり判定クラス
 /// </summary>
-class SphereCollider {
+class SphereCollider : public Collider {
+	friend class Collision;
 public:
 	// コンストラクタ
 	SphereCollider(const Transform* pTransform, float radius, const DirectX::SimpleMath::Vector3& offset = DirectX::SimpleMath::Vector3::Zero);
 
 public:
-	// 衝突判定
-	bool Collision(const SphereCollider* other) const;
 	// 当たり判定の表示
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj,
 		const DirectX::SimpleMath::Vector4& color = DirectX::SimpleMath::Vector4(DirectX::Colors::White)) const;
@@ -49,7 +52,7 @@ private:
 };
 
 
-#endif // !SPHERE_COLLIDER
+#endif // !SPHERE_COLLIDER_DEFINED
 
 
 

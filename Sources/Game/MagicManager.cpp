@@ -37,11 +37,11 @@ void MagicManager::Initialize() {
 	m_magicFactory = std::make_unique<MagicFactory>();
 	m_magicFactory->Initialize(this);
 	m_magicShooters.resize(5);
-	m_magicShooters[(int)MagicID::Normal]        = std::make_unique<NormalMagicShooter>(this);
-	m_magicShooters[(int)MagicID::Fire]          = std::make_unique<FireMagicShooter>(this);
-	m_magicShooters[(int)MagicID::Thunder]       = std::make_unique<ThunderMagicShooter>(this);
-	m_magicShooters[(int)MagicID::ThunderStrike] = std::make_unique<ThunderStrikeMagicShooter>(this);
-	m_magicShooters[(int)MagicID::Freeze]        = std::make_unique<FreezeMagicShooter>(this);
+	m_magicShooters[static_cast<int>(MagicID::Normal)]        = std::make_unique<NormalMagicShooter>(this);
+	m_magicShooters[static_cast<int>(MagicID::Fire)]          = std::make_unique<FireMagicShooter>(this);
+	m_magicShooters[static_cast<int>(MagicID::Thunder)]       = std::make_unique<ThunderMagicShooter>(this);
+	m_magicShooters[static_cast<int>(MagicID::ThunderStrike)] = std::make_unique<ThunderStrikeMagicShooter>(this);
+	m_magicShooters[static_cast<int>(MagicID::Freeze)]        = std::make_unique<FreezeMagicShooter>(this);
 }
 
 
@@ -50,11 +50,11 @@ void MagicManager::Initialize() {
 /// </summary>
 /// <param name="timer">タイマー</param>
 void MagicManager::Update(const DX::StepTimer& timer) {
-	for (auto& magic : m_magics) {
-		if (magic) {
-			magic->Update(timer);
-			if (!magic->IsUsed()) {
-				magic = nullptr;
+	for (std::vector<IMagic*>::iterator itr = m_magics.begin(); itr != m_magics.end(); ++itr) {
+		if (*itr) {
+			(*itr)->Update(timer);
+			if (!(*itr)->IsUsed()) {
+				*itr = nullptr;
 			}
 		}
 	}
@@ -67,9 +67,9 @@ void MagicManager::Update(const DX::StepTimer& timer) {
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void MagicManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
-	for (const auto& magic : m_magics) {
-		if (magic) {
-			magic->Render(view, proj);
+	for (std::vector<IMagic*>::const_iterator itr = m_magics.cbegin(); itr != m_magics.cend(); ++itr) {
+		if (*itr) {
+			(*itr)->Render(view, proj);
 		}
 	}
 }
@@ -83,7 +83,7 @@ void MagicManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// <param name="pos">座標</param>
 /// <param name="vec">向き</param>
 void MagicManager::CreateMagic(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	m_magicShooters[(int)id]->Create(m_magicFactory.get(), playerId, pos, dir);
+	m_magicShooters[static_cast<int>(id)]->Create(m_magicFactory.get(), playerId, pos, dir);
 }
 
 /// <summary>

@@ -181,6 +181,7 @@
     <ClCompile Include="Sources\Game\AIMoveCommand.cpp" />
     <ClCompile Include="Sources\Game\Camera.cpp" />
     <ClCompile Include="Sources\Game\CastMagicCommand.cpp" />
+    <ClCompile Include="Sources\Game\Collision.cpp" />
     <ClCompile Include="Sources\Game\DebugCamera.cpp" />
     <ClCompile Include="Sources\Game\Element.cpp" />
     <ClCompile Include="Sources\Game\ElementFactory.cpp" />
@@ -224,6 +225,8 @@
     <ClInclude Include="Sources\Game\AIMoveCommand.h" />
     <ClInclude Include="Sources\Game\Camera.h" />
     <ClInclude Include="Sources\Game\CastMagicCommand.h" />
+    <ClInclude Include="Sources\Game\Collider.h" />
+    <ClInclude Include="Sources\Game\Collision.h" />
     <ClInclude Include="Sources\Game\FireMagic.h" />
     <ClInclude Include="Sources\Game\FireMagicShooter.h" />
     <ClInclude Include="Sources\Game\Command.h" />

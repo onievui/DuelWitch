@@ -84,7 +84,7 @@ void FreezeMagic::HitPlayer(const SphereCollider& collider) {
 /// </summary>
 /// <param name="other">Õ“Ë‚µ‚½–‚–@</param>
 void FreezeMagic::HitMagic(const IMagic* other) {
-	auto other_id = other->GetID();
+	MagicID other_id = other->GetID();
 	// ‰Š–‚–@‚ÆÕ“Ë‚µ‚½‚çÁ‚¦‚é
 	if (other_id == MagicID::Fire) {
 		m_isUsed = false;

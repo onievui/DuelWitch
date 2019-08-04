@@ -48,9 +48,10 @@ void MagicFactory::Initialize(MagicManager* magicManager) {
 /// </returns>
 IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	// 使用していないオブジェクトを探す
-	auto begin = m_magics.begin() + MAGIC_BEGIN_INDEX[(int)id];
-	auto end = begin + MAGIC_NUM[(int)id];
-	auto itr = std::find_if(begin, end, [](auto& element) {return !element->IsUsed(); });
+	std::vector<std::unique_ptr<IMagic>>::iterator begin = m_magics.begin() + MAGIC_BEGIN_INDEX[static_cast<int>(id)];
+	std::vector<std::unique_ptr<IMagic>>::iterator end = begin + MAGIC_NUM[static_cast<int>(id)];
+	std::vector<std::unique_ptr<IMagic>>::iterator itr = std::find_if(begin, end,
+		[](std::unique_ptr<IMagic>& element) {return !element->IsUsed(); });
 
 	// これ以上生成できないならnullptrを返す
 	if (itr == end) {
@@ -91,9 +92,9 @@ IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::Simpl
 /// </returns>
 int MagicFactory::GetMagicMaxNum() {
 	int total = 0;
-	for (auto& num : MAGIC_NUM) {
-		total += num;
-	}
+	for (int i = 0; i < (int)MagicID::Num; ++i) {
+		total += MAGIC_NUM[i];
+	}	
 	return total;
 }
 

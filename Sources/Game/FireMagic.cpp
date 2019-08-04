@@ -103,7 +103,7 @@ void FireMagic::HitPlayer(const SphereCollider& collider) {
 /// </summary>
 /// <param name="other">Õ“Ë‚µ‚½–‚–@</param>
 void FireMagic::HitMagic(const IMagic* other) {
-	auto other_id = other->GetID();
+	MagicID other_id = other->GetID();
 	// ——‹–‚–@‚ÆÕ“Ë‚µ‚½‚çÁ‚¦‚é
 	if (other_id == MagicID::ThunderStrike) {
 		m_isUsed = false;

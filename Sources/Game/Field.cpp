@@ -4,13 +4,13 @@
 
 
 Field::Field() {
-	auto device = DirectX11::Get().GetDevice().Get();
-	auto context = DirectX11::Get().GetContext().Get();
+	ID3D11Device* device = DirectX11::Get().GetDevice().Get();
+	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
 
 	// コモンステートを作成する
 	m_states = std::make_unique<DirectX::CommonStates>(device);
 	// エフェクトファクトリーを作成する
-	auto fxFactory = std::make_unique<DirectX::EffectFactory>(device);
+	std::unique_ptr<DirectX::EffectFactory> fxFactory = std::make_unique<DirectX::EffectFactory>(device);
 	// CMOを読み込んでスカイドームを作成する
 	m_skydome = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Protected/skydome.cmo", *fxFactory);
 
@@ -65,7 +65,7 @@ void Field::Update() {
 }
 
 void Field::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
-	auto context = DirectX11::Get().GetContext().Get();
+	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
 	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateScale(1.0f);
 	m_skydome->Draw(context, *m_states, world, view, proj);
 
@@ -81,8 +81,8 @@ void Field::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simpl
 }
 
 void Field::DrawTurn(const DirectX::SimpleMath::Matrix& world, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
-	auto device = DirectX11::Get().GetDevice().Get();
-	auto context = DirectX11::Get().GetContext().Get();
+	ID3D11Device* device = DirectX11::Get().GetDevice().Get();
+	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
 
 	// 頂点情報
 	DirectX::VertexPositionTexture vertex[4] =

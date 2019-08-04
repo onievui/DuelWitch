@@ -2,12 +2,11 @@
 #include <Framework\DirectX11.h>
 
 // コンストラクタ
-GridFloor::GridFloor(DirectX::CommonStates* states, float size, int divs) : m_states(states), m_size(size), m_divs(divs)
-{
+GridFloor::GridFloor(DirectX::CommonStates* states, float size, int divs) : m_states(states), m_size(size), m_divs(divs) {
 	// DirectX11クラスのインスタンスを取得する
 	DirectX11& directX = DirectX11::Get();
 
-	// ベイシックエフェクトを生成する
+	// ベーシックエフェクトを生成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(directX.GetDevice().Get());
 	// 頂点カラーを有効にする
 	m_basicEffect->SetVertexColorEnabled(true);
@@ -25,17 +24,15 @@ GridFloor::GridFloor(DirectX::CommonStates* states, float size, int divs) : m_st
 }
 
 // デストラクタ
-GridFloor::~GridFloor()
-{
-	// ベイシックエフェクトを解放する
+GridFloor::~GridFloor() {
+	// ベーシックエフェクトを解放する
 	m_basicEffect.reset();
 	// 入力レイアウトを解放する
 	m_pInputLayout.Reset();
 }
 
 // 描画する
-void GridFloor::Render(DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::Matrix& projection, DirectX::GXMVECTOR color)
-{
+void GridFloor::Render(DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::Matrix& projection, DirectX::GXMVECTOR color) {
 	DirectX::SimpleMath::Matrix world;
 
 	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
@@ -62,7 +59,7 @@ void GridFloor::Render(DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::M
 	DirectX::FXMVECTOR origin {};
 	for (size_t i = 0; i <= divs; ++i)
 	{
-		float fPercent = float(i) / float(divs);
+		float fPercent = static_cast<float>(i) / static_cast<float>(divs);
 		fPercent = (fPercent * 1.0f) - 0.5f;
 		// スケールを設定する
 		DirectX::XMVECTOR vScale = XMVectorScale(xAxis, fPercent);
@@ -78,7 +75,7 @@ void GridFloor::Render(DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::M
 
 	for (size_t i = 0; i <= divs; i++)
 	{
-		FLOAT fPercent = float(i) / float(divs);
+		FLOAT fPercent = static_cast<float>(i) / static_cast<float>(divs);
 		fPercent = (fPercent * 1.0f) - 0.5f;
 		// スケールを設定する
 		DirectX::XMVECTOR vScale = XMVectorScale(yAxis, fPercent);

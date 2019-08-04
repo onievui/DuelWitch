@@ -10,6 +10,7 @@
 #include "MagicManager.h"
 #include "TargetCamera.h"
 #include "Field.h"
+#include "Collision.h"
 
 
 /// <summary>
@@ -59,7 +60,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	//ターゲットカメラを生成する
 	m_targetCamera = std::make_unique<TargetCamera>(m_players[0].get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
-		Math::HarfPI*0.5f, float(directX.GetWidth()) / float(directX.GetHeight()), 0.1f, 10000.0f);
+		Math::HarfPI*0.5f, static_cast<float>(directX.GetWidth()) / static_cast<float>(directX.GetHeight()), 0.1f, 10000.0f);
 
 	m_players[0]->SetCamera(m_targetCamera.get());
 	m_players[1]->SetCamera(m_targetCamera.get());
@@ -79,55 +80,56 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 /// <param name="timer"></param>
 void PlayScene::Update(const DX::StepTimer& timer) {
 	// プレイヤーの更新
-	for (auto& player : m_players) {
-		player->Update(timer);
+	for (std::vector<std::unique_ptr<Player>>::iterator itr = m_players.begin(); itr != m_players.end(); ++itr) {
+		(*itr)->Update(timer);
 	}
+
 	// エレメントマネージャの更新
 	m_elementManager->Update(timer);
 	// 魔法マネージャの更新
 	m_magicManager->Update(timer);
 
 	if (timer.GetFrameCount() % 600 == 0) {
-		DirectX::SimpleMath::Vector3 area_offset(0, 0, 24);
-		DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3::One*-3;
-		DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3::One*3;
+		DirectX::SimpleMath::Vector3 area_offset(0, 0, 23);
+		DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3(-3, -3, -2);
+		DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3(3, 3, 2);
 		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 3);
-		area_offset.z = 126.0f;
+		area_offset.z = 127.0f;
 		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 3);
 	}
 
 	// 当たり判定
 	// プレイヤーとエレメントの当たり判定
-	for (auto& element : *m_elementManager->GetElements()) {
+	for (std::vector<Element*>::iterator element_itr = m_elementManager->GetElements()->begin(); 
+		element_itr != m_elementManager->GetElements()->end(); ++element_itr) {
 		// 未使用なら飛ばす
-		if (!element) {
+		if (!*element_itr) {
 			continue;
 		}
-		auto* element_collider = element->GetCollider();
-		for (auto& player : m_players) {
-			if (player->GetCollider()->Collision(element_collider)) {
-				player->GetElement(element->GetID());
-				element->IsUsed(false);
+		const SphereCollider* element_collider = (*element_itr)->GetCollider();
+		for (std::vector<std::unique_ptr<Player>>::iterator player_itr = m_players.begin(); player_itr != m_players.end(); ++player_itr) {
+			if (Collision::HitCheck(element_collider,(*player_itr)->GetCollider())) {
+				(*player_itr)->GetElement((*element_itr)->GetID());
+				(*element_itr)->IsUsed(false);
 			}
 		}
 	}
 
 	// 魔法同士の当たり判定
 	{
-		auto magics = m_magicManager->GetMagics();
 		// 未使用なら飛ばす処理を定義
-		auto pred = [](auto& element) {return element; };
+		auto pred = [](IMagic* magic) {return magic; };
 		// 魔法同士の当たり判定
-		auto itr = std::find_if(magics->begin(), magics->end(), pred);
-		for (auto end = magics->end(); itr != end;) {
-			auto* collider = (*itr)->GetCollider();
-			auto next = std::find_if(itr + 1, end, pred);
-			for (auto itr2 = next; itr2 != end;	itr2 = std::find_if(itr2 + 1, end, pred)) {
+		std::vector<IMagic*>::iterator itr = std::find_if(m_magicManager->GetMagics()->begin(), m_magicManager->GetMagics()->end(), pred);
+		for (std::vector<IMagic*>::iterator end = m_magicManager->GetMagics()->end(); itr != end;) {
+			const SphereCollider* collider = (*itr)->GetCollider();
+			std::vector<IMagic*>::iterator next = std::find_if(itr + 1, end, pred);
+			for (std::vector<IMagic*>::iterator itr2 = next; itr2 != end; itr2 = std::find_if(itr2 + 1, end, pred)) {
 				// 同一プレイヤーの魔法なら判定しない
 				if ((*itr)->GetPlayerID() == (*itr2)->GetPlayerID()) {
 					continue;
 				}
-				if (collider->Collision((*itr2)->GetCollider())) {
+				if (Collision::HitCheck(collider, (*itr2)->GetCollider())) {
 					(*itr)->HitMagic(*itr2);
 					(*itr2)->HitMagic(*itr);
 				}
@@ -137,37 +139,36 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	}
 
 	// プレイヤ―と魔法の当たり判定
-	for (auto& magic : *m_magicManager->GetMagics()) {
+	for (std::vector<IMagic*>::iterator magic_itr = (*m_magicManager->GetMagics()).begin();
+		magic_itr != (*m_magicManager->GetMagics()).end(); ++magic_itr) {
 		// 未使用なら飛ばす
-		if (!magic) {
+		if (!*magic_itr) {
 			continue;
 		}
-		auto* magic_collider = magic->GetCollider();
-		for (auto& player : m_players) {
+		const SphereCollider* magic_collider = (*magic_itr)->GetCollider();
+		for (std::vector<std::unique_ptr<Player>>::iterator player_itr = m_players.begin(); player_itr != m_players.end(); ++player_itr) {
 			// 自身の魔法とは判定しない
-			if (player->GetPlayerID() == magic->GetPlayerID()) {
+			if ((*player_itr)->GetPlayerID() == (*magic_itr)->GetPlayerID()) {
 				continue;
 			}
-			if (player->GetCollider()->Collision(magic_collider)) {
-				magic->HitPlayer(*player->GetCollider());
-				player->HitMagic(magic);
+			if (Collision::HitCheck(magic_collider,(*player_itr)->GetCollider())) {
+				(*magic_itr)->HitPlayer(*(*player_itr)->GetCollider());
+				(*player_itr)->HitMagic(*magic_itr);
 			}
 		}
 	}
 
 	// プレイヤー同士の当たり判定
-	for (auto& player1 : m_players) {
-		auto* player_collider1 = player1->GetCollider();
-		for (auto& player2 : m_players) {
-			if (player1.get() == player2.get()) {
-				continue;
-			}
-			if (player_collider1->Collision(player2->GetCollider())) {
-				player1->HitPlayer(*player2);
-				player2->HitPlayer(*player1);
+	for (std::vector<std::unique_ptr<Player>>::iterator itr1 = m_players.begin(); itr1 != m_players.end() - 1; ++itr1) {
+		const SphereCollider* collider1 = (*itr1)->GetCollider();
+		for (std::vector<std::unique_ptr<Player>>::iterator itr2 = itr1 + 1; itr2 != m_players.end(); ++itr2) {
+			if (Collision::HitCheck(collider1, (*itr2)->GetCollider())) {
+				(*itr1)->HitPlayer(**itr2);
+				(*itr2)->HitPlayer(**itr1);
 			}
 		}
 	}
+	
 
 
 
@@ -198,8 +199,8 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	// フィールドを描画する
 	m_field->Render(view, projection);
 	// プレイヤーを描画する
-	for (auto& player : m_players) {
-		player->Render(view, projection);
+	for (std::vector<std::unique_ptr<Player>>::const_iterator itr = m_players.cbegin(); itr != m_players.cend(); ++itr) {
+		(*itr)->Render(view, projection, spriteBatch);
 	}
 	// エレメントを描画する
 	m_elementManager->Render(view, projection);

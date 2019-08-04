@@ -7,8 +7,8 @@
 //#include <keyboard.h>
 #include "Game.h"
 
-#define  CLASS_NAME		L"DirectX11 Game Framework"
-#define  WINDOW_NAME	L"DirectX11 Game Framework"
+#define  CLASS_NAME		L"Duel Witch"
+#define  WINDOW_NAME	L"Duel Witch"
 
 class Window 
 {

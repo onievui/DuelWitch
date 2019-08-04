@@ -24,9 +24,8 @@ Element::~Element() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void Element::Update(const DX::StepTimer& timer) {
-	timer;
-	auto rot = m_transform.GetRotation();
-	rot.y += float(timer.GetElapsedSeconds())*Math::HarfPI;
+	DirectX::SimpleMath::Vector3 rot = m_transform.GetRotation();
+	rot.y += static_cast<float>(timer.GetElapsedSeconds())*Math::HarfPI;
 	m_transform.SetRotation(rot);
 	m_world = m_transform.GetMatrix();
 }

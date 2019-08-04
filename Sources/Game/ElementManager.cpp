@@ -33,12 +33,11 @@ void ElementManager::Initialize() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void ElementManager::Update(const DX::StepTimer& timer) {
-	timer;
-	for (auto& element : m_elements) {
-		if (element) {
-			element->Update(timer);
-			if (!element->IsUsed()) {
-				element = nullptr;
+	for (std::vector<Element*>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
+		if (*itr) {
+			(*itr)->Update(timer);
+			if (!(*itr)->IsUsed()) {
+				*itr = nullptr;
 			}
 		}
 	}
@@ -50,9 +49,9 @@ void ElementManager::Update(const DX::StepTimer& timer) {
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void ElementManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
-	for (const auto& element : m_elements) {
-		if (element) {
-			element->Render(view, proj);
+	for (std::vector<Element*>::const_iterator itr = m_elements.cbegin(); itr != m_elements.cend(); ++itr) {
+		if (*itr) {
+			(*itr)->Render(view, proj);
 		}
 	}
 }
@@ -72,9 +71,9 @@ void ElementManager::CreateElement(const DirectX::SimpleMath::Vector3& areaStart
 			areaStart.z + (areaEnd.z - areaStart.z)*RandMt::GetRand(1.0f)
 		);
 		Element* created_element = m_elementFactory->Create(ElementID(rand), pos);
-		for (auto& element : m_elements) {
-			if (!element) {
-				element = created_element;
+		for (std::vector<Element*>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
+			if (!*itr) {
+				*itr = created_element;
 				break;
 			}
 		}

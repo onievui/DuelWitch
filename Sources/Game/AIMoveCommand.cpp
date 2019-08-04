@@ -8,7 +8,7 @@
 /// <param name="player">プレイヤー</param>
 /// <param name="timer">タイマー</param>
 void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
-	float elapsedTime = float(timer.GetElapsedSeconds());
+	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
 
 	constexpr float moveSpeed = 16.0f;
 	constexpr float moveSpeedXY = 0.2f;
@@ -18,12 +18,12 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	constexpr float rotYLimit = Math::QuarterPI*0.25f;
 	constexpr float lerpSpeed = 0.025f;
 
-	auto& ref_transform = GetTransform(player);
-	auto& ref_direction = GetMoveDirection(player);
-	const auto& other_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
+	Transform& ref_transform = GetTransform(player);
+	Player::MoveDirection& ref_direction = GetMoveDirection(player);
+	const DirectX::SimpleMath::Vector3& other_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
 
-	auto pos = ref_transform.GetPosition();
-	auto rot = ref_transform.GetRotation();
+	DirectX::SimpleMath::Vector3 pos = ref_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 rot = ref_transform.GetRotation();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
 
@@ -37,7 +37,7 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	// 移動
 	constexpr float nearDistance = 1.8f;
 	bool is_forward = ref_direction == Player::MoveDirection::Forward;
-	auto distance = other_pos - pos;
+	DirectX::SimpleMath::Vector3 distance = other_pos - pos;
 	// すれ違い後の場合
 	if (distance.z < 0 == is_forward) {
 		// 中心に近づく
@@ -137,7 +137,7 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 			rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
 		}
 	}
-	//auto quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
+	//DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
 
 	//pos += DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ*moveSpeed*elapsedTime, quaternion);
 	move.Normalize();
