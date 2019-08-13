@@ -56,25 +56,16 @@ void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& po
 	m_transform.SetPosition(pos);
 
 	// •ûŒüƒxƒNƒgƒ‹‚ðŒ³‚É‰~‚Ì‰ñ“]Šp“x‚ð‹‚ß‚é
-	float rot_x = 0;
-	if (vel.z > 0) {
-		rot_x = acos(vel.y);
-	}
-	else {
-		rot_x = -acos(vel.y);
-	}
-	float rot_z = 0;
-	if (vel.x > 0) {
-		rot_z = -acos(1 - vel.x);
-	}
-	else {
-		rot_z = acos(1 + vel.x);
-	}
-	m_transform.SetRotation(DirectX::SimpleMath::Vector3(rot_x, 0, rot_z));
-
+	DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::Up;
+	DirectX::SimpleMath::Vector3 vec = vel;
+	vec.Normalize();
+	DirectX::SimpleMath::Vector3 axis = up.Cross(vec);
+	float angle = std::acosf(up.Dot(vec) / (up.Length()*vec.Length()));
+	m_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, angle));
+	
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), FIRE_MAGIC_RADIUS);
+	//m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), FIRE_MAGIC_RADIUS);
 	m_object = DirectX::GeometricPrimitive::CreateCone(DirectX11::Get().GetContext().Get(), FIRE_MAGIC_RADIUS, FIRE_MAGIC_RADIUS*2);
 	m_lifeTime = 8.0f;
 }

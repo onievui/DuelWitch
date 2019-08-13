@@ -23,9 +23,7 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	const DirectX::SimpleMath::Vector3& other_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
 
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetPosition();
-	DirectX::SimpleMath::Vector3 rot = ref_transform.GetRotation();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
-
 
 	m_totalElapsedTime += elapsedTime;
 	// 10ïbÇ≈ê‹ÇËï‘Çµ
@@ -44,102 +42,100 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		if (fabsf(pos.x) > 0.3f) {
 			// êiÇ›ÇΩÇ¢ï˚å¸ÇÃîªíË
 			if (pos.x > 0 == is_forward) {
-				rot.z = Math::Lerp(rot.z, -rotZLimit, lerpSpeed);
+				m_euler.z = Math::Lerp(m_euler.z, -rotZLimit, lerpSpeed);
 				if (is_forward) {
-					rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
+					m_euler.y = Math::Lerp(m_euler.y, -rotYLimit, lerpSpeed);
 				}
 				else {
-					rot.y = Math::Lerp(rot.y, Math::PI - rotYLimit, lerpSpeed);
+					m_euler.y = Math::Lerp(m_euler.y, Math::PI - rotYLimit, lerpSpeed);
 				}
 			}
 			else {
-				rot.z = Math::Lerp(rot.z, rotZLimit, lerpSpeed);
+				m_euler.z = Math::Lerp(m_euler.z, rotZLimit, lerpSpeed);
 				if (is_forward) {
-					rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
+					m_euler.y = Math::Lerp(m_euler.y, rotYLimit, lerpSpeed);
 				}
 				else {
-					rot.y = Math::Lerp(rot.y, Math::PI + rotYLimit, lerpSpeed);
+					m_euler.y = Math::Lerp(m_euler.y, Math::PI + rotYLimit, lerpSpeed);
 				}
 			}
 			move.x = (pos.x > 0 ? -1.0f : 1.0f);
 		}
 		else {
-			rot.z = Math::Lerp(rot.z, 0.0f, lerpSpeed);
+			m_euler.z = Math::Lerp(m_euler.z, 0.0f, lerpSpeed);
 			if (is_forward) {
-				rot.y = Math::Lerp(rot.y, 0.0f, lerpSpeed);
+				m_euler.y = Math::Lerp(m_euler.y, 0.0f, lerpSpeed);
 			}
 			else {
-				rot.y = Math::Lerp(rot.y, Math::PI, lerpSpeed);
+				m_euler.y = Math::Lerp(m_euler.y, Math::PI, lerpSpeed);
 			}
 		}
 
 		if (fabsf(pos.y) > 0.5f) {
 			if (pos.y > 0) {
-				rot.x = Math::Lerp(rot.x, rotXLimit, lerpSpeed);
+				m_euler.x = Math::Lerp(m_euler.x, rotXLimit, lerpSpeed);
 				move.y = -1.0f;
 			}
 			else {
-				rot.x = Math::Lerp(rot.x, -rotXLimit, lerpSpeed);
+				m_euler.x = Math::Lerp(m_euler.x, -rotXLimit, lerpSpeed);
 				move.y = 1.0f;
 			}
 		}
 		else {
-			rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
+			m_euler.x = Math::Lerp(m_euler.x, 0.0f, lerpSpeed);
 		}
 	}
 	// Ç∑ÇÍà·Ç¢ëOÇÃèÍçá
 	else {
 		if (fabsf(distance.x) < nearDistance) {
 			if (distance.x < 0 == is_forward) {
-				rot.z = Math::Lerp(rot.z, -rotZLimit, lerpSpeed);
+				m_euler.z = Math::Lerp(m_euler.z, -rotZLimit, lerpSpeed);
 				if (is_forward) {
-					rot.y = Math::Lerp(rot.y, rotYLimit, lerpSpeed);
+					m_euler.y = Math::Lerp(m_euler.y, rotYLimit, lerpSpeed);
 					move.x = 1.0f;
 				}
 				else {
-					rot.y = Math::Lerp(rot.y, Math::PI + rotYLimit, lerpSpeed);
+					m_euler.y = Math::Lerp(m_euler.y, Math::PI + rotYLimit, lerpSpeed);
 					move.x = -1.0f;
 				}
 			}
 			else {
-				rot.z = Math::Lerp(rot.z, rotZLimit, lerpSpeed);
+				m_euler.z = Math::Lerp(m_euler.z, rotZLimit, lerpSpeed);
 				if (is_forward) {
-					rot.y = Math::Lerp(rot.y, -rotYLimit, lerpSpeed);
+					m_euler.y = Math::Lerp(m_euler.y, -rotYLimit, lerpSpeed);
 					move.x = -1.0f;
 				}
 				else {
-					rot.y = Math::Lerp(rot.y, Math::PI - rotYLimit, lerpSpeed);
+					m_euler.y = Math::Lerp(m_euler.y, Math::PI - rotYLimit, lerpSpeed);
 					move.x = 1.0f;
 				}
 			}
 		}
 		else {
-			rot.z = Math::Lerp(rot.z, 0.0f, lerpSpeed);
+			m_euler.z = Math::Lerp(m_euler.z, 0.0f, lerpSpeed);
 			if (is_forward) {
-				rot.y = Math::Lerp(rot.y, 0.0f, lerpSpeed);
+				m_euler.y = Math::Lerp(m_euler.y, 0.0f, lerpSpeed);
 			}
 			else {
-				rot.y = Math::Lerp(rot.y, Math::PI, lerpSpeed);
+				m_euler.y = Math::Lerp(m_euler.y, Math::PI, lerpSpeed);
 			}
 		}
 
 		if (fabsf(distance.y) < nearDistance) {
 			if (distance.y > 0) {
-				rot.x = Math::Lerp(rot.x, rotXLimit, lerpSpeed);
+				m_euler.x = Math::Lerp(m_euler.x, rotXLimit, lerpSpeed);
 				move.y = -1.0f;
 			}
 			else {
-				rot.x = Math::Lerp(rot.x, -rotXLimit, lerpSpeed);
+				m_euler.x = Math::Lerp(m_euler.x, -rotXLimit, lerpSpeed);
 				move.y = 1.0f;
 			}
 		}
 		else {
-			rot.x = Math::Lerp(rot.x, 0.0f, lerpSpeed);
+			m_euler.x = Math::Lerp(m_euler.x, 0.0f, lerpSpeed);
 		}
 	}
-	//DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
 
-	//pos += DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ*moveSpeed*elapsedTime, quaternion);
 	move.Normalize();
 	move *= moveSpeedXY;
 	if (is_forward) {
@@ -152,6 +148,6 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 
 
 	ref_transform.SetPosition(pos);
-	ref_transform.SetRotation(rot);
+	ref_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
 	GetWorld(player) = ref_transform.GetMatrix();
 }

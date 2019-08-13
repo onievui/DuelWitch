@@ -11,7 +11,7 @@
 /// </summary>
 class MoveCommand : public Command {
 public:
-	MoveCommand() : m_totalElapsedTime() {}
+	MoveCommand() : m_totalElapsedTime(), m_euler() {}
 
 public:
 	// 移動コマンドを処理する
@@ -19,8 +19,9 @@ public:
 
 private:
 	// 総経過時間
-	float m_totalElapsedTime;
-
+	float                        m_totalElapsedTime;
+	// オイラー角
+	DirectX::SimpleMath::Vector3 m_euler;
 };
 
 

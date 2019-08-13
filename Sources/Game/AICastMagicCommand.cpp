@@ -17,15 +17,14 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	}
 
 	const Transform& transform = GetTransform(player);
-	const DirectX::SimpleMath::Vector3& rot = transform.GetRotation();
+	const DirectX::SimpleMath::Quaternion& rot = transform.GetRotation();
 	const DirectX::SimpleMath::Vector3& pos = transform.GetPosition();
 	const DirectX::SimpleMath::Vector3& target_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
 
 	// UŒ‚”ÍˆÍ‚ð§ŒÀ‚·‚é
 	constexpr float shotable_angle = Math::PI / 3;
 	DirectX::SimpleMath::Vector3 direction = target_pos - pos;
-	DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
-	DirectX::SimpleMath::Vector3 forward = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, quaternion);
+	DirectX::SimpleMath::Vector3 forward = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, rot);
 	float angle = std::acosf(forward.Dot(direction) / (forward.Length()*direction.Length()));
 	if (angle > shotable_angle) {
 		return;

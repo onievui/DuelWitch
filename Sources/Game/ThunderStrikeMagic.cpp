@@ -90,29 +90,18 @@ void ThunderStrikeMagic::HitMagic(const IMagic* other) {
 	// •X–‚–@‚ÆÕ“Ë‚µ‚½‚ç’µ‚Ë•Ô‚é
 	if (other_id == MagicID::Freeze) {
 		const SphereCollider* collider = other->GetCollider();
-		const DirectX::SimpleMath::Vector3& rot = collider->GetTransform()->GetRotation();
 		DirectX::SimpleMath::Vector3 offset = DirectX::SimpleMath::Vector3::Transform(collider->GetOffset(),
-			DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z));
+			collider->GetTransform()->GetRotation());
 		DirectX::SimpleMath::Vector3 pos = offset + collider->GetTransform()->GetPosition();
 		DirectX::SimpleMath::Vector3 direction = m_transform.GetPosition() - pos;
 		direction.y *= 0.0f;
 		direction.Normalize();
 
-		float rot_x = 0;
-		if (direction.z > 0) {
-			rot_x = acos(direction.y);
-		}
-		else {
-			rot_x = -acos(direction.y);
-		}
-		float rot_z = 0;
-		if (direction.x > 0) {
-			rot_z = -acos(1 - direction.x);
-		}
-		else {
-			rot_z = acos(1 + direction.x);
-		}
-		m_transform.SetRotation(DirectX::SimpleMath::Vector3(rot_x, 0, rot_z));
+		DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::Up;
+		DirectX::SimpleMath::Vector3 axis = up.Cross(direction);
+		float angle = std::acosf(up.Dot(direction) / (up.Length()*direction.Length()));
+		m_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, angle));
+
 		m_vel = direction * m_vel.Length();
 		//’µ‚Ë•Ô‚èŒã‚Í‘ŠŽè‚Ì–‚–@ˆµ‚¢‚É‚È‚é
 		m_playerId = other->GetPlayerID();

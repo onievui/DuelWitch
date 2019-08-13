@@ -25,7 +25,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 	if (m_mouseTracker->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
 		// ÉåÉCÇÃçÏê¨
 		DirectX::SimpleMath::Ray ray = GetCamera(player).ScreenPointToRay(
-			DirectX::SimpleMath::Vector3((float)mouse_state.x, (float)mouse_state.y, 0));
+			DirectX::SimpleMath::Vector3(static_cast<float>(mouse_state.x), static_cast<float>(mouse_state.y), 0));
 		// ïΩñ ÇÃçÏê¨
 		DirectX::SimpleMath::Plane plane = CreatePlaneForMagic(ref_transform, GetMoveDirection(player));
 		float distance;
@@ -57,10 +57,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 /// ïΩñ 
 /// </returns>
 DirectX::SimpleMath::Plane CastMagicCommand::CreatePlaneForMagic(const Transform& transform, Player::MoveDirection direction) {
-	const DirectX::SimpleMath::Vector3& rot = transform.GetRotation();
-	DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
-	DirectX::SimpleMath::Vector3 plane_normal = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ,
-		DirectX::SimpleMath::Matrix::CreateFromQuaternion(quaternion));
+	//DirectX::SimpleMath::Vector3 normal = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
 	DirectX::SimpleMath::Vector3 plane_pos = transform.GetPosition() + DirectX::SimpleMath::Vector3::UnitZ *
 		(direction == Player::MoveDirection::Forward ? 20.0f : -20.0f);
 	DirectX::SimpleMath::Plane plane = DirectX::SimpleMath::Plane(plane_pos, DirectX::SimpleMath::Vector3::UnitZ);
