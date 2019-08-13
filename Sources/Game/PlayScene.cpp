@@ -1,5 +1,6 @@
 #include "PlayScene.h"
 #include <Framework\DirectX11.h>
+#include <Utils\MathUtils.h>
 #include "ISceneRequest.h"
 #include "DebugCamera.h"
 #include "GridFloor.h"

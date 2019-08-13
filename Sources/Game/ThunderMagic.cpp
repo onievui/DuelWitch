@@ -1,5 +1,6 @@
 #include "ThunderMagic.h"
 #include <Framework/DirectX11.h>
+#include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 #include "MagicManager.h"
 #include "Player.h"

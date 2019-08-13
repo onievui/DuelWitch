@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <Framework\DirectX11.h>
+#include <Utils\MathUtils.h>
 #include "Command.h"
 #include "MoveCommand.h"
 #include "AIMoveCommand.h"

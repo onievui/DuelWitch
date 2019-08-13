@@ -44,6 +44,9 @@
     <Filter Include="Game\Object\Magic">
       <UniqueIdentifier>{4f33ca50-14ab-4439-86c0-6896d7f98a78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{ee61a34d-c016-451a-ad4c-a0dd3cb8ddb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -101,9 +104,6 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\ElementManager.cpp">
       <Filter>Game\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Framework\RandMt.cpp">
-      <Filter>Framework</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Game\SceneManager.cpp">
       <Filter>Game\Manager</Filter>
@@ -168,6 +168,9 @@
     <ClCompile Include="Sources\Game\Collision.cpp">
       <Filter>Game\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Utils\RandMt.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -223,9 +226,6 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\ElementFactory.h">
       <Filter>Game\Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Framework\RandMt.h">
-      <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\IScene.h">
       <Filter>Game\Scene</Filter>
@@ -310,6 +310,12 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\Collision.h">
       <Filter>Game\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\RandMt.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\MathUtils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

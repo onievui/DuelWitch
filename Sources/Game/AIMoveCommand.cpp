@@ -1,5 +1,5 @@
 #include "AIMoveCommand.h"
-#include <Framework\DirectX11.h>
+#include <Utils\MathUtils.h>
 
 
 /// <summary>

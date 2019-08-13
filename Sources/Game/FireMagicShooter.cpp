@@ -1,4 +1,4 @@
-#include <Framework\DirectX11.h>
+#include <Utils\MathUtils.h>
 #include "FireMagicShooter.h"
 #include "MagicManager.h"
 #include "MagicFactory.h"

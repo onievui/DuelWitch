@@ -1,5 +1,6 @@
 #include "FireMagic.h"
 #include <Framework/DirectX11.h>
+#include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 #include "Player.h"
 
@@ -56,16 +57,10 @@ void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& po
 	m_transform.SetPosition(pos);
 
 	// •ûŒüƒxƒNƒgƒ‹‚ğŒ³‚É‰~‚Ì‰ñ“]Šp“x‚ğ‹‚ß‚é
-	DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::Up;
-	DirectX::SimpleMath::Vector3 vec = vel;
-	vec.Normalize();
-	DirectX::SimpleMath::Vector3 axis = up.Cross(vec);
-	float angle = std::acosf(up.Dot(vec) / (up.Length()*vec.Length()));
-	m_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, angle));
+	m_transform.SetRotation(Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::Up, vel));
 	
 	m_color = color;
 	m_vel = vel;
-	//m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), FIRE_MAGIC_RADIUS);
 	m_object = DirectX::GeometricPrimitive::CreateCone(DirectX11::Get().GetContext().Get(), FIRE_MAGIC_RADIUS, FIRE_MAGIC_RADIUS*2);
 	m_lifeTime = 8.0f;
 }

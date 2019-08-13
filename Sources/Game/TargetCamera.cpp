@@ -1,5 +1,6 @@
 #include "TargetCamera.h"
 #include <Framework\DirectX11.h>
+#include <Utils\MathUtils.h>
 #include "IObject.h"
 
 

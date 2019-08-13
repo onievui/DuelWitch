@@ -1,5 +1,6 @@
 #include "ThunderStrikeMagic.h"
 #include <Framework/DirectX11.h>
+#include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 #include "Player.h"
 
@@ -97,10 +98,7 @@ void ThunderStrikeMagic::HitMagic(const IMagic* other) {
 		direction.y *= 0.0f;
 		direction.Normalize();
 
-		DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::Up;
-		DirectX::SimpleMath::Vector3 axis = up.Cross(direction);
-		float angle = std::acosf(up.Dot(direction) / (up.Length()*direction.Length()));
-		m_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, angle));
+		m_transform.SetRotation(Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::Up, direction));
 
 		m_vel = direction * m_vel.Length();
 		//’µ‚Ë•Ô‚èŒã‚Í‘ŠŽè‚Ì–‚–@ˆµ‚¢‚É‚È‚é

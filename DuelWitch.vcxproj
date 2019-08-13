@@ -175,7 +175,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Sources\Framework\DirectX11.cpp" />
     <ClCompile Include="Sources\Framework\Game.cpp" />
-    <ClCompile Include="Sources\Framework\RandMt.cpp" />
     <ClCompile Include="Sources\Framework\Window.cpp" />
     <ClCompile Include="Sources\Game\AICastMagicCommand.cpp" />
     <ClCompile Include="Sources\Game\AIMoveCommand.cpp" />
@@ -213,12 +212,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Sources\Utils\RandMt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Framework\DirectX11.h" />
     <ClInclude Include="Sources\Framework\Game.h" />
     <ClInclude Include="Sources\Framework\NonCopyable.h" />
-    <ClInclude Include="Sources\Framework\RandMt.h" />
     <ClInclude Include="Sources\Framework\StepTimer.h" />
     <ClInclude Include="Sources\Framework\Window.h" />
     <ClInclude Include="Sources\Game\AICastMagicCommand.h" />
@@ -262,6 +261,8 @@
     <ClInclude Include="Sources\Game\ThunderStrikeMagicShooter.h" />
     <ClInclude Include="Sources\Game\Transform.h" />
     <ClInclude Include="Sources\pch\pch.h" />
+    <ClInclude Include="Sources\Utils\MathUtils.h" />
+    <ClInclude Include="Sources\Utils\RandMt.h" />
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">

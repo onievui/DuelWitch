@@ -1,5 +1,5 @@
 #include "AICastMagicCommand.h"
-#include <Framework\DirectX11.h>
+#include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 
 

@@ -18,18 +18,6 @@
 #include "NonCopyable.h"
 
 
-namespace Math {
-	static constexpr float PI = 3.141592654f;
-	static constexpr float PI2 = 6.283185307f;
-	static constexpr float HarfPI = 1.570796327f;
-	static constexpr float QuarterPI = 0.785398163f;
-
-	template<class T>
-	static T Lerp(const T& a, const T& b, float t) {
-		return a + (b - a)*t;
-	}
-}
-
 // DirectX11ƒNƒ‰ƒX
 class DirectX11 : public NonCopyable
 {
