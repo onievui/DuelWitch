@@ -1,11 +1,12 @@
 #include "Field.h"
 #include <Framework\DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 
 
 Field::Field() {
-	ID3D11Device* device = DirectX11::Get().GetDevice().Get();
-	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
+	ID3D11Device* device = ServiceLocater<DirectX11>::Get()->GetDevice().Get();
+	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 
 	// コモンステートを作成する
 	m_states = std::make_unique<DirectX::CommonStates>(device);
@@ -65,7 +66,7 @@ void Field::Update() {
 }
 
 void Field::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
-	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
+	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateScale(1.0f);
 	m_skydome->Draw(context, *m_states, world, view, proj);
 
@@ -81,8 +82,8 @@ void Field::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simpl
 }
 
 void Field::DrawTurn(const DirectX::SimpleMath::Matrix& world, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
-	ID3D11Device* device = DirectX11::Get().GetDevice().Get();
-	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
+	ID3D11Device* device = ServiceLocater<DirectX11>::Get()->GetDevice().Get();
+	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 
 	// 頂点情報
 	DirectX::VertexPositionTexture vertex[4] =

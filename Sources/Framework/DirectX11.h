@@ -19,24 +19,24 @@
 
 
 // DirectX11クラス
-class DirectX11 : public NonCopyable
+class DirectX11 //: public NonCopyable
 {
 public:
-	// シングルトンを実装する
-	static DirectX11& Get()
-	{
-		if (s_directX.get() == nullptr)
-		{
-			s_directX.reset(new DirectX11());
-		}
-		return *s_directX.get();
-	}
-	
-	// DirectX11オブジェクトを破棄する
-	static void Dispose() 
-	{
-		s_directX.reset();
-	}
+	//// シングルトンを実装する
+	//static DirectX11& Get()
+	//{
+	//	if (s_directX.get() == nullptr)
+	//	{
+	//		s_directX.reset(new DirectX11());
+	//	}
+	//	return *s_directX.get();
+	//}
+	//
+	//// DirectX11オブジェクトを破棄する
+	//static void Dispose() 
+	//{
+	//	s_directX.reset();
+	//}
 
 	// ウィンドウ幅を取得する
 	int GetWidth() const
@@ -120,8 +120,8 @@ public:
 	void OnDeviceLost();
 
 private:
-	// DirectX11オブジェクトへの静的ポインタ
-	static std::unique_ptr<DirectX11> s_directX;
+	//// DirectX11オブジェクトへの静的ポインタ
+	//static std::unique_ptr<DirectX11> s_directX;
 
 	// 幅
 	int  m_width;

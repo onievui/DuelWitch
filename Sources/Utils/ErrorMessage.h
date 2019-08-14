@@ -19,9 +19,9 @@ static_assert(false, "You can only use one ERROR_TYPE!");
 		#include <Windows.h>
 	#endif
 	#undef ErrorMessage
-	#define ErrorMessage(message) ErrorMessageBoxA(message)
-	inline void ErrorMessageBoxA(LPCSTR message) {
-		MessageBoxA(NULL, message, L"", MB_OK);
+	#define ErrorMessage(message) ErrorMessageBoxW(message)
+	inline void ErrorMessageBoxW(LPCWSTR message) {
+		MessageBoxW(NULL, message, L"", MB_OK);
 	}
 #endif
 

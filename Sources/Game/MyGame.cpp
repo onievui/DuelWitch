@@ -2,6 +2,8 @@
 
 
 #include "MyGame.h"
+#include <Framework\DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include "SceneManager.h"
 
 
@@ -32,7 +34,7 @@ void MyGame::Initialize(int width, int height) {
 	m_keyboard = std::make_unique<DirectX::Keyboard>();
 	// マウスを生成する
 	m_mouse = std::make_unique<DirectX::Mouse>();
-	m_mouse->SetWindow(DirectX11::Get().GetHWnd());
+	m_mouse->SetWindow(ServiceLocater<DirectX11>::Get()->GetHWnd());
 	// シーンマネージャを初期化する
 	m_sceneManager = std::make_unique<SceneManager>();
 	m_sceneManager->Initialize();

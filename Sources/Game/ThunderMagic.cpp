@@ -1,5 +1,6 @@
 #include "ThunderMagic.h"
 #include <Framework/DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 #include "MagicManager.h"
@@ -75,7 +76,7 @@ void ThunderMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3&
 	m_transform.SetPosition(pos);
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), THUNDER_MAGIC_RADIUS);
+	m_object = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get(), THUNDER_MAGIC_RADIUS);
 	m_lifeTime = 5.0f;
 	m_startTimer = false;
 	m_time = 0.0f;

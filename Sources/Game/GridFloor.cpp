@@ -1,23 +1,24 @@
 ﻿#include "GridFloor.h"
 #include <Framework\DirectX11.h>
+#include <Utils\ServiceLocater.h>
 
 // コンストラクタ
 GridFloor::GridFloor(DirectX::CommonStates* states, float size, int divs) : m_states(states), m_size(size), m_divs(divs) {
 	// DirectX11クラスのインスタンスを取得する
-	DirectX11& directX = DirectX11::Get();
+	DirectX11* directX = ServiceLocater<DirectX11>::Get();
 
 	// ベーシックエフェクトを生成する
-	m_basicEffect = std::make_unique<DirectX::BasicEffect>(directX.GetDevice().Get());
+	m_basicEffect = std::make_unique<DirectX::BasicEffect>(directX->GetDevice().Get());
 	// 頂点カラーを有効にする
 	m_basicEffect->SetVertexColorEnabled(true);
 	// プリミティブバッチを生成する
-	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(directX.GetContext().Get());
+	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(directX->GetContext().Get());
 	
 	void const* shaderByteCode;
 	size_t byteCodeLength;
 	m_basicEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 	// ポリゴン表示用のインプットレイアウトを生成する
-	directX.GetDevice()->CreateInputLayout(DirectX::VertexPositionColor::InputElements,
+	directX->GetDevice()->CreateInputLayout(DirectX::VertexPositionColor::InputElements,
 		DirectX::VertexPositionColor::InputElementCount,
 		shaderByteCode, byteCodeLength,
 		m_pInputLayout.GetAddressOf());
@@ -35,7 +36,7 @@ GridFloor::~GridFloor() {
 void GridFloor::Render(DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::Matrix& projection, DirectX::GXMVECTOR color) {
 	DirectX::SimpleMath::Matrix world;
 
-	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
+	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 
 	context->OMSetBlendState(m_states->Opaque(), nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);

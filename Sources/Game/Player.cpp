@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <Framework\DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include "Command.h"
 #include "MoveCommand.h"
@@ -74,7 +75,7 @@ void Player::Lost() {
 /// <param name="directory">ディレクトリ名</param>
 void Player::Create(const std::wstring& fileName, const std::wstring& directory) {
 	// デバイスの取得
-	ID3D11Device* device = DirectX11::Get().GetDevice().Get();
+	ID3D11Device* device = ServiceLocater<DirectX11>::Get()->GetDevice().Get();
 
 	// コモンステートを作成する
 	m_states = std::make_unique<DirectX::CommonStates>(device);
@@ -110,7 +111,7 @@ void Player::Create(const std::wstring& fileName, const std::wstring& directory)
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">プロジェクション行列</param>
 void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
+	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 	if (m_damageTimer <= 0.0f || sin(m_damageTimer*Math::PI2*2)>0) {
 		m_model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
 		m_sphereCollider.Render(view, proj);
@@ -118,7 +119,7 @@ void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 }
 
 void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const {
-	ID3D11DeviceContext* context = DirectX11::Get().GetContext().Get();
+	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 	if (m_damageTimer <= 0.0f || sin(m_damageTimer*Math::PI2 * 2) > 0) {
 		m_model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
 		m_sphereCollider.Render(view, proj);

@@ -8,7 +8,7 @@ extern "C"
 }
 
 // シングルトンのためのポインタ変数を初期化する
-std::unique_ptr<DirectX11> DirectX11::s_directX(nullptr);
+//std::unique_ptr<DirectX11> DirectX11::s_directX(nullptr);
 
 // デバイスを生成する
 void DirectX11::CreateDevice()

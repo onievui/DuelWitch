@@ -1,5 +1,6 @@
 #include "FireMagic.h"
 #include <Framework/DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 #include "Player.h"
@@ -61,7 +62,8 @@ void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& po
 	
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateCone(DirectX11::Get().GetContext().Get(), FIRE_MAGIC_RADIUS, FIRE_MAGIC_RADIUS*2);
+	m_object = DirectX::GeometricPrimitive::CreateCone(ServiceLocater<DirectX11>::Get()->GetContext().Get(),
+		FIRE_MAGIC_RADIUS, FIRE_MAGIC_RADIUS*2);
 	m_lifeTime = 8.0f;
 }
 

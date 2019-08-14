@@ -1,5 +1,6 @@
 #include "LogoScene.h"
 #include <Framework\DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include "ISceneRequest.h"
 
@@ -23,11 +24,11 @@ LogoScene::~LogoScene() {
 /// <param name="pSceneRequest"></param>
 void LogoScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pSceneRequest = pSceneRequest;
-	DirectX11& directX = DirectX11::Get();
+	DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	// コモンステートを生成する
-	m_commonStates = std::make_unique<DirectX::CommonStates>(directX.GetDevice().Get());
+	m_commonStates = std::make_unique<DirectX::CommonStates>(directX->GetDevice().Get());
 	// エフェクトファクトリを生成する
-	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX.GetDevice().Get());
+	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX->GetDevice().Get());
 	// スプライトフォントを生成する
 	//m_font = std::make_unique<DirectX::SpriteFont>(DirectX11::Get().GetDevice().Get(), L"myfile.spritefont");
 

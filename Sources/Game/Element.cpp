@@ -1,5 +1,6 @@
 #include "Element.h"
 #include <Framework\DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 
 /// <summary>
@@ -50,7 +51,7 @@ void Element::Create(ElementID id, const DirectX::SimpleMath::Vector3& pos, cons
 	m_transform.SetPosition(pos);
 	m_world = m_transform.GetMatrix();
 	m_color = color;
-	m_object = DirectX::GeometricPrimitive::CreateCube(DirectX11::Get().GetContext().Get(), ELEMENT_RADIUS*2);
+	m_object = DirectX::GeometricPrimitive::CreateCube(ServiceLocater<DirectX11>::Get()->GetContext().Get(), ELEMENT_RADIUS*2);
 }
 
 /// <summary>

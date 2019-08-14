@@ -1,5 +1,6 @@
 #include "TargetCamera.h"
 #include <Framework\DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include "IObject.h"
 
@@ -43,10 +44,11 @@ TargetCamera::TargetCamera(IObject* targetObject, DirectX::SimpleMath::Vector3 e
 	, m_lerpSpeed(0.5f) {
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, up);
 	m_proj = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(fov, aspectRatio, nearPlane, farPlane);
+	DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	m_viewport= DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(0.5f, -0.5f, 1.0f)) *
 		DirectX::SimpleMath::Matrix::CreateTranslation(DirectX::SimpleMath::Vector3(0.5f, 0.5f, 0.0f)) *
-		DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(static_cast<float>(DirectX11::Get().GetWidth()),
-			static_cast<float>(DirectX11::Get().GetHeight()), 1.0f));
+		DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(static_cast<float>(directX->GetWidth()),
+			static_cast<float>(directX->GetHeight()), 1.0f));
 	m_targetMatrix = m_targetObject->GetMatrix();
 }
 

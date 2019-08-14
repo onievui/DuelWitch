@@ -96,7 +96,8 @@ private:
 	// スプライトバッチ
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	// DirectX11クラスのインスタンス
-	DirectX11& m_directX = DirectX11::Get();
+	//DirectX11& m_directX = DirectX11::Get();
+	std::unique_ptr<DirectX11> m_directX;
 };
 
 #endif	// GAME_DEFINED

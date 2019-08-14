@@ -1,5 +1,6 @@
 #include "FreezeMagic.h"
 #include <Framework/DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include "MagicFactory.h"
 #include "Player.h"
 
@@ -57,7 +58,7 @@ void FreezeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& 
 	m_pPlayerPos = &pos;
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), FREEZE_MAGIC_RADIUS);
+	m_object = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get(), FREEZE_MAGIC_RADIUS);
 	m_lifeTime = 6.0f;
 }
 

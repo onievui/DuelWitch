@@ -1,7 +1,7 @@
 #include "PlayScene.h"
 #include <Framework\DirectX11.h>
-#include <Utils\MathUtils.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\MathUtils.h>
 #include "ISceneRequest.h"
 #include "DebugCamera.h"
 #include "GridFloor.h"
@@ -33,11 +33,11 @@ PlayScene::~PlayScene() {
 /// <param name="pSceneRequest"></param>
 void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pSceneRequest = pSceneRequest;
-	DirectX11& directX = DirectX11::Get();
+	DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	// コモンステートを生成する
-	m_commonStates = std::make_unique<DirectX::CommonStates>(directX.GetDevice().Get());
+	m_commonStates = std::make_unique<DirectX::CommonStates>(directX->GetDevice().Get());
 	// エフェクトファクトリを生成する
-	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX.GetDevice().Get());
+	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX->GetDevice().Get());
 
 	// エレメントマネージャを作成する
 	m_elementManager = std::make_unique<ElementManager>();
@@ -58,11 +58,11 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_players[1]->SetOtherPlayer(m_players[0].get());
 
 	//デバッグカメラを生成する
-	m_debugCamera = std::make_unique<DebugCamera>(directX.GetWidth(), directX.GetHeight());
+	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());
 	//ターゲットカメラを生成する
 	m_targetCamera = std::make_unique<TargetCamera>(m_players[0].get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
-		Math::HarfPI*0.5f, static_cast<float>(directX.GetWidth()) / static_cast<float>(directX.GetHeight()), 0.1f, 10000.0f);
+		Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 10000.0f);
 
 	m_players[0]->SetCamera(m_targetCamera.get());
 	m_players[1]->SetCamera(m_targetCamera.get());
@@ -81,7 +81,6 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer"></param>
 void PlayScene::Update(const DX::StepTimer& timer) {
-	auto a = ServiceLocater<int>::GetIns();
 	// プレイヤーの更新
 	for (std::vector<std::unique_ptr<Player>>::iterator itr = m_players.begin(); itr != m_players.end(); ++itr) {
 		(*itr)->Update(timer);

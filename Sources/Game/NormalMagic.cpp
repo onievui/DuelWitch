@@ -1,5 +1,6 @@
 #include "NormalMagic.h"
 #include <Framework/DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include "MagicFactory.h"
 #include "Player.h"
 
@@ -55,7 +56,7 @@ void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& 
 	m_transform.SetPosition(pos);
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get(), NORMAL_MAGIC_RADIUS);
+	m_object = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get(), NORMAL_MAGIC_RADIUS);
 	m_lifeTime = 10.0f;
 }
 

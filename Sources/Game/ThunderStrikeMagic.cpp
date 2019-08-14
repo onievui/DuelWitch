@@ -1,5 +1,6 @@
 #include "ThunderStrikeMagic.h"
 #include <Framework/DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 #include "Player.h"
@@ -58,8 +59,8 @@ void ThunderStrikeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Ve
 	m_transform.SetPosition(pos);
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateCylinder(DirectX11::Get().GetContext().Get(), THUNDER_STRIKE_MAGIC_LENGTH,
-		THUNDER_STRIKE_MAGIC_RADIUS*2);
+	m_object = DirectX::GeometricPrimitive::CreateCylinder(ServiceLocater<DirectX11>::Get()->GetContext().Get(), 
+		THUNDER_STRIKE_MAGIC_LENGTH, THUNDER_STRIKE_MAGIC_RADIUS*2);
 	m_lifeTime = 5.0f;
 }
 

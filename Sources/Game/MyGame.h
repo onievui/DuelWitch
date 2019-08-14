@@ -2,7 +2,7 @@
 #ifndef MYGAME_DEFINED
 #define MYGAME_DEFINED
 
-#include <Framework\DirectX11.h>
+
 #include <Framework\Window.h>
 #include <Framework\Game.h>
 
@@ -44,8 +44,6 @@ private:
 	// シーンマネージャ
 	std::unique_ptr<SceneManager> m_sceneManager;
 
-	// DirectX11クラスのインスタンスを取得する
-	DirectX11& m_directX = DirectX11::Get();
 };
 
 #endif	// MYGAME_DEFINED

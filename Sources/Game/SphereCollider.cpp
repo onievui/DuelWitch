@@ -1,5 +1,6 @@
 #include "SphereCollider.h"
 #include <Framework\DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include "Transform.h"
 
 
@@ -29,7 +30,7 @@ void SphereCollider::Render(const DirectX::SimpleMath::Matrix& view, const Direc
 	const DirectX::SimpleMath::Vector4& color) const {
 	// é¿ëÃÇ™Ç»Ç¢èÍçáÇÕê∂ê¨Ç∑ÇÈ
 	if (!m_debugSphere) {
-		m_debugSphere = DirectX::GeometricPrimitive::CreateSphere(DirectX11::Get().GetContext().Get());
+		m_debugSphere = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get());
 	}
 	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateScale(m_radius);
 	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_offset);

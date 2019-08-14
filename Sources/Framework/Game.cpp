@@ -1,4 +1,6 @@
 #include "Game.h"
+#include <Utils\ServiceLocater.h>
+
 
 void ExitGame();
 
@@ -16,6 +18,9 @@ Game::Game(int width, int height)
 	m_nCmdShow = si.dwFlags & STARTF_USESHOWWINDOW ? si.wShowWindow : SW_SHOWDEFAULT;
 	// Windowオブジェクトを生成する
 	m_window = std::make_unique<Window>(m_hInstance, m_nCmdShow);
+
+	m_directX = std::make_unique<DirectX11>();
+	ServiceLocater<DirectX11>::Register(m_directX.get());
 }
 
 // ゲームリソースを初期化する
@@ -27,16 +32,16 @@ void Game::Initialize(int width, int height)
 	m_hWnd = m_window->GetHWnd();
 
 	// DirectXの初期化のためウィンドウハンドルを設定する
-	m_directX.SetHWnd(m_hWnd);
+	m_directX->SetHWnd(m_hWnd);
 	// DirectXの初期化のためウィンドウ幅を設定する
-	m_directX.SetWidth(m_width);
+	m_directX->SetWidth(m_width);
 	// DirectXの初期化のためウィンドウ高を設定する
-	m_directX.SetHeight(m_height);
+	m_directX->SetHeight(m_height);
 
 	// デバイスを生成する
-	m_directX.CreateDevice();
+	m_directX->CreateDevice();
 	// リソースを生成する
-	m_directX.CreateResources();
+	m_directX->CreateResources();
 
     // TODO: デフォルト変数timestepモード以外のものが必要な場合タイマー設定を変更する
 	// 例: 60FPS固定タイムステップ更新ロジックに対しては以下を呼び出す
@@ -45,9 +50,9 @@ void Game::Initialize(int width, int height)
     m_timer.SetTargetElapsedSeconds(1.0 / 60.0);
 
 	// SpriteBatchオブジェクトを生成する
-	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_directX.GetContext().Get());
+	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_directX->GetContext().Get());
 	// SpriteFontオブジェクトを生成する
-	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_directX.GetDevice().Get(), L"Resources/Fonts/Protected/Arial.spritefont");
+	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_directX->GetDevice().Get(), L"Resources/Fonts/Protected/Arial.spritefont");
 }
 
 // リソースを生成する
@@ -103,8 +108,8 @@ void Game::Finalize()
 	m_spriteBatch.reset();
 
 	// DirectX11 Graphicsオブジェクトを解放する
-	DirectX11::Get().OnDeviceLost();
-	DirectX11::Dispose();
+	m_directX->OnDeviceLost();
+	ServiceLocater<DirectX11>::Remove();
 	// Windowオブジェクトを解放する
 	m_window.reset();
 }
@@ -118,14 +123,14 @@ void Game::Render(const DX::StepTimer& timer)
 void Game::Clear()
 {
 	// レンダーターゲットビューをクリアする
-	m_directX.GetContext()->ClearRenderTargetView(m_directX.GetRenderTargetView().Get(), DirectX::Colors::CornflowerBlue);
+	m_directX->GetContext()->ClearRenderTargetView(m_directX->GetRenderTargetView().Get(), DirectX::Colors::CornflowerBlue);
 	// デプスステンシルビューをクリアする
-	m_directX.GetContext()->ClearDepthStencilView(m_directX.GetDepthStencilView().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	m_directX->GetContext()->ClearDepthStencilView(m_directX->GetDepthStencilView().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	// レンダータッゲートを設定する
-	m_directX.GetContext()->OMSetRenderTargets(1, m_directX.GetRenderTargetView().GetAddressOf(), m_directX.GetDepthStencilView().Get());
+	m_directX->GetContext()->OMSetRenderTargets(1, m_directX->GetRenderTargetView().GetAddressOf(), m_directX->GetDepthStencilView().Get());
     // ビューポートを設定する
     CD3D11_VIEWPORT viewport(0.0f, 0.0f, static_cast<float>(m_width), static_cast<float>(m_height));
-	m_directX.GetContext()->RSSetViewports(1, &viewport);
+	m_directX->GetContext()->RSSetViewports(1, &viewport);
 }
 
 // バックバッファをスクリーンに送る 
@@ -135,13 +140,11 @@ void Game::Present()
     // to sleep until the next VSync. This ensures we don't waste any cycles rendering
     // frames that will never be displayed to the screen.
 
-	// DirectX11クラスのインスタンスを取得する
-	DirectX11& directX = DirectX11::Get();
-	HRESULT hr = directX.GetSwapChain()->Present(1, 0);
+	HRESULT hr = m_directX->GetSwapChain()->Present(1, 0);
 
     // デバイスがリセットされた場合レンダラを再初期化する必要がある 
     if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET) 
-		directX.OnDeviceLost();
+		m_directX->OnDeviceLost();
     else 
         DX::ThrowIfFailed(hr);
 }
@@ -174,7 +177,7 @@ void Game::OnWindowSizeChanged(int width, int height)
     m_width = std::max(width, 1);
     m_height = std::max(height, 1);
 	
-	DirectX11::Get().CreateResources();
+	m_directX->CreateResources();
     // TODO: ゲームウィンドウのサイズが再変更された場合
 }
 
