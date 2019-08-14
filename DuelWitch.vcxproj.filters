@@ -171,6 +171,9 @@
     <ClCompile Include="Sources\Utils\RandMt.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\LogoScene.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -315,6 +318,18 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Utils\MathUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\LogoScene.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\ErrorMessage.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\ServiceLocater.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\Singleton.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

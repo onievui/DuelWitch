@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include <Framework\DirectX11.h>
 #include <Utils\MathUtils.h>
+#include <Utils\ServiceLocater.h>
 #include "ISceneRequest.h"
 #include "DebugCamera.h"
 #include "GridFloor.h"
@@ -80,6 +81,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer"></param>
 void PlayScene::Update(const DX::StepTimer& timer) {
+	auto a = ServiceLocater<int>::GetIns();
 	// プレイヤーの更新
 	for (std::vector<std::unique_ptr<Player>>::iterator itr = m_players.begin(); itr != m_players.end(); ++itr) {
 		(*itr)->Update(timer);

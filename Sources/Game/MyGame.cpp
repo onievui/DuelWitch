@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 
+
 #include "MyGame.h"
 #include "SceneManager.h"
 
@@ -36,7 +37,7 @@ void MyGame::Initialize(int width, int height) {
 	m_sceneManager = std::make_unique<SceneManager>();
 	m_sceneManager->Initialize();
 	// プレイシーンを呼び出す
-	m_sceneManager->RequestScene("Play");
+	m_sceneManager->RequestScene("Logo");
 
 }
 
@@ -50,16 +51,14 @@ void MyGame::CreateResources() {
 }
 
 // ゲームを更新する
-void MyGame::Update(const DX::StepTimer& timer) 
-{
+void MyGame::Update(const DX::StepTimer& timer) {
 	// シーンを更新する
 	m_sceneManager->Update(timer);
 	
 }
 
 // ゲームを描画する
-void MyGame::Render(const DX::StepTimer& timer) 
-{
+void MyGame::Render(const DX::StepTimer& timer) {
 	// 最初の更新の前は何も描画しないようにする
 	if (timer.GetFrameCount() == 0) 
 		return;
@@ -78,8 +77,7 @@ void MyGame::Render(const DX::StepTimer& timer)
 }
 
 // 後始末をする
-void MyGame::Finalize() 
-{
+void MyGame::Finalize() {
 	// 基底クラスのFinalizeを呼び出す
 	Game::Finalize();
 
@@ -88,8 +86,7 @@ void MyGame::Finalize()
 }
 
 // FPSを描画する
-void MyGame::DrawFPS(const DX::StepTimer& timer)
-{
+void MyGame::DrawFPS(const DX::StepTimer& timer) {
 	// FPS文字列を生成する
 	std::wstring fpsString = L"fps = " + std::to_wstring((unsigned int)timer.GetFramesPerSecond());
 	// FPSを描画する

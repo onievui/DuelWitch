@@ -1,5 +1,7 @@
 #include "SceneManager.h"
+#include "LogoScene.h"
 #include "PlayScene.h"
+
 
 /// <summary>
 /// シーンの変更を要求する
@@ -29,7 +31,7 @@ void SceneManager::PopScene(int num) {
 /// </summary>
 void SceneManager::Initialize() {
 	m_sceneCreateFunc.clear();
-	//m_sceneCreateFunc.emplace("Logo",   MakeSceneCreateFunc<LogoScene>());
+	m_sceneCreateFunc.emplace("Logo",   MakeSceneCreateFunc<LogoScene>());
 	//m_sceneCreateFunc.emplace("Title",  MakeSceneCreateFunc<TitleScene>());
 	m_sceneCreateFunc.emplace("Play",   MakeSceneCreateFunc<PlayScene>());
 	//m_sceneCreateFunc.emplace("Result", MakeSceneCreateFunc<ResultScene>());

@@ -3,6 +3,9 @@
 #define MATH_UTILS_DEFINED
 
 
+/// <summary>
+/// ”ŠwŠÖŒWƒNƒ‰ƒX
+/// </summary>
 class Math {
 public:
 	static constexpr float PI = 3.141592654f;
