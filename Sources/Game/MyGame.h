@@ -7,9 +7,13 @@
 #include <Framework\Game.h>
 
 
+class ResourceManager;
 class SceneManager;
 
 
+/// <summary>
+/// ゲームループクラス
+/// </summary>
 class MyGame : public Game {
 public:
 	// コンストラクタ
@@ -32,17 +36,19 @@ public:
 
 private:
 	// 幅
-	int m_width;
+	int                                m_width;
 	// 高さ
-	int m_height;
+	int                                m_height;
 
 	// キーボード
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
 	// マウス
-	std::unique_ptr<DirectX::Mouse> m_mouse;
+	std::unique_ptr<DirectX::Mouse>    m_mouse;
 
 	// シーンマネージャ
-	std::unique_ptr<SceneManager> m_sceneManager;
+	std::unique_ptr<SceneManager>      m_sceneManager;
+	// リソースマネージャ
+	std::unique_ptr<ResourceManager>   m_resourceManager;
 
 };
 

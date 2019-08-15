@@ -22,26 +22,26 @@ public:
 	Singleton& operator=(Singleton&&) = delete;
 
 public:
-	// インスタンスの取得
+	// インスタンスを取得する
 	static T* GetIns() {
 		return s_getFunc();
 	}
 
-	// インスタンスの解放
+	// インスタンスを解放する
 	static void Dispose() {
 		s_instance.reset(nullptr);
 		s_getFunc = &InitializeGetIns;
 	}
 
 private:
-	// 初期化してから取得
+	// 初期化してから取得する
 	static T* InitializeGetIns() {
 		s_instance = std::make_unique<T>();
 		s_getFunc = &NormalGetIns;
 		return s_instance.get();
 	}
 
-	// そのまま取得
+	// そのまま取得する
 	static T* NormalGetIns() {
 		return s_instance.get();
 	}
@@ -53,7 +53,7 @@ private:
 	static std::function<T*()> s_getFunc;
 };
 
-// 静的メンバの初期化
+// 静的メンバを初期化する
 template <class T>
 std::unique_ptr<T>  Singleton<T>::s_instance = nullptr;
 template <class T>

@@ -1,13 +1,13 @@
 #include "Sources\Game\MyGame.h"
 
 // ウィンドウ幅
-const int width = 1024;
+constexpr int width = 1024;
 // ウィンドウ高
-const int height = 768;
+constexpr int height = 768;
 
 // エントリポイント
-int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
-{
+int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow) {
+	hInstance, nCmdShow;
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 

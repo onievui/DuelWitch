@@ -42,6 +42,7 @@ void LogoScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer"></param>
 void LogoScene::Update(const DX::StepTimer& timer) {
+	timer;
 	m_tracker->Update(DirectX::Keyboard::Get().GetState());
 
 	if (m_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Space)) {

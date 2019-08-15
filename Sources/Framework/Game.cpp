@@ -6,8 +6,7 @@ void ExitGame();
 
 // コンストラクタ
 Game::Game(int width, int height)
-	: m_hWnd(0), m_width(width), m_height(height), m_featureLevel(D3D_FEATURE_LEVEL_9_1) 
-{
+	: m_hWnd(0), m_width(width), m_height(height), m_featureLevel(D3D_FEATURE_LEVEL_9_1) {
 	// スタートアップ情報
 	STARTUPINFO si{};
 	// インスタンスハンドルを取得する
@@ -24,8 +23,8 @@ Game::Game(int width, int height)
 }
 
 // ゲームリソースを初期化する
-void Game::Initialize(int width, int height)
-{
+void Game::Initialize(int width, int height) {
+	width, height;
 	// Windowオブジェクトを初期化する
 	m_window->Initialize(m_width, m_height);
 	// Windowオブジェクトの生成後にウィンドウハンドルを取得する
@@ -95,13 +94,12 @@ MSG Game::Run()
 }
 
 // ゲームを更新する
-void Game::Update(const DX::StepTimer& timer)
-{
+void Game::Update(const DX::StepTimer& timer) {
+	timer;
 }
 
 // 後始末をする
-void Game::Finalize() 
-{
+void Game::Finalize() {
 	// Fontオブジェクトを解放する
 	m_spriteFont.reset();
 	// SpriteBatchオブジェクトを解放する
@@ -115,8 +113,8 @@ void Game::Finalize()
 }
 
 // シーンを描画する
-void Game::Render(const DX::StepTimer& timer)
-{
+void Game::Render(const DX::StepTimer& timer) {
+	timer;
 }
 
 // バックバッファをクリアする

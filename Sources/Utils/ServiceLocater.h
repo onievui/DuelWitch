@@ -12,18 +12,18 @@ template <class T>
 /// </summary>
 class ServiceLocater {
 public:
-	// サービスの取得
+	// サービスを取得する
 	static T* Get() {
 		return s_getFunc();
 	}
 
-	// サービスの登録
+	// サービスを登録する
 	static void Register(T* service) {
 		s_service = service;
 		s_getFunc = (service ? &GetService : &NullService);
 	}
 
-	// サービスの解除
+	// サービスを解除する
 	static void Remove() {
 		s_service = nullptr;
 		s_getFunc = &NullService;
@@ -48,7 +48,7 @@ private:
 
 };
 
-// 静的メンバの初期化
+// 静的メンバを初期化する
 template <class T>
 T*                  ServiceLocater<T>::s_service = nullptr;
 template <class T>

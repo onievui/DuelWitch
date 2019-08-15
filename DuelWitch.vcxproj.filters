@@ -47,6 +47,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{ee61a34d-c016-451a-ad4c-a0dd3cb8ddb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Resource">
+      <UniqueIdentifier>{a8f0914d-a87a-4af0-91f5-771c188b541a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -174,6 +177,12 @@
     <ClCompile Include="Sources\Game\LogoScene.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Utils\Resource.cpp">
+      <Filter>Utils\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\ResourceManager.cpp">
+      <Filter>Game\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -183,9 +192,6 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\Game.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Framework\NonCopyable.h">
       <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Framework\StepTimer.h">
@@ -331,6 +337,18 @@
     </ClInclude>
     <ClInclude Include="Sources\Utils\Singleton.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\Resource.h">
+      <Filter>Utils\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\NonCopyable.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ResourceManager.h">
+      <Filter>Game\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ResourceID.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -201,6 +201,7 @@
     <ClCompile Include="Sources\Game\Player.cpp" />
     <ClCompile Include="Sources\Game\MyGame.cpp" />
     <ClCompile Include="Sources\Game\PlayScene.cpp" />
+    <ClCompile Include="Sources\Game\ResourceManager.cpp" />
     <ClCompile Include="Sources\Game\SceneManager.cpp" />
     <ClCompile Include="Sources\Game\SphereCollider.cpp" />
     <ClCompile Include="Sources\Game\TargetCamera.cpp" />
@@ -214,11 +215,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Sources\Utils\RandMt.cpp" />
+    <ClCompile Include="Sources\Utils\Resource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Framework\DirectX11.h" />
     <ClInclude Include="Sources\Framework\Game.h" />
-    <ClInclude Include="Sources\Framework\NonCopyable.h" />
     <ClInclude Include="Sources\Framework\StepTimer.h" />
     <ClInclude Include="Sources\Framework\Window.h" />
     <ClInclude Include="Sources\Game\AICastMagicCommand.h" />
@@ -241,6 +242,8 @@
     <ClInclude Include="Sources\Game\MoveCommand.h" />
     <ClInclude Include="Sources\Game\NormalMagic.h" />
     <ClInclude Include="Sources\Game\NormalMagicShooter.h" />
+    <ClInclude Include="Sources\Game\ResourceID.h" />
+    <ClInclude Include="Sources\Game\ResourceManager.h" />
     <ClInclude Include="Sources\Game\SphereCollider.h" />
     <ClInclude Include="Sources\Game\DebugCamera.h" />
     <ClInclude Include="Sources\Game\Element.h" />
@@ -265,7 +268,9 @@
     <ClInclude Include="Sources\pch\pch.h" />
     <ClInclude Include="Sources\Utils\ErrorMessage.h" />
     <ClInclude Include="Sources\Utils\MathUtils.h" />
+    <ClInclude Include="Sources\Utils\NonCopyable.h" />
     <ClInclude Include="Sources\Utils\RandMt.h" />
+    <ClInclude Include="Sources\Utils\Resource.h" />
     <ClInclude Include="Sources\Utils\ServiceLocater.h" />
     <ClInclude Include="Sources\Utils\Singleton.h" />
   </ItemGroup>

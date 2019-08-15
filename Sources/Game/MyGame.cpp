@@ -4,6 +4,7 @@
 #include "MyGame.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include "ResourceManager.h"
 #include "SceneManager.h"
 
 
@@ -35,12 +36,17 @@ void MyGame::Initialize(int width, int height) {
 	// マウスを生成する
 	m_mouse = std::make_unique<DirectX::Mouse>();
 	m_mouse->SetWindow(ServiceLocater<DirectX11>::Get()->GetHWnd());
+
+	// リソースマネージャを初期化する
+	m_resourceManager = std::make_unique<ResourceManager>();
+	// リソースマネージャをサービスロケータに登録する
+	ServiceLocater<ResourceManager>::Register(m_resourceManager.get());
+
 	// シーンマネージャを初期化する
 	m_sceneManager = std::make_unique<SceneManager>();
 	m_sceneManager->Initialize();
 	// プレイシーンを呼び出す
 	m_sceneManager->RequestScene("Logo");
-
 }
 
 /// <summary>
@@ -62,11 +68,9 @@ void MyGame::Update(const DX::StepTimer& timer) {
 // ゲームを描画する
 void MyGame::Render(const DX::StepTimer& timer) {
 	// 最初の更新の前は何も描画しないようにする
-	if (timer.GetFrameCount() == 0) 
+	if (timer.GetFrameCount() == 0) {
 		return;
-
-	// TODO: レンダリングコードを追加する
-	float time = float(timer.GetTotalSeconds());
+	}
 
 	// バッファをクリアする
 	Clear();

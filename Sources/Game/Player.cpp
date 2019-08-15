@@ -2,6 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
+#include "ResourceManager.h"
 #include "Command.h"
 #include "MoveCommand.h"
 #include "AIMoveCommand.h"
@@ -100,9 +101,9 @@ void Player::Create(const std::wstring& fileName, const std::wstring& directory)
 	});
 
 	//テクスチャのロード
-	DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element1.png", nullptr, m_textures[0].GetAddressOf());
-	DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element2.png", nullptr, m_textures[1].GetAddressOf());
-	DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element3.png", nullptr, m_textures[2].GetAddressOf());
+	//DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element1.png", nullptr, m_textures[0].GetAddressOf());
+	//DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element2.png", nullptr, m_textures[1].GetAddressOf());
+	//DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element3.png", nullptr, m_textures[2].GetAddressOf());
 }
 
 /// <summary>
@@ -126,9 +127,11 @@ void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 	}
 	if (m_id == PlayerID::Player2)
 		return;
+
 	int i = m_haveElements.size() - 1;
 	for (std::list<ElementID>::const_reverse_iterator itr = m_haveElements.rbegin(); itr != m_haveElements.rend(); ++itr) {
-		spriteBatch->Draw(m_textures[static_cast<int>(*itr)].Get(), DirectX::SimpleMath::Vector2(20 + i * 40.0f, 630.0f), nullptr,
+		std::shared_ptr<TextureResource> texture = ServiceLocater<ResourceManager>::Get()->GetTexture(static_cast<TextureID>(*itr));
+		spriteBatch->Draw(texture->GetResource().Get(), DirectX::SimpleMath::Vector2(20 + i * 40.0f, 630.0f), nullptr,
 			DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2(1.5f, 1.5f));
 		--i;
 	}

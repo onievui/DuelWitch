@@ -3,6 +3,7 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include "ISceneRequest.h"
+#include "ResourceManager.h"
 #include "DebugCamera.h"
 #include "GridFloor.h"
 #include "Player.h"
@@ -39,6 +40,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	// エフェクトファクトリを生成する
 	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX->GetDevice().Get());
 
+	// リソースをロードする
+	ServiceLocater<ResourceManager>::Get()->Load();
+
 	// エレメントマネージャを作成する
 	m_elementManager = std::make_unique<ElementManager>();
 	m_elementManager->Initialize();
@@ -71,8 +75,6 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 400.0f, 200);
 	// フィールドを生成する
 	m_field = std::make_unique<Field>();
-	// スプライトフォントを生成する
-	//m_font = std::make_unique<DirectX::SpriteFont>(DirectX11::Get().GetDevice().Get(), L"myfile.spritefont");
 	
 }
 
@@ -216,6 +218,7 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 /// プレイシーンを終了する
 /// </summary>
 void PlayScene::Finalize() {
-
+	// リソースを解放する
+	ServiceLocater<ResourceManager>::Get()->Release();
 }
 
