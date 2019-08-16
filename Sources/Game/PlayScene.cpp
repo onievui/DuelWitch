@@ -2,8 +2,8 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
+#include "ResourceLoader.h"
 #include "ISceneRequest.h"
-#include "ResourceManager.h"
 #include "DebugCamera.h"
 #include "GridFloor.h"
 #include "Player.h"
@@ -41,7 +41,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX->GetDevice().Get());
 
 	// リソースをロードする
-	ServiceLocater<ResourceManager>::Get()->Load();
+	ResourceLoader::Load(ResourceLoaderID::PlayScene);
 
 	// エレメントマネージャを作成する
 	m_elementManager = std::make_unique<ElementManager>();
@@ -219,6 +219,6 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 /// </summary>
 void PlayScene::Finalize() {
 	// リソースを解放する
-	ServiceLocater<ResourceManager>::Get()->Release();
+	ResourceLoader::Release();
 }
 

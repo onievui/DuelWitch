@@ -4,7 +4,7 @@
 #include "MyGame.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
-#include "ResourceManager.h"
+#include <Utils\ResourceManager.h>
 #include "SceneManager.h"
 
 
@@ -37,10 +37,11 @@ void MyGame::Initialize(int width, int height) {
 	m_mouse = std::make_unique<DirectX::Mouse>();
 	m_mouse->SetWindow(ServiceLocater<DirectX11>::Get()->GetHWnd());
 
-	// リソースマネージャを初期化する
-	m_resourceManager = std::make_unique<ResourceManager>();
-	// リソースマネージャをサービスロケータに登録する
-	ServiceLocater<ResourceManager>::Register(m_resourceManager.get());
+	// リソースマネージャを生成してサービスロケータに登録する
+	CreateAndRegister(m_textureResourceManager, L"テクスチャ");
+	CreateAndRegister(m_geometricPrimitiveResourceManager, L"ジオメトリックプリミティブ");
+	CreateAndRegister(m_fontResourceManager, L"フォント");
+
 
 	// シーンマネージャを初期化する
 	m_sceneManager = std::make_unique<SceneManager>();

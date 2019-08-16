@@ -15,6 +15,17 @@ enum class TextureID {
 };
 
 /// <summary>
+/// ジオメトリックプリミティブID
+/// </summary>
+enum class GeometricPrimitiveID {
+	FireMagic,
+	FreezeMagic,
+	ThunderMagic,
+	ThunderStrikeMagic,
+	Num
+};
+
+/// <summary>
 /// サウンドID
 /// </summary>
 enum class SoundID {

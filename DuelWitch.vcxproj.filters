@@ -180,8 +180,11 @@
     <ClCompile Include="Sources\Utils\Resource.cpp">
       <Filter>Utils\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\ResourceManager.cpp">
-      <Filter>Game\Manager</Filter>
+    <ClCompile Include="Sources\Utils\ResourceManager.cpp">
+      <Filter>Utils\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\ResourceLoader.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,10 +347,13 @@
     <ClInclude Include="Sources\Utils\NonCopyable.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\ResourceManager.h">
-      <Filter>Game\Manager</Filter>
+    <ClInclude Include="Sources\Utils\ResourceManager.h">
+      <Filter>Utils\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\ResourceID.h">
+    <ClInclude Include="Sources\Utils\ResourceID.h">
+      <Filter>Utils\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ResourceLoader.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>

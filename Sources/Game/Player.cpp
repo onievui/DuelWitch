@@ -2,7 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
-#include "ResourceManager.h"
+#include <Utils\ResourceManager.h>
 #include "Command.h"
 #include "MoveCommand.h"
 #include "AIMoveCommand.h"
@@ -130,7 +130,7 @@ void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 
 	int i = m_haveElements.size() - 1;
 	for (std::list<ElementID>::const_reverse_iterator itr = m_haveElements.rbegin(); itr != m_haveElements.rend(); ++itr) {
-		std::shared_ptr<TextureResource> texture = ServiceLocater<ResourceManager>::Get()->GetTexture(static_cast<TextureID>(*itr));
+		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(static_cast<TextureID>(*itr));
 		spriteBatch->Draw(texture->GetResource().Get(), DirectX::SimpleMath::Vector2(20 + i * 40.0f, 630.0f), nullptr,
 			DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2(1.5f, 1.5f));
 		--i;

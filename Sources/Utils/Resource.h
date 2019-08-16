@@ -3,13 +3,18 @@
 #define RESOURCE_DEFINED
 
 
-template <class T>
+#include "ResourceID.h"
+
+
+template <class T, class U>
 /// <summary>
 /// リソースクラス
 /// </summary>
 class Resource {
 public:
-	using Type = T;
+	using Type   = T;
+	using IDType = U;
+
 public:
 	// コンストラクタ
 	Resource() {
@@ -38,7 +43,7 @@ protected:
 /// <summary>
 /// テクスチャリソース
 /// </summary>
-class TextureResource : public Resource<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> {
+class TextureResource : public Resource<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>, TextureID> {
 public:
 	// テクスチャリソースがあるディレクトリ名
 	static const std::wstring TEXTURE_DIR;
@@ -54,10 +59,27 @@ public:
 	bool IsValid(int index = 0) const;
 };
 
+
+/// <summary>
+/// ジオメトリックプリミティブリソース
+/// </summary>
+class GeometricPrimitiveResource : public Resource<std::unique_ptr<DirectX::GeometricPrimitive>, GeometricPrimitiveID> {
+public:
+	// コンストラクタ
+	GeometricPrimitiveResource(std::unique_ptr<DirectX::GeometricPrimitive> resource);
+	// デストラクタ
+	~GeometricPrimitiveResource();
+
+public:
+	// リソースが有効かどうか確認する
+	bool IsValid(int index = 0)const;
+
+};
+
 /// <summary>
 /// フォントリソース
 /// </summary>
-class FontResource : public Resource<std::unique_ptr<DirectX::SpriteFont>> {
+class FontResource : public Resource<std::unique_ptr<DirectX::SpriteFont>, FontID> {
 public:
 	// フォントリソースがあるディレクトリ名
 	static const std::wstring FONT_DIR;

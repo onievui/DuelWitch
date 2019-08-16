@@ -7,8 +7,9 @@
 const std::wstring TextureResource::TEXTURE_DIR = L"Resources/Textures/";
 const std::wstring FontResource::FONT_DIR       = L"Resources/Textures/";
 
-TextureResource::Type Resource<TextureResource::Type>::m_defaultResource = nullptr;
-FontResource::Type Resource<FontResource::Type>::m_defaultResource = nullptr;
+TextureResource::Type Resource<TextureResource::Type, TextureResource::IDType>::m_defaultResource = nullptr;
+GeometricPrimitiveResource::Type Resource<GeometricPrimitiveResource::Type, GeometricPrimitiveResource::IDType>::m_defaultResource = nullptr;
+FontResource::Type Resource<FontResource::Type, FontResource::IDType>::m_defaultResource = nullptr;
 
 /// <summary>
 /// コンストラクタ
@@ -40,6 +41,37 @@ TextureResource::~TextureResource() {
 bool TextureResource::IsValid(int index) const {
 	return m_resources[index].Get() != m_defaultResource.Get();
 }
+
+
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="resource">ジオメトリックプリミティブ</param>
+GeometricPrimitiveResource::GeometricPrimitiveResource(std::unique_ptr<DirectX::GeometricPrimitive> resource) {
+	m_resources.emplace_back(std::move(resource));
+	if (m_resources.back().get() == m_defaultResource.get()) {
+		ErrorMessage(L"ジオメトリックプリミティブの生成に失敗しました");
+	}
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+GeometricPrimitiveResource::~GeometricPrimitiveResource() {
+}
+
+/// <summary>
+/// リソースが有効かどうか確認する
+/// </summary>
+/// <param name="index">リソースの番号</param>
+/// <returns>
+/// true  : 有効
+/// false : 無効
+/// </returns>
+bool GeometricPrimitiveResource::IsValid(int index) const {
+	return m_resources[index].get() != m_defaultResource.get();
+}
+
 
 /// <summary>
 /// コンストラクタ
