@@ -1,6 +1,7 @@
 #include "FireMagic.h"
 #include <Framework/DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 #include "Player.h"
@@ -10,8 +11,7 @@
 /// コンストラクタ
 /// </summary>
 FireMagic::FireMagic()
-	: Magic(MagicID::Fire)
-	, m_object() {
+	: Magic(MagicID::Fire) {
 	m_sphereCollider.SetRadius(FIRE_MAGIC_RADIUS);
 	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, -FIRE_MAGIC_RADIUS/2, 0));
 }
@@ -42,7 +42,7 @@ void FireMagic::Update(const DX::StepTimer& timer) {
 /// 炎魔法を開放する
 /// </summary>
 void FireMagic::Lost() {
-	m_object.reset();
+
 }
 
 /// <summary>
@@ -62,8 +62,6 @@ void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& po
 	
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateCone(ServiceLocater<DirectX11>::Get()->GetContext().Get(),
-		FIRE_MAGIC_RADIUS, FIRE_MAGIC_RADIUS*2);
 	m_lifeTime = 8.0f;
 }
 
@@ -73,8 +71,9 @@ void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& po
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	m_object->Draw(m_world, view, proj, m_color, nullptr, true);
-	//m_sphereCollider.Render(view, proj);
+	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
+		->GetResource(GeometricPrimitiveID::FireMagic);
+	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
 }
 
 /// <summary>

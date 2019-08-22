@@ -46,7 +46,7 @@ public:
 	// プレイヤーを開放する
 	void Lost() override;
 	// プレイヤーを生成する
-	void Create(const std::wstring& fileName, const std::wstring& directory = L"");
+	void Create();
 	// プレイヤーを描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const;
@@ -72,8 +72,6 @@ public:
 private:
 	// コモンステート
 	std::unique_ptr<DirectX::CommonStates> m_states;
-	// モデル
-	std::unique_ptr<DirectX::Model>        m_model;
 	// プレイヤーID
 	PlayerID                               m_id;
 	// 進行方向
@@ -93,8 +91,6 @@ private:
 
 	// ダメージ演出用タイマー
 	float                                  m_damageTimer;
-	// エレメントUI画像
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_textures[3];
 
 	// 敵プレイヤー
 	Player*                                m_otherPlayer;

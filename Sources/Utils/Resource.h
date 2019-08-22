@@ -50,7 +50,7 @@ public:
 
 public:
 	// コンストラクタ
-	TextureResource(const std::wstring& filename);
+	TextureResource(const std::wstring& fileName);
 	// デストラクタ
 	~TextureResource();
 
@@ -66,7 +66,14 @@ public:
 class GeometricPrimitiveResource : public Resource<std::unique_ptr<DirectX::GeometricPrimitive>, GeometricPrimitiveID> {
 public:
 	// コンストラクタ
-	GeometricPrimitiveResource(std::unique_ptr<DirectX::GeometricPrimitive> resource);
+	GeometricPrimitiveResource(std::unique_ptr<DirectX::GeometricPrimitive>&& resource);
+	// ムーブコンストラクタ
+	GeometricPrimitiveResource(GeometricPrimitiveResource&& from) {
+		for (std::vector<std::unique_ptr<DirectX::GeometricPrimitive>>::iterator itr = from.m_resources.begin();
+			itr != from.m_resources.end(); ++itr) {
+			m_resources.emplace_back(std::move(*itr));
+		}
+	}
 	// デストラクタ
 	~GeometricPrimitiveResource();
 
@@ -75,6 +82,35 @@ public:
 	bool IsValid(int index = 0)const;
 
 };
+
+
+/// <summary>
+/// モデルリリース
+/// </summary>
+class ModelResource :public Resource<std::unique_ptr<DirectX::Model>, ModelID> {
+public:
+	// モデルリソースがあるディレクトリ名
+	static const std::wstring MODEL_DIR;
+
+public:
+	// コンストラクタ
+	ModelResource(const std::wstring& fileName, const std::wstring& directory = L"");
+	// ムーブコンストラクタ
+	ModelResource(ModelResource&& from) {
+		for (std::vector<std::unique_ptr<DirectX::Model>>::iterator itr = from.m_resources.begin();
+			itr != from.m_resources.end(); ++itr) {
+			m_resources.emplace_back(std::move(*itr));
+		}
+	}
+	// デストラクタ
+	~ModelResource();
+
+public:
+	// リソースが有効かどうか確認する
+	bool IsValid(int index = 0)const;
+
+};
+
 
 /// <summary>
 /// フォントリソース

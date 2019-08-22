@@ -1,6 +1,7 @@
 #include "FreezeMagic.h"
 #include <Framework/DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\ResourceManager.h>
 #include "MagicFactory.h"
 #include "Player.h"
 
@@ -10,7 +11,6 @@
 /// </summary>
 FreezeMagic::FreezeMagic()
 	: Magic(MagicID::Freeze)
-	, m_object()
 	, m_pPlayerPos() {
 	m_sphereCollider.SetRadius(FREEZE_MAGIC_RADIUS);
 }
@@ -41,7 +41,7 @@ void FreezeMagic::Update(const DX::StepTimer& timer) {
 /// 氷魔法を開放する
 /// </summary>
 void FreezeMagic::Lost() {
-	m_object.reset();
+
 }
 
 /// <summary>
@@ -58,7 +58,6 @@ void FreezeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& 
 	m_pPlayerPos = &pos;
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get(), FREEZE_MAGIC_RADIUS);
 	m_lifeTime = 6.0f;
 }
 
@@ -68,7 +67,9 @@ void FreezeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& 
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void FreezeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	m_object->Draw(m_world, view, proj, m_color, nullptr, true);
+	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
+		->GetResource(GeometricPrimitiveID::FreezeMagic);
+	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
 }
 
 /// <summary>

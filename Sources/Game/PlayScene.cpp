@@ -56,8 +56,8 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 		DirectX::SimpleMath::Vector3::Zero, Player::MoveDirection::Forward));
 	m_players.emplace_back(std::make_unique<Player>(m_magicManager.get(), PlayerID::Player2,
 		DirectX::SimpleMath::Vector3(0, 0, 150), Player::MoveDirection::Backward));
-	m_players[0]->Create(L"bloom.cmo", L"Resources/Models/Protected");
-	m_players[1]->Create(L"bloom.cmo", L"Resources/Models/Protected");
+	m_players[0]->Create();
+	m_players[1]->Create();
 	m_players[0]->SetOtherPlayer(m_players[1].get());
 	m_players[1]->SetOtherPlayer(m_players[0].get());
 
@@ -93,13 +93,16 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	// 魔法マネージャの更新
 	m_magicManager->Update(timer);
 
-	if (timer.GetFrameCount() % 600 == 0) {
+	static float time = 0;
+	time += static_cast<float>(timer.GetElapsedSeconds());
+	if (time >= 10.0f) {
 		DirectX::SimpleMath::Vector3 area_offset(0, 0, 23);
 		DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3(-3, -3, -2);
 		DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3(3, 3, 2);
 		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 3);
 		area_offset.z = 127.0f;
 		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 3);
+		time -= 10.0f;
 	}
 
 	// 当たり判定

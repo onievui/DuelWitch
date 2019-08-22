@@ -1,6 +1,7 @@
 #include "NormalMagic.h"
 #include <Framework/DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\ResourceManager.h>
 #include "MagicFactory.h"
 #include "Player.h"
 
@@ -9,8 +10,7 @@
 /// コンストラクタ
 /// </summary>
 NormalMagic::NormalMagic()
-	: Magic(MagicID::Normal)
-	, m_object() {
+	: Magic(MagicID::Normal) {
 	m_sphereCollider.SetRadius(NORMAL_MAGIC_RADIUS);
 }
 
@@ -40,7 +40,7 @@ void NormalMagic::Update(const DX::StepTimer& timer) {
 /// 通常魔法を開放する
 /// </summary>
 void NormalMagic::Lost() {
-	m_object.reset();
+
 }
 
 /// <summary>
@@ -56,7 +56,6 @@ void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& 
 	m_transform.SetPosition(pos);
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get(), NORMAL_MAGIC_RADIUS);
 	m_lifeTime = 10.0f;
 }
 
@@ -66,7 +65,9 @@ void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& 
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void NormalMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	m_object->Draw(m_world, view, proj, m_color, nullptr, true);
+	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
+		->GetResource(GeometricPrimitiveID::NormalMagic);
+	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
 }
 
 /// <summary>

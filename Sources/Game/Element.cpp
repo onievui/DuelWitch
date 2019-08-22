@@ -1,14 +1,14 @@
 #include "Element.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
 Element::Element()
-	: m_object()
-	, m_id()
+	: m_id()
 	, m_transform()
 	, m_sphereCollider(&m_transform, ELEMENT_RADIUS)
 	, m_color()
@@ -37,7 +37,7 @@ void Element::Update(const DX::StepTimer& timer) {
 /// エレメントを開放する
 /// </summary>
 void Element::Lost() {
-	m_object.reset();
+
 }
 
 /// <summary>
@@ -51,7 +51,6 @@ void Element::Create(ElementID id, const DirectX::SimpleMath::Vector3& pos, cons
 	m_transform.SetPosition(pos);
 	m_world = m_transform.GetMatrix();
 	m_color = color;
-	m_object = DirectX::GeometricPrimitive::CreateCube(ServiceLocater<DirectX11>::Get()->GetContext().Get(), ELEMENT_RADIUS*2);
 }
 
 /// <summary>
@@ -60,7 +59,9 @@ void Element::Create(ElementID id, const DirectX::SimpleMath::Vector3& pos, cons
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void Element::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	m_object->Draw(m_world, view, proj, m_color, nullptr, false);
+	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
+		->GetResource(GeometricPrimitiveID::Element);
+	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, false);
 }
 
 /// <summary>

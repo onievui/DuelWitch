@@ -11,7 +11,7 @@
 /// 通常魔法クラス
 /// </summary>
 class NormalMagic : public Magic {
-private:
+public:
 	static constexpr float NORMAL_MAGIC_RADIUS = 0.8f;
 
 public:
@@ -35,9 +35,6 @@ public:
 	// 魔法との衝突処理
 	void HitMagic(const IMagic* other) override;
 
-private:
-	// オブジェクト
-	std::unique_ptr<DirectX::GeometricPrimitive> m_object;
 };
 
 

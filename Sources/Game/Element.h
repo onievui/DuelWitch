@@ -16,7 +16,7 @@ enum class ElementID;
 /// エレメントクラス
 /// </summary>
 class Element : public IObject {
-private:
+public:
 	static constexpr float ELEMENT_RADIUS = 0.75f;
 
 public:
@@ -46,8 +46,6 @@ public:
 	void IsUsed(bool isUsed);
 
 private:
-	// オブジェクト
-	std::unique_ptr<DirectX::GeometricPrimitive> m_object;
 	// エレメントID
 	ElementID                                    m_id;
 	// 姿勢

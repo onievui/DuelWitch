@@ -11,7 +11,7 @@
 /// 氷魔法クラス
 /// </summary>
 class FreezeMagic : public Magic {
-private:
+public:
 	static constexpr float FREEZE_MAGIC_RADIUS = 2.5f;
 
 public:
@@ -36,8 +36,6 @@ public:
 	void HitMagic(const IMagic* other) override;
 
 private:
-	// オブジェクト
-	std::unique_ptr<DirectX::GeometricPrimitive> m_object;
 	// プレイヤーの座標
 	const DirectX::SimpleMath::Vector3*          m_pPlayerPos;
 

@@ -14,7 +14,7 @@ class MagicManager;
 /// 雷魔法クラス
 /// </summary>
 class ThunderMagic : public Magic {
-private:
+public:
 	static constexpr float THUNDER_MAGIC_RADIUS          = 0.8f;
 	static constexpr float THUNDER_MAGIC_COLLIDER_RADIUS = 6.5f;
 	static constexpr float THUNDER_MAGIC_CHASE_SPEED     = 0.5f;
@@ -41,8 +41,6 @@ public:
 	void HitMagic(const IMagic* other) override;
 
 private:
-	// オブジェクト
-	std::unique_ptr<DirectX::GeometricPrimitive> m_object;
 	// 魔法マネージャへのポインタ
 	MagicManager*                                m_pMagicManager;
 	// 落雷生成用タイマー作動フラグ

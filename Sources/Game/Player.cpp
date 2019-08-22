@@ -22,8 +22,7 @@
 /// <param name="pos">初期座標</param>
 /// <param name="direction">進行方向</param>
 Player::Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMath::Vector3& pos, MoveDirection direction)
-	: m_model()
-	, m_states()
+	: m_states()
 	, m_id(id)
 	, m_direction(direction)
 	, m_haveElements()
@@ -66,28 +65,21 @@ void Player::Update(const DX::StepTimer& timer) {
 /// </summary>
 void Player::Lost() {
 	m_states.reset();
-	m_model.reset();
 }
 
 /// <summary>
 /// プレイヤーを生成する
 /// </summary>
-/// <param name="fileName">ファイル名</param>
-/// <param name="directory">ディレクトリ名</param>
-void Player::Create(const std::wstring& fileName, const std::wstring& directory) {
+void Player::Create() {
 	// デバイスの取得
 	ID3D11Device* device = ServiceLocater<DirectX11>::Get()->GetDevice().Get();
 
 	// コモンステートを作成する
 	m_states = std::make_unique<DirectX::CommonStates>(device);
-	// エフェクトファクトリーを作成する
-	std::unique_ptr<DirectX::EffectFactory> fxFactory = std::make_unique<DirectX::EffectFactory>(device);
-	// 読み込むのファイルのディレクトリを設定する
-	dynamic_cast<DirectX::EffectFactory*>(fxFactory.get())->SetDirectory(directory.c_str());
-	// CMOを読み込んでモデルを作成する
-	m_model = DirectX::Model::CreateFromCMO(device, (directory+L"/"+fileName).c_str(), *fxFactory);
+
 	// エフェクトを設定する
-	m_model->UpdateEffects([](DirectX::IEffect* effect) {
+	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::BloomModel);
+	modelResource->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
 		DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
 		if (lights) {
 			lights->SetLightingEnabled(true);
@@ -100,10 +92,6 @@ void Player::Create(const std::wstring& fileName, const std::wstring& directory)
 		}
 	});
 
-	//テクスチャのロード
-	//DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element1.png", nullptr, m_textures[0].GetAddressOf());
-	//DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element2.png", nullptr, m_textures[1].GetAddressOf());
-	//DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/element3.png", nullptr, m_textures[2].GetAddressOf());
 }
 
 /// <summary>
@@ -114,7 +102,9 @@ void Player::Create(const std::wstring& fileName, const std::wstring& directory)
 void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 	if (m_damageTimer <= 0.0f || sin(m_damageTimer*Math::PI2*2)>0) {
-		m_model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
+		const std::unique_ptr<DirectX::Model>& model = ServiceLocater<ResourceManager<ModelResource>>::Get()->
+			GetResource(ModelID::BloomModel)->GetResource();
+		model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
 		m_sphereCollider.Render(view, proj);
 	}
 }
@@ -122,7 +112,9 @@ void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const {
 	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 	if (m_damageTimer <= 0.0f || sin(m_damageTimer*Math::PI2 * 2) > 0) {
-		m_model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
+		const std::unique_ptr<DirectX::Model>& model = ServiceLocater<ResourceManager<ModelResource>>::Get()->
+			GetResource(ModelID::BloomModel)->GetResource();
+		model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
 		m_sphereCollider.Render(view, proj);
 	}
 	if (m_id == PlayerID::Player2)

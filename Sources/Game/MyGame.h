@@ -12,6 +12,7 @@ template <class T>
 class ResourceManager;
 class TextureResource;
 class GeometricPrimitiveResource;
+class ModelResource;
 class FontResource;
 
 /// <summary>
@@ -62,6 +63,7 @@ private:
 	// リソースマネージャ
 	std::unique_ptr<ResourceManager<TextureResource>>              m_textureResourceManager;
 	std::unique_ptr<ResourceManager<GeometricPrimitiveResource>>   m_geometricPrimitiveResourceManager;
+	std::unique_ptr<ResourceManager<ModelResource>>                m_modelResourceManager;
 	std::unique_ptr<ResourceManager<FontResource>>                 m_fontResourceManager;
 
 };

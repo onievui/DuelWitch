@@ -11,7 +11,7 @@
 /// 落雷魔法クラス
 /// </summary>
 class ThunderStrikeMagic : public Magic {
-private:
+public:
 	static constexpr float THUNDER_STRIKE_MAGIC_RADIUS = 0.8f;
 	static constexpr float THUNDER_STRIKE_MAGIC_LENGTH = 25.0f;
 
@@ -35,10 +35,6 @@ public:
 	void HitPlayer(const SphereCollider& collider) override;
 	// 魔法との衝突処理
 	void HitMagic(const IMagic* other) override;
-
-private:
-	// オブジェクト
-	std::unique_ptr<DirectX::GeometricPrimitive> m_object;
 
 };
 

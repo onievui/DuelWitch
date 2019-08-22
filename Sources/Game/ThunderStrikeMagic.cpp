@@ -1,6 +1,7 @@
 #include "ThunderStrikeMagic.h"
 #include <Framework/DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 #include "Player.h"
@@ -10,8 +11,7 @@
 /// コンストラクタ
 /// </summary>
 ThunderStrikeMagic::ThunderStrikeMagic()
-	: Magic(MagicID::ThunderStrike)
-	, m_object() {
+	: Magic(MagicID::ThunderStrike) {
 	m_sphereCollider.SetRadius(THUNDER_STRIKE_MAGIC_RADIUS);
 	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0,-THUNDER_STRIKE_MAGIC_LENGTH/4,0));
 
@@ -43,7 +43,7 @@ void ThunderStrikeMagic::Update(const DX::StepTimer& timer) {
 /// 落雷魔法を開放する
 /// </summary>
 void ThunderStrikeMagic::Lost() {
-	m_object.reset();
+
 }
 
 /// <summary>
@@ -59,8 +59,6 @@ void ThunderStrikeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Ve
 	m_transform.SetPosition(pos);
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateCylinder(ServiceLocater<DirectX11>::Get()->GetContext().Get(), 
-		THUNDER_STRIKE_MAGIC_LENGTH, THUNDER_STRIKE_MAGIC_RADIUS*2);
 	m_lifeTime = 5.0f;
 }
 
@@ -70,8 +68,9 @@ void ThunderStrikeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Ve
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void ThunderStrikeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	m_object->Draw(m_world, view, proj, m_color, nullptr, true);
-	//m_sphereCollider.Render(view, proj, m_color);
+	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
+		->GetResource(GeometricPrimitiveID::ThunderStrikeMagic);
+	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
 }
 
 /// <summary>

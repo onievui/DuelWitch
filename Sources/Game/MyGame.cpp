@@ -40,6 +40,7 @@ void MyGame::Initialize(int width, int height) {
 	// リソースマネージャを生成してサービスロケータに登録する
 	CreateAndRegister(m_textureResourceManager, L"テクスチャ");
 	CreateAndRegister(m_geometricPrimitiveResourceManager, L"ジオメトリックプリミティブ");
+	CreateAndRegister(m_modelResourceManager, L"モデル");
 	CreateAndRegister(m_fontResourceManager, L"フォント");
 
 

@@ -1,6 +1,7 @@
 #include "ThunderMagic.h"
 #include <Framework/DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 #include "MagicManager.h"
@@ -13,7 +14,6 @@
 /// <param name="magicManager">魔法マネージャ</param>
 ThunderMagic::ThunderMagic(MagicManager* magicManager)
 	: Magic(MagicID::Thunder)
-	, m_object()
 	, m_pMagicManager(magicManager)
 	, m_startTimer() 
 	, m_time() {
@@ -60,7 +60,7 @@ void ThunderMagic::Update(const DX::StepTimer& timer) {
 /// 雷魔法を開放する
 /// </summary>
 void ThunderMagic::Lost() {
-	m_object.reset();
+
 }
 
 /// <summary>
@@ -76,7 +76,6 @@ void ThunderMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3&
 	m_transform.SetPosition(pos);
 	m_color = color;
 	m_vel = vel;
-	m_object = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get(), THUNDER_MAGIC_RADIUS);
 	m_lifeTime = 5.0f;
 	m_startTimer = false;
 	m_time = 0.0f;
@@ -88,7 +87,9 @@ void ThunderMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3&
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void ThunderMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	m_object->Draw(m_world, view, proj, m_color, nullptr, true);
+	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
+		->GetResource(GeometricPrimitiveID::ThunderMagic);
+	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
 }
 
 /// <summary>
