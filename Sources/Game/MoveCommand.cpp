@@ -1,5 +1,10 @@
 #include "MoveCommand.h"
 #include <Utils\MathUtils.h>
+#include <Utils\JsonWrapper.h>
+
+
+MoveCommand::MoveCommandData MoveCommand::s_data;
+
 
 /// <summary>
 /// 移動コマンドを処理する
@@ -10,13 +15,13 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
 	DirectX::Keyboard::State keyState = DirectX::Keyboard::Get().GetState();
 
-	constexpr float moveSpeed = 16.0f;
-	constexpr float moveSpeedXY = 0.3f;
-	constexpr float rotSpeed = 2.0f;
-	constexpr float rotZLimit = Math::QuarterPI*0.5f;
-	constexpr float rotXLimit = Math::QuarterPI*0.5f;
-	constexpr float rotYLimit = Math::QuarterPI*0.25f;
-	constexpr float lerpSpeed = 0.040f;
+	float& moveSpeed = s_data.moveSpeed;
+	float& moveSpeedXY = s_data.moveSpeedXY;
+	float& rotSpeed = s_data.rotSpeed;
+	float& rotZLimit = s_data.rotZLimit;
+	float& rotXLimit = s_data.rotXLimit;
+	float& rotYLimit = s_data.rotYLimit;
+	float& lerpSpeed = s_data.lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
 	Player::MoveDirection& ref_direction = GetMoveDirection(player);
@@ -95,4 +100,29 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	ref_transform.SetPosition(pos);
 	ref_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
 	GetWorld(player) = ref_transform.GetMatrix();
+}
+
+
+/// <summary>
+/// データを読み込む
+/// </summary>
+/// <returns>
+/// true  : 成功
+/// false : 失敗
+/// </returns>
+bool MoveCommand::MoveCommandData::Load() {
+	JsonWrapper::root root;
+	if (!JsonWrapper::LoadCheck(root, L"Resources/Jsons/move_command.json")) {
+		return false;
+	}
+
+	moveSpeed = root["MoveSpeed"].getNum();
+	moveSpeedXY = root["MoveSpeedXY"].getNum();
+	rotSpeed = root["RotSpeed"].getNum();
+	rotZLimit = Math::Deg2Rad(root["RotZLimit"].getNum());
+	rotXLimit = Math::Deg2Rad(root["RotXLimit"].getNum());
+	rotYLimit = Math::Deg2Rad(root["RotYLimit"].getNum());
+	lerpSpeed = root["LerpSpeed"].getNum();
+
+	return true;
 }

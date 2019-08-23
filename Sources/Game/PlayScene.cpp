@@ -2,6 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
+#include <Utils\LoadDataManager.h>
 #include "ResourceLoader.h"
 #include "ISceneRequest.h"
 #include "DebugCamera.h"
@@ -42,6 +43,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 
 	// リソースをロードする
 	ResourceLoader::Load(ResourceLoaderID::PlayScene);
+
+	// パラメータをロードする
+	LoadDataManager::GetIns()->Load();
 
 	// エレメントマネージャを作成する
 	m_elementManager = std::make_unique<ElementManager>();

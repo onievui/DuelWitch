@@ -4,6 +4,7 @@
 
 
 #include "Command.h"
+#include <Utils\LoadData.h>
 
 
 /// <summary>
@@ -11,6 +12,7 @@
 /// </summary>
 class MoveCommand : public Command {
 public:
+	// コンストラクタ
 	MoveCommand() : m_totalElapsedTime(), m_euler() {}
 
 public:
@@ -22,6 +24,27 @@ private:
 	float                        m_totalElapsedTime;
 	// オイラー角
 	DirectX::SimpleMath::Vector3 m_euler;
+
+private:
+	/// <summary>
+	/// 移動コマンドクラスデータ
+	/// </summary>
+	class MoveCommandData : public LoadData {
+	public:
+		// データを読み込む
+		bool Load() override;
+
+	public:
+		float moveSpeed;
+		float moveSpeedXY;
+		float rotSpeed;
+		float rotZLimit;
+		float rotXLimit;
+		float rotYLimit;
+		float lerpSpeed;
+	};
+
+	static MoveCommandData s_data;
 };
 
 

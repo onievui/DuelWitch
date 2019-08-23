@@ -116,11 +116,11 @@ bool ModelResource::IsValid(int index) const {
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="filename">読み込むフォントファイル</param>
-FontResource::FontResource(const std::wstring& filename) {
+/// <param name="fileName">読み込むフォントファイル</param>
+FontResource::FontResource(const std::wstring& fileName) {
 	m_resources.emplace_back(
 		std::make_unique<DirectX::SpriteFont>(ServiceLocater<DirectX11>::Get()->GetDevice().Get(),
-		(FONT_DIR + filename).c_str())
+		(FONT_DIR + fileName).c_str())
 	);
 	if (m_resources.back().get() == m_defaultResource.get()) {
 		ErrorMessage(L"フォントの読み込みに失敗しました");

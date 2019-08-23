@@ -24,6 +24,45 @@ public:
 public:
 	// インスタンスを取得する
 	static T* GetIns() {
+		if (!s_instance) {
+			s_instance = std::make_unique<T>();
+		}
+		return s_instance.get();
+	}
+
+	// インスタンスを解放する
+	static void Dispose() {
+		s_instance.reset(nullptr);
+	}
+
+private:
+	// インスタンスへの静的ポインタ
+	static std::unique_ptr<T>  s_instance;
+};
+
+// 静的メンバを初期化する
+template <class T>
+std::unique_ptr<T>  Singleton<T>::s_instance = nullptr;
+
+
+template <typename T>
+/// <summary>
+/// 関数ポインタ付きシングルトンクラステンプレート
+/// </summary>
+class SingletonWithFunc {
+protected:
+	SingletonWithFunc() = default;
+	virtual ~SingletonWithFunc() = default;
+
+public:
+	SingletonWithFunc(const SingletonWithFunc&) = delete;
+	SingletonWithFunc& operator=(const SingletonWithFunc&) = delete;
+	SingletonWithFunc(SingletonWithFunc&&) = delete;
+	SingletonWithFunc& operator=(SingletonWithFunc&&) = delete;
+
+public:
+	// インスタンスを取得する
+	static T* GetIns() {
 		return s_getFunc();
 	}
 
@@ -55,9 +94,9 @@ private:
 
 // 静的メンバを初期化する
 template <class T>
-std::unique_ptr<T>  Singleton<T>::s_instance = nullptr;
+std::unique_ptr<T>  SingletonWithFunc<T>::s_instance = nullptr;
 template <class T>
-std::function<T*()> Singleton<T>::s_getFunc = &Singleton<T>::InitializeGetIns;
+std::function<T*()> SingletonWithFunc<T>::s_getFunc = &SingletonWithFunc<T>::InitializeGetIns;
 
 
 #endif // !SINGLETON_DEFINED

@@ -214,6 +214,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Sources\Utils\JsonWrapper.cpp" />
+    <ClCompile Include="Sources\Utils\LoadData.cpp" />
+    <ClCompile Include="Sources\Utils\LoadDataManager.cpp" />
     <ClCompile Include="Sources\Utils\RandMt.cpp" />
     <ClCompile Include="Sources\Utils\Resource.cpp" />
     <ClCompile Include="Sources\Utils\ResourceManager.cpp" />
@@ -267,12 +270,16 @@
     <ClInclude Include="Sources\Game\Transform.h" />
     <ClInclude Include="Sources\pch\pch.h" />
     <ClInclude Include="Sources\Utils\ErrorMessage.h" />
+    <ClInclude Include="Sources\Utils\JsonWrapper.h" />
+    <ClInclude Include="Sources\Utils\LoadDataManager.h" />
     <ClInclude Include="Sources\Utils\MathUtils.h" />
     <ClInclude Include="Sources\Utils\NonCopyable.h" />
+    <ClInclude Include="Sources\Utils\picojson.h" />
     <ClInclude Include="Sources\Utils\RandMt.h" />
     <ClInclude Include="Sources\Utils\Resource.h" />
     <ClInclude Include="Sources\Utils\ResourceID.h" />
     <ClInclude Include="Sources\Utils\ResourceManager.h" />
+    <ClInclude Include="Sources\Utils\LoadData.h" />
     <ClInclude Include="Sources\Utils\ServiceLocater.h" />
     <ClInclude Include="Sources\Utils\Singleton.h" />
   </ItemGroup>
@@ -287,6 +294,9 @@
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Jsons\move_command.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

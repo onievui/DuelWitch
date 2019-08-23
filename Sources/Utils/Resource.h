@@ -122,7 +122,7 @@ public:
 
 public:
 	// コンストラクタ
-	FontResource(const std::wstring& filename);
+	FontResource(const std::wstring& fileName);
 	// デストラクタ
 	~FontResource();
 

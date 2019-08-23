@@ -50,6 +50,12 @@
     <Filter Include="Utils\Resource">
       <UniqueIdentifier>{a8f0914d-a87a-4af0-91f5-771c188b541a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Json">
+      <UniqueIdentifier>{b932f234-0c6e-44da-884c-c70e97556e88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Jsons">
+      <UniqueIdentifier>{af038f85-a652-424e-906d-a4cd73af81f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -185,6 +191,15 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\ResourceLoader.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\JsonWrapper.cpp">
+      <Filter>Utils\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\LoadDataManager.cpp">
+      <Filter>Utils\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\LoadData.cpp">
+      <Filter>Utils\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -356,6 +371,18 @@
     <ClInclude Include="Sources\Game\ResourceLoader.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Utils\picojson.h">
+      <Filter>Utils\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\JsonWrapper.h">
+      <Filter>Utils\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\LoadDataManager.h">
+      <Filter>Utils\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\LoadData.h">
+      <Filter>Utils\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
@@ -364,5 +391,10 @@
     <MeshContentTask Include="Assets\Models\Protected\skydome.FBX">
       <Filter>Assets</Filter>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Jsons\move_command.json">
+      <Filter>Assets\Jsons</Filter>
+    </None>
   </ItemGroup>
 </Project>

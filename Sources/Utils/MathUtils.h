@@ -13,6 +13,16 @@ public:
 	static constexpr float HarfPI = 1.570796327f;
 	static constexpr float QuarterPI = 0.785398163f;
 	
+	// 度数法から弧度法に変換する
+	static constexpr float Deg2Rad(float deg) {
+		return deg/180.0f*PI;
+	}
+
+	// 弧度法から度数法に変換する
+	static constexpr float Rad2Deg(float rad) {
+		return rad/PI*180.0f;
+	}
+
 	template<class T>
 	// 線形補間
 	static T Lerp(const T& a, const T& b, float t) {
