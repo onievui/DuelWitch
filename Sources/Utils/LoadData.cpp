@@ -5,6 +5,9 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-LoadData::LoadData() {
+/// <param name="id">ID</param>
+LoadData::LoadData(LoadDataID id)
+	: m_id(id) {
 	LoadDataManager::GetIns()->Regiser(this);
 }
+

@@ -45,7 +45,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	ResourceLoader::Load(ResourceLoaderID::PlayScene);
 
 	// パラメータをロードする
-	LoadDataManager::GetIns()->Load();
+	LoadDataManager::GetIns()->Load(LoadDataID::PlayScene);
 
 	// エレメントマネージャを作成する
 	m_elementManager = std::make_unique<ElementManager>();
@@ -227,5 +227,7 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 void PlayScene::Finalize() {
 	// リソースを解放する
 	ResourceLoader::Release();
+	// パラメータを開放する
+	LoadDataManager::GetIns()->Dispose(LoadDataID::PlayScene);
 }
 

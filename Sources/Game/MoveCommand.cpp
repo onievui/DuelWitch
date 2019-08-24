@@ -15,13 +15,13 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
 	DirectX::Keyboard::State keyState = DirectX::Keyboard::Get().GetState();
 
-	float& moveSpeed = s_data.moveSpeed;
-	float& moveSpeedXY = s_data.moveSpeedXY;
-	float& rotSpeed = s_data.rotSpeed;
-	float& rotZLimit = s_data.rotZLimit;
-	float& rotXLimit = s_data.rotXLimit;
-	float& rotYLimit = s_data.rotYLimit;
-	float& lerpSpeed = s_data.lerpSpeed;
+	float& moveSpeed   = s_data->moveSpeed;
+	float& moveSpeedXY = s_data->moveSpeedXY;
+	float& rotSpeed    = s_data->rotSpeed;
+	float& rotZLimit   = s_data->rotZLimit;
+	float& rotXLimit   = s_data->rotXLimit;
+	float& rotYLimit   = s_data->rotYLimit;
+	float& lerpSpeed   = s_data->lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
 	Player::MoveDirection& ref_direction = GetMoveDirection(player);
@@ -116,13 +116,24 @@ bool MoveCommand::MoveCommandData::Load() {
 		return false;
 	}
 
-	moveSpeed = root["MoveSpeed"].getNum();
-	moveSpeedXY = root["MoveSpeedXY"].getNum();
-	rotSpeed = root["RotSpeed"].getNum();
-	rotZLimit = Math::Deg2Rad(root["RotZLimit"].getNum());
-	rotXLimit = Math::Deg2Rad(root["RotXLimit"].getNum());
-	rotYLimit = Math::Deg2Rad(root["RotYLimit"].getNum());
-	lerpSpeed = root["LerpSpeed"].getNum();
+	if (!m_value) {
+		m_value = std::make_unique<_value>();
+	}
+
+	m_value->moveSpeed   = root["MoveSpeed"].getNum();
+	m_value->moveSpeedXY = root["MoveSpeedXY"].getNum();
+	m_value->rotSpeed    = root["RotSpeed"].getNum();
+	m_value->rotZLimit   = Math::Deg2Rad(root["RotZLimit"].getNum());
+	m_value->rotXLimit   = Math::Deg2Rad(root["RotXLimit"].getNum());
+	m_value->rotYLimit   = Math::Deg2Rad(root["RotYLimit"].getNum());
+	m_value->lerpSpeed   = root["LerpSpeed"].getNum();
 
 	return true;
+}
+
+/// <summary>
+/// データを開放する
+/// </summary>
+void MoveCommand::MoveCommandData::Dispose() {
+	m_value.reset();
 }

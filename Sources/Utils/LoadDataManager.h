@@ -4,6 +4,7 @@
 
 
 #include "Singleton.h"
+#include "LoadDataID.h"
 
 
 class LoadData;
@@ -24,7 +25,9 @@ public:
 	// データの登録
 	void Regiser(LoadData* loadData);
 	// データを読み込む
-	void Load();
+	void Load(LoadDataID id);
+	// データを開放する
+	void Dispose(LoadDataID id);
 
 private:
 	// 読み込み対象のデータ

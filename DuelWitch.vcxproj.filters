@@ -383,6 +383,9 @@
     <ClInclude Include="Sources\Utils\LoadData.h">
       <Filter>Utils\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Utils\LoadDataID.h">
+      <Filter>Utils\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
