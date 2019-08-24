@@ -214,7 +214,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Sources\Utils\LoadData.cpp" />
     <ClCompile Include="Sources\Utils\JsonWrapper.cpp" />
     <ClCompile Include="Sources\Utils\LoadDataManager.cpp" />
     <ClCompile Include="Sources\Utils\RandMt.cpp" />
@@ -270,8 +269,9 @@
     <ClInclude Include="Sources\Game\Transform.h" />
     <ClInclude Include="Sources\pch\pch.h" />
     <ClInclude Include="Sources\Utils\ErrorMessage.h" />
-    <ClInclude Include="Sources\Utils\LoadData.h" />
+    <ClInclude Include="Sources\Utils\ILoadDataHolder.h" />
     <ClInclude Include="Sources\Utils\JsonWrapper.h" />
+    <ClInclude Include="Sources\Utils\LoadDataHolder.h" />
     <ClInclude Include="Sources\Utils\LoadDataID.h" />
     <ClInclude Include="Sources\Utils\LoadDataManager.h" />
     <ClInclude Include="Sources\Utils\MathUtils.h" />
@@ -297,7 +297,9 @@
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Jsons\move_command.json" />
+    <None Include="Resources\Jsons\ai_command.json" />
+    <None Include="Resources\Jsons\element.json" />
+    <None Include="Resources\Jsons\player_command.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
@@ -306,7 +308,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Resources_4Jsons_4move_3command_1json__JSONSchema="http://json.schemastore.org/2.0.0-csd.2.beta.2018-10-10.json" />
+      <UserProperties />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

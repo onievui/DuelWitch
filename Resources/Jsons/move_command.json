@@ -1,9 +1,0 @@
-{
-  "MoveSpeed"  : 16.0,
-  "MoveSpeedXY": 0.3,
-  "RotSpeed"   : 2.0,
-  "RotZLimit"  : 22.5,
-  "RotXLimit"  : 22.5,
-  "RotYLimit"  : 16.25,
-  "LerpSpeed"  : 0.040
-}

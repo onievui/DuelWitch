@@ -7,7 +7,7 @@
 #include "LoadDataID.h"
 
 
-class LoadData;
+class ILoadDataHolder;
 
 
 /// <summary>
@@ -15,6 +15,7 @@ class LoadData;
 /// </summary>
 class LoadDataManager : public Singleton<LoadDataManager> {
 	friend class Singleton<LoadDataManager>;
+
 public:
 	// コンストラクタ
 	LoadDataManager();
@@ -23,7 +24,7 @@ public:
 
 public:
 	// データの登録
-	void Regiser(LoadData* loadData);
+	void Regiser(ILoadDataHolder* loadDataHolder);
 	// データを読み込む
 	void Load(LoadDataID id);
 	// データを開放する
@@ -31,7 +32,7 @@ public:
 
 private:
 	// 読み込み対象のデータ
-	std::vector<LoadData*> m_loadData;
+	std::vector<ILoadDataHolder*> m_loadDataHolder;
 
 };
 

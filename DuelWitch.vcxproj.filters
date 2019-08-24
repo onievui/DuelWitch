@@ -198,9 +198,6 @@
     <ClCompile Include="Sources\Utils\LoadDataManager.cpp">
       <Filter>Utils\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Utils\LoadData.cpp">
-      <Filter>Utils\Json</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -380,10 +377,13 @@
     <ClInclude Include="Sources\Utils\LoadDataManager.h">
       <Filter>Utils\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Utils\LoadData.h">
+    <ClInclude Include="Sources\Utils\LoadDataID.h">
       <Filter>Utils\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Utils\LoadDataID.h">
+    <ClInclude Include="Sources\Utils\ILoadDataHolder.h">
+      <Filter>Utils\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\LoadDataHolder.h">
       <Filter>Utils\Json</Filter>
     </ClInclude>
   </ItemGroup>
@@ -396,7 +396,13 @@
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Jsons\move_command.json">
+    <None Include="Resources\Jsons\ai_command.json">
+      <Filter>Assets\Jsons</Filter>
+    </None>
+    <None Include="Resources\Jsons\player_command.json">
+      <Filter>Assets\Jsons</Filter>
+    </None>
+    <None Include="Resources\Jsons\element.json">
       <Filter>Assets\Jsons</Filter>
     </None>
   </ItemGroup>

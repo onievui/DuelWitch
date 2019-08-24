@@ -1,0 +1,11 @@
+{
+  "MoveCommand": {
+    "MoveSpeed"    : 16.0,
+    "MoveSpeedXY"  : 0.3,
+    "RotSpeed"     : 2.0,
+    "RotZLimit_Deg": 22.5,
+    "RotXLimit_Deg": 22.5,
+    "RotYLimit_Deg": 16.25,
+    "LerpSpeed"    : 0.040
+  }
+}

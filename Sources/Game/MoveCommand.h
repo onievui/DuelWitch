@@ -4,7 +4,7 @@
 
 
 #include "Command.h"
-#include <Utils\LoadData.h>
+#include <Utils\LoadDataHolder.h>
 
 
 /// <summary>
@@ -27,43 +27,25 @@ private:
 
 private:
 	/// <summary>
-	/// 移動コマンドクラスデータ
+	/// 移動コマンドクラス用パラメータ
 	/// </summary>
-	class MoveCommandData : public LoadData {
-	public:
-		// コンストラクタ
-		MoveCommandData() : LoadData(LoadDataID::PlayScene), m_value() {}
-
+	class MoveCommandData {
 	public:
 		// データを読み込む
-		bool Load() override;
-		void Dispose() override;
-
-	private:
-		// 読み込みデータ本体
-		struct _value {
-			float moveSpeed;
-			float moveSpeedXY;
-			float rotSpeed;
-			float rotZLimit;
-			float rotXLimit;
-			float rotYLimit;
-			float lerpSpeed;
-		};
+		bool Load();
 
 	public:
-		_value* operator->() {
-			return m_value.get();
-		}
-
-	private:
-		// 読み込みデータ本体
-		std::unique_ptr<_value> m_value;
-
+		float moveSpeed;
+		float moveSpeedXY;
+		float rotSpeed;
+		float rotZLimit;
+		float rotXLimit;
+		float rotYLimit;
+		float lerpSpeed;
 	};
 
-	// 読み込みデータ
-	static MoveCommandData s_data;
+	// 読み込みデータ保持オブジェクト
+	static LoadDataHolder<MoveCommandData, LoadDataID::PlayScene> s_data;
 };
 
 

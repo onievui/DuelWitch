@@ -4,6 +4,7 @@
 
 
 #include "Command.h"
+#include <Utils\LoadDataHolder.h>
 
 
 /// <summary>
@@ -17,6 +18,24 @@ public:
 private:
 	// 次の攻撃までの待ち時間
 	float m_waitTime;
+
+private:
+	/// <summary>
+	/// AI魔法詠唱コマンドクラス用パラメータ
+	/// </summary>
+	class AICastMagicCommandData {
+	public:
+		// データを読み込む
+		bool Load();
+
+	public:
+		float shotableAngle;
+		float castDelay;
+	};
+
+	// 読み込みデータ保持オブジェクト
+	static LoadDataHolder<AICastMagicCommandData, LoadDataID::PlayScene> s_data;
+
 };
 
 

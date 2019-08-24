@@ -1,6 +1,10 @@
 #include "AICastMagicCommand.h"
 #include <Utils\MathUtils.h>
+#include <Utils\JsonWrapper.h>
 #include "MagicFactory.h"
+
+
+LoadDataHolder<AICastMagicCommand::AICastMagicCommandData, LoadDataID::PlayScene> AICastMagicCommand::s_data;
 
 
 /// <summary>
@@ -22,11 +26,11 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	const DirectX::SimpleMath::Vector3& target_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
 
 	// çUåÇîÕàÕÇêßå¿Ç∑ÇÈ
-	constexpr float shotable_angle = Math::PI / 3;
+	const float& shotableAngle = s_data->shotableAngle;
 	DirectX::SimpleMath::Vector3 direction = target_pos - pos;
 	DirectX::SimpleMath::Vector3 forward = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, rot);
 	float angle = std::acosf(forward.Dot(direction) / (forward.Length()*direction.Length()));
-	if (angle > shotable_angle) {
+	if (angle > shotableAngle) {
 		return;
 	}
 
@@ -42,6 +46,26 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		GetMagicManager(player).CreateMagic(element_id, player.GetPlayerID(), pos, direction);
 	}
 
-	constexpr float castDelay = 2.0f;
+	const float& castDelay = s_data->castDelay;
 	m_waitTime = castDelay;
+}
+
+
+/// <summary>
+/// ÉfÅ[É^Çì«Ç›çûÇﬁ
+/// </summary>
+/// <returns>
+/// true  : ê¨å˜
+/// false : é∏îs
+/// </returns>
+bool AICastMagicCommand::AICastMagicCommandData::Load() {
+	JsonWrapper::root root;
+	if (!JsonWrapper::LoadCheck(root, L"Resources/Jsons/ai_command.json")) {
+		return false;
+	}
+
+	shotableAngle = Math::Deg2Rad(root["CastCommand"]["ShotableAngle_Deg"].getNum());
+	castDelay     = root["CastCommand"]["CastDelay"].getNum();
+
+	return true;
 }

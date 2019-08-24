@@ -1,28 +1,28 @@
 #include "LoadDataManager.h"
 #include "ErrorMessage.h"
-#include "LoadData.h"
+#include "ILoadDataHolder.h"
 
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
 LoadDataManager::LoadDataManager()
-	: m_loadData() {
+	: m_loadDataHolder() {
 }
 
 /// <summary>
 /// デストラクタ
 /// </summary>
 LoadDataManager::~LoadDataManager() {
-	m_loadData.clear();
+	m_loadDataHolder.clear();
 }
 
 /// <summary>
 /// データを登録する
 /// </summary>
-/// <param name="loadData">データ</param>
-void LoadDataManager::Regiser(LoadData* loadData) {
-	m_loadData.push_back(loadData);
+/// <param name="loadDataHolder">データ</param>
+void LoadDataManager::Regiser(ILoadDataHolder* loadDataHolder) {
+	m_loadDataHolder.push_back(loadDataHolder);
 }
 
 /// <summary>
@@ -31,13 +31,13 @@ void LoadDataManager::Regiser(LoadData* loadData) {
 /// <param name="id">ID</param>
 void LoadDataManager::Load(LoadDataID id) {
 	// IDが同じデータだけ処理をする
-	auto pred = [id](LoadData* data) {return data->m_id == id; };
-	std::vector<LoadData*>::iterator itr = std::find_if(m_loadData.begin(), m_loadData.end(), pred);
-	for (; itr != m_loadData.end();) {
+	auto pred = [id](ILoadDataHolder* data) {return data->GetID() == id; };
+	std::vector<ILoadDataHolder*>::iterator itr = std::find_if(m_loadDataHolder.begin(), m_loadDataHolder.end(), pred);
+	for (; itr != m_loadDataHolder.end();) {
 		if (!(*itr)->Load()) {
 			ErrorMessage(L"JSONデータの読み込みに失敗しました");
 		}
-		itr = std::find_if(itr+1, m_loadData.end(), pred);
+		itr = std::find_if(itr+1, m_loadDataHolder.end(), pred);
 	}
 }
 
@@ -47,11 +47,11 @@ void LoadDataManager::Load(LoadDataID id) {
 /// <param name="id">ID</param>
 void LoadDataManager::Dispose(LoadDataID id) {
 	// IDが同じデータだけ処理をする
-	auto pred = [id](LoadData* data) {return data->m_id == id; };
-	std::vector<LoadData*>::iterator itr = std::find_if(m_loadData.begin(), m_loadData.end(), pred);
-	for (; itr != m_loadData.end();) {
+	auto pred = [id](ILoadDataHolder* data) {return data->GetID() == id; };
+	std::vector<ILoadDataHolder*>::iterator itr = std::find_if(m_loadDataHolder.begin(), m_loadDataHolder.end(), pred);
+	for (; itr != m_loadDataHolder.end();) {
 		(*itr)->Dispose();
-		itr = std::find_if(itr+1, m_loadData.end(), pred);
+		itr = std::find_if(itr+1, m_loadDataHolder.end(), pred);
 	}
 }
 
