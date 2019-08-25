@@ -228,7 +228,7 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 /// </summary>
 void PlayScene::Finalize() {
 	// リソースを解放する
-	ResourceLoader::Release();
+	ResourceLoader::Release(ResourceLoaderID::PlayScene);
 	// パラメータを開放する
 	m_parameterLoader->Dispose();
 	ServiceLocater<PlayParameterLoader>::Remove();

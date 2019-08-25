@@ -1,6 +1,11 @@
 #include "SceneManager.h"
+#include <Utils\ServiceLocater.h>
 #include "LogoScene.h"
+#include "TitleScene.h"
+#include "CharaSelectScene.h"
 #include "PlayScene.h"
+#include "ResultScene.h"
+
 
 
 /// <summary>
@@ -22,8 +27,10 @@ void SceneManager::PopScene(int num) {
 		m_activeScene.pop_back();
 		--num;
 	}
-	// キーボードをリセットする
-	DirectX::Keyboard::Get().Reset();
+	//// キーボードとマウスをリセットする
+	//ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->Reset();
+	//ServiceLocater<DirectX::Mouse::ButtonStateTracker>::Get()->Reset();
+
 }
 
 /// <summary>
@@ -31,10 +38,11 @@ void SceneManager::PopScene(int num) {
 /// </summary>
 void SceneManager::Initialize() {
 	m_sceneCreateFunc.clear();
-	m_sceneCreateFunc.emplace("Logo",   MakeSceneCreateFunc<LogoScene>());
-	//m_sceneCreateFunc.emplace("Title",  MakeSceneCreateFunc<TitleScene>());
-	m_sceneCreateFunc.emplace("Play",   MakeSceneCreateFunc<PlayScene>());
-	//m_sceneCreateFunc.emplace("Result", MakeSceneCreateFunc<ResultScene>());
+	m_sceneCreateFunc.emplace("Logo",        MakeSceneCreateFunc<LogoScene>());
+	m_sceneCreateFunc.emplace("Title",       MakeSceneCreateFunc<TitleScene>());
+	m_sceneCreateFunc.emplace("CharaSelect", MakeSceneCreateFunc<CharaSelectScene>());
+	m_sceneCreateFunc.emplace("Play",        MakeSceneCreateFunc<PlayScene>());
+	m_sceneCreateFunc.emplace("Result",      MakeSceneCreateFunc<ResultScene>());
 	std::queue<std::pair<std::string, RequestSceneType>>().swap(m_requestQueue);
 }
 
@@ -72,8 +80,10 @@ void SceneManager::ChangeScene() {
 		m_requestQueue.pop();
 		return;
 	}
-	// キーボードをリセットする
-	DirectX::Keyboard::Get().Reset();
+	//// キーボードとマウスをリセットする
+	//ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->Reset();
+	//ServiceLocater<DirectX::Mouse::ButtonStateTracker>::Get()->Reset();
+
 	// シーンを破棄する場合
 	if (requestData.second == RequestSceneType::ClearStack) {
 		// 有効なシーンを下から終了する

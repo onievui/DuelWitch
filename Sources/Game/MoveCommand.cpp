@@ -12,7 +12,8 @@
 /// <param name="timer">タイマー</param>
 void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
-	DirectX::Keyboard::State keyState = DirectX::Keyboard::Get().GetState();
+	DirectX::Keyboard::KeyboardStateTracker* key_tracker = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get();
+	DirectX::Keyboard::State key_state = key_tracker->GetLastState();
 	const CommandParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter();
 
 	const float& moveSpeed   = parameter->moveSpeed;
@@ -41,7 +42,7 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	}
 
 	// 移動
-	if (keyState.A || keyState.Left) {
+	if (key_state.A || key_state.Left) {
 		m_euler.z = Math::Lerp(m_euler.z, -rotZLimit, lerpSpeed);
 		if (ref_direction == Player::MoveDirection::Forward) {
 			m_euler.y = Math::Lerp(m_euler.y, rotYLimit, lerpSpeed);
@@ -52,7 +53,7 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 			move.x = -1.0f;
 		}
 	}
-	else if (keyState.D || keyState.Right) {
+	else if (key_state.D || key_state.Right) {
 		m_euler.z = Math::Lerp(m_euler.z, rotZLimit, lerpSpeed);
 		if (ref_direction == Player::MoveDirection::Forward) {
 			m_euler.y = Math::Lerp(m_euler.y, -rotYLimit, lerpSpeed);
@@ -74,11 +75,11 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		}
 	}
 
-	if (keyState.W || keyState.Up) {
+	if (key_state.W || key_state.Up) {
 		m_euler.x = Math::Lerp(m_euler.x, -rotXLimit, lerpSpeed);
 		move.y = 1.0f;
 	}
-	else if (keyState.S || keyState.Down) {
+	else if (key_state.S || key_state.Down) {
 		m_euler.x = Math::Lerp(m_euler.x, rotXLimit, lerpSpeed);
 		move.y = -1.0f;
 	}

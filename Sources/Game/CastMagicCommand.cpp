@@ -1,11 +1,13 @@
 #include "CastMagicCommand.h"
+#include <Utils\ServiceLocater.h>
 #include "MagicFactory.h"
+
 
 /// <summary>
 ///	コンストラクタ
 /// </summary>
 CastMagicCommand::CastMagicCommand() {
-	m_mouseTracker = std::make_unique<DirectX::Mouse::ButtonStateTracker>();
+
 }
 
 /// <summary>
@@ -18,11 +20,11 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 	elapsedTime;
 
 	Transform& ref_transform = GetTransform(player);
-	DirectX::Mouse::State mouse_state = DirectX::Mouse::Get().GetState();
-	m_mouseTracker->Update(mouse_state);
+	DirectX::Mouse::ButtonStateTracker* mouse_tracker = ServiceLocater<DirectX::Mouse::ButtonStateTracker>::Get();
+	DirectX::Mouse::State mouse_state = mouse_tracker->GetLastState();
 
 	// タッチパッドだと左クリックが正常に反応しない
-	if (m_mouseTracker->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
+	if (mouse_tracker->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
 		// レイの作成
 		DirectX::SimpleMath::Ray ray = GetCamera(player).ScreenPointToRay(
 			DirectX::SimpleMath::Vector3(static_cast<float>(mouse_state.x), static_cast<float>(mouse_state.y), 0));

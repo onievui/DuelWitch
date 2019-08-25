@@ -180,7 +180,9 @@
     <ClCompile Include="Sources\Game\AIMoveCommand.cpp" />
     <ClCompile Include="Sources\Game\Camera.cpp" />
     <ClCompile Include="Sources\Game\CastMagicCommand.cpp" />
+    <ClCompile Include="Sources\Game\CharaSelectScene.cpp" />
     <ClCompile Include="Sources\Game\Collision.cpp" />
+    <ClCompile Include="Sources\Game\CommonServices.cpp" />
     <ClCompile Include="Sources\Game\DebugCamera.cpp" />
     <ClCompile Include="Sources\Game\Element.cpp" />
     <ClCompile Include="Sources\Game\ElementFactory.cpp" />
@@ -203,6 +205,7 @@
     <ClCompile Include="Sources\Game\PlayParameterLoader.cpp" />
     <ClCompile Include="Sources\Game\PlayScene.cpp" />
     <ClCompile Include="Sources\Game\ResourceLoader.cpp" />
+    <ClCompile Include="Sources\Game\ResultScene.cpp" />
     <ClCompile Include="Sources\Game\SceneManager.cpp" />
     <ClCompile Include="Sources\Game\SphereCollider.cpp" />
     <ClCompile Include="Sources\Game\TargetCamera.cpp" />
@@ -210,6 +213,7 @@
     <ClCompile Include="Sources\Game\ThunderMagicShooter.cpp" />
     <ClCompile Include="Sources\Game\ThunderStrikeMagic.cpp" />
     <ClCompile Include="Sources\Game\ThunderStrikeMagicShooter.cpp" />
+    <ClCompile Include="Sources\Game\TitleScene.cpp" />
     <ClCompile Include="Sources\Game\Transform.cpp" />
     <ClCompile Include="Sources\Parameters\AICommandParameter.cpp" />
     <ClCompile Include="Sources\Parameters\CommandParameter.cpp" />
@@ -233,8 +237,10 @@
     <ClInclude Include="Sources\Game\AIMoveCommand.h" />
     <ClInclude Include="Sources\Game\Camera.h" />
     <ClInclude Include="Sources\Game\CastMagicCommand.h" />
+    <ClInclude Include="Sources\Game\CharaSelectScene.h" />
     <ClInclude Include="Sources\Game\Collider.h" />
     <ClInclude Include="Sources\Game\Collision.h" />
+    <ClInclude Include="Sources\Game\CommonServices.h" />
     <ClInclude Include="Sources\Game\FireMagic.h" />
     <ClInclude Include="Sources\Game\FireMagicShooter.h" />
     <ClInclude Include="Sources\Game\Command.h" />
@@ -252,6 +258,7 @@
     <ClInclude Include="Sources\Game\NormalMagicShooter.h" />
     <ClInclude Include="Sources\Game\PlayParameterLoader.h" />
     <ClInclude Include="Sources\Game\ResourceLoader.h" />
+    <ClInclude Include="Sources\Game\ResultScene.h" />
     <ClInclude Include="Sources\Game\SphereCollider.h" />
     <ClInclude Include="Sources\Game\DebugCamera.h" />
     <ClInclude Include="Sources\Game\Element.h" />
@@ -272,6 +279,7 @@
     <ClInclude Include="Sources\Game\ThunderMagicShooter.h" />
     <ClInclude Include="Sources\Game\ThunderStrikeMagic.h" />
     <ClInclude Include="Sources\Game\ThunderStrikeMagicShooter.h" />
+    <ClInclude Include="Sources\Game\TitleScene.h" />
     <ClInclude Include="Sources\Game\Transform.h" />
     <ClInclude Include="Sources\Parameters\AICommandParameter.h" />
     <ClInclude Include="Sources\Parameters\CommandParameter.h" />

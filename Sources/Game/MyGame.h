@@ -8,12 +8,8 @@
 
 
 class SceneManager;
-template <class T>
-class ResourceManager;
-class TextureResource;
-class GeometricPrimitiveResource;
-class ModelResource;
-class FontResource;
+class CommonServices;
+
 
 /// <summary>
 /// ゲームループクラス
@@ -39,14 +35,6 @@ public:
 	void DrawFPS(const DX::StepTimer& timer);
 
 private:
-	template <class T>
-	// リソースマネージャを生成してサービスロケータに登録する
-	void CreateAndRegister(std::unique_ptr<ResourceManager<T>>& manager, const std::wstring& kind) {
-		manager = std::make_unique<ResourceManager<T>>(kind);
-		ServiceLocater<ResourceManager<T>>::Register(manager.get());
-	};
-
-private:
 	// 幅
 	int                                m_width;
 	// 高さ
@@ -57,14 +45,12 @@ private:
 	// マウス
 	std::unique_ptr<DirectX::Mouse>    m_mouse;
 
+	// コモンサービス
+	std::unique_ptr<CommonServices>    m_commonServices;
 	// シーンマネージャ
 	std::unique_ptr<SceneManager>      m_sceneManager;
-
-	// リソースマネージャ
-	std::unique_ptr<ResourceManager<TextureResource>>              m_textureResourceManager;
-	std::unique_ptr<ResourceManager<GeometricPrimitiveResource>>   m_geometricPrimitiveResourceManager;
-	std::unique_ptr<ResourceManager<ModelResource>>                m_modelResourceManager;
-	std::unique_ptr<ResourceManager<FontResource>>                 m_fontResourceManager;
+	
+	
 
 };
 

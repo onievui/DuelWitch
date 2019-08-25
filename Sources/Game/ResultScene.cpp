@@ -1,4 +1,4 @@
-#include "LogoScene.h"
+#include "ResultScene.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
@@ -9,21 +9,21 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-LogoScene::LogoScene() {
+ResultScene::ResultScene() {
 
 }
 
 /// <summary>
 /// デストラクタ
 /// </summary>
-LogoScene::~LogoScene() {
+ResultScene::~ResultScene() {
 }
 
 /// <summary>
-///	ロゴシーンを初期化する
+///	リザルトシーンを初期化する
 /// </summary>
 /// <param name="pSceneRequest"></param>
-void LogoScene::Initialize(ISceneRequest* pSceneRequest) {
+void ResultScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pSceneRequest = pSceneRequest;
 	DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	// コモンステートを生成する
@@ -34,34 +34,34 @@ void LogoScene::Initialize(ISceneRequest* pSceneRequest) {
 }
 
 /// <summary>
-/// ロゴシーンを更新する
+/// リザルトシーンを更新する
 /// </summary>
 /// <param name="timer"></param>
-void LogoScene::Update(const DX::StepTimer& timer) {
+void ResultScene::Update(const DX::StepTimer& timer) {
 	timer;
 
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space)) {
-		m_pSceneRequest->RequestScene("Title");
+		m_pSceneRequest->RequestScene("CharaSelect");
 	}
 }
 
 /// <summary>
-/// ロゴシーンを描画する
+/// リザルトシーンを描画する
 /// </summary>
 /// <param name="spriteBatch"></param>
-void LogoScene::Render(DirectX::SpriteBatch* spriteBatch) {
+void ResultScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	spriteBatch->Begin();
 
 	const DirectX::SpriteFont* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default)->GetResource().get();
-	font->DrawString(spriteBatch, L"LogoScene press Space", DirectX::SimpleMath::Vector2(0, 0), DirectX::Colors::White);
+	font->DrawString(spriteBatch, L"ResultScene press Space", DirectX::SimpleMath::Vector2(0, 0), DirectX::Colors::White);
 
 	spriteBatch->End();
 }
 
 /// <summary>
-/// ロゴシーンを終了する
+/// リザルトシーンを終了する
 /// </summary>
-void LogoScene::Finalize() {
+void ResultScene::Finalize() {
 
 }
 

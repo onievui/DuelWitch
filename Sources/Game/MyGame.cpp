@@ -5,7 +5,9 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
+#include "CommonServices.h"
 #include "SceneManager.h"
+#include "ResourceLoader.h"
 
 
 /// <summary>
@@ -37,16 +39,17 @@ void MyGame::Initialize(int width, int height) {
 	m_mouse = std::make_unique<DirectX::Mouse>();
 	m_mouse->SetWindow(ServiceLocater<DirectX11>::Get()->GetHWnd());
 
-	// リソースマネージャを生成してサービスロケータに登録する
-	CreateAndRegister(m_textureResourceManager, L"テクスチャ");
-	CreateAndRegister(m_geometricPrimitiveResourceManager, L"ジオメトリックプリミティブ");
-	CreateAndRegister(m_modelResourceManager, L"モデル");
-	CreateAndRegister(m_fontResourceManager, L"フォント");
+	// コモンサービスを初期化する
+	m_commonServices = std::make_unique<CommonServices>();
+	m_commonServices->Initialize();
 
+	// フォントを読み込む
+	ResourceLoader::Load(ResourceLoaderID::Common);
 
 	// シーンマネージャを初期化する
 	m_sceneManager = std::make_unique<SceneManager>();
 	m_sceneManager->Initialize();
+
 	// プレイシーンを呼び出す
 	m_sceneManager->RequestScene("Logo");
 }
@@ -62,6 +65,11 @@ void MyGame::CreateResources() {
 
 // ゲームを更新する
 void MyGame::Update(const DX::StepTimer& timer) {
+	// キートラッカーを更新する
+	ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->Update(m_keyboard->GetState());
+	// マウストラッカーを更新する
+	ServiceLocater<DirectX::Mouse::ButtonStateTracker>::Get()->Update(m_mouse->GetState());
+
 	// シーンを更新する
 	m_sceneManager->Update(timer);
 	
@@ -89,6 +97,9 @@ void MyGame::Finalize() {
 	// 基底クラスのFinalizeを呼び出す
 	Game::Finalize();
 
+	ResourceLoader::Release(ResourceLoaderID::Common);
+	m_commonServices->Finalize();
+
 	m_keyboard.reset();
 	m_mouse.reset();
 }
@@ -96,7 +107,8 @@ void MyGame::Finalize() {
 // FPSを描画する
 void MyGame::DrawFPS(const DX::StepTimer& timer) {
 	// FPS文字列を生成する
-	std::wstring fpsString = L"fps = " + std::to_wstring((unsigned int)timer.GetFramesPerSecond());
+	std::wstring fpsString = L"fps = " + std::to_wstring(static_cast<unsigned int>(timer.GetFramesPerSecond()));
 	// FPSを描画する
-	GetSpriteFont()->DrawString(GetSpriteBatch(), fpsString.c_str(), DirectX::SimpleMath::Vector2(0, 0), DirectX::Colors::White);
+	const DirectX::SpriteFont* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default)->GetResource().get();
+	font->DrawString(GetSpriteBatch(), fpsString.c_str(), DirectX::SimpleMath::Vector2(0, 0), DirectX::Colors::White);
 }

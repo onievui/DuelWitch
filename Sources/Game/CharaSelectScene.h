@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LOGO_SCENE_DEFINED
-#define LOGO_SCENE_DEFINED
+#ifndef CHARA_SELECT_SCENE_DEFINED
+#define CHARA_SELECT_SCENE_DEFINED
 
 
 #include "IScene.h"
@@ -11,22 +11,22 @@ class ISceneRequest;
 
 
 /// <summary>
-/// ロゴシーンクラス
+/// キャラセレクトシーンクラス
 /// </summary>
-class LogoScene : public IScene {
+class CharaSelectScene : public IScene {
 public:
 	// コンストラクタ
-	LogoScene();
+	CharaSelectScene();
 	// デストラクタ
-	~LogoScene();
+	~CharaSelectScene();
 public:
-	// ロゴシーンを初期化する
+	// キャラセレクトシーンを初期化する
 	void Initialize(ISceneRequest* pSceneRequest) override;
-	// ロゴシーンを更新する
+	// キャラセレクトシーンを更新する
 	void Update(const DX::StepTimer& timer) override;
-	// ロゴシーンを描画する
+	// キャラセレクトシーンを描画する
 	void Render(DirectX::SpriteBatch* spriteBatch) override;
-	// ロゴシーンを終了する
+	// キャラセレクトシーンを終了する
 	void Finalize() override;
 
 private:
@@ -42,6 +42,6 @@ private:
 };
 
 
-#endif // !LOGO_SCENE_DEFINED
+#endif // !CHARA_SELECT_SCENE_DEFINED
 
 

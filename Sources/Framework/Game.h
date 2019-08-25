@@ -27,19 +27,12 @@
 class Window;
 
 // ゲームループを提供するゲームクラス
-class Game
-{
+class Game {
 public:
 	
 	// スプライトバッチを取得する
-	DirectX::SpriteBatch* GetSpriteBatch() const
-	{
+	DirectX::SpriteBatch* GetSpriteBatch() const {
 		return m_spriteBatch.get();
-	}
-	// スプライトフォントを取得する
-	DirectX::SpriteFont* GetSpriteFont() const
-	{
-		return m_spriteFont.get();
 	}
 
 	// ゲームループを実行する
@@ -91,12 +84,9 @@ private:
 	// ウィンドウ
 	std::unique_ptr<Window> m_window;
 	
-	// スプライトフォント
-	std::unique_ptr<DirectX::SpriteFont> m_spriteFont;
 	// スプライトバッチ
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	// DirectX11クラスのインスタンス
-	//DirectX11& m_directX = DirectX11::Get();
 	std::unique_ptr<DirectX11> m_directX;
 };
 

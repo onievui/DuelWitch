@@ -50,8 +50,6 @@ void Game::Initialize(int width, int height) {
 
 	// SpriteBatchオブジェクトを生成する
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_directX->GetContext().Get());
-	// SpriteFontオブジェクトを生成する
-	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_directX->GetDevice().Get(), L"Resources/Fonts/Protected/Arial.spritefont");
 }
 
 // リソースを生成する
@@ -100,8 +98,6 @@ void Game::Update(const DX::StepTimer& timer) {
 
 // 後始末をする
 void Game::Finalize() {
-	// Fontオブジェクトを解放する
-	m_spriteFont.reset();
 	// SpriteBatchオブジェクトを解放する
 	m_spriteBatch.reset();
 

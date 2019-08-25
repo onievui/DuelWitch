@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LOGO_SCENE_DEFINED
-#define LOGO_SCENE_DEFINED
+#ifndef TITLE_SCENE_DEFINED
+#define TITLE_SCENE_DEFINED
 
 
 #include "IScene.h"
@@ -11,22 +11,22 @@ class ISceneRequest;
 
 
 /// <summary>
-/// ロゴシーンクラス
+/// タイトルシーンクラス
 /// </summary>
-class LogoScene : public IScene {
+class TitleScene : public IScene {
 public:
 	// コンストラクタ
-	LogoScene();
+	TitleScene();
 	// デストラクタ
-	~LogoScene();
+	~TitleScene();
 public:
-	// ロゴシーンを初期化する
+	// タイトルシーンを初期化する
 	void Initialize(ISceneRequest* pSceneRequest) override;
-	// ロゴシーンを更新する
+	// タイトルシーンを更新する
 	void Update(const DX::StepTimer& timer) override;
-	// ロゴシーンを描画する
+	// タイトルシーンを描画する
 	void Render(DirectX::SpriteBatch* spriteBatch) override;
-	// ロゴシーンを終了する
+	// タイトルシーンを終了する
 	void Finalize() override;
 
 private:
@@ -42,6 +42,6 @@ private:
 };
 
 
-#endif // !LOGO_SCENE_DEFINED
+#endif // !TITLE_SCENE_DEFINED
 
 

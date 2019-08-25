@@ -76,7 +76,7 @@ enum class MovieID {
 /// ƒtƒHƒ“ƒgID
 /// </summary>
 enum class FontID {
-	NullData,
+	Default,
 	Num
 };
 

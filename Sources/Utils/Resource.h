@@ -128,6 +128,13 @@ public:
 public:
 	// コンストラクタ
 	FontResource(const std::wstring& fileName);
+	// ムーブコンストラクタ
+	FontResource(FontResource&& from) {
+		for (std::vector<std::unique_ptr<DirectX::SpriteFont>>::iterator itr = from.m_resources.begin();
+			itr != from.m_resources.end(); ++itr) {
+			m_resources.emplace_back(std::move(*itr));
+		}
+	}
 	// デストラクタ
 	~FontResource();
 

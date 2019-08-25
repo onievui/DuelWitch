@@ -22,9 +22,6 @@ private:
 	// 魔法のためのレイ用平面の作成
 	DirectX::SimpleMath::Plane CreatePlaneForMagic(const Transform& transform, Player::MoveDirection direction);
 
-private:
-	// マウストラッカー
-	std::unique_ptr<DirectX::Mouse::ButtonStateTracker> m_mouseTracker;
 };
 
 

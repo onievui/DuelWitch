@@ -7,6 +7,7 @@
 /// リソース読み込みID
 /// </summary>
 enum class ResourceLoaderID {
+	Common,
 	PlayScene,
 };
 
@@ -19,7 +20,7 @@ public:
 	static void Load(ResourceLoaderID id);
 
 	// リソースを解放する
-	static void Release();
+	static void Release(ResourceLoaderID id);
 };
 
 
