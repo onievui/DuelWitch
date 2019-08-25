@@ -56,6 +56,12 @@
     <Filter Include="Assets\Jsons">
       <UniqueIdentifier>{af038f85-a652-424e-906d-a4cd73af81f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Load">
+      <UniqueIdentifier>{d12d5140-74bf-4c2b-8bc4-1f1bc124e172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parameters">
+      <UniqueIdentifier>{be7d3ff3-0a63-4cf7-a0e1-ec78d9bb61f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -189,14 +195,26 @@
     <ClCompile Include="Sources\Utils\ResourceManager.cpp">
       <Filter>Utils\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\ResourceLoader.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Utils\JsonWrapper.cpp">
       <Filter>Utils\Json</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Utils\LoadDataManager.cpp">
       <Filter>Utils\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\ResourceLoader.cpp">
+      <Filter>Game\Load</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\PlayParameterLoader.cpp">
+      <Filter>Game\Load</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Parameters\CommandParameter.cpp">
+      <Filter>Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Parameters\AICommandParameter.cpp">
+      <Filter>Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Parameters\ElementParameter.cpp">
+      <Filter>Parameters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -365,9 +383,6 @@
     <ClInclude Include="Sources\Utils\ResourceID.h">
       <Filter>Utils\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\ResourceLoader.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Utils\picojson.h">
       <Filter>Utils\Json</Filter>
     </ClInclude>
@@ -385,6 +400,27 @@
     </ClInclude>
     <ClInclude Include="Sources\Utils\LoadDataHolder.h">
       <Filter>Utils\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\ResourceLoader.h">
+      <Filter>Game\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\IParameterLoader.h">
+      <Filter>Game\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\PlayParameterLoader.h">
+      <Filter>Game\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Parameters\CommandParameter.h">
+      <Filter>Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\ILoadData.h">
+      <Filter>Utils\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Parameters\AICommandParameter.h">
+      <Filter>Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Parameters\ElementParameter.h">
+      <Filter>Parameters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

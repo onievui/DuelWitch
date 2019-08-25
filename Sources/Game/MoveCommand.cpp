@@ -1,9 +1,8 @@
 #include "MoveCommand.h"
 #include <Utils\MathUtils.h>
-#include <Utils\JsonWrapper.h>
-
-
-LoadDataHolder<MoveCommand::MoveCommandData, LoadDataID::PlayScene> MoveCommand::s_data;
+#include <Utils\ServiceLocater.h>
+#include <Parameters\CommandParameter.h>
+#include "PlayParameterLoader.h"
 
 
 /// <summary>
@@ -14,14 +13,15 @@ LoadDataHolder<MoveCommand::MoveCommandData, LoadDataID::PlayScene> MoveCommand:
 void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
 	DirectX::Keyboard::State keyState = DirectX::Keyboard::Get().GetState();
+	const CommandParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter();
 
-	const float& moveSpeed   = s_data->moveSpeed;
-	const float& moveSpeedXY = s_data->moveSpeedXY;
-	const float& rotSpeed    = s_data->rotSpeed;
-	const float& rotZLimit   = s_data->rotZLimit;
-	const float& rotXLimit   = s_data->rotXLimit;
-	const float& rotYLimit   = s_data->rotYLimit;
-	const float& lerpSpeed   = s_data->lerpSpeed;
+	const float& moveSpeed   = parameter->moveSpeed;
+	const float& moveSpeedXY = parameter->moveSpeedXY;
+	//const float& rotSpeed    = parameter->rotSpeed;
+	const float& rotZLimit   = parameter->rotZLimit;
+	const float& rotXLimit   = parameter->rotXLimit;
+	const float& rotYLimit   = parameter->rotYLimit;
+	const float& lerpSpeed   = parameter->lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
 	Player::MoveDirection& ref_direction = GetMoveDirection(player);
@@ -102,27 +102,3 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	GetWorld(player) = ref_transform.GetMatrix();
 }
 
-
-/// <summary>
-/// ÉfÅ[É^Çì«Ç›çûÇﬁ
-/// </summary>
-/// <returns>
-/// true  : ê¨å˜
-/// false : é∏îs
-/// </returns>
-bool MoveCommand::MoveCommandData::Load() {
-	JsonWrapper::root root;
-	if (!JsonWrapper::LoadCheck(root, L"Resources/Jsons/player_command.json")) {
-		return false;
-	}
-
-	moveSpeed   = root["MoveCommand"]["MoveSpeed"].getNum();
-	moveSpeedXY = root["MoveCommand"]["MoveSpeedXY"].getNum();
-	rotSpeed    = root["MoveCommand"]["RotSpeed"].getNum();
-	rotZLimit   = Math::Deg2Rad(root["MoveCommand"]["RotZLimit_Deg"].getNum());
-	rotXLimit   = Math::Deg2Rad(root["MoveCommand"]["RotXLimit_Deg"].getNum());
-	rotYLimit   = Math::Deg2Rad(root["MoveCommand"]["RotYLimit_Deg"].getNum());
-	lerpSpeed   = root["MoveCommand"]["LerpSpeed"].getNum();
-
-	return true;
-}

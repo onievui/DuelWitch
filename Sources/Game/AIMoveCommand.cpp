@@ -1,9 +1,8 @@
 #include "AIMoveCommand.h"
 #include <Utils\MathUtils.h>
-#include <Utils\JsonWrapper.h>
-
-
-LoadDataHolder<AIMoveCommand::AIMoveCommandData, LoadDataID::PlayScene> AIMoveCommand::s_data;
+#include <Utils\ServiceLocater.h>
+#include <Parameters\AICommandParameter.h>
+#include "PlayParameterLoader.h"
 
 
 /// <summary>
@@ -13,14 +12,15 @@ LoadDataHolder<AIMoveCommand::AIMoveCommandData, LoadDataID::PlayScene> AIMoveCo
 /// <param name="timer">タイマー</param>
 void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
+	const AICommandParameter::move_param* parameter = &ServiceLocater<PlayParameterLoader>::Get()->GetAICommandParameter()->moveParam;
 
-	const float& moveSpeed   = s_data->moveSpeed;
-	const float& moveSpeedXY = s_data->moveSpeedXY;
-	const float& rotSpeed    = s_data->rotSpeed;
-	const float& rotZLimit   = s_data->rotZLimit;
-	const float& rotXLimit   = s_data->rotXLimit;
-	const float& rotYLimit   = s_data->rotYLimit;
-	const float& lerpSpeed   = s_data->lerpSpeed;
+	const float& moveSpeed   = parameter->moveSpeed;
+	const float& moveSpeedXY = parameter->moveSpeedXY;
+	//const float& rotSpeed    = parameter->rotSpeed;
+	const float& rotZLimit   = parameter->rotZLimit;
+	const float& rotXLimit   = parameter->rotXLimit;
+	const float& rotYLimit   = parameter->rotYLimit;
+	const float& lerpSpeed   = parameter->lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
 	Player::MoveDirection& ref_direction = GetMoveDirection(player);
@@ -37,7 +37,7 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	}
 
 	// 移動
-	const float& nearDistance = s_data->nearDistance;
+	const float& nearDistance = parameter->nearDistance;
 	bool is_forward = ref_direction == Player::MoveDirection::Forward;
 	DirectX::SimpleMath::Vector3 distance = other_pos - pos;
 	// すれ違い後の場合
@@ -150,36 +150,8 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	}
 	pos += move * moveSpeed*elapsedTime;
 
-
 	ref_transform.SetPosition(pos);
 	ref_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
 	GetWorld(player) = ref_transform.GetMatrix();
 }
-
-
-/// <summary>
-/// データを読み込む
-/// </summary>
-/// <returns>
-/// true  : 成功
-/// false : 失敗
-/// </returns>
-bool AIMoveCommand::AIMoveCommandData::Load() {
-	JsonWrapper::root root;
-	if (!JsonWrapper::LoadCheck(root, L"Resources/Jsons/ai_command.json")) {
-		return false;
-	}
-
-	moveSpeed    = root["MoveCommand"]["MoveSpeed"].getNum();
-	moveSpeedXY  = root["MoveCommand"]["MoveSpeedXY"].getNum();
-	rotSpeed     = root["MoveCommand"]["RotSpeed"].getNum();
-	rotZLimit    = Math::Deg2Rad(root["MoveCommand"]["RotZLimit_Deg"].getNum());
-	rotXLimit    = Math::Deg2Rad(root["MoveCommand"]["RotXLimit_Deg"].getNum());
-	rotYLimit    = Math::Deg2Rad(root["MoveCommand"]["RotYLimit_Deg"].getNum());
-	lerpSpeed    = root["MoveCommand"]["LerpSpeed"].getNum();
-	nearDistance = root["MoveCommand"]["NearDistance"].getNum();
-
-	return true;
-}
-
 

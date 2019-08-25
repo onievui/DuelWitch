@@ -1,4 +1,7 @@
 #include "ElementFactory.h"
+#include <Utils\ServiceLocater.h>
+#include <Parameters\ElementParameter.h>
+#include "PlayParameterLoader.h"
 #include "Element.h"
 
 
@@ -19,7 +22,7 @@ ElementFactory::~ElementFactory() {
 /// </summary>
 void ElementFactory::Initialize() {
 	m_elements.clear();
-	m_elements.resize(ELEMENT_MAX_NUM);
+	m_elements.resize(ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->maxNum);
 	for (std::vector<std::unique_ptr<Element>>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
 		(*itr) = std::make_unique<Element>();
 	}
@@ -44,22 +47,22 @@ Element* ElementFactory::Create(ElementID id, const DirectX::SimpleMath::Vector3
 	}
 	
 	DirectX::SimpleMath::Vector4 color;
-	constexpr float alpha_rate = 0.8f;
+	const float& alphaRate = ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->alphaRate;
 
 	switch (id) {
 	case ElementID::Fire:
 		color = DirectX::Colors::Red;
-		color.w *= alpha_rate;
+		color.w *= alphaRate;
 		(*itr)->Create(id, position, color);
 		break;
 	case ElementID::Thunder:
 		color = DirectX::Colors::Yellow;
-		color.w *= alpha_rate;
+		color.w *= alphaRate;
 		(*itr)->Create(id, position, color);
 		break;
 	case ElementID::Freeze:
 		color = DirectX::Colors::SkyBlue;
-		color.w *= alpha_rate;
+		color.w *= alphaRate;
 		(*itr)->Create(id, position, color);
 		break;
 	default:
@@ -69,5 +72,15 @@ Element* ElementFactory::Create(ElementID id, const DirectX::SimpleMath::Vector3
 	(*itr)->IsUsed(true);
 
 	return itr->get();
+}
+
+/// <summary>
+/// “¯‚Éˆµ‚¦‚éÅ‘å‚ÌƒGƒŒƒƒ“ƒg”‚ğæ“¾‚·‚é
+/// </summary>
+/// <returns>
+/// Å‘å”
+/// </returns>
+int ElementFactory::GetMaxElementNum() {
+	return ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->maxNum;
 }
 

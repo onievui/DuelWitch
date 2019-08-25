@@ -22,7 +22,11 @@ public:
 	// コンストラクタ
 	LoadDataHolder()
 		: m_data() {
-		LoadDataManager::GetIns()->Regiser(this);
+		// LoadDataManager::GetIns()->Regiser(this);
+	}
+	// デストラクタ
+	~LoadDataHolder() {
+		// LoadDataManager::GetIns()->Unregister(this);
 	}
 
 private:
@@ -34,6 +38,11 @@ private:
 		return m_data->Load();
 	}
 
+	// データを再読み込みする
+	bool Reload() override {
+		return m_data->Reload();
+	}
+
 	// データを開放する
 	void Dispose() override {
 		m_data.reset();
@@ -42,6 +51,12 @@ private:
 	// 読み込みデータIDを取得する
 	LoadDataID GetID() const override {
 		return ID;
+	}
+
+public:
+	// データを取得する
+	const T* Get() const {
+		return m_data.get();
 	}
 
 public:

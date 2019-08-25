@@ -25,28 +25,6 @@ private:
 	// オイラー角
 	DirectX::SimpleMath::Vector3 m_euler;
 
-private:
-	/// <summary>
-	/// AI移動コマンドクラス用パラメータ
-	/// </summary>
-	class AIMoveCommandData {
-	public:
-		// データを読み込む
-		bool Load();
-
-	public:
-		float moveSpeed;
-		float moveSpeedXY;
-		float rotSpeed;
-		float rotZLimit;
-		float rotXLimit;
-		float rotYLimit;
-		float lerpSpeed;
-		float nearDistance;
-	};
-
-	// 読み込みデータ保持オブジェクト
-	static LoadDataHolder<AIMoveCommandData, LoadDataID::PlayScene> s_data;
 };
 
 

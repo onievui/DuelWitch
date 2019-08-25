@@ -200,6 +200,7 @@
     <ClCompile Include="Sources\Game\NormalMagicShooter.cpp" />
     <ClCompile Include="Sources\Game\Player.cpp" />
     <ClCompile Include="Sources\Game\MyGame.cpp" />
+    <ClCompile Include="Sources\Game\PlayParameterLoader.cpp" />
     <ClCompile Include="Sources\Game\PlayScene.cpp" />
     <ClCompile Include="Sources\Game\ResourceLoader.cpp" />
     <ClCompile Include="Sources\Game\SceneManager.cpp" />
@@ -210,6 +211,9 @@
     <ClCompile Include="Sources\Game\ThunderStrikeMagic.cpp" />
     <ClCompile Include="Sources\Game\ThunderStrikeMagicShooter.cpp" />
     <ClCompile Include="Sources\Game\Transform.cpp" />
+    <ClCompile Include="Sources\Parameters\AICommandParameter.cpp" />
+    <ClCompile Include="Sources\Parameters\CommandParameter.cpp" />
+    <ClCompile Include="Sources\Parameters\ElementParameter.cpp" />
     <ClCompile Include="Sources\pch\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -238,6 +242,7 @@
     <ClInclude Include="Sources\Game\FreezeMagicShooter.h" />
     <ClInclude Include="Sources\Game\IMagic.h" />
     <ClInclude Include="Sources\Game\IMagicShooter.h" />
+    <ClInclude Include="Sources\Game\IParameterLoader.h" />
     <ClInclude Include="Sources\Game\LogoScene.h" />
     <ClInclude Include="Sources\Game\Magic.h" />
     <ClInclude Include="Sources\Game\MagicFactory.h" />
@@ -245,6 +250,7 @@
     <ClInclude Include="Sources\Game\MoveCommand.h" />
     <ClInclude Include="Sources\Game\NormalMagic.h" />
     <ClInclude Include="Sources\Game\NormalMagicShooter.h" />
+    <ClInclude Include="Sources\Game\PlayParameterLoader.h" />
     <ClInclude Include="Sources\Game\ResourceLoader.h" />
     <ClInclude Include="Sources\Game\SphereCollider.h" />
     <ClInclude Include="Sources\Game\DebugCamera.h" />
@@ -267,8 +273,12 @@
     <ClInclude Include="Sources\Game\ThunderStrikeMagic.h" />
     <ClInclude Include="Sources\Game\ThunderStrikeMagicShooter.h" />
     <ClInclude Include="Sources\Game\Transform.h" />
+    <ClInclude Include="Sources\Parameters\AICommandParameter.h" />
+    <ClInclude Include="Sources\Parameters\CommandParameter.h" />
+    <ClInclude Include="Sources\Parameters\ElementParameter.h" />
     <ClInclude Include="Sources\pch\pch.h" />
     <ClInclude Include="Sources\Utils\ErrorMessage.h" />
+    <ClInclude Include="Sources\Utils\ILoadData.h" />
     <ClInclude Include="Sources\Utils\ILoadDataHolder.h" />
     <ClInclude Include="Sources\Utils\JsonWrapper.h" />
     <ClInclude Include="Sources\Utils\LoadDataHolder.h" />

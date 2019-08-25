@@ -23,7 +23,7 @@ ElementManager::~ElementManager() {
 /// </summary>
 void ElementManager::Initialize() {
 	m_elements.clear();
-	m_elements.resize(ElementFactory::ELEMENT_MAX_NUM, nullptr);
+	m_elements.resize(ElementFactory::GetMaxElementNum(), nullptr);
 	m_elementFactory = std::make_unique<ElementFactory>();
 	m_elementFactory->Initialize();
 }

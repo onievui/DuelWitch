@@ -35,7 +35,12 @@ namespace JsonWrapper {
 		}
 
 		// データを取得する
-		float getNum() {
+		int getNumI() {
+			return static_cast<int>(m_val.get<double>());
+		}
+
+		//データを取得する
+		float getNumF() {
 			return static_cast<float>(m_val.get<double>());
 		}
 

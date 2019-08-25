@@ -4,6 +4,7 @@
 
 
 #include <Framework\StepTimer.h>
+#include <Utils\LoadDataHolder.h>
 #include "IObject.h"
 #include "Transform.h"
 #include "SphereCollider.h"
@@ -58,6 +59,7 @@ private:
 	DirectX::SimpleMath::Vector4                 m_color;
 	// Žg—p‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool                                         m_isUsed;
+
 };
 
 

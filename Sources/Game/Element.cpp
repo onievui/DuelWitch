@@ -3,6 +3,9 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
+#include <Parameters\ElementParameter.h>
+#include "PlayParameterLoader.h"
+
 
 /// <summary>
 /// コンストラクタ
@@ -10,7 +13,7 @@
 Element::Element()
 	: m_id()
 	, m_transform()
-	, m_sphereCollider(&m_transform, ELEMENT_RADIUS)
+	, m_sphereCollider(&m_transform, ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->radius)
 	, m_color()
 	, m_isUsed(false) {
 }
@@ -112,3 +115,4 @@ bool Element::IsUsed() const {
 void Element::IsUsed(bool isUsed) {
 	m_isUsed = isUsed;
 }
+

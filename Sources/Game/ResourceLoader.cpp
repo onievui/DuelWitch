@@ -31,8 +31,8 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::FreezeMagicIcon, TextureResource(L"Protected/element2.png"));
 		textureResourceManager->AddResource(TextureID::ThunderMagicIcon, TextureResource(L"Protected/element3.png"));
 		// ジオメトリックプリミティブの生成
-		geometricPrimitiveResourceManager->AddResource(GeometricPrimitiveID::Element, GeometricPrimitiveResource(
-			DirectX::GeometricPrimitive::CreateCube(context, Element::ELEMENT_RADIUS*2)));
+		//geometricPrimitiveResourceManager->AddResource(GeometricPrimitiveID::Element, GeometricPrimitiveResource(
+		//	DirectX::GeometricPrimitive::CreateCube(context, Element::ELEMENT_RADIUS*2)));
 		geometricPrimitiveResourceManager->AddResource(GeometricPrimitiveID::NormalMagic, GeometricPrimitiveResource(
 			DirectX::GeometricPrimitive::CreateSphere(context, NormalMagic::NORMAL_MAGIC_RADIUS)));
 		geometricPrimitiveResourceManager->AddResource(GeometricPrimitiveID::FireMagic, GeometricPrimitiveResource(

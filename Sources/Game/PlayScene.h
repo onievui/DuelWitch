@@ -8,6 +8,7 @@
 
 
 class ISceneRequest;
+class PlayParameterLoader;
 class DebugCamera;
 class GridFloor;
 class Player;
@@ -17,6 +18,7 @@ class IMagic;
 class MagicManager;
 class TargetCamera;
 class Field;
+
 
 /// <summary>
 /// プレイシーンクラス
@@ -44,6 +46,9 @@ private:
 	std::unique_ptr<DirectX::IEffectFactory> m_effectFactory;
 	// コモンステート
 	std::unique_ptr <DirectX::CommonStates>  m_commonStates;
+
+	// パラメータ読み込みクラス
+	std::unique_ptr<PlayParameterLoader>     m_parameterLoader;
 
 	// デバッグカメラ
 	std::unique_ptr<DebugCamera>             m_debugCamera;

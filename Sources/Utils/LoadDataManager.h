@@ -13,8 +13,8 @@ class ILoadDataHolder;
 /// <summary>
 /// 読み込みデータマネージャクラス
 /// </summary>
-class LoadDataManager : public Singleton<LoadDataManager> {
-	friend class Singleton<LoadDataManager>;
+class LoadDataManager : public SingletonWithFunc<LoadDataManager> {
+	friend class SingletonWithFunc<LoadDataManager>;
 
 public:
 	// コンストラクタ
@@ -24,9 +24,13 @@ public:
 
 public:
 	// データの登録
-	void Regiser(ILoadDataHolder* loadDataHolder);
+	void Register(ILoadDataHolder* loadDataHolder);
+	// データの解除
+	void Unregister(ILoadDataHolder* loadDataHolder);
 	// データを読み込む
 	void Load(LoadDataID id);
+	// データを再読み込みする
+	void Reload(LoadDataID id);
 	// データを開放する
 	void Dispose(LoadDataID id);
 

@@ -10,7 +10,8 @@
 template <class T>
 class ResourceManager final : NonCopyable {
 public:
-	using IDType = typename T::IDType;
+	using ResourceType = typename T::Type;
+	using IDType       = typename T::IDType;
 
 private:
 	// 未ロードのリソースのインデックス
@@ -59,6 +60,18 @@ public:
 			return nullptr;
 		}
 		return m_resources[index].get();
+	}
+
+	// リソースを置き換える
+	void Replace(IDType id, ResourceType&& resource, int index2 = 0) {
+		int index = m_index[static_cast<int>(id)];
+		if (index == NULL_INDEX) {
+			std::wstring error_message = L"の取得に失敗しました";
+			ErrorMessage((m_kind + error_message).c_str());
+			return;
+		}
+		T* data = m_resources[index].get();
+		data->Replace(std::forward<ResourceType>(resource), index2);
 	}
 
 private:

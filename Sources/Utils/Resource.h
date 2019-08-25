@@ -29,6 +29,11 @@ public:
 		return static_cast<int>(m_resources.size()) > index ? m_resources[index] : m_defaultResource;
 	}
 
+	//リソースを置き換える
+	void Replace(T&& resource, int index = 0) {
+		m_resources[index] = std::forward<T>(resource);
+	}
+
 	// リソースが有効かどうか確認する
 	//bool IsValid(int index = 0);
 

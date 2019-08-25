@@ -1,10 +1,9 @@
 #include "AICastMagicCommand.h"
 #include <Utils\MathUtils.h>
-#include <Utils\JsonWrapper.h>
+#include <Utils\ServiceLocater.h>
+#include <Parameters\AICommandParameter.h>
+#include "PlayParameterLoader.h"
 #include "MagicFactory.h"
-
-
-LoadDataHolder<AICastMagicCommand::AICastMagicCommandData, LoadDataID::PlayScene> AICastMagicCommand::s_data;
 
 
 /// <summary>
@@ -14,6 +13,8 @@ LoadDataHolder<AICastMagicCommand::AICastMagicCommandData, LoadDataID::PlayScene
 /// <param name="timer">タイマー</param>
 void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
+	const AICommandParameter::cast_param* parameter = &ServiceLocater<PlayParameterLoader>::Get()->GetAICommandParameter()->castParam;
+
 	// 連射を制限する
 	if (m_waitTime > 0) {
 		m_waitTime -= elapsedTime;
@@ -26,7 +27,7 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	const DirectX::SimpleMath::Vector3& target_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
 
 	// 攻撃範囲を制限する
-	const float& shotableAngle = s_data->shotableAngle;
+	const float& shotableAngle = parameter->shotableAngle;
 	DirectX::SimpleMath::Vector3 direction = target_pos - pos;
 	DirectX::SimpleMath::Vector3 forward = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, rot);
 	float angle = std::acosf(forward.Dot(direction) / (forward.Length()*direction.Length()));
@@ -46,26 +47,7 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		GetMagicManager(player).CreateMagic(element_id, player.GetPlayerID(), pos, direction);
 	}
 
-	const float& castDelay = s_data->castDelay;
+	const float& castDelay = parameter->castDelay;
 	m_waitTime = castDelay;
 }
 
-
-/// <summary>
-/// データを読み込む
-/// </summary>
-/// <returns>
-/// true  : 成功
-/// false : 失敗
-/// </returns>
-bool AICastMagicCommand::AICastMagicCommandData::Load() {
-	JsonWrapper::root root;
-	if (!JsonWrapper::LoadCheck(root, L"Resources/Jsons/ai_command.json")) {
-		return false;
-	}
-
-	shotableAngle = Math::Deg2Rad(root["CastCommand"]["ShotableAngle_Deg"].getNum());
-	castDelay     = root["CastCommand"]["CastDelay"].getNum();
-
-	return true;
-}

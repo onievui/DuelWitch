@@ -2,7 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
-#include <Utils\LoadDataManager.h>
+#include "PlayParameterLoader.h"
 #include "ResourceLoader.h"
 #include "ISceneRequest.h"
 #include "DebugCamera.h"
@@ -45,7 +45,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	ResourceLoader::Load(ResourceLoaderID::PlayScene);
 
 	// パラメータをロードする
-	LoadDataManager::GetIns()->Load(LoadDataID::PlayScene);
+	m_parameterLoader = std::make_unique<PlayParameterLoader>();
+	m_parameterLoader->Load();
+	ServiceLocater<PlayParameterLoader>::Register(m_parameterLoader.get());
 
 	// エレメントマネージャを作成する
 	m_elementManager = std::make_unique<ElementManager>();
@@ -228,6 +230,7 @@ void PlayScene::Finalize() {
 	// リソースを解放する
 	ResourceLoader::Release();
 	// パラメータを開放する
-	LoadDataManager::GetIns()->Dispose(LoadDataID::PlayScene);
+	m_parameterLoader->Dispose();
+	ServiceLocater<PlayParameterLoader>::Remove();
 }
 

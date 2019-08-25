@@ -2,6 +2,10 @@
 #ifndef ELEMENT_FACTORY_DEFINED
 #define ELEMENT_FACTORY_DEFINED
 
+
+#include <Utils\LoadDataHolder.h>
+
+
 class Element;
 
 
@@ -18,10 +22,6 @@ enum class ElementID {
 /// </summary>
 class ElementFactory {
 public:
-	// エレメントの最大出現数
-	static constexpr int ELEMENT_MAX_NUM = 30;
-
-public:
 	// コンストラクタ
 	ElementFactory();
 	// デストラクタ
@@ -32,6 +32,10 @@ public:
 	void Initialize();
 	// エレメントを生成する
 	Element* Create(ElementID id, const DirectX::SimpleMath::Vector3& position);
+
+public:
+	// 同時に扱える最大のエレメント数を取得する
+	static int GetMaxElementNum();
 
 private:
 	// 管理するエレメント
