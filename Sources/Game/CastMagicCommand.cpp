@@ -1,6 +1,6 @@
 #include "CastMagicCommand.h"
 #include <Utils\ServiceLocater.h>
-#include "MagicFactory.h"
+#include "MagicID.h"
 
 
 /// <summary>

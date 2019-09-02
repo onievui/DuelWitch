@@ -1,4 +1,8 @@
 #include "MagicFactory.h"
+#include <Utils\ServiceLocater.h>
+#include <Parameters\MagicParameter.h>
+#include "PlayParameterLoader.h"
+#include "MagicID.h"
 #include "IMagic.h"
 #include "NormalMagic.h"
 #include "FireMagic.h"
@@ -26,6 +30,17 @@ MagicFactory::~MagicFactory() {
 /// </summary>
 /// <param name="magicManager">魔法マネージャ</param>
 void MagicFactory::Initialize(MagicManager* magicManager) {
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
+	if (static_cast<int>(MagicID::Num) != parameter->maxNum.size()) {
+		ErrorMessage(L"ロードした魔法の種類数が不正な値です");
+	}
+	m_maxNum = parameter->maxNum;
+	m_beginIndex.resize(m_maxNum.size());
+	m_beginIndex[0] = 0;
+	for (unsigned int i = 1; i < m_beginIndex.size(); ++i) {
+		m_beginIndex[i] = m_beginIndex[i - 1] + m_maxNum[i - 1];
+	}
+
 	m_magics.clear();
 	m_magics.resize(GetMagicMaxNum());
 
@@ -48,8 +63,8 @@ void MagicFactory::Initialize(MagicManager* magicManager) {
 /// </returns>
 IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	// 使用していないオブジェクトを探す
-	std::vector<std::unique_ptr<IMagic>>::iterator begin = m_magics.begin() + MAGIC_BEGIN_INDEX[static_cast<int>(id)];
-	std::vector<std::unique_ptr<IMagic>>::iterator end = begin + MAGIC_NUM[static_cast<int>(id)];
+	std::vector<std::unique_ptr<IMagic>>::iterator begin = m_magics.begin() + m_beginIndex[static_cast<int>(id)];
+	std::vector<std::unique_ptr<IMagic>>::iterator end = begin + m_maxNum[static_cast<int>(id)];
 	std::vector<std::unique_ptr<IMagic>>::iterator itr = std::find_if(begin, end,
 		[](std::unique_ptr<IMagic>& element) {return !element->IsUsed(); });
 
@@ -92,8 +107,8 @@ IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::Simpl
 /// </returns>
 int MagicFactory::GetMagicMaxNum() {
 	int total = 0;
-	for (int i = 0; i < (int)MagicID::Num; ++i) {
-		total += MAGIC_NUM[i];
+	for (int i = 0; i < static_cast<int>(MagicID::Num); ++i) {
+		total += m_maxNum[i];
 	}	
 	return total;
 }

@@ -1,5 +1,6 @@
 #include "MagicManager.h"
 #include "MagicFactory.h"
+#include "MagicID.h"
 #include "ElementFactory.h"
 #include "IMagic.h"
 #include "IMagicShooter.h"
@@ -32,11 +33,11 @@ MagicManager::~MagicManager() {
 /// 魔法マネージャを初期化する
 /// </summary>
 void MagicManager::Initialize() {
-	m_magics.clear();
-	m_magics.resize(MagicFactory::GetMagicMaxNum(), nullptr);
 	m_magicFactory = std::make_unique<MagicFactory>();
 	m_magicFactory->Initialize(this);
-	m_magicShooters.resize(5);
+	m_magics.clear();
+	m_magics.resize(m_magicFactory->GetMagicMaxNum(), nullptr);
+	m_magicShooters.resize(static_cast<int>(MagicID::Num));
 	m_magicShooters[static_cast<int>(MagicID::Normal)]        = std::make_unique<NormalMagicShooter>(this);
 	m_magicShooters[static_cast<int>(MagicID::Fire)]          = std::make_unique<FireMagicShooter>(this);
 	m_magicShooters[static_cast<int>(MagicID::Thunder)]       = std::make_unique<ThunderMagicShooter>(this);

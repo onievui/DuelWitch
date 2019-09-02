@@ -3,7 +3,8 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
-#include "MagicFactory.h"
+#include "PlayParameterLoader.h"
+#include "MagicID.h"
 #include "Player.h"
 
 
@@ -12,8 +13,9 @@
 /// </summary>
 FireMagic::FireMagic()
 	: Magic(MagicID::Fire) {
-	m_sphereCollider.SetRadius(FIRE_MAGIC_RADIUS);
-	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, -FIRE_MAGIC_RADIUS/2, 0));
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
+	m_sphereCollider.SetRadius(parameter->fireParam.radius);
+	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, 0, 0));
 }
 
 /// <summary>
@@ -27,12 +29,13 @@ FireMagic::~FireMagic() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void FireMagic::Update(const DX::StepTimer& timer) {
-	m_lifeTime -= float(timer.GetElapsedSeconds());
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	m_lifeTime -= elapsed_time;
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
 	DirectX::SimpleMath::Vector3 pos = m_transform.GetPosition();
-	pos += m_vel;
+	pos += m_vel*elapsed_time;
 	m_transform.SetPosition(pos);
 
 	m_world = m_transform.GetMatrix();
@@ -50,19 +53,22 @@ void FireMagic::Lost() {
 /// </summary>
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
-/// <param name="vel">速度</param>
+/// <param name="dir">方向</param>
 /// <param name="color">色</param>
-void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
 	const DirectX::SimpleMath::Vector4& color) {
 	m_playerId = playerId;
 	m_transform.SetPosition(pos);
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
+	m_sphereCollider.SetRadius(parameter->fireParam.radius);
+	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, 0, 0));
 
 	// 方向ベクトルを元に円錐の回転角度を求める
-	m_transform.SetRotation(Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::Up, vel));
+	m_transform.SetRotation(Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::Up, dir));
 	
 	m_color = color;
-	m_vel = vel;
-	m_lifeTime = 8.0f;
+	m_vel = dir*parameter->fireParam.moveSpeed;
+	m_lifeTime = parameter->fireParam.lifeTime;
 }
 
 /// <summary>
@@ -74,6 +80,7 @@ void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::S
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::FireMagic);
 	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
+	//m_sphereCollider.Render(view, proj,DirectX::SimpleMath::Color(1,1,1,0.7f));
 }
 
 /// <summary>

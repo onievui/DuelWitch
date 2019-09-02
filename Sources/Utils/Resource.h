@@ -60,6 +60,10 @@ public:
 	~TextureResource();
 
 public:
+	// リソースを追加する
+	void AddResource(const std::wstring& fileName);
+
+public:
 	// リソースが有効かどうか確認する
 	bool IsValid(int index = 0) const;
 };

@@ -3,6 +3,9 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
+#include <Parameters\MagicParameter.h>
+#include "PlayParameterLoader.h"
+#include "MagicID.h"
 #include "MagicFactory.h"
 #include "MagicManager.h"
 #include "Player.h"
@@ -17,7 +20,7 @@ ThunderMagic::ThunderMagic(MagicManager* magicManager)
 	, m_pMagicManager(magicManager)
 	, m_startTimer() 
 	, m_time() {
-	m_sphereCollider.SetRadius(THUNDER_MAGIC_COLLIDER_RADIUS);
+	m_sphereCollider.SetRadius(ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderParam.colliderRadius);
 }
 
 /// <summary>
@@ -31,21 +34,22 @@ ThunderMagic::~ThunderMagic() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void ThunderMagic::Update(const DX::StepTimer& timer) {
-	float elapsed_time = float(timer.GetElapsedSeconds());
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 	m_lifeTime -= elapsed_time;
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
 	// 落雷生成用タイマーのカウント
 	if (m_startTimer) {
 		m_time += elapsed_time;
-		if (m_time > 0.5f) {
+		if (m_time > parameter->thunderParam.chaseEndTime) {
 			m_isUsed = false;
 		}
 	}
 	
 	DirectX::SimpleMath::Vector3 pos = m_transform.GetPosition();
-	pos += m_vel;	
+	pos += m_vel*elapsed_time;	
 	m_transform.SetPosition(pos);
 
 	// 消滅・タイマーのカウントが達したら落雷魔法を生成する
@@ -68,15 +72,17 @@ void ThunderMagic::Lost() {
 /// </summary>
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
-/// <param name="vel">速度</param>
+/// <param name="dir">方向</param>
 /// <param name="color">色</param>
-void ThunderMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+void ThunderMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
 	const DirectX::SimpleMath::Vector4& color) {
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
 	m_playerId = playerId;
 	m_transform.SetPosition(pos);
+	m_sphereCollider.SetRadius(parameter->thunderParam.colliderRadius);
 	m_color = color;
-	m_vel = vel;
-	m_lifeTime = 5.0f;
+	m_vel = dir*parameter->thunderParam.moveSpeed;
+	m_lifeTime = parameter->thunderParam.lifeTime;
 	m_startTimer = false;
 	m_time = 0.0f;
 }
@@ -90,6 +96,7 @@ void ThunderMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::ThunderMagic);
 	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
+	m_sphereCollider.Render(view, proj);
 }
 
 /// <summary>
@@ -97,17 +104,18 @@ void ThunderMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// </summary>
 /// <param name="collider">プレイヤーの当たり判定</param>
 void ThunderMagic::HitPlayer(const SphereCollider& collider) {
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
 	DirectX::SimpleMath::Vector3 direction = collider.GetTransform()->GetPosition() - m_transform.GetPosition();
 	// 反対方向なら処理しない
 	if (direction.z*m_vel.z < 0) {
 		return;
 	}
 	// 一定距離まで近づいたら即時発射
-	if (DirectX::SimpleMath::Vector2(direction.x, direction.z).Length() < 3.0f) {
+	if (DirectX::SimpleMath::Vector2(direction.x, direction.z).Length() < parameter->thunderParam.chaseEndDistance) {
 		m_isUsed = false;
 	}
 	direction.Normalize();
-	m_vel = Math::Lerp(m_vel, direction * THUNDER_MAGIC_CHASE_SPEED, 0.5f);
+	m_vel = Math::Lerp(m_vel, direction * parameter->thunderParam.chaseSpeed, parameter->thunderParam.chaseLerpSpeed);
 	// 敵プレイヤーに接近したらタイマー作動
 	m_startTimer = true;
 }

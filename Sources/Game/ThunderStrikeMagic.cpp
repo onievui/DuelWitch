@@ -3,7 +3,9 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
-#include "MagicFactory.h"
+#include <Parameters\MagicParameter.h>
+#include "PlayParameterLoader.h"
+#include "MagicID.h"
 #include "Player.h"
 
 
@@ -12,8 +14,9 @@
 /// </summary>
 ThunderStrikeMagic::ThunderStrikeMagic()
 	: Magic(MagicID::ThunderStrike) {
-	m_sphereCollider.SetRadius(THUNDER_STRIKE_MAGIC_RADIUS);
-	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0,-THUNDER_STRIKE_MAGIC_LENGTH/4,0));
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
+	m_sphereCollider.SetRadius(parameter->thunderStrikeParam.radius);
+	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0,-parameter->thunderStrikeParam.height*0.25f,0));
 
 }
 
@@ -28,12 +31,13 @@ ThunderStrikeMagic::~ThunderStrikeMagic() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void ThunderStrikeMagic::Update(const DX::StepTimer& timer) {
-	m_lifeTime -= float(timer.GetElapsedSeconds());
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	m_lifeTime -= elapsed_time;
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
 	DirectX::SimpleMath::Vector3 pos = m_transform.GetPosition();
-	pos += m_vel;
+	pos += m_vel * elapsed_time;;
 	m_transform.SetPosition(pos);
 
 	m_world = m_transform.GetMatrix();
@@ -51,15 +55,18 @@ void ThunderStrikeMagic::Lost() {
 /// </summary>
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
-/// <param name="vel">速度</param>
+/// <param name="dir">方向</param>
 /// <param name="color">色</param>
-void ThunderStrikeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+void ThunderStrikeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
 	const DirectX::SimpleMath::Vector4& color) {
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
 	m_playerId = playerId;
 	m_transform.SetPosition(pos);
+	m_sphereCollider.SetRadius(parameter->thunderStrikeParam.radius);
+	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, -parameter->thunderStrikeParam.height*0.25f, 0));
 	m_color = color;
-	m_vel = vel;
-	m_lifeTime = 5.0f;
+	m_vel = dir*parameter->thunderStrikeParam.moveSpeed;
+	m_lifeTime = parameter->thunderStrikeParam.lifeTime;
 }
 
 /// <summary>
@@ -71,6 +78,7 @@ void ThunderStrikeMagic::Render(const DirectX::SimpleMath::Matrix& view, const D
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::ThunderStrikeMagic);
 	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
+	//m_sphereCollider.Render(view, proj);
 }
 
 /// <summary>

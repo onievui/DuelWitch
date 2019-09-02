@@ -3,7 +3,7 @@
 #include <Utils\ServiceLocater.h>
 #include <Parameters\AICommandParameter.h>
 #include "PlayParameterLoader.h"
-#include "MagicFactory.h"
+#include "MagicID.h"
 
 
 /// <summary>

@@ -10,6 +10,7 @@ PlayParameterLoader::PlayParameterLoader() {
 	manager->Register(&m_commandParameter);
 	manager->Register(&m_aiCommandParameter);
 	manager->Register(&m_elementParameter);
+	manager->Register(&m_magicParameter);
 }
 
 /// <summary>
@@ -20,6 +21,7 @@ PlayParameterLoader::~PlayParameterLoader() {
 	manager->Unregister(&m_commandParameter);
 	manager->Unregister(&m_aiCommandParameter);
 	manager->Unregister(&m_elementParameter);
+	manager->Unregister(&m_magicParameter);
 }
 
 /// <summary>

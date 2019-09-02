@@ -2,7 +2,8 @@
 #include <Framework/DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
-#include "MagicFactory.h"
+#include "PlayParameterLoader.h"
+#include "MagicID.h"
 #include "Player.h"
 
 
@@ -11,7 +12,7 @@
 /// </summary>
 NormalMagic::NormalMagic()
 	: Magic(MagicID::Normal) {
-	m_sphereCollider.SetRadius(NORMAL_MAGIC_RADIUS);
+	m_sphereCollider.SetRadius(ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->normalParam.radius);
 }
 
 /// <summary>
@@ -25,12 +26,13 @@ NormalMagic::~NormalMagic() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void NormalMagic::Update(const DX::StepTimer& timer) {
-	m_lifeTime -= float(timer.GetElapsedSeconds());
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	m_lifeTime -= elapsed_time;
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
 	DirectX::SimpleMath::Vector3 pos = m_transform.GetPosition();
-	pos += m_vel;
+	pos += m_vel*elapsed_time;
 	m_transform.SetPosition(pos);
 
 	m_world = m_transform.GetMatrix();
@@ -48,15 +50,17 @@ void NormalMagic::Lost() {
 /// </summary>
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
-/// <param name="vel">速度</param>
+/// <param name="dir">方向</param>
 /// <param name="color">色</param>
-void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
 	const DirectX::SimpleMath::Vector4& color) {
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
 	m_playerId = playerId;
 	m_transform.SetPosition(pos);
+	m_sphereCollider.SetRadius(parameter->normalParam.radius);
 	m_color = color;
-	m_vel = vel;
-	m_lifeTime = 10.0f;
+	m_vel = dir*parameter->normalParam.moveSpeed;
+	m_lifeTime = parameter->normalParam.lifeTime;
 }
 
 /// <summary>

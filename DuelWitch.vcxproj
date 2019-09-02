@@ -218,6 +218,7 @@
     <ClCompile Include="Sources\Parameters\AICommandParameter.cpp" />
     <ClCompile Include="Sources\Parameters\CommandParameter.cpp" />
     <ClCompile Include="Sources\Parameters\ElementParameter.cpp" />
+    <ClCompile Include="Sources\Parameters\MagicParameter.cpp" />
     <ClCompile Include="Sources\pch\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -252,6 +253,7 @@
     <ClInclude Include="Sources\Game\LogoScene.h" />
     <ClInclude Include="Sources\Game\Magic.h" />
     <ClInclude Include="Sources\Game\MagicFactory.h" />
+    <ClInclude Include="Sources\Game\MagicID.h" />
     <ClInclude Include="Sources\Game\MagicManager.h" />
     <ClInclude Include="Sources\Game\MoveCommand.h" />
     <ClInclude Include="Sources\Game\NormalMagic.h" />
@@ -284,6 +286,7 @@
     <ClInclude Include="Sources\Parameters\AICommandParameter.h" />
     <ClInclude Include="Sources\Parameters\CommandParameter.h" />
     <ClInclude Include="Sources\Parameters\ElementParameter.h" />
+    <ClInclude Include="Sources\Parameters\MagicParameter.h" />
     <ClInclude Include="Sources\pch\pch.h" />
     <ClInclude Include="Sources\Utils\ErrorMessage.h" />
     <ClInclude Include="Sources\Utils\ILoadData.h" />
@@ -317,6 +320,7 @@
   <ItemGroup>
     <None Include="Resources\Jsons\ai_command.json" />
     <None Include="Resources\Jsons\element.json" />
+    <None Include="Resources\Jsons\magic.json" />
     <None Include="Resources\Jsons\player_command.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -20,10 +20,7 @@ enum class SampleID {
 /// テクスチャID
 /// </summary>
 enum class TextureID {
-	FireMagicIcon,
-	FreezeMagicIcon,
-	ThunderMagicIcon,
-	// 現状ここから下に書く！
+	MagicIcon,
 	Num
 };
 

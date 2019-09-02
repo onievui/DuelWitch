@@ -89,6 +89,11 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer"></param>
 void PlayScene::Update(const DX::StepTimer& timer) {
+	// パラメータを再読み込みする
+	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F2)) {
+		LoadDataManager::GetIns()->Reload(LoadDataID::PlayScene);
+	}
+
 	// プレイヤーの更新
 	for (std::vector<std::unique_ptr<Player>>::iterator itr = m_players.begin(); itr != m_players.end(); ++itr) {
 		(*itr)->Update(timer);
@@ -181,8 +186,6 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 			}
 		}
 	}
-	
-
 
 
 	// フィールドの更新

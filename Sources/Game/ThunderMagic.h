@@ -15,11 +15,6 @@ class MagicManager;
 /// </summary>
 class ThunderMagic : public Magic {
 public:
-	static constexpr float THUNDER_MAGIC_RADIUS          = 0.8f;
-	static constexpr float THUNDER_MAGIC_COLLIDER_RADIUS = 6.5f;
-	static constexpr float THUNDER_MAGIC_CHASE_SPEED     = 0.5f;
-
-public:
 	ThunderMagic(MagicManager* magicManager);
 	~ThunderMagic();
 
@@ -29,7 +24,7 @@ public:
 	// 雷魔法を開放する
 	void Lost() override;
 	// 雷魔法を生成する
-	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
 		const DirectX::SimpleMath::Vector4& color) override;
 	// 雷魔法を描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;

@@ -1,4 +1,5 @@
 #include "NormalMagicShooter.h"
+#include "MagicID.h"
 #include "MagicManager.h"
 #include "MagicFactory.h"
 #include "IMagic.h"

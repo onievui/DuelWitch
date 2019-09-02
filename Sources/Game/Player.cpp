@@ -8,9 +8,9 @@
 #include "AIMoveCommand.h"
 #include "CastMagicCommand.h"
 #include "AICastMagicCommand.h"
+#include "MagicID.h"
 #include "IMagic.h"
 #include "MagicManager.h"
-#include "MagicFactory.h"
 #include "Camera.h"
 
 
@@ -27,7 +27,7 @@ Player::Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMat
 	, m_direction(direction)
 	, m_haveElements()
 	, m_transform(pos, DirectX::SimpleMath::Vector3(0, (m_direction == MoveDirection::Forward ? 0 : Math::PI), 0))
-	, m_sphereCollider(&m_transform, 1.5f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
+	, m_sphereCollider(&m_transform, 0.75f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
 	, m_pMagicManager(magicManager)
 	, m_pCamera() {
 	if (id == PlayerID::Player1) {
@@ -122,8 +122,8 @@ void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 
 	int i = m_haveElements.size() - 1;
 	for (std::list<ElementID>::const_reverse_iterator itr = m_haveElements.rbegin(); itr != m_haveElements.rend(); ++itr) {
-		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(static_cast<TextureID>(*itr));
-		spriteBatch->Draw(texture->GetResource().Get(), DirectX::SimpleMath::Vector2(20 + i * 40.0f, 630.0f), nullptr,
+		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicIcon);
+		spriteBatch->Draw(texture->GetResource(static_cast<int>(*itr)).Get(), DirectX::SimpleMath::Vector2(20 + i * 40.0f, 630.0f), nullptr,
 			DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2(1.5f, 1.5f));
 		--i;
 	}

@@ -32,7 +32,7 @@ void SphereCollider::Render(const DirectX::SimpleMath::Matrix& view, const Direc
 	if (!m_debugSphere) {
 		m_debugSphere = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get());
 	}
-	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateScale(m_radius);
+	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateScale(m_radius*2);
 	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_offset);
 	matrix *= DirectX::SimpleMath::Matrix::CreateFromQuaternion(m_pTransform->GetRotation());
 	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_pTransform->GetPosition());

@@ -6,43 +6,13 @@
 class IMagic;
 class MagicManager;
 enum class PlayerID;
-
-
-// 魔法のID
-enum class MagicID {
-	Normal,		    // 通常魔法
-	Fire,           // 炎魔法
-	Thunder,	    // 雷魔法
-	ThunderStrike,	// 落雷魔法
-	Freeze,         // 氷魔法
-
-	Num
-};
+enum class MagicID;
 
 
 /// <summary>
 /// 魔法ファクトリクラス
 /// </summary>
 class MagicFactory {
-private:
-	// 各魔法の最大出現数
-	static constexpr int MAGIC_NUM[static_cast<int>(MagicID::Num)] = {
-		30,
-		30,
-		10,
-		10,
-		10,
-	};
-
-	// 配列のインデックス初期位置
-	static constexpr int MAGIC_BEGIN_INDEX[static_cast<int>(MagicID::Num)] = {
-		0,
-		30,
-		60,
-		70,
-		80,
-	};
-
 public:
 	// コンストラクタ
 	MagicFactory();
@@ -54,7 +24,7 @@ public:
 	// 魔法を生成する
 	IMagic* Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 	// 全魔法の最大出現数を取得する
-	static int GetMagicMaxNum();
+	int GetMagicMaxNum();
 	
 private:
 	template <class T, class... Args>
@@ -64,7 +34,10 @@ private:
 private:
 	// 管理する魔法
 	std::vector<std::unique_ptr<IMagic>> m_magics;
-
+	// 魔法の最大出現数
+	std::vector<int>                     m_maxNum;
+	// 配列のインデックス初期位置
+	std::vector<int>                     m_beginIndex;
 };
 
 
@@ -74,8 +47,8 @@ template<class T, class... Args>
 /// </summary>
 /// <param name="id">魔法のID</param>
 inline void MagicFactory::InitializeMagic(MagicID id, Args&&... args) {
-	for (std::vector<std::unique_ptr<IMagic>>::iterator itr = m_magics.begin() + MAGIC_BEGIN_INDEX[static_cast<int>(id)],
-		end = itr + MAGIC_NUM[static_cast<int>(id)]; itr != end; ++itr) {
+	for (std::vector<std::unique_ptr<IMagic>>::iterator itr = m_magics.begin() + m_beginIndex[static_cast<int>(id)],
+		end = itr + m_maxNum[static_cast<int>(id)]; itr != end; ++itr) {
 		*itr = std::make_unique<T>(args...);
 	}
 }

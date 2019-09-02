@@ -34,11 +34,11 @@ public:
 	// 魔法を開放する
 	virtual void Lost() {}
 	// 魔法を生成する
-	virtual void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+	virtual void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
 		const DirectX::SimpleMath::Vector4& color) {
 		m_playerId = playerId;
 		m_transform.SetPosition(pos);
-		m_vel = vel;
+		m_vel = dir;
 		m_color = color;
 	}
 	// 魔法を描画する

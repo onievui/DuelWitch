@@ -52,6 +52,7 @@ void Element::Lost() {
 void Element::Create(ElementID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector4& color) {
 	m_id = id;
 	m_transform.SetPosition(pos);
+	m_sphereCollider.SetRadius(ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->radius);
 	m_world = m_transform.GetMatrix();
 	m_color = color;
 }

@@ -12,9 +12,6 @@
 /// </summary>
 class FreezeMagic : public Magic {
 public:
-	static constexpr float FREEZE_MAGIC_RADIUS = 2.5f;
-
-public:
 	FreezeMagic();
 	~FreezeMagic();
 
@@ -24,7 +21,7 @@ public:
 	// •X–‚–@‚ğŠJ•ú‚·‚é
 	void Lost() override;
 	// •X–‚–@‚ğ¶¬‚·‚é
-	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
 		const DirectX::SimpleMath::Vector4& color) override;
 	// •X–‚–@‚ğ•`‰æ‚·‚é
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;

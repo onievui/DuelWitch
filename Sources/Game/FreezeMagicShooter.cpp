@@ -1,5 +1,6 @@
 #include <Framework\DirectX11.h>
 #include "FreezeMagicShooter.h"
+#include "MagicID.h"
 #include "MagicManager.h"
 #include "MagicFactory.h"
 #include "IMagic.h"

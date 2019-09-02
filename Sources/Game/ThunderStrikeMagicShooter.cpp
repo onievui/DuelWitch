@@ -1,5 +1,9 @@
-#include <Framework\DirectX11.h>
 #include "ThunderStrikeMagicShooter.h"
+#include <Framework\DirectX11.h>
+#include <Utils\ServiceLocater.h>
+#include <Parameters\MagicParameter.h>
+#include "PlayParameterLoader.h"
+#include "MagicID.h"
 #include "MagicManager.h"
 #include "MagicFactory.h"
 #include "IMagic.h"
@@ -23,11 +27,11 @@ ThunderStrikeMagicShooter::ThunderStrikeMagicShooter(MagicManager* magicManager)
 /// <param name="dir">Œü‚«</param>
 void ThunderStrikeMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
 	const DirectX::SimpleMath::Vector3& dir) {
-	auto position = pos;
-	position.y = 55.0f;
+	DirectX::SimpleMath::Vector3 position = pos;
+	position.y += ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderStrikeParam.appearPosY;
 	for (auto& magic : *m_pMagicManager->GetMagics()) {
 		if (!magic) {
-			magic = magicFactory->Create(MagicID::ThunderStrike, playerId, position, dir*10.0f);
+			magic = magicFactory->Create(MagicID::ThunderStrike, playerId, position, dir);
 			break;
 		}
 	}

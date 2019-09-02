@@ -228,6 +228,9 @@
     <ClCompile Include="Sources\Game\ResultScene.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Parameters\MagicParameter.cpp">
+      <Filter>Parameters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -446,6 +449,12 @@
     <ClInclude Include="Sources\Game\ResultScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Parameters\MagicParameter.h">
+      <Filter>Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\MagicID.h">
+      <Filter>Game\Object\Magic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
@@ -463,6 +472,9 @@
       <Filter>Assets\Jsons</Filter>
     </None>
     <None Include="Resources\Jsons\element.json">
+      <Filter>Assets\Jsons</Filter>
+    </None>
+    <None Include="Resources\Jsons\magic.json">
       <Filter>Assets\Jsons</Filter>
     </None>
   </ItemGroup>

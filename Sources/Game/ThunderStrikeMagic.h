@@ -12,10 +12,6 @@
 /// </summary>
 class ThunderStrikeMagic : public Magic {
 public:
-	static constexpr float THUNDER_STRIKE_MAGIC_RADIUS = 0.8f;
-	static constexpr float THUNDER_STRIKE_MAGIC_LENGTH = 25.0f;
-
-public:
 	ThunderStrikeMagic();
 	~ThunderStrikeMagic();
 
@@ -25,7 +21,7 @@ public:
 	// 落雷雷魔法を開放する
 	void Lost() override;
 	// 落雷雷魔法を生成する
-	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
 		const DirectX::SimpleMath::Vector4& color) override;
 	// 落雷雷魔法を描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;

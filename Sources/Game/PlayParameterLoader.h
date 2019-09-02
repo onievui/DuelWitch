@@ -9,6 +9,7 @@
 #include <Parameters\CommandParameter.h>
 #include <Parameters\AICommandParameter.h>
 #include <Parameters\ElementParameter.h>
+#include <Parameters\MagicParameter.h>
 
 
 /// <summary>
@@ -33,11 +34,13 @@ public:
 	const CommandParameter*   GetCommandParameter()   { return m_commandParameter.Get(); }
 	const AICommandParameter* GetAICommandParameter() { return m_aiCommandParameter.Get(); }
 	const ElementParameter*   GetElementParameter()   { return m_elementParameter.Get(); }
+	const MagicParameter*     GetMagicParameter()     { return m_magicParameter.Get(); }
 
 private:
 	LoadDataHolder<CommandParameter, LoadDataID::PlayScene>   m_commandParameter;
 	LoadDataHolder<AICommandParameter, LoadDataID::PlayScene> m_aiCommandParameter;
 	LoadDataHolder<ElementParameter, LoadDataID::PlayScene>   m_elementParameter;
+	LoadDataHolder<MagicParameter, LoadDataID::PlayScene>     m_magicParameter;
 
 };
 

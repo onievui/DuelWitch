@@ -1,5 +1,6 @@
-#include <Framework\DirectX11.h>
 #include "ThunderMagicShooter.h"
+#include <Framework\DirectX11.h>
+#include "MagicID.h"
 #include "MagicManager.h"
 #include "MagicFactory.h"
 #include "IMagic.h"

@@ -18,18 +18,26 @@ FontResource::Type Resource<FontResource::Type, FontResource::IDType>::m_default
 /// </summary>
 /// <param name="fileName">読み込む画像のファイル名</param>
 TextureResource::TextureResource(const std::wstring& fileName) {
-	m_resources.emplace_back(nullptr);
-	DirectX::CreateWICTextureFromFile(ServiceLocater<DirectX11>::Get()->GetDevice().Get(),
-		(TEXTURE_DIR + fileName).c_str(), nullptr, m_resources.back().GetAddressOf());
-	if (m_resources.back().Get() == m_defaultResource.Get()) {
-		ErrorMessage(L"画像の読み込みに失敗しました");
-	}
+	AddResource(fileName);
 }
 
 /// <summary>
 /// デストラクタ
 /// </summary>
 TextureResource::~TextureResource() {
+}
+
+/// <summary>
+/// リソースを追加する
+/// </summary>
+/// <param name="fileName">読み込む画像のファイル名</param>
+void TextureResource::AddResource(const std::wstring& fileName) {
+	m_resources.emplace_back(nullptr);
+	DirectX::CreateWICTextureFromFile(ServiceLocater<DirectX11>::Get()->GetDevice().Get(),
+		(TEXTURE_DIR + fileName).c_str(), nullptr, m_resources.back().GetAddressOf());
+	if (m_resources.back().Get() == m_defaultResource.Get()) {
+		ErrorMessage(L"画像の読み込みに失敗しました");
+	}
 }
 
 /// <summary>

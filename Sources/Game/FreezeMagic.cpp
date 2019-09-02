@@ -2,7 +2,9 @@
 #include <Framework/DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
-#include "MagicFactory.h"
+#include <Parameters\MagicParameter.h>
+#include "PlayParameterLoader.h"
+#include "MagicID.h"
 #include "Player.h"
 
 
@@ -12,7 +14,7 @@
 FreezeMagic::FreezeMagic()
 	: Magic(MagicID::Freeze)
 	, m_pPlayerPos() {
-	m_sphereCollider.SetRadius(FREEZE_MAGIC_RADIUS);
+	m_sphereCollider.SetRadius(ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->freezeParam.radius);
 }
 
 /// <summary>
@@ -26,7 +28,8 @@ FreezeMagic::~FreezeMagic() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void FreezeMagic::Update(const DX::StepTimer& timer) {
-	m_lifeTime -= float(timer.GetElapsedSeconds());
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	m_lifeTime -= elapsed_time;
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
@@ -49,16 +52,18 @@ void FreezeMagic::Lost() {
 /// </summary>
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
-/// <param name="vel">速度</param>
+/// <param name="dir">方向</param>
 /// <param name="color">色</param>
-void FreezeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& vel,
+void FreezeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
 	const DirectX::SimpleMath::Vector4& color) {
 	m_playerId = playerId;
 	m_transform.SetPosition(pos);
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
+	m_sphereCollider.SetRadius(parameter->freezeParam.radius);
 	m_pPlayerPos = &pos;
 	m_color = color;
-	m_vel = vel;
-	m_lifeTime = 6.0f;
+	m_vel = dir;
+	m_lifeTime = parameter->freezeParam.lifeTime;
 }
 
 /// <summary>
@@ -70,6 +75,7 @@ void FreezeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::FreezeMagic);
 	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
+	//m_sphereCollider.Render(view, proj);
 }
 
 /// <summary>
