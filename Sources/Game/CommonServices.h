@@ -6,6 +6,7 @@
 #include <Utils\ServiceLocater.h>
 
 
+class MouseWrapper;
 template <class T>
 class ResourceManager;
 class TextureResource;
@@ -40,9 +41,10 @@ private:
 	};
 
 private:
-	// トラッカー
+	// キートラッカー
 	std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker>       m_keyboardStateTracker;
-	std::unique_ptr<DirectX::Mouse::ButtonStateTracker>            m_mouseStateTracker;
+	// マウスラッパ―
+	std::unique_ptr<MouseWrapper>                                  m_mouseWrapper;
 
 	// リソースマネージャ
 	std::unique_ptr<ResourceManager<TextureResource>>              m_textureResourceManager;

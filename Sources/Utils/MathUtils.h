@@ -24,6 +24,31 @@ public:
 	}
 
 	template<class T>
+	// ÉNÉâÉìÉv
+	static T Clamp(const T& value, const T& min, const T& max) {
+		return (value < min ? min : value > max ? max : value);
+	}
+
+	template<>
+	static DirectX::SimpleMath::Vector2 Clamp(const DirectX::SimpleMath::Vector2& value, const DirectX::SimpleMath::Vector2& min,
+		const DirectX::SimpleMath::Vector2& max) {
+		return DirectX::SimpleMath::Vector2(
+			Clamp(value.x, min.x, max.x),
+			Clamp(value.y, min.y, max.y)
+		);
+	}
+
+	template<>
+	static DirectX::SimpleMath::Vector3 Clamp(const DirectX::SimpleMath::Vector3& value, const DirectX::SimpleMath::Vector3& min,
+		const DirectX::SimpleMath::Vector3& max) {
+		return DirectX::SimpleMath::Vector3(
+			Clamp(value.x, min.x, max.x),
+			Clamp(value.y, min.y, max.y),
+			Clamp(value.z, min.z, max.z)
+		);
+	}
+
+	template<class T>
 	// ê¸å`ï‚ä‘
 	static T Lerp(const T& a, const T& b, float t) {
 		return a + (b - a)*t;

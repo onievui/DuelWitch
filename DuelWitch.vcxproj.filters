@@ -47,9 +47,6 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{ee61a34d-c016-451a-ad4c-a0dd3cb8ddb3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\Resource">
-      <UniqueIdentifier>{a8f0914d-a87a-4af0-91f5-771c188b541a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils\Json">
       <UniqueIdentifier>{b932f234-0c6e-44da-884c-c70e97556e88}</UniqueIdentifier>
     </Filter>
@@ -61,6 +58,9 @@
     </Filter>
     <Filter Include="Parameters">
       <UniqueIdentifier>{be7d3ff3-0a63-4cf7-a0e1-ec78d9bb61f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Resource">
+      <UniqueIdentifier>{a8f0914d-a87a-4af0-91f5-771c188b541a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -230,6 +230,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Parameters\MagicParameter.cpp">
       <Filter>Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\MouseWrapper.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -454,6 +457,12 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\MagicID.h">
       <Filter>Game\Object\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\MouseWrapper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\EmptyObject.h">
+      <Filter>Game\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

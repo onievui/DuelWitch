@@ -42,8 +42,6 @@ private:
 
 	// キーボード
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
-	// マウス
-	std::unique_ptr<DirectX::Mouse>    m_mouse;
 
 	// コモンサービス
 	std::unique_ptr<CommonServices>    m_commonServices;

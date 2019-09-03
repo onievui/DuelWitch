@@ -1,5 +1,6 @@
 #include "ElementManager.h"
 #include <Utils\RandMt.h>
+#include <Utils\MathUtils.h>
 #include "Element.h"
 #include "ElementFactory.h"
 
@@ -66,17 +67,22 @@ void ElementManager::CreateElement(const DirectX::SimpleMath::Vector3& areaStart
 	int rand = RandMt::GetRand(3);
 	for (int i = 0; i < num; ++i) {
 		DirectX::SimpleMath::Vector3 pos = DirectX::SimpleMath::Vector3(
-			areaStart.x + (areaEnd.x - areaStart.x)*RandMt::GetRand(1.0f),
-			areaStart.y + (areaEnd.y - areaStart.y)*RandMt::GetRand(1.0f),
-			areaStart.z + (areaEnd.z - areaStart.z)*RandMt::GetRand(1.0f)
+			Math::Lerp(areaStart.x, areaEnd.x, RandMt::GetRand(1.0f)),
+			Math::Lerp(areaStart.y, areaEnd.y, RandMt::GetRand(1.0f)),
+			Math::Lerp(areaStart.z, areaEnd.z, RandMt::GetRand(1.0f))
 		);
 		Element* created_element = m_elementFactory->Create(ElementID(rand), pos);
-		for (std::vector<Element*>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
-			if (!*itr) {
-				*itr = created_element;
-				break;
-			}
+		// 未使用のオブジェクトを探す
+		std::vector<Element*>::iterator itr = std::find_if(m_elements.begin(), m_elements.end(), [&](Element* element) {return !element; });
+		if (itr != m_elements.end()) {
+			*itr = created_element;
 		}
+		//for (std::vector<Element*>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
+		//	if (!*itr) {
+		//		*itr = created_element;
+		//		break;
+		//	}
+		//}
 		rand = (rand + 1) % 3;
 	}
 }

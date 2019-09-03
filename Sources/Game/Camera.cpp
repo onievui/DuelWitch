@@ -20,14 +20,13 @@ DirectX::SimpleMath::Ray Camera::ScreenPointToRay(const DirectX::SimpleMath::Vec
 /// ƒŒƒC
 /// </returns>
 DirectX::SimpleMath::Ray Camera::ViewportPointToRay(const DirectX::SimpleMath::Vector3& point) const {
-	auto point_near = DirectX::SimpleMath::Vector3(point.x, point.y, 0.0f);
-	auto point_far = DirectX::SimpleMath::Vector3(point.x, point.y, 1.0f);
+	DirectX::SimpleMath::Vector3 point_near = DirectX::SimpleMath::Vector3(point.x, point.y, 0.0f);
+	DirectX::SimpleMath::Vector3 point_far = DirectX::SimpleMath::Vector3(point.x, point.y, 1.0f);
 
-	auto inverse_viewproj = (m_view * m_proj).Invert();
-	auto ray_near = DirectX::SimpleMath::Vector3::Transform(point_near, inverse_viewproj);
-	auto ray_far = DirectX::SimpleMath::Vector3::Transform(point_far, inverse_viewproj);
-	auto ray_subtraction = ray_far - ray_near;
-	auto ray_direction = ray_subtraction;
+	DirectX::SimpleMath::Matrix inverse_viewproj = (m_view * m_proj).Invert();
+	DirectX::SimpleMath::Vector3 ray_near = DirectX::SimpleMath::Vector3::Transform(point_near, inverse_viewproj);
+	DirectX::SimpleMath::Vector3 ray_far = DirectX::SimpleMath::Vector3::Transform(point_far, inverse_viewproj);
+	DirectX::SimpleMath::Vector3 ray_direction = ray_far - ray_near;
 	ray_direction.Normalize();
 
 	return DirectX::SimpleMath::Ray(ray_near, ray_direction);

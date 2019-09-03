@@ -21,6 +21,7 @@ enum class SampleID {
 /// </summary>
 enum class TextureID {
 	MagicIcon,
+	MagicAiming,
 	Num
 };
 

@@ -1,6 +1,8 @@
 #include "CommonServices.h"
+#include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\MouseWrapper.h>
 
 
 /// <summary>
@@ -9,7 +11,7 @@
 void CommonServices::Initialize() {
 	// サービスを生成してサービスロケータに登録する
 	RegisterService(m_keyboardStateTracker);
-	RegisterService(m_mouseStateTracker);
+	RegisterService(m_mouseWrapper, ServiceLocater<DirectX11>::Get()->GetHWnd());
 	// リソースマネージャを生成してサービスロケータに登録する
 	RegisterResourceManager(m_textureResourceManager, L"テクスチャ");
 	RegisterResourceManager(m_geometricPrimitiveResourceManager, L"ジオメトリックプリミティブ");
@@ -22,10 +24,10 @@ void CommonServices::Initialize() {
 /// 終了処理を行う
 /// </summary>
 void CommonServices::Finalize() {
-	ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Remove();
-	ServiceLocater<DirectX::Mouse::ButtonStateTracker>::Remove();
-	ServiceLocater<ResourceManager<TextureResource>>::Remove();
-	ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Remove();
-	ServiceLocater<ResourceManager<ModelResource>>::Remove();
-	ServiceLocater<ResourceManager<FontResource>>::Remove();
+	ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Unregister();
+	ServiceLocater<MouseWrapper>::Unregister();
+	ServiceLocater<ResourceManager<TextureResource>>::Unregister();
+	ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Unregister();
+	ServiceLocater<ResourceManager<ModelResource>>::Unregister();
+	ServiceLocater<ResourceManager<FontResource>>::Unregister();
 }

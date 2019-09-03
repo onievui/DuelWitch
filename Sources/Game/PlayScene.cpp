@@ -2,6 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
+#include <Utils\MouseWrapper.h>
 #include "PlayParameterLoader.h"
 #include "ResourceLoader.h"
 #include "ISceneRequest.h"
@@ -40,6 +41,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_commonStates = std::make_unique<DirectX::CommonStates>(directX->GetDevice().Get());
 	// エフェクトファクトリを生成する
 	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX->GetDevice().Get());
+
+	// マウスを相対モードに変更する
+	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
 
 	// リソースをロードする
 	ResourceLoader::Load(ResourceLoaderID::PlayScene);
@@ -203,7 +207,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 /// </summary>
 /// <param name="spriteBatch"></param>
 void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
-	spriteBatch->Begin();
+	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, m_commonStates->NonPremultiplied());
 
 	//ビュー行列を取得する
 	DirectX::SimpleMath::Matrix view = m_targetCamera->GetViewMatrix();
@@ -230,10 +234,12 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 /// プレイシーンを終了する
 /// </summary>
 void PlayScene::Finalize() {
+	// マウスを絶対モードに変更する
+	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_ABSOLUTE);
 	// リソースを解放する
 	ResourceLoader::Release(ResourceLoaderID::PlayScene);
 	// パラメータを開放する
 	m_parameterLoader->Dispose();
-	ServiceLocater<PlayParameterLoader>::Remove();
+	ServiceLocater<PlayParameterLoader>::Unregister();
 }
 

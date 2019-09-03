@@ -20,7 +20,7 @@ public:
 		Segment = 1 << 3,
 	};
 
-public:
+protected:
 	Collider(Type type) : m_type(type) {}
 
 protected:

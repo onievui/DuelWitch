@@ -1,5 +1,6 @@
 #include "CastMagicCommand.h"
 #include <Utils\ServiceLocater.h>
+#include <Utils\MouseWrapper.h>
 #include "MagicID.h"
 
 
@@ -20,14 +21,13 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 	elapsedTime;
 
 	Transform& ref_transform = GetTransform(player);
-	DirectX::Mouse::ButtonStateTracker* mouse_tracker = ServiceLocater<DirectX::Mouse::ButtonStateTracker>::Get();
-	DirectX::Mouse::State mouse_state = mouse_tracker->GetLastState();
+	DirectX::Mouse::ButtonStateTracker* mouse_tracker = ServiceLocater<MouseWrapper>::Get()->GetTracker();
+	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
 
 	// タッチパッドだと左クリックが正常に反応しない
 	if (mouse_tracker->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
 		// レイの作成
-		DirectX::SimpleMath::Ray ray = GetCamera(player).ScreenPointToRay(
-			DirectX::SimpleMath::Vector3(static_cast<float>(mouse_state.x), static_cast<float>(mouse_state.y), 0));
+		DirectX::SimpleMath::Ray ray = GetCamera(player).ScreenPointToRay(DirectX::SimpleMath::Vector3(mouse_pos.x, mouse_pos.y, 0));
 		// 平面の作成
 		DirectX::SimpleMath::Plane plane = CreatePlaneForMagic(ref_transform, GetMoveDirection(player));
 		float distance;

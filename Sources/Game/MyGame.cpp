@@ -5,6 +5,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\MouseWrapper.h>
 #include "CommonServices.h"
 #include "SceneManager.h"
 #include "ResourceLoader.h"
@@ -13,8 +14,8 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="width">画面横幅</param>
-/// <param name="height">画面縦幅</param>
+/// <param name="width">ウインドウ幅</param>
+/// <param name="height">ウインドウ高</param>
 MyGame::MyGame(int width, int height) : m_width(width), m_height(height), Game(width, height) {
 }
 
@@ -35,9 +36,6 @@ void MyGame::Initialize(int width, int height) {
 
 	// キーボードを生成する
 	m_keyboard = std::make_unique<DirectX::Keyboard>();
-	// マウスを生成する
-	m_mouse = std::make_unique<DirectX::Mouse>();
-	m_mouse->SetWindow(ServiceLocater<DirectX11>::Get()->GetHWnd());
 
 	// コモンサービスを初期化する
 	m_commonServices = std::make_unique<CommonServices>();
@@ -68,7 +66,7 @@ void MyGame::Update(const DX::StepTimer& timer) {
 	// キートラッカーを更新する
 	ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->Update(m_keyboard->GetState());
 	// マウストラッカーを更新する
-	ServiceLocater<DirectX::Mouse::ButtonStateTracker>::Get()->Update(m_mouse->GetState());
+	ServiceLocater<MouseWrapper>::Get()->Update(m_width, m_height);
 
 	// シーンを更新する
 	m_sceneManager->Update(timer);
@@ -101,7 +99,6 @@ void MyGame::Finalize() {
 	m_commonServices->Finalize();
 
 	m_keyboard.reset();
-	m_mouse.reset();
 }
 
 // FPSを描画する

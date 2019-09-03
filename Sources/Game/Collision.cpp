@@ -1,4 +1,5 @@
 #include "Collision.h"
+#include <Utils\ErrorMessage.h>
 #include "Collider.h"
 #include "SphereCollider.h"
 #include "Transform.h"
@@ -14,8 +15,10 @@
 /// false : 当たっていない
 /// </returns>
 bool Collision::HitCheck(const Collider* collider1, const Collider* collider2) {
+	// 可能な当たり判定のパターンの定義
 	constexpr unsigned int sphere2sphere = static_cast<unsigned int>(Collider::Type::Sphere);
 	
+	// 適用するパターンを計算する
 	unsigned int collision_type = static_cast<unsigned int>(collider1->m_type) | static_cast<unsigned int>(collider2->m_type);
 
 	switch (collision_type) {
@@ -24,6 +27,7 @@ bool Collision::HitCheck(const Collider* collider1, const Collider* collider2) {
 	default:
 		break;
 	}
+	ErrorMessage(L"無効な当たり判定の組み合わせです");
 	return false;
 }
 

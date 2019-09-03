@@ -33,6 +33,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::MagicIcon, TextureResource(L"Protected/element1.png"));
 		textureResourceManager->AddResource(TextureID::MagicIcon, L"Protected/element2.png");
 		textureResourceManager->AddResource(TextureID::MagicIcon, L"Protected/element3.png");
+		textureResourceManager->AddResource(TextureID::MagicAiming, TextureResource(L"Protected/magic_aiming.png"));
 		// ƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
 		modelResourceManager->AddResource(ModelID::BloomModel, ModelResource(L"bloom.cmo", L"Protected"));
 		break;

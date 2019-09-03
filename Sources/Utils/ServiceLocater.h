@@ -24,7 +24,7 @@ public:
 	}
 
 	// サービスを解除する
-	static void Remove() {
+	static void Unregister() {
 		s_service = nullptr;
 		s_getFunc = &NullService;
 	}

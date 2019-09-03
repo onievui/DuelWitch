@@ -225,6 +225,7 @@
     </ClCompile>
     <ClCompile Include="Sources\Utils\JsonWrapper.cpp" />
     <ClCompile Include="Sources\Utils\LoadDataManager.cpp" />
+    <ClCompile Include="Sources\Utils\MouseWrapper.cpp" />
     <ClCompile Include="Sources\Utils\RandMt.cpp" />
     <ClCompile Include="Sources\Utils\Resource.cpp" />
     <ClCompile Include="Sources\Utils\ResourceManager.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="Sources\Game\Collider.h" />
     <ClInclude Include="Sources\Game\Collision.h" />
     <ClInclude Include="Sources\Game\CommonServices.h" />
+    <ClInclude Include="Sources\Game\EmptyObject.h" />
     <ClInclude Include="Sources\Game\FireMagic.h" />
     <ClInclude Include="Sources\Game\FireMagicShooter.h" />
     <ClInclude Include="Sources\Game\Command.h" />
@@ -296,6 +298,7 @@
     <ClInclude Include="Sources\Utils\LoadDataID.h" />
     <ClInclude Include="Sources\Utils\LoadDataManager.h" />
     <ClInclude Include="Sources\Utils\MathUtils.h" />
+    <ClInclude Include="Sources\Utils\MouseWrapper.h" />
     <ClInclude Include="Sources\Utils\NonCopyable.h" />
     <ClInclude Include="Sources\Utils\picojson.h" />
     <ClInclude Include="Sources\Utils\RandMt.h" />

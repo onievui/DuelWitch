@@ -103,7 +103,7 @@ void Game::Finalize() {
 
 	// DirectX11 Graphicsオブジェクトを解放する
 	m_directX->OnDeviceLost();
-	ServiceLocater<DirectX11>::Remove();
+	ServiceLocater<DirectX11>::Unregister();
 	// Windowオブジェクトを解放する
 	m_window.reset();
 }
