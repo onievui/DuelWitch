@@ -181,12 +181,14 @@
     <ClCompile Include="Sources\Game\Camera.cpp" />
     <ClCompile Include="Sources\Game\CastMagicCommand.cpp" />
     <ClCompile Include="Sources\Game\CharaSelectScene.cpp" />
+    <ClCompile Include="Sources\Game\Collider.cpp" />
     <ClCompile Include="Sources\Game\Collision.cpp" />
     <ClCompile Include="Sources\Game\CommonServices.cpp" />
     <ClCompile Include="Sources\Game\DebugCamera.cpp" />
     <ClCompile Include="Sources\Game\Element.cpp" />
     <ClCompile Include="Sources\Game\ElementFactory.cpp" />
     <ClCompile Include="Sources\Game\ElementManager.cpp" />
+    <ClCompile Include="Sources\Game\EmptyObject.cpp" />
     <ClCompile Include="Sources\Game\Field.cpp" />
     <ClCompile Include="Sources\Game\FireMagic.cpp" />
     <ClCompile Include="Sources\Game\FireMagicShooter.cpp" />

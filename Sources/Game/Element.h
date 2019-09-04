@@ -38,7 +38,7 @@ public:
 	// エレメントの行列を取得する
 	const DirectX::SimpleMath::Matrix& GetMatrix() const override;
 	// エレメントの当たり判定を取得する
-	const SphereCollider* GetCollider() const override;
+	const Collider* GetCollider() const override;
 	// エレメントのIDを取得する
 	ElementID GetID() const;
 	// エレメントを使用しているかどうか取得する

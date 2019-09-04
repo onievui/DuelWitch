@@ -12,7 +12,7 @@
 /// <param name="height">画面の縦幅</param>
 /// <param name="targetObject">追従するオブジェクト</param>
 TargetCamera::TargetCamera(int width, int height, IObject* targetObject)
-	: m_targetObject(targetObject)
+	: m_pTargetObject(targetObject)
 	, m_pos()
 	, m_lerpSpeed(0.05f) {
 	m_eye = DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f);
@@ -20,7 +20,7 @@ TargetCamera::TargetCamera(int width, int height, IObject* targetObject)
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, DirectX::SimpleMath::Vector3::UnitY);
 	m_proj = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(Math::HarfPI*0.5f,
 		static_cast<float>(width) / static_cast<float>(height), 0.1f, 100.0f);
-	m_targetMatrix = m_targetObject->GetMatrix();
+	m_targetMatrix = m_pTargetObject->GetMatrix();
 }
 
 /// <summary>
@@ -37,7 +37,7 @@ TargetCamera::TargetCamera(int width, int height, IObject* targetObject)
 TargetCamera::TargetCamera(IObject* targetObject, DirectX::SimpleMath::Vector3 eye,
 	DirectX::SimpleMath::Vector3 target, DirectX::SimpleMath::Vector3 up,
 	float fov, float aspectRatio, float nearPlane, float farPlane)
-	: m_targetObject(targetObject)
+	: m_pTargetObject(targetObject)
 	, m_pos()
 	, m_eye(eye)
 	, m_target(target)
@@ -49,14 +49,16 @@ TargetCamera::TargetCamera(IObject* targetObject, DirectX::SimpleMath::Vector3 e
 		DirectX::SimpleMath::Matrix::CreateTranslation(DirectX::SimpleMath::Vector3(0.5f, 0.5f, 0.0f)) *
 		DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(static_cast<float>(directX->GetWidth()),
 			static_cast<float>(directX->GetHeight()), 1.0f));
-	m_targetMatrix = m_targetObject->GetMatrix();
+	if (m_pTargetObject) {
+		m_targetMatrix = m_pTargetObject->GetMatrix();
+	}
 }
 
 /// <summary>
 /// ターゲットカメラを更新する
 /// </summary>
 void TargetCamera::Update() {
-	m_targetMatrix = DirectX::SimpleMath::Matrix::Lerp(m_targetMatrix, m_targetObject->GetMatrix(), m_lerpSpeed);
+	m_targetMatrix = DirectX::SimpleMath::Matrix::Lerp(m_targetMatrix, m_pTargetObject->GetMatrix(), m_lerpSpeed);
 	m_pos = DirectX::SimpleMath::Vector3::Transform(m_eye, m_targetMatrix);
 	DirectX::SimpleMath::Vector3 target = DirectX::SimpleMath::Vector3::Transform(m_target, m_targetMatrix);
 	//DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::TransformNormal(DirectX::SimpleMath::Vector3::UnitY, m_targetMatrix);
@@ -65,11 +67,13 @@ void TargetCamera::Update() {
 }
 
 /// <summary>
-/// ターゲットカメラの位置を取得する
+/// 追従するオブジェクトが存在するかどうか取得する
 /// </summary>
 /// <returns>
-/// 位置
+/// true : 存在する
+/// false : 存在しない
 /// </returns>
-const DirectX::SimpleMath::Vector3& TargetCamera::GetEyePosition() const {
-	return m_pos;
+bool TargetCamera::HasTargetObject() {
+	return m_pTargetObject != nullptr;
 }
+

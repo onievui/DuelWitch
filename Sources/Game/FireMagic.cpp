@@ -87,7 +87,7 @@ void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::S
 /// プレイヤーとの衝突処理
 /// </summary>
 /// <param name="collider">プレイヤーの当たり判定</param>
-void FireMagic::HitPlayer(const SphereCollider& collider) {
+void FireMagic::HitPlayer(const Collider* collider) {
 	collider;
 	m_isUsed = false;
 }

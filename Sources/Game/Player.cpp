@@ -152,7 +152,7 @@ const DirectX::SimpleMath::Matrix& Player::GetMatrix() const {
 /// <returns>
 /// “–‚½‚è”»’è
 /// </returns>
-const SphereCollider* Player::GetCollider() const {
+const Collider* Player::GetCollider() const {
 	return &m_sphereCollider;
 }
 

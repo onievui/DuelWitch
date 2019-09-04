@@ -28,7 +28,7 @@ public:
 
 public:
 	// プレイヤーとの衝突処理
-	void HitPlayer(const SphereCollider& collider) override;
+	void HitPlayer(const Collider* collider) override;
 	// 魔法との衝突処理
 	void HitMagic(const IMagic* other) override;
 

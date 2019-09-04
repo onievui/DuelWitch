@@ -4,6 +4,7 @@
 
 
 class Collision;
+class Transform;
 
 
 /// <summary>
@@ -21,11 +22,30 @@ public:
 	};
 
 protected:
-	Collider(Type type) : m_type(type) {}
+	// コンストラクタ
+	Collider(Type type, const Transform* pTransform, const DirectX::SimpleMath::Vector3& offset = DirectX::SimpleMath::Vector3::Zero);
+
+public:
+	// 姿勢クラスへのポインタを取得する
+	const Transform* GetTransform() const {	return m_pTransform; }
+	// 姿勢クラスへのポインタを設定する
+	void SetTransform(const Transform* pTransform) { m_pTransform = pTransform; }
+	// オフセットを取得する
+	const DirectX::SimpleMath::Vector3& GetOffset() const { return m_offset; }
+	// オフセットを設定する
+	void SetOffset(const DirectX::SimpleMath::Vector3& offset) { m_offset = offset; }
+
+public:
+	// 実際の座標を取得する
+	DirectX::SimpleMath::Vector3 GetPos() const;
 
 protected:
-	Type m_type;
-
+	// 当たり判定の種類
+	Type                         m_type;
+	// 姿勢クラスへのポインタ
+	const Transform*             m_pTransform;
+	// 座標のオフセット
+	DirectX::SimpleMath::Vector3 m_offset;
 };
 
 

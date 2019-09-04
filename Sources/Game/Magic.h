@@ -48,13 +48,13 @@ public:
 	// オブジェクトの行列を取得する
 	const DirectX::SimpleMath::Matrix& GetMatrix() const { return m_world; }
 	// オブジェクトの当たり判定を取得する
-	const SphereCollider* GetCollider() const { return &m_sphereCollider; }
+	const Collider* GetCollider() const { return &m_sphereCollider; }
 	// 魔法IDを取得する
 	MagicID GetID() const { return m_id; }
 	// プレイヤーIDを取得する
 	PlayerID GetPlayerID() const { return m_playerId; }
 	// プレイヤーとの衝突処理
-	virtual void HitPlayer(const SphereCollider& collider) { collider; }
+	virtual void HitPlayer(const Collider* collider) { collider; }
 	// 魔法との衝突処理
 	virtual void HitMagic(const IMagic* other) { other; }
 	// 魔法を使用しているかどうか取得する

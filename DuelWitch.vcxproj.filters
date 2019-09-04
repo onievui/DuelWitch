@@ -234,6 +234,12 @@
     <ClCompile Include="Sources\Utils\MouseWrapper.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Collider.cpp">
+      <Filter>Game\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\EmptyObject.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">

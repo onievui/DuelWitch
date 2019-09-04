@@ -6,7 +6,7 @@
 #include <Framework\StepTimer.h>
 
 
-class SphereCollider;
+class Collider;
 
 
 /// <summary>
@@ -28,7 +28,7 @@ public:
 	// オブジェクトの行列を取得する
 	virtual const DirectX::SimpleMath::Matrix& GetMatrix() const = 0;
 	// オブジェクトの当たり判定を取得する
-	virtual const SphereCollider* GetCollider() const = 0;
+	virtual const Collider* GetCollider() const = 0;
 };
 
 

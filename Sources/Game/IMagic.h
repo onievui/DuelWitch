@@ -35,7 +35,7 @@ public:
 	// プレイヤーIDを取得する
 	virtual PlayerID GetPlayerID() const = 0;
 	// プレイヤーとの衝突処理
-	virtual void HitPlayer(const SphereCollider& collider) = 0;
+	virtual void HitPlayer(const Collider* collider) = 0;
 	// 魔法との衝突処理
 	virtual void HitMagic(const IMagic* other) = 0;
 

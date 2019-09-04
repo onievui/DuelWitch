@@ -5,6 +5,7 @@
 
 #include "Command.h"
 #include <Utils\LoadDataHolder.h>
+#include "EmptyObject.h"
 
 
 /// <summary>
@@ -13,7 +14,7 @@
 class MoveCommand : public Command {
 public:
 	// コンストラクタ
-	MoveCommand() : m_totalElapsedTime(), m_euler() {}
+	MoveCommand();
 
 public:
 	// 移動コマンドを処理する
@@ -24,6 +25,8 @@ private:
 	float                        m_totalElapsedTime;
 	// オイラー角
 	DirectX::SimpleMath::Vector3 m_euler;
+	// カメラターゲット
+	EmptyObject                  m_cameraTarget;
 
 };
 

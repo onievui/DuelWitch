@@ -74,7 +74,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());
 	//ターゲットカメラを生成する
-	m_targetCamera = std::make_unique<TargetCamera>(m_players[0].get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
+	m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
 		Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 10000.0f);
 
@@ -120,61 +120,59 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		time -= 10.0f;
 	}
 
+	// 未使用なら飛ばす処理を定義
+	auto live_pred = [](IObject* object) { return object; };
+	// std::find_ifを簡略化した処理を定義
+	auto find_if_pred = [](auto& container, auto& pred) {return std::find_if(container.begin(), container.end(), pred); };
+
 	// 当たり判定
 	// プレイヤーとエレメントの当たり判定
-	for (std::vector<Element*>::iterator element_itr = m_elementManager->GetElements()->begin(); 
-		element_itr != m_elementManager->GetElements()->end(); ++element_itr) {
-		// 未使用なら飛ばす
-		if (!*element_itr) {
-			continue;
-		}
-		const SphereCollider* element_collider = (*element_itr)->GetCollider();
+	for (std::vector<Element*>::iterator element_itr = find_if_pred(*m_elementManager->GetElements(), live_pred),
+		 element_end = m_elementManager->GetElements()->end();
+		element_itr != element_end;
+		element_itr = std::find_if(element_itr + 1, element_end, live_pred)) {
+		const Collider* element_collider = (*element_itr)->GetCollider();
 		for (std::vector<std::unique_ptr<Player>>::iterator player_itr = m_players.begin(); player_itr != m_players.end(); ++player_itr) {
-			if (Collision::HitCheck(element_collider,(*player_itr)->GetCollider())) {
+			if (Collision::HitCheck(element_collider, (*player_itr)->GetCollider())) {
 				(*player_itr)->GetElement((*element_itr)->GetID());
 				(*element_itr)->IsUsed(false);
 			}
 		}
 	}
+	
 
 	// 魔法同士の当たり判定
-	{
-		// 未使用なら飛ばす処理を定義
-		auto pred = [](IMagic* magic) {return magic; };
-		// 魔法同士の当たり判定
-		std::vector<IMagic*>::iterator itr = std::find_if(m_magicManager->GetMagics()->begin(), m_magicManager->GetMagics()->end(), pred);
-		for (std::vector<IMagic*>::iterator end = m_magicManager->GetMagics()->end(); itr != end;) {
-			const SphereCollider* collider = (*itr)->GetCollider();
-			std::vector<IMagic*>::iterator next = std::find_if(itr + 1, end, pred);
-			for (std::vector<IMagic*>::iterator itr2 = next; itr2 != end; itr2 = std::find_if(itr2 + 1, end, pred)) {
-				// 同一プレイヤーの魔法なら判定しない
-				if ((*itr)->GetPlayerID() == (*itr2)->GetPlayerID()) {
-					continue;
-				}
-				if (Collision::HitCheck(collider, (*itr2)->GetCollider())) {
-					(*itr)->HitMagic(*itr2);
-					(*itr2)->HitMagic(*itr);
-				}
+	for (std::vector<IMagic*>::iterator itr = find_if_pred(*m_magicManager->GetMagics(), live_pred),
+		 end = m_magicManager->GetMagics()->end();
+		itr != end;) {
+		const Collider* collider = (*itr)->GetCollider();
+		std::vector<IMagic*>::iterator next = std::find_if(itr + 1, end, live_pred);
+		for (std::vector<IMagic*>::iterator itr2 = next; itr2 != end; itr2 = std::find_if(itr2 + 1, end, live_pred)) {
+			// 同一プレイヤーの魔法なら判定しない
+			if ((*itr)->GetPlayerID() == (*itr2)->GetPlayerID()) {
+				continue;
 			}
-			itr = next;
+			if (Collision::HitCheck(collider, (*itr2)->GetCollider())) {
+				(*itr)->HitMagic(*itr2);
+				(*itr2)->HitMagic(*itr);
+			}
 		}
+		itr = next;
 	}
 
 	// プレイヤ―と魔法の当たり判定
-	for (std::vector<IMagic*>::iterator magic_itr = (*m_magicManager->GetMagics()).begin();
-		magic_itr != (*m_magicManager->GetMagics()).end(); ++magic_itr) {
-		// 未使用なら飛ばす
-		if (!*magic_itr) {
-			continue;
-		}
-		const SphereCollider* magic_collider = (*magic_itr)->GetCollider();
+	for (std::vector<IMagic*>::iterator magic_itr = find_if_pred(*m_magicManager->GetMagics(), live_pred),
+		magic_end = m_magicManager->GetMagics()->end();
+		magic_itr != magic_end;
+		magic_itr = std::find_if(magic_itr + 1, magic_end, live_pred)) {
+		const Collider* magic_collider = (*magic_itr)->GetCollider();
 		for (std::vector<std::unique_ptr<Player>>::iterator player_itr = m_players.begin(); player_itr != m_players.end(); ++player_itr) {
 			// 自身の魔法とは判定しない
 			if ((*player_itr)->GetPlayerID() == (*magic_itr)->GetPlayerID()) {
 				continue;
 			}
-			if (Collision::HitCheck(magic_collider,(*player_itr)->GetCollider())) {
-				(*magic_itr)->HitPlayer(*(*player_itr)->GetCollider());
+			if (Collision::HitCheck(magic_collider, (*player_itr)->GetCollider())) {
+				(*magic_itr)->HitPlayer((*player_itr)->GetCollider());
 				(*player_itr)->HitMagic(*magic_itr);
 			}
 		}
@@ -182,7 +180,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 
 	// プレイヤー同士の当たり判定
 	for (std::vector<std::unique_ptr<Player>>::iterator itr1 = m_players.begin(); itr1 != m_players.end() - 1; ++itr1) {
-		const SphereCollider* collider1 = (*itr1)->GetCollider();
+		const Collider* collider1 = (*itr1)->GetCollider();
 		for (std::vector<std::unique_ptr<Player>>::iterator itr2 = itr1 + 1; itr2 != m_players.end(); ++itr2) {
 			if (Collision::HitCheck(collider1, (*itr2)->GetCollider())) {
 				(*itr1)->HitPlayer(**itr2);

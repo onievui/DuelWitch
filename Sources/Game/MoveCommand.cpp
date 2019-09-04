@@ -1,9 +1,21 @@
 #include "MoveCommand.h"
+#include <Framework\DirectX11.h>
 #include <Utils\MathUtils.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\MouseWrapper.h>
 #include <Parameters\CommandParameter.h>
 #include "PlayParameterLoader.h"
+#include "TargetCamera.h"
 
+
+/// <summary>
+/// コンストラクタ
+/// </summary>
+MoveCommand::MoveCommand()
+	: m_totalElapsedTime()
+	, m_euler()
+	, m_cameraTarget() {
+}
 
 /// <summary>
 /// 移動コマンドを処理する
@@ -101,5 +113,27 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	ref_transform.SetPosition(pos);
 	ref_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
 	GetWorld(player) = ref_transform.GetMatrix();
+
+	// 照準のある方へカメラを少し向ける
+	TargetCamera* target_camera = dynamic_cast<TargetCamera*>(&GetCamera(player));
+	// ターゲットカメラでない場合は処理をしない
+	if (!target_camera) {
+		return;
+	}
+	// 追従するオブジェクトが存在しない場合はターゲットを設定する
+	if (!target_camera->HasTargetObject()) {
+		target_camera->SetTargetObject(&m_cameraTarget);
+	}
+	const MouseWrapper* mouse = ServiceLocater<MouseWrapper>::Get();
+	int width = ServiceLocater<DirectX11>::Get()->GetWidth();
+	int height = ServiceLocater<DirectX11>::Get()->GetHeight();
+	const float cameraRotLimitX = Math::PI / 6;
+	const float cameraRotLimitY = Math::PI / 6;
+	DirectX::SimpleMath::Vector2 camera_rot(
+		(mouse->GetPos().y - height / 2) / height * cameraRotLimitY,
+		-(mouse->GetPos().x - width / 2) / width * cameraRotLimitX
+	);
+	DirectX::SimpleMath::Matrix target_matrix = DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(camera_rot.y, camera_rot.x, 0.0f);
+	m_cameraTarget.GetMatrixRef() = target_matrix * GetWorld(player);
 }
 

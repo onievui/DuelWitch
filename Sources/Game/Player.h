@@ -55,7 +55,7 @@ public:
 	// プレイヤーの行列を取得する
 	const DirectX::SimpleMath::Matrix& GetMatrix() const override;
 	// プレイヤーの当たり判定を取得する
-	const SphereCollider* GetCollider() const override;
+	const Collider* GetCollider() const override;
 	// プレイヤーIDを取得する
 	PlayerID GetPlayerID() const;
 	// 敵プレイヤーを設定する

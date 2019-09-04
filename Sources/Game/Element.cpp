@@ -84,7 +84,7 @@ const DirectX::SimpleMath::Matrix& Element::GetMatrix() const {
 /// <returns>
 /// “–‚½‚è”»’è
 /// </returns>
-const SphereCollider* Element::GetCollider() const {
+const Collider* Element::GetCollider() const {
 	return &m_sphereCollider;
 }
 

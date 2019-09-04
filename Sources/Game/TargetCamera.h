@@ -19,16 +19,20 @@ public:
 	TargetCamera(IObject* targetObject, DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 target,
 		DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::UnitY, float fov = DirectX::XM_PIDIV4,
 		float aspectRatio = 800.0f / 600.0f, float nearPlane = 0.1f, float farPlane = 100.0f);
+
+public:
 	// ターゲットカメラを更新する
 	void Update();
 	// ターゲットカメラの位置を取得する
-	const DirectX::SimpleMath::Vector3& GetEyePosition() const override;
-
-
+	const DirectX::SimpleMath::Vector3& GetEyePosition() const override { return m_pos; }
+	// 追従するオブジェクトを設定する
+	void SetTargetObject(IObject* pTargetObject) { m_pTargetObject = pTargetObject; }
+	// 追従するオブジェクトが存在するかどうか取得する
+	bool HasTargetObject();
 
 private:
 	// 追従するオブジェクト
-	IObject*					 m_targetObject;
+	IObject*					 m_pTargetObject;
 	DirectX::SimpleMath::Matrix  m_targetMatrix;
 	// ターゲットカメラの位置
 	DirectX::SimpleMath::Vector3 m_pos;

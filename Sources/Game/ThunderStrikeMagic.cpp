@@ -85,7 +85,7 @@ void ThunderStrikeMagic::Render(const DirectX::SimpleMath::Matrix& view, const D
 /// プレイヤーとの衝突処理
 /// </summary>
 /// <param name="collider">プレイヤーの当たり判定</param>
-void ThunderStrikeMagic::HitPlayer(const SphereCollider& collider) {
+void ThunderStrikeMagic::HitPlayer(const Collider* collider) {
 	collider;
 	m_isUsed = false;
 }
@@ -98,11 +98,7 @@ void ThunderStrikeMagic::HitMagic(const IMagic* other) {
 	MagicID other_id = other->GetID();
 	// 氷魔法と衝突したら跳ね返る
 	if (other_id == MagicID::Freeze) {
-		const SphereCollider* collider = other->GetCollider();
-		DirectX::SimpleMath::Vector3 offset = DirectX::SimpleMath::Vector3::Transform(collider->GetOffset(),
-			collider->GetTransform()->GetRotation());
-		DirectX::SimpleMath::Vector3 pos = offset + collider->GetTransform()->GetPosition();
-		DirectX::SimpleMath::Vector3 direction = m_transform.GetPosition() - pos;
+		DirectX::SimpleMath::Vector3 direction = m_transform.GetPosition() - other->GetCollider()->GetPos();
 		direction.y *= 0.0f;
 		direction.Normalize();
 

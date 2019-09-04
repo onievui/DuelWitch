@@ -41,10 +41,7 @@ bool Collision::HitCheck(const Collider* collider1, const Collider* collider2) {
 /// false : “–‚½‚Á‚Ä‚¢‚È‚¢
 /// </returns>
 bool Collision::HitCheckSphere2Sphere(const SphereCollider& sphere1, const SphereCollider& sphere2) {
-	DirectX::SimpleMath::Vector3 offset = DirectX::SimpleMath::Vector3::Transform(sphere1.m_offset, sphere1.m_pTransform->GetRotation());
-	const DirectX::SimpleMath::Quaternion& rot2 = sphere2.m_pTransform->GetRotation();
-	DirectX::SimpleMath::Vector3 offset2 = DirectX::SimpleMath::Vector3::Transform(sphere2.m_offset, rot2);
-	DirectX::SimpleMath::Vector3 d = (sphere1.m_pTransform->GetPosition() + offset) - (sphere2.m_pTransform->GetPosition() + offset2);
+	DirectX::SimpleMath::Vector3 d = sphere1.GetPos() - sphere2.GetPos();
 	float dist2 = d.x*d.x + d.y*d.y + d.z*d.z;
 	return dist2 <= (sphere1.m_radius + sphere2.m_radius)*(sphere1.m_radius + sphere2.m_radius);
 
