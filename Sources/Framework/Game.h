@@ -1,45 +1,26 @@
-// Game.h
-
 #pragma once
 #ifndef GAME_DEFINED
 #define GAME_DEFINED
 
-//#include <iostream>
-//#include <string>
-//#include <iomanip>
-//#include <algorithm>
-//#include <windows.h>
-//#include <d3d11.h>
-//#include <memory>
-//#include <SimpleMath.h>
-//#include <SpriteBatch.h>
-//#include <SpriteFont.h>
-//#include <GeometricPrimitive.h>
-//#include <WICTextureLoader.h>
-//#include <CommonStates.h>
-//#include <Effects.h>
-//#include <Model.h>
 
 #include "StepTimer.h"
 #include "Window.h"
 #include "DirectX11.h"
 
+
 class Window;
+
 
 // ゲームループを提供するゲームクラス
 class Game {
 public:
-	
-	// スプライトバッチを取得する
-	DirectX::SpriteBatch* GetSpriteBatch() const {
-		return m_spriteBatch.get();
-	}
+	// コンストラクタ
+	Game(int width, int height);
 
+public:
 	// ゲームループを実行する
 	MSG Run();
 
-	// コンストラクタ
-    Game(int width, int height);
     // 初期化をおこなう
     virtual void Initialize(int width, int height);
 	// リソースを生成する
@@ -65,6 +46,14 @@ public:
     // プロパティ 
     void GetDefaultSize(int& width, int& height) const;
 
+public:
+	// スプライトバッチを取得する
+	DirectX::SpriteBatch* GetSpriteBatch() { return m_spriteBatch.get(); }
+	// 背景色を設定する
+	void SetBackGroundColor(const DirectX::SimpleMath::Color& color) { m_backGroundColor = color; }
+	// 背景色を取得する
+	const DirectX::SimpleMath::Color& GetBackGroundColor() const { return m_backGroundColor; }
+
 private:
 	// 出力幅
 	int m_width;
@@ -87,7 +76,9 @@ private:
 	// スプライトバッチ
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	// DirectX11クラスのインスタンス
-	std::unique_ptr<DirectX11> m_directX;
+	std::unique_ptr<DirectX11>            m_directX;
+	// 背景色
+	DirectX::SimpleMath::Color            m_backGroundColor;
 };
 
 #endif	// GAME_DEFINED

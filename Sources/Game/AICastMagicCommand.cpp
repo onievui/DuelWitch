@@ -27,11 +27,11 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	const DirectX::SimpleMath::Vector3& target_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
 
 	// UŒ‚”ÍˆÍ‚ð§ŒÀ‚·‚é
-	const float& shotableAngle = parameter->shotableAngle;
+	const float shotable_angle = parameter->shotableAngle;
 	DirectX::SimpleMath::Vector3 direction = target_pos - pos;
 	DirectX::SimpleMath::Vector3 forward = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, rot);
 	float angle = std::acosf(forward.Dot(direction) / (forward.Length()*direction.Length()));
-	if (angle > shotableAngle) {
+	if (angle > shotable_angle) {
 		return;
 	}
 
@@ -47,7 +47,7 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		GetMagicManager(player).CreateMagic(element_id, player.GetPlayerID(), pos, direction);
 	}
 
-	const float& castDelay = parameter->castDelay;
-	m_waitTime = castDelay;
+	const float cast_delay = parameter->castDelay;
+	m_waitTime = cast_delay;
 }
 

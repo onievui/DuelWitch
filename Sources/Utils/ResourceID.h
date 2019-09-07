@@ -20,6 +20,7 @@ enum class SampleID {
 /// テクスチャID
 /// </summary>
 enum class TextureID {
+	Logo,
 	MagicIcon,
 	MagicAiming,
 	Num

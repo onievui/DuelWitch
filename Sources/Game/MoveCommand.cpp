@@ -28,13 +28,12 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	DirectX::Keyboard::State key_state = key_tracker->GetLastState();
 	const CommandParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter();
 
-	const float& moveSpeed   = parameter->moveSpeed;
-	const float& moveSpeedXY = parameter->moveSpeedXY;
-	//const float& rotSpeed    = parameter->rotSpeed;
-	const float& rotZLimit   = parameter->rotZLimit;
-	const float& rotXLimit   = parameter->rotXLimit;
-	const float& rotYLimit   = parameter->rotYLimit;
-	const float& lerpSpeed   = parameter->lerpSpeed;
+	const float move_speed    = parameter->moveSpeed;
+	const float move_speed_xy = parameter->moveSpeedXY;
+	const float rot_z_limit   = parameter->rotZLimit;
+	const float rot_x_limit   = parameter->rotXLimit;
+	const float rot_y_limit   = parameter->rotYLimit;
+	const float lerp_speed    = parameter->lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
 	Player::MoveDirection& ref_direction = GetMoveDirection(player);
@@ -42,6 +41,7 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetPosition();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
+	// ‚P‚O•b‚ÅÜ‚è•Ô‚·
 	m_totalElapsedTime += elapsedTime;
 	if (m_totalElapsedTime > 10.0f) {
 		m_totalElapsedTime -= 10.0f;
@@ -55,60 +55,60 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 
 	// ˆÚ“®
 	if (key_state.A || key_state.Left) {
-		m_euler.z = Math::Lerp(m_euler.z, -rotZLimit, lerpSpeed);
+		m_euler.z = Math::Lerp(m_euler.z, -rot_z_limit, lerp_speed);
 		if (ref_direction == Player::MoveDirection::Forward) {
-			m_euler.y = Math::Lerp(m_euler.y, rotYLimit, lerpSpeed);
+			m_euler.y = Math::Lerp(m_euler.y, rot_y_limit, lerp_speed);
 			move.x = 1.0f;
 		}
 		else {
-			m_euler.y = Math::Lerp(m_euler.y, Math::PI + rotYLimit, lerpSpeed);
+			m_euler.y = Math::Lerp(m_euler.y, Math::PI + rot_y_limit, lerp_speed);
 			move.x = -1.0f;
 		}
 	}
 	else if (key_state.D || key_state.Right) {
-		m_euler.z = Math::Lerp(m_euler.z, rotZLimit, lerpSpeed);
+		m_euler.z = Math::Lerp(m_euler.z, rot_z_limit, lerp_speed);
 		if (ref_direction == Player::MoveDirection::Forward) {
-			m_euler.y = Math::Lerp(m_euler.y, -rotYLimit, lerpSpeed);
+			m_euler.y = Math::Lerp(m_euler.y, -rot_y_limit, lerp_speed);
 			move.x = -1.0f;
 		}
 		else {
-			m_euler.y = Math::Lerp(m_euler.y, Math::PI - rotYLimit, lerpSpeed);
+			m_euler.y = Math::Lerp(m_euler.y, Math::PI - rot_y_limit, lerp_speed);
 			move.x = 1.0f;
 		}
 	}
 	//‰Ÿ‚µ‚Ä‚¢‚È‚¢‚Æ‚«‚Í–ß‚·
 	else {
-		m_euler.z = Math::Lerp(m_euler.z, 0.0f, lerpSpeed);
+		m_euler.z = Math::Lerp(m_euler.z, 0.0f, lerp_speed);
 		if (ref_direction == Player::MoveDirection::Forward) {
-			m_euler.y = Math::Lerp(m_euler.y, 0.0f, lerpSpeed);
+			m_euler.y = Math::Lerp(m_euler.y, 0.0f, lerp_speed);
 		}
 		else {
-			m_euler.y = Math::Lerp(m_euler.y, Math::PI, lerpSpeed);
+			m_euler.y = Math::Lerp(m_euler.y, Math::PI, lerp_speed);
 		}
 	}
 
 	if (key_state.W || key_state.Up) {
-		m_euler.x = Math::Lerp(m_euler.x, -rotXLimit, lerpSpeed);
+		m_euler.x = Math::Lerp(m_euler.x, -rot_x_limit, lerp_speed);
 		move.y = 1.0f;
 	}
 	else if (key_state.S || key_state.Down) {
-		m_euler.x = Math::Lerp(m_euler.x, rotXLimit, lerpSpeed);
+		m_euler.x = Math::Lerp(m_euler.x, rot_x_limit, lerp_speed);
 		move.y = -1.0f;
 	}
 	//‰Ÿ‚µ‚Ä‚¢‚È‚¢‚Æ‚«‚Í–ß‚·
 	else {
-		m_euler.x = Math::Lerp(m_euler.x, 0.0f, lerpSpeed);
+		m_euler.x = Math::Lerp(m_euler.x, 0.0f, lerp_speed);
 	}
 
 	move.Normalize();
-	move *= moveSpeedXY;
+	move *= move_speed_xy;
 	if (ref_direction == Player::MoveDirection::Forward) {
 		move.z = 1.0f;
 	}
 	else {
 		move.z = -1.0f;
 	}
-	pos += move * moveSpeed*elapsedTime;
+	pos += move * move_speed*elapsedTime;
 
 	ref_transform.SetPosition(pos);
 	ref_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
@@ -127,11 +127,11 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	const MouseWrapper* mouse = ServiceLocater<MouseWrapper>::Get();
 	int width = ServiceLocater<DirectX11>::Get()->GetWidth();
 	int height = ServiceLocater<DirectX11>::Get()->GetHeight();
-	const float cameraRotLimitX = Math::PI / 6;
-	const float cameraRotLimitY = Math::PI / 6;
+	const float camera_rot_x_limit = parameter->cameraRotXLimit;
+	const float camera_rot_y_limit = parameter->cameraRotYLimit;
 	DirectX::SimpleMath::Vector2 camera_rot(
-		(mouse->GetPos().y - height / 2) / height * cameraRotLimitY,
-		-(mouse->GetPos().x - width / 2) / width * cameraRotLimitX
+		(mouse->GetPos().y - height / 2) / height * camera_rot_y_limit,
+		-(mouse->GetPos().x - width / 2) / width * camera_rot_x_limit
 	);
 	DirectX::SimpleMath::Matrix target_matrix = DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(camera_rot.y, camera_rot.x, 0.0f);
 	m_cameraTarget.GetMatrixRef() = target_matrix * GetWorld(player);

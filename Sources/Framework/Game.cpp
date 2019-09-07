@@ -50,6 +50,8 @@ void Game::Initialize(int width, int height) {
 
 	// SpriteBatchオブジェクトを生成する
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_directX->GetContext().Get());
+	// 背景色を設定する
+	m_backGroundColor = DirectX::SimpleMath::Color(DirectX::Colors::CornflowerBlue);
 }
 
 // リソースを生成する
@@ -114,10 +116,9 @@ void Game::Render(const DX::StepTimer& timer) {
 }
 
 // バックバッファをクリアする
-void Game::Clear()
-{
+void Game::Clear() {
 	// レンダーターゲットビューをクリアする
-	m_directX->GetContext()->ClearRenderTargetView(m_directX->GetRenderTargetView().Get(), DirectX::Colors::CornflowerBlue);
+	m_directX->GetContext()->ClearRenderTargetView(m_directX->GetRenderTargetView().Get(), m_backGroundColor);
 	// デプスステンシルビューをクリアする
 	m_directX->GetContext()->ClearDepthStencilView(m_directX->GetDepthStencilView().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	// レンダータッゲートを設定する
@@ -144,30 +145,25 @@ void Game::Present()
 }
 
 // メッセージハンドラ
-void Game::OnActivated()
-{
+void Game::OnActivated() {
 	// TODO: ゲームがアクティブなウィンドウになる場合
 }
 
-void Game::OnDeactivated()
-{
+void Game::OnDeactivated() {
     // TODO: ゲームがバックグラウンドウィンドウになる場合 
 }
 
-void Game::OnSuspending()
-{
+void Game::OnSuspending() {
     // TODO: ゲームがパワーサスペンデッドになる場合
 }
 
-void Game::OnResuming()
-{
+void Game::OnResuming() {
 	m_timer.ResetElapsedTime();
 
     // TODO: ゲームがパワーレジュームになる場合
 }
 
-void Game::OnWindowSizeChanged(int width, int height)
-{
+void Game::OnWindowSizeChanged(int width, int height) {
     m_width = std::max(width, 1);
     m_height = std::max(height, 1);
 	
@@ -176,15 +172,13 @@ void Game::OnWindowSizeChanged(int width, int height)
 }
 
 // プロパティ Properties
-void Game::GetDefaultSize(int& width, int& height) const
-{
+void Game::GetDefaultSize(int& width, int& height) const {
     // TODO: 任意のデフォルトウィンドウサイズに変更する(最小サイズは320x200) 
     width = 800;
     height = 600;
 }
 
 // Exitヘルパー関数
-void ExitGame() 
-{
+void ExitGame() {
 	PostQuitMessage(0);
 }

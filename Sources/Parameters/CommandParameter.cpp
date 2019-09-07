@@ -23,6 +23,8 @@ bool CommandParameter::Load() {
 	rotXLimit = Math::Deg2Rad(root["MoveCommand"]["RotXLimit_Deg"].getNumF());
 	rotYLimit = Math::Deg2Rad(root["MoveCommand"]["RotYLimit_Deg"].getNumF());
 	lerpSpeed = root["MoveCommand"]["LerpSpeed"].getNumF();
+	rotXLimit = Math::Deg2Rad(root["MoveCommand"]["CameraRotXLimit_Deg"].getNumF());
+	rotYLimit = Math::Deg2Rad(root["MoveCommand"]["CameraRotYLimit_Deg"].getNumF());
 
 	return true;
 }

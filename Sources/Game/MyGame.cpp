@@ -34,12 +34,18 @@ void MyGame::Initialize(int width, int height) {
 	// 基底クラスのInitializeを呼び出す 
 	Game::Initialize(width, height);
 
+	// 背景色を黒にする
+	Game::SetBackGroundColor(DirectX::SimpleMath::Color(DirectX::Colors::Black));
+
 	// キーボードを生成する
 	m_keyboard = std::make_unique<DirectX::Keyboard>();
 
 	// コモンサービスを初期化する
 	m_commonServices = std::make_unique<CommonServices>();
 	m_commonServices->Initialize();
+
+	// マウスの感度を設定する
+	ServiceLocater<MouseWrapper>::Get()->SetSensivity(2.0f);
 
 	// フォントを読み込む
 	ResourceLoader::Load(ResourceLoaderID::Common);

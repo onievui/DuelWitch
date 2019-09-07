@@ -26,6 +26,9 @@ public:
 	float rotXLimit;
 	float rotYLimit;
 	float lerpSpeed;
+	float cameraRotXLimit;
+	float cameraRotYLimit;
 };
+
 
 #endif // !COMMAND_PARAMETER_DEFINED

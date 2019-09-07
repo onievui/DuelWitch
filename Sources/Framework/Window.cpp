@@ -1,8 +1,70 @@
 #include "Window.h"
 
+
+/// <summary>
+/// クラスを登録してウインドウハンドルを生成する
+/// </summary>
+/// <param name="width">出力幅</param>
+/// <param name="height">出力高</param>
+/// <returns>
+/// 0 : 成功
+/// 1 : 失敗
+/// </returns>
+int Window::Initialize(int width, int height) {
+	// クラスを登録する
+	WNDCLASSEX wndClassEx;
+	wndClassEx.cbSize = sizeof(WNDCLASSEX);
+	wndClassEx.style = CS_HREDRAW | CS_VREDRAW;
+	wndClassEx.lpfnWndProc = WndowProc;
+	wndClassEx.cbClsExtra = 0;
+	wndClassEx.cbWndExtra = 0;
+	wndClassEx.hInstance = m_hInstance;
+	wndClassEx.hIcon = LoadIcon(m_hInstance, L"IDI_ICON");
+	wndClassEx.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wndClassEx.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wndClassEx.lpszMenuName = nullptr;
+	wndClassEx.lpszClassName = CLASS_NAME;
+	wndClassEx.hIconSm = LoadIcon(wndClassEx.hInstance, L"IDI_ICON");
+	// クラスを登録する
+	if (!RegisterClassEx(&wndClassEx)) {
+		return EXIT_FAILURE;
+	}
+	// ウィンドウを生成する
+	RECT rect;
+	rect.top = 0;
+	rect.left = 0;
+	rect.right = static_cast<LONG>(width);
+	rect.bottom = static_cast<LONG>(height);
+
+	// クライアント領域のサイズによりウィンドウサイズを変更する
+	AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
+
+	// ウィンドウを生成する
+	m_hWnd = CreateWindowEx(0, CLASS_NAME, WINDOW_NAME, WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, CW_USEDEFAULT, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
+
+	if (!m_hWnd)
+		return EXIT_FAILURE;
+
+	// TODO: nCmdShowにSW_SHOWMAXIMIZEDをセットして規定でフルスクリーンに変更する
+	// SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(g_game.get()));
+
+	// GetClientRect(hwnd, &rc);
+	// Initialize window
+	// g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
+	return EXIT_SUCCESS;
+}
+
+/// <summary>
+/// ウインドウを表示する
+/// </summary>
+void Window::ShowWindow() {
+	// ウィンドウを表示する
+	::ShowWindow(m_hWnd, m_nCmdShow);
+}
+
 // ウィンドウプロシージャ
-LRESULT CALLBACK Window::WndowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
+LRESULT CALLBACK Window::WndowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	PAINTSTRUCT ps;
 	HDC hdc;
 
@@ -12,35 +74,32 @@ LRESULT CALLBACK Window::WndowProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 	static bool s_fullscreen = false;
 
 	// TODO: 規定でフルスクリーンにする場合s_fullscreenをtrueに設定する
-	auto game = reinterpret_cast<Game*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+	Game* game = reinterpret_cast<Game*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
-	switch (message) 
-	{
+	switch (message) {
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		EndPaint(hWnd, &ps);
 		break;
 
 	case WM_SIZE:
-		if (wParam == SIZE_MINIMIZED) 
-		{
-			if (!s_minimized) 
-			{
+		if (wParam == SIZE_MINIMIZED) {
+			if (!s_minimized) {
 				s_minimized = true;
-				if (!s_in_suspend && game)
+				if (!s_in_suspend && game) {
 					game->OnSuspending();
+				}
 				s_in_suspend = true;
 			}
 		}
-		else if (s_minimized) 
-		{
+		else if (s_minimized) {
 			s_minimized = false;
-			if (s_in_suspend && game)
+			if (s_in_suspend && game) {
 				game->OnResuming();
+			}
 			s_in_suspend = false;
 		}
-		else if (!s_in_sizemove && game) 
-		{
+		else if (!s_in_sizemove && game) {
 			game->OnWindowSizeChanged(LOWORD(lParam), HIWORD(lParam));
 		}
 		break;
@@ -51,18 +110,15 @@ LRESULT CALLBACK Window::WndowProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 
 	case WM_EXITSIZEMOVE:
 		s_in_sizemove = false;
-		if (game) 
-		{
+		if (game) {
 			RECT rc;
 			GetClientRect(hWnd, &rc);
-
 			game->OnWindowSizeChanged(rc.right - rc.left, rc.bottom - rc.top);
 		}
 		break;
 
-	case WM_GETMINMAXINFO: 
-		{
-			auto info = reinterpret_cast<MINMAXINFO*>(lParam);
+	case WM_GETMINMAXINFO: {
+			MINMAXINFO* info = reinterpret_cast<MINMAXINFO*>(lParam);
 			info->ptMinTrackSize.x = 320;
 			info->ptMinTrackSize.y = 200;
 		}
@@ -70,33 +126,30 @@ LRESULT CALLBACK Window::WndowProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 
 	case WM_ACTIVATEAPP:
 		DirectX::Mouse::ProcessMessage(message, wParam, lParam);
-		if (game) 
-		{
-			if (wParam) 
-			{
+		if (game) {
+			if (wParam) {
 				game->OnActivated();
 			}
-			else 
-			{
+			else {
 				game->OnDeactivated();
 			}
 		}
 		break;
 
 	case WM_POWERBROADCAST:
-		switch (wParam) 
-		{
+		switch (wParam) {
 		case PBT_APMQUERYSUSPEND:
-			if (!s_in_suspend && game)
+			if (!s_in_suspend && game) {
 				game->OnSuspending();
+			}
 			s_in_suspend = true;
 			return TRUE;
 
 		case PBT_APMRESUMESUSPEND:
-			if (!s_minimized) 
-			{
-				if (s_in_suspend && game)
+			if (!s_minimized) {
+				if (s_in_suspend && game) {
 					game->OnResuming();
+				}
 				s_in_suspend = false;
 			}
 			return TRUE;
@@ -107,27 +160,22 @@ LRESULT CALLBACK Window::WndowProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 		::PostQuitMessage(0);
 		break;
 
-
-
 	case WM_SYSKEYDOWN:
-		if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000) 
-		{
+		if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000) {
 			// ALT+ENTER フルスクリーン トグルを実装する
-			if (s_fullscreen) 
-			{
+			if (s_fullscreen) {
 				SetWindowLongPtr(hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 				SetWindowLongPtr(hWnd, GWL_EXSTYLE, 0);
 
 				int width = 800;
 				int height = 600;
-				if (game)
+				if (game) {
 					game->GetDefaultSize(width, height);
-
+				}
 				::ShowWindow(hWnd, SW_SHOWNORMAL);
 				::SetWindowPos(hWnd, HWND_TOP, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
 			}
-			else 
-			{
+			else {
 				SetWindowLongPtr(hWnd, GWL_STYLE, 0);
 				SetWindowLongPtr(hWnd, GWL_EXSTYLE, WS_EX_TOPMOST);
 				::SetWindowPos(hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
@@ -143,7 +191,7 @@ LRESULT CALLBACK Window::WndowProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 		// 押した場合でもそれらを無視しエラービープを鳴らさない
 		return MAKELRESULT(0, MNC_CLOSE);
 
-		// マウス関連メッセージ
+	// マウス関連メッセージ
 	case WM_INPUT:
 	case WM_MOUSEMOVE:
 	case WM_LBUTTONDOWN:

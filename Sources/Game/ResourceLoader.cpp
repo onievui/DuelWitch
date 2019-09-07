@@ -28,6 +28,9 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	case ResourceLoaderID::Common:
 		fontResourceManager->AddResource(FontID::Default, FontResource(L"Protected/Arial.spritefont"));
 		break;
+	case ResourceLoaderID::LogoScene:
+		textureResourceManager->AddResource(TextureID::Logo, TextureResource(L"Protected/creator_logo.png"));
+		break;
 	case ResourceLoaderID::PlayScene:
 		// テクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::MagicIcon, TextureResource(L"Protected/element1.png"));
@@ -51,6 +54,9 @@ void ResourceLoader::Release(ResourceLoaderID id) {
 	switch (id) {
 	case ResourceLoaderID::Common:
 		ServiceLocater<ResourceManager<FontResource>>::Get()->Release();
+		break;
+	case ResourceLoaderID::LogoScene:
+		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
 		break;
 	case ResourceLoaderID::PlayScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
