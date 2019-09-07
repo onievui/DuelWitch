@@ -93,9 +93,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer"></param>
 void PlayScene::Update(const DX::StepTimer& timer) {
-	// パラメータを再読み込みする
+	// F2キーでパラメータを再読み込みする
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F2)) {
-		LoadDataManager::GetIns()->Reload(LoadDataID::PlayScene);
+		m_parameterLoader->Reload();
 	}
 
 	// プレイヤーの更新

@@ -46,9 +46,9 @@ void LogoScene::Update(const DX::StepTimer& timer) {
 
 	m_time += elapsed_time;
 
-	// スペースキーを押すか4秒経過でタイトルシーンに移行する
+	// スペースキーを押すか5秒経過でタイトルシーンに移行する
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space) ||
-		m_time > 4.0f) {
+		m_time > 5.0f) {
 		m_pSceneRequest->RequestScene("Title");
 	}
 }
