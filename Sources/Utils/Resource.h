@@ -62,10 +62,18 @@ public:
 public:
 	// リソースを追加する
 	void AddResource(const std::wstring& fileName);
-
-public:
 	// リソースが有効かどうか確認する
 	bool IsValid(int index = 0) const;
+
+public:
+	// 画像サイズを取得する
+	const DirectX::SimpleMath::Vector2& GetSize(int index = 0) const;
+	// 画像の中心座標へのオフセットを取得する
+	DirectX::SimpleMath::Vector2 GetCenter(int index = 0) const;
+
+private:
+	// 画像サイズ
+	std::vector<DirectX::SimpleMath::Vector2> m_size;
 };
 
 

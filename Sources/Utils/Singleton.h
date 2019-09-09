@@ -6,7 +6,7 @@
 #include <functional>
 
 
-template <typename T>
+template <class T>
 /// <summary>
 /// シングルトンクラステンプレート
 /// </summary>
@@ -45,7 +45,7 @@ template <class T>
 std::unique_ptr<T>  Singleton<T>::s_instance = nullptr;
 
 
-template <typename T>
+template <class T>
 /// <summary>
 /// 関数ポインタ付きシングルトンクラステンプレート
 /// </summary>

@@ -133,7 +133,7 @@ void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simp
 	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
 	spriteBatch->Draw(texture->GetResource().Get(),
 		mouse_pos, nullptr, DirectX::SimpleMath::Vector4(1,1,1,0.8f), 0,
-		DirectX::SimpleMath::Vector2(256.0f, 256.0f), DirectX::SimpleMath::Vector2(0.25f, 0.25f));
+		texture->GetCenter(), DirectX::SimpleMath::Vector2(0.25f, 0.25f));
 }
 
 /// <summary>

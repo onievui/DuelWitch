@@ -38,6 +38,22 @@ void TextureResource::AddResource(const std::wstring& fileName) {
 	if (m_resources.back().Get() == m_defaultResource.Get()) {
 		ErrorMessage(L"画像の読み込みに失敗しました");
 	}
+	// 画像サイズを調べる
+	ID3D11ShaderResourceView* texture = m_resources.back().Get();
+	Microsoft::WRL::ComPtr<ID3D11Resource> resource;
+	texture->GetResource(resource.GetAddressOf());
+	D3D11_RESOURCE_DIMENSION dimension;
+	resource->GetType(&dimension);
+	// Texture2D出ない場合は処理しない
+	if (dimension != D3D11_RESOURCE_DIMENSION_TEXTURE2D) {
+		m_size.emplace_back(DirectX::SimpleMath::Vector2());
+		return;
+	}
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> texture2D;
+	resource.As(&texture2D);
+	D3D11_TEXTURE2D_DESC desc;
+	texture2D->GetDesc(&desc);
+	m_size.emplace_back(DirectX::SimpleMath::Vector2(static_cast<float>(desc.Width), static_cast<float>(desc.Height)));
 }
 
 /// <summary>
@@ -50,6 +66,35 @@ void TextureResource::AddResource(const std::wstring& fileName) {
 /// </returns>
 bool TextureResource::IsValid(int index) const {
 	return m_resources[index].Get() != m_defaultResource.Get();
+}
+
+/// <summary>
+/// 画像サイズを取得する
+/// </summary>
+/// <param name="index">リソースの番号</param>
+/// <returns>
+/// 画像サイズ
+/// </returns>
+const DirectX::SimpleMath::Vector2& TextureResource::GetSize(int index) const {
+	if (static_cast<int>(m_resources.size()) < index) {
+		ErrorMessage(L"画像サイズの取得で範囲外にアクセスしました");
+	}
+	return m_size[index];
+}
+
+/// <summary>
+/// 画像の中心座標へのオフセットを取得する
+/// </summary>
+/// <param name="index">リソースの番号</param>
+/// <returns>
+/// 中心座標へのオフセット
+/// </returns>
+DirectX::SimpleMath::Vector2 TextureResource::GetCenter(int index) const {
+	if (static_cast<int>(m_resources.size()) < index) {
+		ErrorMessage(L"画像の中心座標へのオフセットの取得で範囲外にアクセスしました");
+		return DirectX::SimpleMath::Vector2(0, 0);
+	}
+	return m_size[index] * 0.5f;
 }
 
 
