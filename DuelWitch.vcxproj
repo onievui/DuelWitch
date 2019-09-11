@@ -228,9 +228,12 @@
     <ClCompile Include="Sources\Utils\JsonWrapper.cpp" />
     <ClCompile Include="Sources\Utils\LoadDataManager.cpp" />
     <ClCompile Include="Sources\Utils\MouseWrapper.cpp" />
+    <ClCompile Include="Sources\Utils\UIObserver.cpp" />
     <ClCompile Include="Sources\Utils\RandMt.cpp" />
     <ClCompile Include="Sources\Utils\Resource.cpp" />
     <ClCompile Include="Sources\Utils\ResourceManager.cpp" />
+    <ClCompile Include="Sources\Utils\Subject.cpp" />
+    <ClCompile Include="Sources\Utils\UISubject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Framework\DirectX11.h" />
@@ -295,6 +298,8 @@
     <ClInclude Include="Sources\Utils\ErrorMessage.h" />
     <ClInclude Include="Sources\Utils\ILoadData.h" />
     <ClInclude Include="Sources\Utils\ILoadDataHolder.h" />
+    <ClInclude Include="Sources\Utils\IObserver.h" />
+    <ClInclude Include="Sources\Utils\ISubject.h" />
     <ClInclude Include="Sources\Utils\JsonWrapper.h" />
     <ClInclude Include="Sources\Utils\LoadDataHolder.h" />
     <ClInclude Include="Sources\Utils\LoadDataID.h" />
@@ -302,6 +307,8 @@
     <ClInclude Include="Sources\Utils\MathUtils.h" />
     <ClInclude Include="Sources\Utils\MouseWrapper.h" />
     <ClInclude Include="Sources\Utils\NonCopyable.h" />
+    <ClInclude Include="Sources\Utils\UIEvent.h" />
+    <ClInclude Include="Sources\Utils\UIObserver.h" />
     <ClInclude Include="Sources\Utils\picojson.h" />
     <ClInclude Include="Sources\Utils\RandMt.h" />
     <ClInclude Include="Sources\Utils\Resource.h" />
@@ -309,6 +316,8 @@
     <ClInclude Include="Sources\Utils\ResourceManager.h" />
     <ClInclude Include="Sources\Utils\ServiceLocater.h" />
     <ClInclude Include="Sources\Utils\Singleton.h" />
+    <ClInclude Include="Sources\Utils\Subject.h" />
+    <ClInclude Include="Sources\Utils\UISubject.h" />
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">

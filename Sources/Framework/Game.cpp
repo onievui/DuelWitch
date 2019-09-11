@@ -6,7 +6,10 @@ void ExitGame();
 
 // コンストラクタ
 Game::Game(int width, int height)
-	: m_hWnd(0), m_width(width), m_height(height), m_featureLevel(D3D_FEATURE_LEVEL_9_1) {
+	: m_hWnd(0)
+	, m_width(width)
+	, m_height(height)
+	, m_featureLevel(D3D_FEATURE_LEVEL_9_1) {
 	// スタートアップ情報
 	STARTUPINFO si{};
 	// インスタンスハンドルを取得する
@@ -55,13 +58,11 @@ void Game::Initialize(int width, int height) {
 }
 
 // リソースを生成する
-void Game::CreateResources()
-{
+void Game::CreateResources() {
 }
 
 // ゲームループを実行する
-MSG Game::Run()
-{
+MSG Game::Run() {
 	// メッセージ
 	MSG msg = {};
 
@@ -129,8 +130,7 @@ void Game::Clear() {
 }
 
 // バックバッファをスクリーンに送る 
-void Game::Present()
-{
+void Game::Present() {
     // The first argument instructs DXGI to block until VSync, putting the application
     // to sleep until the next VSync. This ensures we don't waste any cycles rendering
     // frames that will never be displayed to the screen.

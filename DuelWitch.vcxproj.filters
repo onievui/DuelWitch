@@ -62,6 +62,9 @@
     <Filter Include="Utils\Resource">
       <UniqueIdentifier>{a8f0914d-a87a-4af0-91f5-771c188b541a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\UI">
+      <UniqueIdentifier>{4cfa10d9-858b-4016-964a-91fab4b0db5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -239,6 +242,15 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\EmptyObject.cpp">
       <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\Subject.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\UIObserver.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\UISubject.cpp">
+      <Filter>Utils\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -469,6 +481,24 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\EmptyObject.h">
       <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\Subject.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\IObserver.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\ISubject.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\UIObserver.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\UIEvent.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\UISubject.h">
+      <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

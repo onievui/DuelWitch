@@ -31,6 +31,9 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	case ResourceLoaderID::LogoScene:
 		textureResourceManager->AddResource(TextureID::Logo, TextureResource(L"Protected/creator_logo.png"));
 		break;
+	case ResourceLoaderID::TitleScene:
+		textureResourceManager->AddResource(TextureID::Title, TextureResource(L"Protected/title1024.png"));
+		break;
 	case ResourceLoaderID::PlayScene:
 		// テクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::MagicIcon, TextureResource(L"Protected/element1.png"));
@@ -56,6 +59,9 @@ void ResourceLoader::Release(ResourceLoaderID id) {
 		ServiceLocater<ResourceManager<FontResource>>::Get()->Release();
 		break;
 	case ResourceLoaderID::LogoScene:
+		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
+		break;
+	case ResourceLoaderID::TitleScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
 		break;
 	case ResourceLoaderID::PlayScene:

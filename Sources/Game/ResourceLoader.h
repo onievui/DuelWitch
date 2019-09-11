@@ -9,6 +9,7 @@
 enum class ResourceLoaderID {
 	Common,
 	LogoScene,
+	TitleScene,
 	PlayScene,
 };
 

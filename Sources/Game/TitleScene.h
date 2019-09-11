@@ -32,12 +32,13 @@ public:
 private:
 	// リクエストシーンインタフェース
 	ISceneRequest*                                           m_pSceneRequest;
-	// スプライトフォント
-	std::unique_ptr<DirectX::SpriteFont>                     m_font;
 	// エフェクトファクトリインタフェース
 	std::unique_ptr<DirectX::IEffectFactory>                 m_effectFactory;
 	// コモンステート
 	std::unique_ptr <DirectX::CommonStates>                  m_commonStates;
+
+	// タイマー
+	float                                                    m_time;
 
 };
 

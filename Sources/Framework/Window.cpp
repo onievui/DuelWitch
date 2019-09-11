@@ -43,9 +43,9 @@ int Window::Initialize(int width, int height) {
 	m_hWnd = CreateWindowEx(0, CLASS_NAME, WINDOW_NAME, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
 
-	if (!m_hWnd)
+	if (!m_hWnd) {
 		return EXIT_FAILURE;
-
+	}
 	// TODO: nCmdShowにSW_SHOWMAXIMIZEDをセットして規定でフルスクリーンに変更する
 	// SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(g_game.get()));
 

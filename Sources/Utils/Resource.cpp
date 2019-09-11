@@ -44,7 +44,7 @@ void TextureResource::AddResource(const std::wstring& fileName) {
 	texture->GetResource(resource.GetAddressOf());
 	D3D11_RESOURCE_DIMENSION dimension;
 	resource->GetType(&dimension);
-	// Texture2Do‚È‚¢ê‡‚Íˆ—‚µ‚È‚¢
+	// Texture2D‚Å‚È‚¢ê‡‚Íˆ—‚µ‚È‚¢
 	if (dimension != D3D11_RESOURCE_DIMENSION_TEXTURE2D) {
 		m_size.emplace_back(DirectX::SimpleMath::Vector2());
 		return;

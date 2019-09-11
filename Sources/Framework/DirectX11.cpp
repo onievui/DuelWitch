@@ -1,26 +1,22 @@
 #include "DirectX11.h"
 
 // ハイブリッドグラフィックシステムに対しデフォルトで個別に優先する方を示す
-extern "C"
-{
+extern "C" {
 	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
 	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 }
 
-// シングルトンのためのポインタ変数を初期化する
-//std::unique_ptr<DirectX11> DirectX11::s_directX(nullptr);
-
-// デバイスを生成する
-void DirectX11::CreateDevice()
-{
+/// <summary>
+/// デバイスを生成する
+/// </summary>
+void DirectX11::CreateDevice() {
 	UINT creationFlags = 0;
 
 #ifdef _DEBUG
 	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	static const D3D_FEATURE_LEVEL featureLevels[] = 
-	{
+	static const D3D_FEATURE_LEVEL featureLevels[] = {
 		// TODO: サポートされるDirect3D機能レベルを修正する(11.1 フォルバックハンドリングに関連したコードを参考).
 		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
@@ -45,8 +41,7 @@ void DirectX11::CreateDevice()
 		m_context.ReleaseAndGetAddressOf()		// デバイスイミディエイトコンテキストを返す
 	);
 
-	if (hr == E_INVALIDARG) 
-	{
+	if (hr == E_INVALIDARG) {
 		// DirectX 11.0プラットフォームがD3D_FEATURE_LEVEL_11_1を認識しない場合、認識されるまで再試行する必要がある
 		hr = D3D11CreateDevice(nullptr,
 			D3D_DRIVER_TYPE_HARDWARE,
@@ -65,11 +60,9 @@ void DirectX11::CreateDevice()
 
 #ifndef NDEBUG
 	Microsoft::WRL::ComPtr<ID3D11Debug> d3dDebug;
-	if (SUCCEEDED(this->m_device.As(&d3dDebug))) 
-	{
+	if (SUCCEEDED(this->m_device.As(&d3dDebug))) {
 		Microsoft::WRL::ComPtr<ID3D11InfoQueue> d3dInfoQueue;
-		if (SUCCEEDED(d3dDebug.As(&d3dInfoQueue))) 
-		{
+		if (SUCCEEDED(d3dDebug.As(&d3dInfoQueue))) {
 #ifdef _DEBUG
 			d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, true);
 			d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, true);
@@ -86,15 +79,15 @@ void DirectX11::CreateDevice()
 	}
 #endif
 	// DirectX 11.1が存在する場合 DirectX 11.1
-	if (SUCCEEDED(m_device.As(&m_device1)))
+	if (SUCCEEDED(m_device.As(&m_device1))) {
 		(void)this->m_context.As(&m_context1);
+	}
 
 	// TODO: デバイスに依存したオブジェクトを初期化する 
 }
 
 // SizeChangedイベントでウィンドウを変更するすべてのメモリリソースを配置する
-void DirectX11::CreateResources()
-{
+void DirectX11::CreateResources() {
 	// 直前のウィンドウサイズを指定されたコンテキストでクリアする
 	ID3D11RenderTargetView* nullViews[] = { nullptr };
 	m_context->OMSetRenderTargets(_countof(nullViews), nullViews, nullptr);
@@ -109,24 +102,18 @@ void DirectX11::CreateResources()
 	UINT backBufferCount = 2;
 
 	// スワップチェインが既に存在する場合サイズを変更するかスワップチェインを生成する
-	if (m_swapChain) 
-	{
+	if (m_swapChain) {
 		HRESULT hr = m_swapChain->ResizeBuffers(backBufferCount, backBufferWidth, backBufferHeight, backBufferFormat, 0);
 
-		if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET) 
-		{
+		if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET) {
 			// デバイスが何らかの理由で削除された場合新しいデバイスとスワップチェインを生成する必要がある
 			OnDeviceLost();
 			// すべてがセットアップされた。この関数はこれ以上継続しない
 			return;
 		}
-		else 
-		{
-			DX::ThrowIfFailed(hr);
-		}
+		DX::ThrowIfFailed(hr);
 	}
-	else 
-	{
+	else {
 		// D3DデバイスからDirectX Graphics Interface(DXGI)デバイスを検索する
 		Microsoft::WRL::ComPtr<IDXGIDevice1> dxgiDevice;
 		DX::ThrowIfFailed(m_device.As(&dxgiDevice));
@@ -140,8 +127,7 @@ void DirectX11::CreateResources()
 		DX::ThrowIfFailed(dxgiAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
 
 		Microsoft::WRL::ComPtr<IDXGIFactory2> dxgiFactory2;
-		if (SUCCEEDED(dxgiFactory.As(&dxgiFactory2))) 
-		{
+		if (SUCCEEDED(dxgiFactory.As(&dxgiFactory2))) {
 			// DirectX 11.1またはそれ以降の場合スワップチェインのためのディスクリプタを生成する
 			DXGI_SWAP_CHAIN_DESC1 swapChainDesc = { 0 };
 			swapChainDesc.Width = backBufferWidth;
@@ -167,8 +153,7 @@ void DirectX11::CreateResources()
 
 			DX::ThrowIfFailed(m_swapChain1.As(&m_swapChain));
 		}
-		else 
-		{
+		else {
 			DXGI_SWAP_CHAIN_DESC swapChainDesc = { 0 };
 			swapChainDesc.BufferCount = backBufferCount;
 			swapChainDesc.BufferDesc.Width = backBufferWidth;
@@ -211,8 +196,7 @@ void DirectX11::CreateResources()
 }
 
 // デバイスロストが発生した場合に呼び出される
-void DirectX11::OnDeviceLost() 
-{
+void DirectX11::OnDeviceLost() {
 	// DepthStencilViewオブジェクトを解放する
 	m_depthStencilView.Reset();
 	// RenderTargetViewオブジェクトを解放する

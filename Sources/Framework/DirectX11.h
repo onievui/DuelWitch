@@ -49,10 +49,8 @@ public:
 
 	// デバイスを生成する
 	void CreateDevice();
-
 	// リソースを生成する
 	void CreateResources();
-
 	// デバイスロストが発生した場合
 	void OnDeviceLost();
 

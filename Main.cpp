@@ -24,5 +24,5 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
 	// Comƒ‰ƒCƒuƒ‰ƒŠ‚ğI—¹ˆ—‚·‚é
 	CoUninitialize();
-	return (int)msg.wParam;
+	return static_cast<int>(msg.wParam);
 }
