@@ -22,6 +22,7 @@ enum class SampleID {
 enum class TextureID {
 	Logo,
 	Title,
+	TitleUIFrame,
 	MagicIcon,
 	MagicAiming,
 	Num

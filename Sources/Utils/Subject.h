@@ -15,11 +15,11 @@ class IObserver;
 class Subject : public ISubject {
 public:
 	// オブザーバをアタッチする
-	virtual void Attach(IObserver* observer) override;
+	void Attach(IObserver* observer) override;
 	// オブザーバをデタッチする
-	virtual void Detach(IObserver* observer) override;
+	void Detach(IObserver* observer) override;
 	// オブザーバに通知する
-	virtual void Notify() override;
+	void Notify() override;
 
 private:
 	// アタッチしているオブザーバのリスト

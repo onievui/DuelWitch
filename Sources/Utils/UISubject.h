@@ -4,6 +4,7 @@
 
 
 #include <Framework\StepTimer.h>
+#include "Subject.h"
 #include "UIEvent.h"
 
 
@@ -14,7 +15,7 @@ class FontResource;
 /// <summary>
 /// UIサブジェクトクラス
 /// </summary>
-class UISubject {
+class UISubject : public Subject {
 public:
 	// コンストラクタ
 	UISubject(UIEventID eventID = UIEventID::Null,
@@ -61,13 +62,15 @@ public:
 	// サイズをテクスチャに合わせる
 	void FitTextureSize();
 
-private:
+protected:
 	// クリック時処理
-	virtual void OnClick() {}
+	virtual void OnClick();
 	// マウスオーバー時処理
 	virtual void OnMouseOver() {}
+	// 待機時処理
+	virtual void OnIdle() {}
 
-private:
+protected:
 	// UIイベントID
 	UIEventID                    m_eventID;
 	// レイヤー

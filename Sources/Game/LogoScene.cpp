@@ -2,6 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\MouseWrapper.h>
 #include <Utils\MathUtils.h>
 #include "ISceneRequest.h"
 #include "ResourceLoader.h"
@@ -46,8 +47,9 @@ void LogoScene::Update(const DX::StepTimer& timer) {
 
 	m_time += elapsed_time;
 
-	// スペースキーを押すか5秒経過でタイトルシーンに移行する
+	// スペースキーを押すか左クリック、または5秒経過でタイトルシーンに移行する
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space) ||
+		ServiceLocater<MouseWrapper>::Get()->GetTracker()->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED ||
 		m_time > 5.0f) {
 		m_pSceneRequest->RequestScene("Title");
 	}

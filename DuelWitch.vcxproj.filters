@@ -252,6 +252,9 @@
     <ClCompile Include="Sources\Utils\UISubject.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Utils\ScaleUpUI.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -498,6 +501,9 @@
       <Filter>Utils\UI</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Utils\UISubject.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\ScaleUpUI.h">
       <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>

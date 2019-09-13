@@ -33,6 +33,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		break;
 	case ResourceLoaderID::TitleScene:
 		textureResourceManager->AddResource(TextureID::Title, TextureResource(L"Protected/title1024.png"));
+		textureResourceManager->AddResource(TextureID::TitleUIFrame, TextureResource(L"Protected/title_ui_frame.png"));
 		break;
 	case ResourceLoaderID::PlayScene:
 		// テクスチャの読み込み

@@ -36,8 +36,8 @@ void UISubject::Update(const DX::StepTimer& timer) {
 	MouseWrapper* mouseWrapper = ServiceLocater<MouseWrapper>::Get();
 	const DirectX::SimpleMath::Vector2& mouse_pos = mouseWrapper->GetPos();
 	// UIの領域内かどうか
-	if (mouse_pos.x - m_pos.x < m_size.x*0.5f &&
-		mouse_pos.y - m_pos.y < m_size.y*0.5f) {
+	if (std::fabsf(mouse_pos.x - m_pos.x) < m_size.x*0.5f &&
+		std::fabsf(mouse_pos.y - m_pos.y) < m_size.y*0.5f) {
 		// クリックしたかどうか
 		if (mouseWrapper->GetTracker()->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
 			OnClick();
@@ -45,6 +45,9 @@ void UISubject::Update(const DX::StepTimer& timer) {
 		else {
 			OnMouseOver();
 		}
+	}
+	else {
+		OnIdle();
 	}
 }
 
@@ -97,4 +100,12 @@ void UISubject::FitTextureSize() {
 		return;
 	}
 	m_size = m_pTexture->GetSize(m_textureIndex);
+}
+
+/// <summary>
+/// クリック時処理
+/// </summary>
+void UISubject::OnClick() {
+	// オブザーバに通知する
+	Notify();
 }

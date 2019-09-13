@@ -8,6 +8,8 @@
 
 
 class ISceneRequest;
+class UIObserver;
+class ScaleUpUI;
 
 
 /// <summary>
@@ -19,6 +21,7 @@ public:
 	TitleScene();
 	// デストラクタ
 	~TitleScene();
+
 public:
 	// タイトルシーンを初期化する
 	void Initialize(ISceneRequest* pSceneRequest) override;
@@ -30,6 +33,10 @@ public:
 	void Finalize() override;
 
 private:
+	// UIを初期化する
+	void InitializeUI();
+
+private:
 	// リクエストシーンインタフェース
 	ISceneRequest*                                           m_pSceneRequest;
 	// エフェクトファクトリインタフェース
@@ -39,6 +46,10 @@ private:
 
 	// タイマー
 	float                                                    m_time;
+	// UIオブザーバ
+	std::unique_ptr<UIObserver>                              m_uiObserver;
+	// メニューUI
+	std::vector<std::unique_ptr<ScaleUpUI>>                  m_menuUIs;
 
 };
 
