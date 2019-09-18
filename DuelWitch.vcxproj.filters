@@ -65,6 +65,9 @@
     <Filter Include="Utils\UI">
       <UniqueIdentifier>{4cfa10d9-858b-4016-964a-91fab4b0db5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\UI">
+      <UniqueIdentifier>{64cf1422-e294-4ca7-bcf0-964e831de46f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -254,6 +257,18 @@
     </ClCompile>
     <ClCompile Include="Sources\Utils\ScaleUpUI.cpp">
       <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\CharaSelectMarker.cpp">
+      <Filter>Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\CharaIcon.cpp">
+      <Filter>Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\UserRenderCommand.cpp">
+      <Filter>Game\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\AIRenderCommand.cpp">
+      <Filter>Game\Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -505,6 +520,21 @@
     </ClInclude>
     <ClInclude Include="Sources\Utils\ScaleUpUI.h">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\CharaSelectMarker.h">
+      <Filter>Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\CharaIcon.h">
+      <Filter>Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\RenderCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\UserRenderCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\AIRenderCommand.h">
+      <Filter>Game\Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

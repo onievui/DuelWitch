@@ -9,7 +9,7 @@
 /// </summary>
 UIObserver::UIObserver()
 	: m_reservedEvent()
-	, m_isReceiving(false) {
+	, m_hasNewEvent(false) {
 }
 
 /// <summary>
@@ -26,7 +26,7 @@ void UIObserver::Update(ISubject* subject) {
 	// イベントを取得
 	m_reservedEvent = ui_subject->GetUIEvent();
 	// イベントを取得している状態にする
-	m_isReceiving = true;
+	m_hasNewEvent = true;
 }
 
 /// <summary>
@@ -37,7 +37,7 @@ void UIObserver::Update(ISubject* subject) {
 /// </returns>
 UIEvent UIObserver::GetEvent() {
 	// 取得フラグを解除する
-	m_isReceiving = false;
+	m_hasNewEvent = false;
 	return m_reservedEvent;
 }
 
@@ -48,9 +48,9 @@ UIEvent UIObserver::GetEvent() {
 /// イベントID
 /// </returns>
 UIEventID UIObserver::GetEventID() {
-	if (m_isReceiving) {
+	if (m_hasNewEvent) {
 		// 取得フラグを解除する
-		m_isReceiving = false;
+		m_hasNewEvent = false;
 		return m_reservedEvent.eventID;
 	}
 	else {

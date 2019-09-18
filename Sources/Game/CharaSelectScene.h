@@ -8,12 +8,24 @@
 
 
 class ISceneRequest;
+class UIObserver;
+class UISubject;
+class CharaIcon;
+class CharaSelectMarker;
 
 
 /// <summary>
 /// キャラセレクトシーンクラス
 /// </summary>
 class CharaSelectScene : public IScene {
+private:
+	// キャラセレクトシーンステート
+	enum class CharaSelectState {
+		SelectPlayer1,
+		SelectPlayer2,
+		Ready,
+	};
+
 public:
 	// コンストラクタ
 	CharaSelectScene();
@@ -30,15 +42,39 @@ public:
 	void Finalize() override;
 
 private:
-	// リクエストシーンインタフェース
-	ISceneRequest*                                           m_pSceneRequest;
-	// スプライトフォント
-	std::unique_ptr<DirectX::SpriteFont>                     m_font;
-	// エフェクトファクトリインタフェース
-	std::unique_ptr<DirectX::IEffectFactory>                 m_effectFactory;
-	// コモンステート
-	std::unique_ptr <DirectX::CommonStates>                  m_commonStates;
+	// UIを初期化する
+	void InitializeUI();
+	// プレイヤー1のキャラクターを選択する
+	void UpdateSelectPlayer1(const DX::StepTimer& timer);
+	// プレイヤー2のキャラクターを選択する
+	void UpdateSelectPlayer2(const DX::StepTimer& timer);
+	// 決定待ち状態
+	void UpdateReady(const DX::StepTimer& timer);
+	// キャラを選択する
+	void SelectChara(const UISubject* charaIcon, UISubject* backChara, CharaSelectMarker* marker);
 
+private:
+	// リクエストシーンインタフェース
+	ISceneRequest*                                   m_pSceneRequest;
+	// エフェクトファクトリインタフェース
+	std::unique_ptr<DirectX::IEffectFactory>         m_effectFactory;
+	// コモンステート
+	std::unique_ptr <DirectX::CommonStates>          m_commonStates;
+
+	// タイマー
+	float                                            m_time;
+	// ステート
+	CharaSelectState                                 m_state;
+	// UIオブザーバ
+	std::unique_ptr<UIObserver>                      m_uiObserver;
+	// キャラアイコンUI
+	std::vector<std::unique_ptr<CharaIcon>>          m_charaIcons;
+	// 選択済みキャラクターUI
+	std::vector<std::unique_ptr<UISubject>>          m_backCharas;
+	// 選択マーカーUI
+	std::vector<std::unique_ptr<CharaSelectMarker>>	 m_markerUIs;
+	// メニューUI
+	std::vector<std::unique_ptr<UISubject>>          m_menuUIs;
 };
 
 

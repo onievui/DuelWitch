@@ -67,7 +67,7 @@ void TitleScene::Update(const DX::StepTimer& timer) {
 	}
 
 	// イベントを取得しているかどうか確認する
- 	if (m_uiObserver->IsReceiving()) {
+ 	if (m_uiObserver->HasNewEvent()) {
 		UIEventID event_id = m_uiObserver->GetEventID();
 		// イベントに応じてシーンを切り替える
 		switch (event_id) {
@@ -112,7 +112,7 @@ void TitleScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	spriteBatch->Draw(texture->GetResource().Get(),
 		DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.5f),
 		nullptr, DirectX::SimpleMath::Vector4(1, 1, 1, alpha), 0,
-		texture->GetCenter(), DirectX::SimpleMath::Vector2(1.0f, 1.0f)*1.25f);
+		texture->GetCenter(), DirectX::SimpleMath::Vector2(1.0f, 1.0f));
 
 	// UIを描画する
 	if (m_time > 2.5f) {
@@ -179,9 +179,10 @@ void TitleScene::InitializeUI() {
 
 	// 共通の処理
 	const FontResource* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default);
-	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::TitleUIFrame);
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::UIFrame);
 	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->SetFont(font);
+		(*itr)->SetTextColor(DirectX::SimpleMath::Color(DirectX::Colors::Black));
 		(*itr)->SetTexture(texture);
 		(*itr)->FitTextureSize();
 		// UIにオブザーバをアタッチする

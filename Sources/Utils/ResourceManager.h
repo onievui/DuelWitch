@@ -5,6 +5,7 @@
 
 #include <Utils\NonCopyable.h>
 #include "Resource.h"
+#include "ErrorMessage.h"
 
 
 template <class T>

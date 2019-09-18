@@ -25,16 +25,30 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	
 
 	switch (id) {
+	// 共通のリソース
 	case ResourceLoaderID::Common:
 		fontResourceManager->AddResource(FontID::Default, FontResource(L"Protected/Arial.spritefont"));
 		break;
+	// ロゴシーン
 	case ResourceLoaderID::LogoScene:
 		textureResourceManager->AddResource(TextureID::Logo, TextureResource(L"Protected/creator_logo.png"));
 		break;
+	// タイトルシーン
 	case ResourceLoaderID::TitleScene:
 		textureResourceManager->AddResource(TextureID::Title, TextureResource(L"Protected/title1024.png"));
-		textureResourceManager->AddResource(TextureID::TitleUIFrame, TextureResource(L"Protected/title_ui_frame.png"));
+		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
 		break;
+	// キャラセレクトシーン
+	case ResourceLoaderID::CharaSelectScene:
+		textureResourceManager->AddResource(TextureID::CharaSelectBackGround, TextureResource(L"Protected/chara_select1024.png"));
+		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
+		textureResourceManager->AddResource(TextureID::CharaIcon, TextureResource(L"Protected/chara_icon1.png"));
+		textureResourceManager->AddResource(TextureID::CharaIcon, L"Protected/chara_icon2.png");
+		textureResourceManager->AddResource(TextureID::CharaIcon, L"Protected/chara_icon3.png");
+		textureResourceManager->AddResource(TextureID::CharaSelectMarker, TextureResource(L"Protected/chara_select_marker1.png"));
+		textureResourceManager->AddResource(TextureID::CharaSelectMarker, L"Protected/chara_select_marker2.png");
+		break;
+	// プレイシーン
 	case ResourceLoaderID::PlayScene:
 		// テクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::MagicIcon, TextureResource(L"Protected/element1.png"));
@@ -63,6 +77,9 @@ void ResourceLoader::Release(ResourceLoaderID id) {
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
 		break;
 	case ResourceLoaderID::TitleScene:
+		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
+		break;
+	case ResourceLoaderID::CharaSelectScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
 		break;
 	case ResourceLoaderID::PlayScene:

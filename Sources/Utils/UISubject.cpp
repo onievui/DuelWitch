@@ -20,6 +20,7 @@ UISubject::UISubject(UIEventID eventID, int layer, const DirectX::SimpleMath::Ve
 	, m_layer(layer)
 	, m_pos(pos)
 	, m_size(size)
+	, m_scale(DirectX::SimpleMath::Vector2(1,1))
 	, m_pTexture(pTexture)
 	, m_textureIndex(textureIndex)
 	, m_text()
@@ -60,7 +61,7 @@ void UISubject::Render(DirectX::SpriteBatch* spriteBatch) const {
 	if (m_pTexture) {
 		spriteBatch->Draw(m_pTexture->GetResource(m_textureIndex).Get(),
 			m_pos, nullptr, DirectX::SimpleMath::Vector4(1, 1, 1, 1), 0,
-			m_pTexture->GetCenter(m_textureIndex), DirectX::SimpleMath::Vector2(1, 1));
+			m_pTexture->GetCenter(m_textureIndex), m_scale);
 	}
 	// テキストがあれば描画する
 	if (!m_text.empty()) {
@@ -72,7 +73,8 @@ void UISubject::Render(DirectX::SpriteBatch* spriteBatch) const {
 		const DirectX::SpriteFont* font = m_pFont->GetResource().get();
 		RECT rect = font->MeasureDrawBounds(m_text.c_str(), DirectX::SimpleMath::Vector2::Zero);
 		DirectX::SimpleMath::Vector2 pos(m_pos.x - rect.right*0.5f, m_pos.y - rect.bottom*0.5f);
-		font->DrawString(spriteBatch, m_text.c_str(), pos, m_textColor);
+		font->DrawString(spriteBatch, m_text.c_str(), pos, m_textColor, 0.0f,
+			DirectX::SimpleMath::Vector2::Zero, m_scale);
 	}
 }
 
@@ -89,6 +91,15 @@ UIEvent UISubject::GetUIEvent() const {
 	uiEvent.address = this;
 	uiEvent.pos = m_pos;
 	return uiEvent;
+}
+
+/// <summary>
+/// スケールを設定する
+/// </summary>
+/// <param name="scale">スケール</param>
+void UISubject::SetScale(const DirectX::SimpleMath::Vector2& scale) {
+	m_size *= scale / m_scale;
+	m_scale = scale;
 }
 
 /// <summary>

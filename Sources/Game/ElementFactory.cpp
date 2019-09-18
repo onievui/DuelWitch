@@ -46,23 +46,23 @@ Element* ElementFactory::Create(ElementID id, const DirectX::SimpleMath::Vector3
 		return nullptr;
 	}
 	
-	DirectX::SimpleMath::Vector4 color;
-	const float& alphaRate = ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->alphaRate;
+	DirectX::SimpleMath::Color color;
+	const float alpha_rate = ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->alphaRate;
 
 	switch (id) {
 	case ElementID::Fire:
 		color = DirectX::Colors::Red;
-		color.w *= alphaRate;
+		color.w *= alpha_rate;
 		(*itr)->Create(id, position, color);
 		break;
 	case ElementID::Thunder:
 		color = DirectX::Colors::Yellow;
-		color.w *= alphaRate;
+		color.w *= alpha_rate;
 		(*itr)->Create(id, position, color);
 		break;
 	case ElementID::Freeze:
 		color = DirectX::Colors::SkyBlue;
-		color.w *= alphaRate;
+		color.w *= alpha_rate;
 		(*itr)->Create(id, position, color);
 		break;
 	default:

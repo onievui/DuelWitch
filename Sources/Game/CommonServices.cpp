@@ -10,6 +10,7 @@
 /// </summary>
 void CommonServices::Initialize() {
 	// サービスを生成してサービスロケータに登録する
+	RegisterService(m_commonStates, ServiceLocater<DirectX11>::Get()->GetDevice().Get());
 	RegisterService(m_keyboardStateTracker);
 	RegisterService(m_mouseWrapper, ServiceLocater<DirectX11>::Get()->GetHWnd());
 	// リソースマネージャを生成してサービスロケータに登録する
@@ -24,6 +25,7 @@ void CommonServices::Initialize() {
 /// 終了処理を行う
 /// </summary>
 void CommonServices::Finalize() {
+	ServiceLocater<DirectX::CommonStates>::Unregister();
 	ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Unregister();
 	ServiceLocater<MouseWrapper>::Unregister();
 	ServiceLocater<ResourceManager<TextureResource>>::Unregister();

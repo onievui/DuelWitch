@@ -11,6 +11,7 @@ enum class ResourceLoaderID {
 	LogoScene,
 	TitleScene,
 	PlayScene,
+	CharaSelectScene,
 };
 
 /// <summary>

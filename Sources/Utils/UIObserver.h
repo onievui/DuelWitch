@@ -17,17 +17,17 @@ public:
 
 public:
 	// オブザーバを更新する
-	void Update(ISubject* subject);
-	// イベントを取得しているか確認
-	bool IsReceiving()const { return m_isReceiving; }
+	virtual void Update(ISubject* subject);
+	// 新しいイベントを取得しているか確認
+	bool HasNewEvent()const { return m_hasNewEvent; }
 	// イベントを取得する
 	UIEvent GetEvent();
 	// イベントIDを取得する
 	UIEventID GetEventID();
 
-private:
-	// イベントを取得しているかのフラグ
-	bool    m_isReceiving;
+protected:
+	// 新しいイベントを取得しているかのフラグ
+	bool    m_hasNewEvent;
 	// 受け取ったイベント
 	UIEvent m_reservedEvent;
 };

@@ -9,6 +9,8 @@
 #include "AIMoveCommand.h"
 #include "CastMagicCommand.h"
 #include "AICastMagicCommand.h"
+#include "UserRenderCommand.h"
+#include "AIRenderCommand.h"
 #include "MagicID.h"
 #include "IMagic.h"
 #include "MagicManager.h"
@@ -23,21 +25,27 @@
 /// <param name="pos">初期座標</param>
 /// <param name="direction">進行方向</param>
 Player::Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMath::Vector3& pos, MoveDirection direction)
-	: m_states()
-	, m_id(id)
+	: m_id(id)
+	, m_status()
 	, m_direction(direction)
 	, m_haveElements()
 	, m_transform(pos, DirectX::SimpleMath::Vector3(0, (m_direction == MoveDirection::Forward ? 0 : Math::PI), 0))
 	, m_sphereCollider(&m_transform, 0.75f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
 	, m_pMagicManager(magicManager)
 	, m_pCamera() {
+	const float hp = 100.0f;
+	const float sp = 100.0f;
+	m_status.hp = hp;
+	m_status.sp = sp;
 	if (id == PlayerID::Player1) {
 		m_moveCommand = std::make_unique<MoveCommand>();
 		m_castCommand = std::make_unique<CastMagicCommand>();
+		m_renderCommand = std::make_unique<UserRenderCommand>();
 	}
 	else {
 		m_moveCommand = std::make_unique<AIMoveCommand>();
 		m_castCommand = std::make_unique<AICastMagicCommand>();
+		m_renderCommand = std::make_unique<AIRenderCommand>();
 	}
 }
 
@@ -58,26 +66,24 @@ void Player::Update(const DX::StepTimer& timer) {
 	// 魔法を発動する
 	m_castCommand->Execute(*this, timer);
 
-	m_damageTimer -= static_cast<float>(timer.GetElapsedSeconds());
+	// 描画のための処理を行う
+	m_renderCommand->Execute(*this, timer);
+
+	// ダメージ後無敵時間を減らす
+	m_status.damageTimer -= static_cast<float>(timer.GetElapsedSeconds());
 }
 
 /// <summary>
 /// プレイヤーを解放する
 /// </summary>
 void Player::Lost() {
-	m_states.reset();
+
 }
 
 /// <summary>
 /// プレイヤーを生成する
 /// </summary>
 void Player::Create() {
-	// デバイスの取得
-	ID3D11Device* device = ServiceLocater<DirectX11>::Get()->GetDevice().Get();
-
-	// コモンステートを作成する
-	m_states = std::make_unique<DirectX::CommonStates>(device);
-
 	// エフェクトを設定する
 	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::BloomModel);
 	modelResource->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
@@ -101,39 +107,17 @@ void Player::Create() {
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">プロジェクション行列</param>
 void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
-	if (m_damageTimer <= 0.0f || sin(m_damageTimer*Math::PI2*2)>0) {
-		const std::unique_ptr<DirectX::Model>& model = ServiceLocater<ResourceManager<ModelResource>>::Get()->
-			GetResource(ModelID::BloomModel)->GetResource();
-		model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
-		m_sphereCollider.Render(view, proj);
-	}
+	proj, view;
 }
 
+/// <summary>
+/// プレイヤーを描画する
+/// </summary>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">射影行列</param>
+/// <param name="spriteBatch">スプライトバッチ</param>
 void Player::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const {
-	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
-	if (m_damageTimer <= 0.0f || sin(m_damageTimer*Math::PI2 * 2) > 0) {
-		const std::unique_ptr<DirectX::Model>& model = ServiceLocater<ResourceManager<ModelResource>>::Get()->
-			GetResource(ModelID::BloomModel)->GetResource();
-		model->Draw(context, *m_states, m_transform.GetMatrix(), view, proj);
-		m_sphereCollider.Render(view, proj);
-	}
-	if (m_id == PlayerID::Player2)
-		return;
-
-	int i = m_haveElements.size() - 1;
-	for (std::list<ElementID>::const_reverse_iterator itr = m_haveElements.rbegin(); itr != m_haveElements.rend(); ++itr) {
-		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicIcon);
-		spriteBatch->Draw(texture->GetResource(static_cast<int>(*itr)).Get(), DirectX::SimpleMath::Vector2(20 + i * 40.0f, 630.0f), nullptr,
-			DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2(1.5f, 1.5f));
-		--i;
-	}
-
-	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicAiming);
-	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
-	spriteBatch->Draw(texture->GetResource().Get(),
-		mouse_pos, nullptr, DirectX::SimpleMath::Vector4(1,1,1,0.8f), 0,
-		texture->GetCenter(), DirectX::SimpleMath::Vector2(0.25f, 0.25f));
+	m_renderCommand->Render(*this, view, proj, spriteBatch);
 }
 
 /// <summary>
@@ -213,8 +197,10 @@ void Player::HitMagic(const IMagic* magic) {
 	if (magic->GetID() == MagicID::Thunder) {
 		return;
 	}
-	if (m_damageTimer <= 0.0f) {
-		m_damageTimer = 3.0f;
+	// 無敵時間でなければダメージを受ける
+	if (m_status.damageTimer <= 0.0f) {
+		m_status.hp -= 10.0f;
+		m_status.damageTimer = 3.0f;
 	}
 }
 

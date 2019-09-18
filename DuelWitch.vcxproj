@@ -178,9 +178,12 @@
     <ClCompile Include="Sources\Framework\Window.cpp" />
     <ClCompile Include="Sources\Game\AICastMagicCommand.cpp" />
     <ClCompile Include="Sources\Game\AIMoveCommand.cpp" />
+    <ClCompile Include="Sources\Game\AIRenderCommand.cpp" />
     <ClCompile Include="Sources\Game\Camera.cpp" />
     <ClCompile Include="Sources\Game\CastMagicCommand.cpp" />
+    <ClCompile Include="Sources\Game\CharaSelectMarker.cpp" />
     <ClCompile Include="Sources\Game\CharaSelectScene.cpp" />
+    <ClCompile Include="Sources\Game\CharaIcon.cpp" />
     <ClCompile Include="Sources\Game\Collider.cpp" />
     <ClCompile Include="Sources\Game\Collision.cpp" />
     <ClCompile Include="Sources\Game\CommonServices.cpp" />
@@ -206,6 +209,7 @@
     <ClCompile Include="Sources\Game\MyGame.cpp" />
     <ClCompile Include="Sources\Game\PlayParameterLoader.cpp" />
     <ClCompile Include="Sources\Game\PlayScene.cpp" />
+    <ClCompile Include="Sources\Game\UserRenderCommand.cpp" />
     <ClCompile Include="Sources\Game\ResourceLoader.cpp" />
     <ClCompile Include="Sources\Game\ResultScene.cpp" />
     <ClCompile Include="Sources\Game\SceneManager.cpp" />
@@ -243,8 +247,11 @@
     <ClInclude Include="Sources\Framework\Window.h" />
     <ClInclude Include="Sources\Game\AICastMagicCommand.h" />
     <ClInclude Include="Sources\Game\AIMoveCommand.h" />
+    <ClInclude Include="Sources\Game\AIRenderCommand.h" />
     <ClInclude Include="Sources\Game\Camera.h" />
     <ClInclude Include="Sources\Game\CastMagicCommand.h" />
+    <ClInclude Include="Sources\Game\CharaIcon.h" />
+    <ClInclude Include="Sources\Game\CharaSelectMarker.h" />
     <ClInclude Include="Sources\Game\CharaSelectScene.h" />
     <ClInclude Include="Sources\Game\Collider.h" />
     <ClInclude Include="Sources\Game\Collision.h" />
@@ -267,6 +274,7 @@
     <ClInclude Include="Sources\Game\NormalMagic.h" />
     <ClInclude Include="Sources\Game\NormalMagicShooter.h" />
     <ClInclude Include="Sources\Game\PlayParameterLoader.h" />
+    <ClInclude Include="Sources\Game\RenderCommand.h" />
     <ClInclude Include="Sources\Game\ResourceLoader.h" />
     <ClInclude Include="Sources\Game\ResultScene.h" />
     <ClInclude Include="Sources\Game\SphereCollider.h" />
@@ -291,6 +299,7 @@
     <ClInclude Include="Sources\Game\ThunderStrikeMagicShooter.h" />
     <ClInclude Include="Sources\Game\TitleScene.h" />
     <ClInclude Include="Sources\Game\Transform.h" />
+    <ClInclude Include="Sources\Game\UserRenderCommand.h" />
     <ClInclude Include="Sources\Parameters\AICommandParameter.h" />
     <ClInclude Include="Sources\Parameters\CommandParameter.h" />
     <ClInclude Include="Sources\Parameters\ElementParameter.h" />

@@ -12,6 +12,10 @@ enum class UIEventID {
 	Play,
 	Option,
 	Exit,
+	Back,
+	Next,
+	MouseOver,
+	CharaIcon,
 };
 
 

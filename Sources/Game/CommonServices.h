@@ -41,6 +41,8 @@ private:
 	};
 
 private:
+	// コモンステート
+	std::unique_ptr<DirectX::CommonStates>                         m_commonStates;
 	// キートラッカー
 	std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker>       m_keyboardStateTracker;
 	// マウスラッパ―

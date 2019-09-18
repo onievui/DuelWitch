@@ -13,6 +13,7 @@ class MagicManager;
 class IMagic;
 class Camera;
 class Command;
+class RenderCommand;
 enum class ElementID;
 
 
@@ -70,10 +71,23 @@ public:
 	void HitMagic(const IMagic* magic);
 
 private:
-	// コモンステート
-	std::unique_ptr<DirectX::CommonStates> m_states;
+	/// <summary>
+	/// プレイヤーステータス
+	/// </summary>
+	struct Status {
+		// HP
+		float hp;
+		// SP
+		float sp;
+		// ダメージ後無敵時間タイマー
+		float damageTimer;
+	};
+
+private:
 	// プレイヤーID
 	PlayerID                               m_id;
+	// ステータス
+	Status                                 m_status;
 	// 進行方向
 	MoveDirection                          m_direction;
 	// 所持エレメント
@@ -88,9 +102,8 @@ private:
 	std::unique_ptr<Command>               m_moveCommand;
 	// 詠唱コマンド
 	std::unique_ptr<Command>               m_castCommand;
-
-	// ダメージ演出用タイマー
-	float                                  m_damageTimer;
+	// 描画コマンド
+	std::unique_ptr<RenderCommand>         m_renderCommand;
 
 	// 敵プレイヤー
 	Player*                                m_otherPlayer;

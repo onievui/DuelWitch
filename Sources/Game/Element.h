@@ -56,7 +56,7 @@ private:
 	// ワールド行列
 	DirectX::SimpleMath::Matrix                  m_world;
 	// 色
-	DirectX::SimpleMath::Vector4                 m_color;
+	DirectX::SimpleMath::Color                   m_color;
 	// 使用しているかどうか
 	bool                                         m_isUsed;
 
