@@ -2,6 +2,18 @@
 
 
 /// <summary>
+/// カメラベクトルを取得する
+/// </summary>
+/// <returns>
+/// カメラの方向ベクトル
+/// </returns>
+DirectX::SimpleMath::Vector3 Camera::GetCameraVector() const {
+	DirectX::SimpleMath::Vector3 vec = m_target - m_eye;
+	vec.Normalize();
+	return vec;
+}
+
+/// <summary>
 /// スクリーン座標からレイに変換する
 /// </summary>
 /// <param name="point">スクリーン座標</param>

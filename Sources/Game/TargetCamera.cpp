@@ -8,44 +8,24 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="width">画面の横幅</param>
-/// <param name="height">画面の縦幅</param>
-/// <param name="targetObject">追従するオブジェクト</param>
-TargetCamera::TargetCamera(int width, int height, IObject* targetObject)
-	: m_pTargetObject(targetObject)
-	, m_pos()
-	, m_lerpSpeed(0.05f) {
-	m_eye = DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f);
-	m_target = DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f);
-	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, DirectX::SimpleMath::Vector3::UnitY);
-	m_proj = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(Math::HarfPI*0.5f,
-		static_cast<float>(width) / static_cast<float>(height), 0.1f, 100.0f);
-	m_targetMatrix = m_pTargetObject->GetMatrix();
-}
-
-/// <summary>
-/// コンストラクタ
-/// </summary>
 /// <param name="targetObject">追従するオブジェクト</param>
 /// <param name="eye">視点の相対座標</param>
 /// <param name="target">注視点の相対座標</param>
 /// <param name="up">カメラの上方向</param>
-/// <param name="fov">画角</param>
-/// <param name="aspectRatio">アスペクト比</param>
-/// <param name="nearPlane">前面クリップ面</param>
-/// <param name="farPlane">後方クリップ面</param>
-TargetCamera::TargetCamera(IObject* targetObject, DirectX::SimpleMath::Vector3 eye,
-	DirectX::SimpleMath::Vector3 target, DirectX::SimpleMath::Vector3 up,
-	float fov, float aspectRatio, float nearPlane, float farPlane)
+/// <param name="perspectiveFovInfo">透視投影に関する情報</param>
+TargetCamera::TargetCamera(IObject * targetObject, DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 target,
+	DirectX::SimpleMath::Vector3 up, PerspectiveFovInfo perspectiveFovInfo)
 	: m_pTargetObject(targetObject)
-	, m_pos()
-	, m_eye(eye)
-	, m_target(target)
-	, m_lerpSpeed(0.5f) {
+	, m_relativeEye(eye)
+	, m_relativeTarget(target)
+	, m_lerpSpeed(0.5f)
+	, m_perspectiveFovInfo(perspectiveFovInfo) {
+	m_eye = eye;
+	m_target = target;
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, up);
-	m_proj = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(fov, aspectRatio, nearPlane, farPlane);
+	m_proj = perspectiveFovInfo.CreateMatrix();
 	DirectX11* directX = ServiceLocater<DirectX11>::Get();
-	m_viewport= DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(0.5f, -0.5f, 1.0f)) *
+	m_viewport = DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(0.5f, -0.5f, 1.0f)) *
 		DirectX::SimpleMath::Matrix::CreateTranslation(DirectX::SimpleMath::Vector3(0.5f, 0.5f, 0.0f)) *
 		DirectX::SimpleMath::Matrix::CreateScale(DirectX::SimpleMath::Vector3(static_cast<float>(directX->GetWidth()),
 			static_cast<float>(directX->GetHeight()), 1.0f));
@@ -59,11 +39,11 @@ TargetCamera::TargetCamera(IObject* targetObject, DirectX::SimpleMath::Vector3 e
 /// </summary>
 void TargetCamera::Update() {
 	m_targetMatrix = DirectX::SimpleMath::Matrix::Lerp(m_targetMatrix, m_pTargetObject->GetMatrix(), m_lerpSpeed);
-	m_pos = DirectX::SimpleMath::Vector3::Transform(m_eye, m_targetMatrix);
-	DirectX::SimpleMath::Vector3 target = DirectX::SimpleMath::Vector3::Transform(m_target, m_targetMatrix);
+	m_eye = DirectX::SimpleMath::Vector3::Transform(m_relativeEye, m_targetMatrix);
+	m_target = DirectX::SimpleMath::Vector3::Transform(m_relativeTarget, m_targetMatrix);
 	//DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::TransformNormal(DirectX::SimpleMath::Vector3::UnitY, m_targetMatrix);
 	DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::UnitY;
-	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_pos, target, up);
+	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, up);
 }
 
 /// <summary>
@@ -75,5 +55,14 @@ void TargetCamera::Update() {
 /// </returns>
 bool TargetCamera::HasTargetObject() {
 	return m_pTargetObject != nullptr;
+}
+
+/// <summary>
+/// 画角を設定する
+/// </summary>
+/// <param name="fov">画角</param>
+void TargetCamera::SetFov(float fov) {
+	m_perspectiveFovInfo.m_fov = fov;
+	m_proj = m_perspectiveFovInfo.CreateMatrix();
 }
 

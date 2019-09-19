@@ -76,7 +76,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	//ターゲットカメラを生成する
 	m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
-		Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 10000.0f);
+		PerspectiveFovInfo(Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 5000.0f));
 
 	m_players[0]->SetCamera(m_targetCamera.get());
 	m_players[1]->SetCamera(m_targetCamera.get());

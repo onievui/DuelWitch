@@ -16,6 +16,17 @@ public:
 	// プレイヤーを描画する
 	void Render(const Player& player, const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const override;
+
+private:
+	// ターゲットの方向を示すアイコンの位置を計算する
+	DirectX::SimpleMath::Vector2 CalculateIconPos(const DirectX::SimpleMath::Vector3& vec, const DirectX::SimpleMath::Vector2& screenSize,
+		const DirectX::SimpleMath::Vector2& screenOffset);
+
+private:
+	// ターゲットの方向を示すアイコンの位置
+	DirectX::SimpleMath::Vector2 m_targetIconPos;
+	// ターゲットの方向を示すアイコンを描画するかどうか
+	bool                         m_enableRenderTargetIcon;
 };
 
 
