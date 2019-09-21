@@ -35,8 +35,8 @@ Player::Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMat
 	, m_pCamera() {
 	const float hp = 100.0f;
 	const float sp = 100.0f;
-	m_status.hp = hp;
-	m_status.sp = sp;
+	m_status.maxHp = m_status.hp = hp;
+	m_status.maxSp = m_status.sp = sp;
 	if (id == PlayerID::Player1) {
 		m_moveCommand = std::make_unique<MoveCommand>();
 		m_castCommand = std::make_unique<CastMagicCommand>();

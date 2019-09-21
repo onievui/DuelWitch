@@ -21,6 +21,16 @@ private:
 	// ターゲットの方向を示すアイコンの位置を計算する
 	DirectX::SimpleMath::Vector2 CalculateIconPos(const DirectX::SimpleMath::Vector3& vec, const DirectX::SimpleMath::Vector2& screenSize,
 		const DirectX::SimpleMath::Vector2& screenOffset);
+	// 相手プレイヤーのアイコンを描画する
+	void RenderEnemeyIcon(const Player& player, DirectX::SpriteBatch* spriteBatch) const;
+	// 所持エレメントを描画する
+	void RenderElements(const Player& player, DirectX::SpriteBatch* spriteBatch) const;
+	// HPバーを描画する
+	void RenderHpBar(const Player& player, DirectX::SpriteBatch* spriteBatch) const;
+	// SPバーを描画する
+	void RenderSpBar(const Player& player, DirectX::SpriteBatch* spriteBatch) const;
+	// 照準を描画する
+	void RenderAiming(const Player& player, DirectX::SpriteBatch* spriteBatch) const;
 
 private:
 	// ターゲットの方向を示すアイコンの位置

@@ -75,8 +75,12 @@ private:
 	/// プレイヤーステータス
 	/// </summary>
 	struct Status {
+		// 最大HP
+		float maxHp;
 		// HP
 		float hp;
+		// 最大SP
+		float maxSp;
 		// SP
 		float sp;
 		// ダメージ後無敵時間タイマー

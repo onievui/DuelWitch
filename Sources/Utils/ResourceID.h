@@ -28,6 +28,8 @@ enum class TextureID {
 	CharaSelectMarker,
 	MagicIcon,
 	MagicAiming,
+	HpBar,
+	SpBar,
 	Num
 };
 

@@ -58,6 +58,11 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::CharaIcon, TextureResource(L"Protected/chara_icon1.png"));
 		textureResourceManager->AddResource(TextureID::CharaIcon, L"Protected/chara_icon2.png");
 		textureResourceManager->AddResource(TextureID::CharaIcon, L"Protected/chara_icon3.png");
+		textureResourceManager->AddResource(TextureID::HpBar, TextureResource(L"Protected/hp_bar_green.png"));
+		textureResourceManager->AddResource(TextureID::HpBar, L"Protected/hp_bar_red.png");
+		textureResourceManager->AddResource(TextureID::HpBar, L"Protected/hp_bar_black.png");
+		textureResourceManager->AddResource(TextureID::SpBar, TextureResource(L"Protected/sp_bar_blue.png"));
+		textureResourceManager->AddResource(TextureID::SpBar, L"Protected/sp_bar_black.png");
 		// ƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
 		modelResourceManager->AddResource(ModelID::BloomModel, ModelResource(L"bloom.cmo", L"Protected"));
 		break;

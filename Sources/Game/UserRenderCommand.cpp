@@ -87,28 +87,21 @@ void UserRenderCommand::Render(const Player& player, const DirectX::SimpleMath::
 
 	// 相手プレイヤーが画面外にいる場合、アイコンを表示する
 	if (m_enableRenderTargetIcon) {
-		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaIcon);
-		spriteBatch->Draw(texture->GetResource().Get(),
-			m_targetIconPos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, 0.8f), 0,
-			texture->GetCenter(), DirectX::SimpleMath::Vector2(0.2f, 0.2f));
+		RenderEnemeyIcon(player, spriteBatch);
 	}
 
 	// 所持エレメントを描画する
-	const std::list<ElementID>& have_elements = GetHaveElements(player);
-	int i = have_elements.size() - 1;
-	for (std::list<ElementID>::const_reverse_iterator itr = have_elements.rbegin(); itr != have_elements.rend(); ++itr) {
-		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicIcon);
-		spriteBatch->Draw(texture->GetResource(static_cast<int>(*itr)).Get(), DirectX::SimpleMath::Vector2(20 + i * 40.0f, 630.0f), nullptr,
-			DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2(1.5f, 1.5f));
-		--i;
-	}
+	RenderElements(player, spriteBatch);
 
+	// HPバーを描画する
+	RenderHpBar(player, spriteBatch);
+	
+	// SPバーを描画する
+	RenderSpBar(player, spriteBatch);
+	
 	// 照準を描画する
-	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicAiming);
-	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
-	spriteBatch->Draw(texture->GetResource().Get(),
-		mouse_pos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, 0.8f), 0,
-		texture->GetCenter(), DirectX::SimpleMath::Vector2(0.25f, 0.25f));
+	RenderAiming(player, spriteBatch);
+	
 }
 
 /// <summary>
@@ -163,4 +156,104 @@ DirectX::SimpleMath::Vector2 UserRenderCommand::CalculateIconPos(const DirectX::
 		icon_pos.x = screenSize.x*0.5f + (harf_screen_size.y / std::fabsf(vec.y))*vec.x;
 	}
 	return icon_pos;
+}
+
+/// <summary>
+/// 相手プレイヤーのアイコンを描画する
+/// </summary>
+/// <param name="player">プレイヤー</param>
+/// <param name="spriteBatch">スプライトバッチ</param>
+void UserRenderCommand::RenderEnemeyIcon(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
+	player;
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaIcon);
+	spriteBatch->Draw(texture->GetResource().Get(),
+		m_targetIconPos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, 0.8f), 0,
+		texture->GetCenter(), DirectX::SimpleMath::Vector2(0.2f, 0.2f));
+}
+
+/// <summary>
+/// 所持エレメントを描画する
+/// </summary>
+/// <param name="player">プレイヤー</param>
+/// <param name="spriteBatch">スプライトバッチ</param>
+void UserRenderCommand::RenderElements(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
+	const std::list<ElementID>& have_elements = GetHaveElements(player);
+	int i = have_elements.size() - 1;
+	for (std::list<ElementID>::const_reverse_iterator itr = have_elements.rbegin(); itr != have_elements.rend(); ++itr) {
+		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicIcon);
+		spriteBatch->Draw(texture->GetResource(static_cast<int>(*itr)).Get(), DirectX::SimpleMath::Vector2(20 + i * 40.0f, 550.0f), nullptr,
+			DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2::One*(i == 0 ? 1.5f : 1.25f));
+		--i;
+	}
+}
+
+/// <summary>
+/// HPバーを描画する
+/// </summary>
+/// <param name="player">プレイヤー</param>
+/// <param name="spriteBatch">スプライトバッチ</param>
+void UserRenderCommand::RenderHpBar(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::HpBar);
+	DirectX::SimpleMath::Vector2 pos(20.0f, 690.0f);
+	DirectX::SimpleMath::Vector2 scale(0.5f, 0.5f);
+
+	spriteBatch->Draw(texture->GetResource(2).Get(), pos, nullptr,
+		DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, scale);
+
+	// 画像の矩形を作成する
+	DirectX::SimpleMath::Vector2 size = texture->GetSize();
+	const auto& status = GetStatus(player);
+	RECT rect;
+	rect.left = 0; rect.top = 0;
+	// HPの割合に応じて描画範囲を決める
+	rect.right = static_cast<LONG>(size.x*status.hp / status.maxHp);
+	rect.bottom = static_cast<LONG>(size.y);
+
+
+
+	spriteBatch->Draw(texture->GetResource(1).Get(), pos, &rect,
+		DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, scale);
+	spriteBatch->Draw(texture->GetResource(0).Get(), pos, &rect,
+		DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, scale);
+
+}
+
+/// <summary>
+/// SPバーを描画する
+/// </summary>
+/// <param name="player">プレイヤー</param>
+/// <param name="spriteBatch">スプライトバッチ</param>
+void UserRenderCommand::RenderSpBar(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::SpBar);
+	DirectX::SimpleMath::Vector2 pos(20.0f, 650.0f);
+	DirectX::SimpleMath::Vector2 scale(0.4f, 0.3f);
+
+	spriteBatch->Draw(texture->GetResource(1).Get(), pos, nullptr,
+		DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, scale);
+
+	// 画像の矩形を作成する
+	DirectX::SimpleMath::Vector2 size = texture->GetSize();
+	const auto& status = GetStatus(player);
+	RECT rect;
+	rect.left = 0; rect.top = 0;
+	// SPの割合に応じて描画範囲を決める
+	rect.right = static_cast<LONG>(size.x*status.sp / status.maxSp);
+	rect.bottom = static_cast<LONG>(size.y);
+
+	spriteBatch->Draw(texture->GetResource(0).Get(), pos, &rect,
+		DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, scale);
+}
+
+/// <summary>
+/// 照準を描画する
+/// </summary>
+/// /// <param name="player">プレイヤー</param>
+/// <param name="spriteBatch">スプライトバッチ</param>
+void UserRenderCommand::RenderAiming(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
+	player;
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicAiming);
+	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
+	spriteBatch->Draw(texture->GetResource().Get(),
+		mouse_pos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, 0.8f), 0,
+		texture->GetCenter(), DirectX::SimpleMath::Vector2(0.25f, 0.25f));
 }
