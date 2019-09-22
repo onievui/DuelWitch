@@ -44,6 +44,8 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 
 	// マウスを相対モードに変更する
 	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
+	// カーソルを画面の中心に移動させる
+	ServiceLocater<MouseWrapper>::Get()->SetPos( DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.5f));
 
 	// リソースをロードする
 	ResourceLoader::Load(ResourceLoaderID::PlayScene);
@@ -93,6 +95,11 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer"></param>
 void PlayScene::Update(const DX::StepTimer& timer) {
+	// エスケープキーでポーズ画面を呼び出す
+	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
+		m_pSceneRequest->RequestScene("Pause", RequestSceneType::StackScene);
+	}
+
 	// F2キーでパラメータを再読み込みする
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F2)) {
 		m_parameterLoader->Reload();

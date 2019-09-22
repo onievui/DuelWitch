@@ -1,9 +1,11 @@
 #include "SceneManager.h"
+#include <Utils\ErrorMessage.h>
 #include <Utils\ServiceLocater.h>
 #include "LogoScene.h"
 #include "TitleScene.h"
 #include "CharaSelectScene.h"
 #include "PlayScene.h"
+#include "PauseScene.h"
 #include "ResultScene.h"
 
 
@@ -42,6 +44,7 @@ void SceneManager::Initialize() {
 	m_sceneCreateFunc.emplace("Title",       MakeSceneCreateFunc<TitleScene>());
 	m_sceneCreateFunc.emplace("CharaSelect", MakeSceneCreateFunc<CharaSelectScene>());
 	m_sceneCreateFunc.emplace("Play",        MakeSceneCreateFunc<PlayScene>());
+	m_sceneCreateFunc.emplace("Pause",       MakeSceneCreateFunc<PauseScene>());
 	m_sceneCreateFunc.emplace("Result",      MakeSceneCreateFunc<ResultScene>());
 	std::queue<std::pair<std::string, RequestSceneType>>().swap(m_requestQueue);
 }
@@ -77,6 +80,7 @@ void SceneManager::Render(DirectX::SpriteBatch* spriteBatch) {
 void SceneManager::ChangeScene() {
 	std::pair<std::string, RequestSceneType>& requestData = m_requestQueue.front();
 	if (!m_sceneCreateFunc.count(requestData.first)) {
+		ErrorMessage(L"ïsê≥Ç»ÉVÅ[ÉìñºÇì«Ç›çûÇ‡Ç§Ç∆ÇµÇ‹ÇµÇΩ");
 		m_requestQueue.pop();
 		return;
 	}

@@ -205,6 +205,7 @@
     <ClCompile Include="Sources\Game\MoveCommand.cpp" />
     <ClCompile Include="Sources\Game\NormalMagic.cpp" />
     <ClCompile Include="Sources\Game\NormalMagicShooter.cpp" />
+    <ClCompile Include="Sources\Game\PauseScene.cpp" />
     <ClCompile Include="Sources\Game\Player.cpp" />
     <ClCompile Include="Sources\Game\MyGame.cpp" />
     <ClCompile Include="Sources\Game\PlayParameterLoader.cpp" />
@@ -273,6 +274,7 @@
     <ClInclude Include="Sources\Game\MoveCommand.h" />
     <ClInclude Include="Sources\Game\NormalMagic.h" />
     <ClInclude Include="Sources\Game\NormalMagicShooter.h" />
+    <ClInclude Include="Sources\Game\PauseScene.h" />
     <ClInclude Include="Sources\Game\PlayParameterLoader.h" />
     <ClInclude Include="Sources\Game\RenderCommand.h" />
     <ClInclude Include="Sources\Game\ResourceLoader.h" />

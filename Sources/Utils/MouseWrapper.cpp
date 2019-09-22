@@ -1,5 +1,7 @@
 #include "MouseWrapper.h"
-#include <Utils\MathUtils.h>
+#include <Framework\DirectX11.h>
+#include "ServiceLocater.h"
+#include "MathUtils.h"
 
 
 /// <summary>
@@ -9,7 +11,9 @@
 MouseWrapper::MouseWrapper(HWND hWnd)
 	: m_sensivity(1.0f)
 	, m_pos()
-	, m_moved() {
+	, m_moved()
+	, m_wasChangedToAbsolute(false)
+	, m_preAbsolutePos() {
 	m_mouse = std::make_unique<DirectX::Mouse>();
 	m_mouse->SetWindow(hWnd);
 	m_tracker = std::make_unique<DirectX::Mouse::ButtonStateTracker>();
@@ -34,10 +38,19 @@ void MouseWrapper::Update(int width, int height) {
 
 	// マウスのモードが絶対値参照なら
 	if (state.positionMode == DirectX::Mouse::Mode::MODE_ABSOLUTE) {
-		m_moved.x = state.x - m_pos.x;
-		m_moved.y = state.y - m_pos.y;
-		m_pos.x = static_cast<float>(state.x);
-		m_pos.y = static_cast<float>(state.y);
+		// 相対モードから絶対モードに変更した直後は直接変更する
+		if (m_wasChangedToAbsolute) {
+			m_wasChangedToAbsolute = false;
+			SetPos(m_pos);
+			m_moved.x = m_moved.y = 0.0f;
+		}
+		else {
+			m_moved.x = state.x - m_pos.x;
+			m_moved.y = state.y - m_pos.y;
+			m_pos.x = static_cast<float>(state.x);
+			m_pos.y = static_cast<float>(state.y);
+			m_preAbsolutePos = m_pos;
+		}
 	}
 	// マウスのモードが相対値参照なら
 	else {
@@ -105,6 +118,25 @@ const DirectX::SimpleMath::Vector2& MouseWrapper::GetPos() const {
 }
 
 /// <summary>
+/// マウスの座標を設定する
+/// </summary>
+/// <param name="pos"></param>
+void MouseWrapper::SetPos(const DirectX::SimpleMath::Vector2& pos) {
+	if (m_mouse->GetState().positionMode == DirectX::Mouse::Mode::MODE_ABSOLUTE) {
+		// 実際のマウスの座標を調べる
+		POINT mouse_pos;
+		mouse_pos.x = 0, mouse_pos.y = 0;
+		GetCursorPos(&mouse_pos);
+		
+		// 指定した座標までの差分を加えて反映する
+		mouse_pos.x += static_cast<LONG>(pos.x - m_preAbsolutePos.x);
+		mouse_pos.y += static_cast<LONG>(pos.y - m_preAbsolutePos.y);
+		SetCursorPos(mouse_pos.x, mouse_pos.y);
+	}
+	m_pos = pos;
+}
+
+/// <summary>
 /// マウスの移動量を取得する
 /// </summary>
 /// <returns>
@@ -119,5 +151,9 @@ const DirectX::SimpleMath::Vector2& MouseWrapper::GetMoved() const {
 /// </summary>
 /// <param name="mode">設定するモード</param>
 void MouseWrapper::SetMode(DirectX::Mouse::Mode mode) {
+	// 相対モードから絶対モードに変更したかどうか
+	if (m_mouse->GetState().positionMode == DirectX::Mouse::Mode::MODE_RELATIVE && mode == DirectX::Mouse::Mode::MODE_ABSOLUTE) {
+		m_wasChangedToAbsolute = true;
+	}
 	m_mouse->SetMode(mode);
 }

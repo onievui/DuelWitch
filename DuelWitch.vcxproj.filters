@@ -270,6 +270,9 @@
     <ClCompile Include="Sources\Game\AIRenderCommand.cpp">
       <Filter>Game\Command</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\PauseScene.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -535,6 +538,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\AIRenderCommand.h">
       <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\PauseScene.h">
+      <Filter>Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

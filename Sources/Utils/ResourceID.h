@@ -30,6 +30,7 @@ enum class TextureID {
 	MagicAiming,
 	HpBar,
 	SpBar,
+	BlackBack,
 	Num
 };
 

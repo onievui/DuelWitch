@@ -8,8 +8,11 @@
 /// </summary>
 enum class UIEventID {
 	Null,
+	Title,
+	CharaSelect,
 	Tutorial,
 	Play,
+	Resume,
 	Option,
 	Exit,
 	Back,

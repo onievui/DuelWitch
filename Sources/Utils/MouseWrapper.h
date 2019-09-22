@@ -30,6 +30,8 @@ public:
 	float GetSensivity() const;
 	// マウスの座標を取得する
 	const DirectX::SimpleMath::Vector2& GetPos() const;
+	// マウスの座標を設定する
+	void SetPos(const DirectX::SimpleMath::Vector2& pos);
 	// マウスの移動量を取得する
 	const DirectX::SimpleMath::Vector2& GetMoved() const;
 	// マウスの座標モードを設定する
@@ -46,6 +48,10 @@ private:
 	DirectX::SimpleMath::Vector2                        m_pos;
 	// マウス移動量
 	DirectX::SimpleMath::Vector2                        m_moved;
+	// マウスを相対モードから絶対モードに変更したかのフラグ
+	bool                                                m_wasChangedToAbsolute;
+	// 絶対モードでのマウスの最終位置
+	DirectX::SimpleMath::Vector2                        m_preAbsolutePos;
 };
 
 
