@@ -26,6 +26,31 @@ FireMagic::~FireMagic() {
 }
 
 /// <summary>
+/// 炎魔法を生成する
+/// </summary>
+/// <param name="playerId">プレイヤーID</param>
+/// <param name="pos">座標</param>
+/// <param name="dir">方向</param>
+/// <param name="color">色</param>
+void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
+	const DirectX::SimpleMath::Vector4& color) {
+	m_playerId = playerId;
+	m_transform.SetPosition(pos);
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
+	m_sphereCollider.SetRadius(parameter->fireParam.radius);
+	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, 0, 0));
+
+	// 方向ベクトルを元に円錐の回転角度を求める
+	m_transform.SetRotation(Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::Up, dir));
+
+
+	m_color = color;
+	m_vel = dir * parameter->fireParam.moveSpeed;
+	m_lifeTime = parameter->fireParam.lifeTime;
+}
+
+
+/// <summary>
 /// 炎魔法を更新する
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
@@ -47,29 +72,6 @@ void FireMagic::Update(const DX::StepTimer& timer) {
 /// </summary>
 void FireMagic::Lost() {
 
-}
-
-/// <summary>
-/// 炎魔法を生成する
-/// </summary>
-/// <param name="playerId">プレイヤーID</param>
-/// <param name="pos">座標</param>
-/// <param name="dir">方向</param>
-/// <param name="color">色</param>
-void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-	const DirectX::SimpleMath::Vector4& color) {
-	m_playerId = playerId;
-	m_transform.SetPosition(pos);
-	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
-	m_sphereCollider.SetRadius(parameter->fireParam.radius);
-	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, 0, 0));
-
-	// 方向ベクトルを元に円錐の回転角度を求める
-	m_transform.SetRotation(Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::Up, dir));
-	
-	m_color = color;
-	m_vel = dir*parameter->fireParam.moveSpeed;
-	m_lifeTime = parameter->fireParam.lifeTime;
 }
 
 /// <summary>

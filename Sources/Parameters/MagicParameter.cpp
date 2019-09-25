@@ -90,6 +90,7 @@ bool MagicParameter::LoadData() {
 	normalParam.radius            = root["Normal"]["Radius"].getNumF();
 	normalParam.moveSpeed         = root["Normal"]["MoveSpeed"].getNumF();
 	normalParam.lifeTime          = root["Normal"]["LifeTime"].getNumF();
+	fireParam.wayAngle            = Math::Deg2Rad(root["Fire"]["WayAngle_Deg"].getNumF());
 	fireParam.radius              = root["Fire"]["Radius"].getNumF();
 	fireParam.height              = root["Fire"]["Height"].getNumF();
 	fireParam.moveSpeed           = root["Fire"]["MoveSpeed"].getNumF();

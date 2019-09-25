@@ -1,5 +1,6 @@
 #include "EffectManager.h"
 #include <Utils\LamdaUtils.h>
+#include <Utils\ErrorMessage.h>
 #include "EffectFactory.h"
 #include "IEffectEmitter.h"
 
@@ -65,10 +66,14 @@ void EffectManager::Render(const DirectX::SimpleMath::Matrix& view, const Direct
 /// <param name="id"></param>
 /// <param name="pos"></param>
 /// <param name="dir"></param>
-void EffectManager::CreateEffect(EffectID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+IEffectEmitter* EffectManager::CreateEffect(EffectID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	std::vector<IEffectEmitter*>::iterator itr = LamdaUtils::FindIf()(m_effects, LamdaUtils::IsNull());
 	// 空きがある場合に登録する
 	if (itr != m_effects.end()) {
 		*itr = m_effectFactory->Create(id, pos, dir);
+		return *itr;
 	}
+	
+	ErrorMessage(L"エフェクトの空きがなく、生成に出来ませんでした");
+	return nullptr;
 }

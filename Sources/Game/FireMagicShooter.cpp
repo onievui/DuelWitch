@@ -1,6 +1,9 @@
+#include "FireMagicShooter.h"
 #include <Utils\MathUtils.h>
 #include <Utils\LamdaUtils.h>
-#include "FireMagicShooter.h"
+#include <Utils\ServiceLocater.h>
+#include <Parameters\MagicParameter.h>
+#include "PlayParameterLoader.h"
 #include "MagicID.h"
 #include "MagicManager.h"
 #include "MagicFactory.h"
@@ -25,7 +28,7 @@ FireMagicShooter::FireMagicShooter(MagicManager* magicManager)
 /// <param name="dir">Œü‚«</param>
 void FireMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
 	const DirectX::SimpleMath::Vector3& dir) {
-	constexpr float angle = Math::PI / 36;
+	const float angle = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam.wayAngle;
 	auto quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, -angle);
 	auto direction = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
 	quaternion.Inverse(quaternion);

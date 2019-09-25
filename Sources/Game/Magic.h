@@ -29,10 +29,6 @@ protected:
 	}
 
 public:
-	// 魔法を更新する
-	virtual void Update(const DX::StepTimer& timer) { timer; }
-	// 魔法を開放する
-	virtual void Lost() {}
 	// 魔法を生成する
 	virtual void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
 		const DirectX::SimpleMath::Vector4& color) {
@@ -41,8 +37,14 @@ public:
 		m_vel = dir;
 		m_color = color;
 	}
+	// 魔法を更新する
+	virtual void Update(const DX::StepTimer& timer) { timer; }
+	// 魔法を開放する
+	virtual void Lost() {}	
 	// 魔法を描画する
 	virtual void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const { view; proj; }
+	// 魔法の終了処理を行う
+	virtual void Finalize() override {}
 
 public:
 	// オブジェクトの行列を取得する

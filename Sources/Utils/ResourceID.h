@@ -72,14 +72,6 @@ enum class BgmID {
 };
 
 /// <summary>
-/// 映像ID
-/// </summary>
-enum class MovieID {
-	NullData,
-	Num
-};
-
-/// <summary>
 /// フォントID
 /// </summary>
 enum class FontID {
@@ -87,5 +79,28 @@ enum class FontID {
 	Num
 };
 
+/// <summary>
+/// 頂点シェーダID
+/// </summary>
+enum class VertexShaderID {
+	Default,
+	Num
+};
+
+/// <summary>
+/// ジオメトリシェーダID
+/// </summary>
+enum class GeometryShaderID {
+	Billboard,
+	Num
+};
+
+/// <summary>
+/// ピクセルシェーダID
+/// </summary>
+enum class PixelShaderID {
+	Default,
+	Num
+};
 
 #endif // !RESOURCE_ID_DEFINED

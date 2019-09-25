@@ -16,6 +16,7 @@ class Element;
 class ElementManager;
 class IMagic;
 class MagicManager;
+class EffectManager;
 class TargetCamera;
 class Field;
 
@@ -66,6 +67,8 @@ private:
 	std::unique_ptr<MagicManager>            m_magicManager;
 	// 魔法
 	std::vector<IMagic*>*                    m_pMagics;
+	// エフェクトマネージャ
+	std::unique_ptr<EffectManager>           m_effectManager;
 	
 };
 

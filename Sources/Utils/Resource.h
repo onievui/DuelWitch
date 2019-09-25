@@ -57,13 +57,13 @@ public:
 	// コンストラクタ
 	TextureResource(const std::wstring& fileName);
 	// デストラクタ
-	~TextureResource();
+	~TextureResource() = default;
 
 public:
 	// リソースを追加する
 	void AddResource(const std::wstring& fileName);
 	// リソースが有効かどうか確認する
-	bool IsValid(int index = 0) const;
+	bool IsValid(int index = 0) const { return m_resources[index].Get() != m_defaultResource.Get(); }
 
 public:
 	// 画像サイズを取得する
@@ -92,11 +92,11 @@ public:
 		}
 	}
 	// デストラクタ
-	~GeometricPrimitiveResource();
+	~GeometricPrimitiveResource() = default;
 
 public:
 	// リソースが有効かどうか確認する
-	bool IsValid(int index = 0)const;
+	bool IsValid(int index = 0) const { return m_resources[index].get() != m_defaultResource.get(); }
 
 };
 
@@ -120,11 +120,11 @@ public:
 		}
 	}
 	// デストラクタ
-	~ModelResource();
+	~ModelResource() = default;
 
 public:
 	// リソースが有効かどうか確認する
-	bool IsValid(int index = 0)const;
+	bool IsValid(int index = 0) const { return m_resources[index].get() != m_defaultResource.get(); }
 
 };
 
@@ -148,11 +148,81 @@ public:
 		}
 	}
 	// デストラクタ
-	~FontResource();
+	~FontResource() = default;
 
 public:
 	// リソースが有効かどうか確認する
-	bool IsValid(int index = 0) const;
+	bool IsValid(int index = 0) const { return m_resources[index].get() != m_defaultResource.get(); }
+
+};
+
+
+/// <summary>
+/// 頂点シェーダリソース
+/// </summary>
+class VertexShaderResource : public Resource<Microsoft::WRL::ComPtr<ID3D11VertexShader>, VertexShaderID> {
+public:
+	// 頂点シェーダリソースがあるディレクトリ名
+	static const std::wstring VERTEX_SHADER_DIR;
+
+public:
+	// コンストラクタ
+	VertexShaderResource(const std::wstring& fileName, VertexShaderID id);
+	// デストラクタ
+	~VertexShaderResource() = default;
+
+public:
+	// リソースが有効かどうか確認する
+	bool IsValid(int index = 0) const{ return m_resources[index].Get() != m_defaultResource.Get(); }
+
+public:
+	// 入力レイアウトを取得する
+	ID3D11InputLayout* GetInputLayout();
+
+private:
+	// 入力レイアウト
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+};
+
+
+/// <summary>
+/// ジオメトリシェーダリソース
+/// </summary>
+class GeometryShaderResource : public Resource<Microsoft::WRL::ComPtr<ID3D11GeometryShader>, GeometryShaderID> {
+public:
+	// 頂点シェーダリソースがあるディレクトリ名
+	static const std::wstring GEOMETRY_SHADER_DIR;
+
+public:
+	// コンストラクタ
+	GeometryShaderResource(const std::wstring& fileName);
+	// デストラクタ
+	~GeometryShaderResource() = default;
+
+public:
+	// リソースが有効かどうか確認する
+	bool IsValid(int index = 0) const { return m_resources[index].Get() != m_defaultResource.Get(); }
+
+};
+
+
+/// <summary>
+/// ピクセルシェーダリソース
+/// </summary>
+class PixelShaderResource : public Resource<Microsoft::WRL::ComPtr<ID3D11PixelShader>, PixelShaderID> {
+public:
+	// ピクセルシェーダリソースがあるディレクトリ名
+	static const std::wstring PIXEL_SHADER_DIR;
+
+public:
+	// コンストラクタ
+	PixelShaderResource(const std::wstring& fileName);
+	// デストラクタ
+	~PixelShaderResource() = default;
+
+public:
+	// リソースが有効かどうか確認する
+	bool IsValid(int index = 0) const { return m_resources[index].Get() != m_defaultResource.Get(); }
 
 };
 

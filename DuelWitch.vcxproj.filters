@@ -590,6 +590,12 @@
     <ClInclude Include="Sources\Utils\LamdaUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Utils\InputLayoutData.h">
+      <Filter>Utils\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\BinFile.h">
+      <Filter>Utils\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">

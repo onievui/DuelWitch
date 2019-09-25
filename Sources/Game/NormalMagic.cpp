@@ -6,6 +6,8 @@
 #include "PlayParameterLoader.h"
 #include "MagicID.h"
 #include "Player.h"
+#include "EffectManager.h"
+#include "IEffectEmitter.h"
 
 
 /// <summary>
@@ -20,6 +22,28 @@ NormalMagic::NormalMagic()
 /// デストラクタ
 /// </summary>
 NormalMagic::~NormalMagic() {
+}
+
+/// <summary>
+/// 通常魔法を生成する
+/// </summary>
+/// <param name="playerId">プレイヤーID</param>
+/// <param name="pos">座標</param>
+/// <param name="dir">方向</param>
+/// <param name="color">色</param>
+void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
+	const DirectX::SimpleMath::Vector4& color) {
+	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
+	m_playerId = playerId;
+	m_transform.SetPosition(pos);
+	m_sphereCollider.SetRadius(parameter->normalParam.radius);
+	m_color = color;
+	m_vel = dir * parameter->normalParam.moveSpeed;
+	m_lifeTime = parameter->normalParam.lifeTime;
+
+	// 魔法のエフェクトを生成する
+	m_effect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::NormalMagic, pos, dir);
+	m_effect->SetParent(&m_transform);
 }
 
 /// <summary>
@@ -47,24 +71,6 @@ void NormalMagic::Lost() {
 }
 
 /// <summary>
-/// 通常魔法を生成する
-/// </summary>
-/// <param name="playerId">プレイヤーID</param>
-/// <param name="pos">座標</param>
-/// <param name="dir">方向</param>
-/// <param name="color">色</param>
-void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-	const DirectX::SimpleMath::Vector4& color) {
-	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
-	m_playerId = playerId;
-	m_transform.SetPosition(pos);
-	m_sphereCollider.SetRadius(parameter->normalParam.radius);
-	m_color = color;
-	m_vel = dir*parameter->normalParam.moveSpeed;
-	m_lifeTime = parameter->normalParam.lifeTime;
-}
-
-/// <summary>
 /// 通常魔法を描画する
 /// </summary>
 /// <param name="view">ビュー行列</param>
@@ -73,6 +79,14 @@ void NormalMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::NormalMagic);
 	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
+}
+
+/// <summary>
+/// 通常魔法の終了処理を行う
+/// </summary>
+void NormalMagic::Finalize() {
+	// エフェクトを終了させる
+	m_effect->IsUsed(false);
 }
 
 /// <summary>

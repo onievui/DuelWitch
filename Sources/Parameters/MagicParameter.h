@@ -33,6 +33,7 @@ public:
 	normal_param normalParam;
 
 	struct fire_param {
+		float wayAngle;
 		float radius;
 		float height;
 		float moveSpeed;

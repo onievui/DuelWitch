@@ -8,10 +8,11 @@
     "LifeTime" : 8.0
   },
   "Fire": {
-    "Radius"   : 0.4,
-    "Height"   : 1.6,
+    "WayAngle_Deg": 5.0,
+    "Radius": 0.4,
+    "Height": 1.6,
     "MoveSpeed": 60.0,
-    "LifeTime" : 8.0
+    "LifeTime": 8.0
   },
   "Freeze": {
     "Radius"  : 1.25,

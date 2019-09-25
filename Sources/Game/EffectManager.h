@@ -4,12 +4,13 @@
 
 
 #include <Framework\StepTimer.h>
+#include "EffectID.h"
 
 
 class IEffectEmitter;
 class EffectFactory;
-enum class EffectID;
 class Camera;
+
 
 /// <summary>
 /// エフェクトマネージャクラス
@@ -31,7 +32,7 @@ public:
 
 public:
 	// エフェクトを生成する
-	void CreateEffect(EffectID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
+	IEffectEmitter* CreateEffect(EffectID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 
 private:
 	// 生成済みエフェクト

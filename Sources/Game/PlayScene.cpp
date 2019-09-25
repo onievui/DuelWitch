@@ -14,6 +14,7 @@
 #include "ElementManager.h"
 #include "IMagic.h"
 #include "MagicManager.h"
+#include "EffectManager.h"
 #include "TargetCamera.h"
 #include "Field.h"
 #include "Collision.h"
@@ -63,6 +64,11 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_magicManager = std::make_unique<MagicManager>();
 	m_magicManager->Initialize();
 	m_pMagics = m_magicManager->GetMagics();
+	// エフェクトマネージャを生成する
+	m_effectManager = std::make_unique<EffectManager>();
+	m_effectManager->Initialize();
+	// エフェクトマネージャをサービスロケータに登録する
+	ServiceLocater<EffectManager>::Register(m_effectManager.get());
 
 	// プレイヤーを生成する
 	m_players.emplace_back(std::make_unique<Player>(m_magicManager.get(), PlayerID::Player1,
@@ -106,15 +112,17 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		m_parameterLoader->Reload();
 	}
 
-	// プレイヤーの更新
+	// プレイヤーを更新する
 	for (std::vector<std::unique_ptr<Player>>::iterator itr = m_players.begin(); itr != m_players.end(); ++itr) {
 		(*itr)->Update(timer);
 	}
 
-	// エレメントマネージャの更新
+	// エレメントマネージャを更新する
 	m_elementManager->Update(timer);
-	// 魔法マネージャの更新
+	// 魔法マネージャを更新する
 	m_magicManager->Update(timer);
+	// エフェクトマネージャを更新する
+	m_effectManager->Update(timer, m_targetCamera.get());
 
 	static float time = 0;
 	time += static_cast<float>(timer.GetElapsedSeconds());
@@ -230,6 +238,8 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	m_elementManager->Render(view, projection);
 	// 魔法を描画する
 	m_magicManager->Render(view, projection);
+	// エフェクトを描画する
+	m_effectManager->Render(view, projection);
 	
 	spriteBatch->End();
 }
@@ -245,5 +255,7 @@ void PlayScene::Finalize() {
 	// パラメータを開放する
 	m_parameterLoader->Dispose();
 	ServiceLocater<PlayParameterLoader>::Unregister();
+	// エフェクトマネージャをサービスロケータから解除する
+	ServiceLocater<EffectManager>::Unregister();
 }
 

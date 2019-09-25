@@ -7,6 +7,7 @@
 
 
 class Camera;
+class Transform;
 
 
 /// <summary>
@@ -26,6 +27,8 @@ public:
 	virtual void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) = 0;
 
 public:
+	// 親を設定する
+	virtual void SetParent(const Transform* parent) = 0;
 	// エフェクトを使用しているかどうか取得する
 	virtual bool IsUsed() const = 0;
 	// エフェクトを使用するかどうか設定する

@@ -17,6 +17,7 @@ public:
 		: m_inputLayout()
 		, m_cBuffer()
 		, m_transform()
+		, m_parent()
 		, m_isUsed(false)
 		, m_lifeTime(0) {
 	}
@@ -30,6 +31,8 @@ public:
 	virtual void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) override { view, proj; }
 
 public:
+	// 親を設定する
+	void SetParent(const Transform* parent) override { m_parent = parent; }
 	// エフェクトを使用しているかどうか取得する
 	bool IsUsed() const override { return m_isUsed; }
 	// エフェクトを使用するかどうか設定する
@@ -42,6 +45,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer>      m_cBuffer;
 	// 姿勢
 	Transform                                 m_transform;
+	// 親の姿勢
+	const Transform*                          m_parent;
 	// 使用しているかどうか
 	bool                                      m_isUsed;
 	// 生存時間

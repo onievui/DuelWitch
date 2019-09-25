@@ -320,9 +320,11 @@
     <ClInclude Include="Sources\Parameters\ElementParameter.h" />
     <ClInclude Include="Sources\Parameters\MagicParameter.h" />
     <ClInclude Include="Sources\pch\pch.h" />
+    <ClInclude Include="Sources\Utils\BinFile.h" />
     <ClInclude Include="Sources\Utils\ErrorMessage.h" />
     <ClInclude Include="Sources\Utils\ILoadData.h" />
     <ClInclude Include="Sources\Utils\ILoadDataHolder.h" />
+    <ClInclude Include="Sources\Utils\InputLayoutData.h" />
     <ClInclude Include="Sources\Utils\IObserver.h" />
     <ClInclude Include="Sources\Utils\ISubject.h" />
     <ClInclude Include="Sources\Utils\JsonWrapper.h" />
