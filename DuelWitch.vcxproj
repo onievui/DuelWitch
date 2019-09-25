@@ -188,11 +188,14 @@
     <ClCompile Include="Sources\Game\Collision.cpp" />
     <ClCompile Include="Sources\Game\CommonServices.cpp" />
     <ClCompile Include="Sources\Game\DebugCamera.cpp" />
+    <ClCompile Include="Sources\Game\EffectFactory.cpp" />
+    <ClCompile Include="Sources\Game\EffectManager.cpp" />
     <ClCompile Include="Sources\Game\Element.cpp" />
     <ClCompile Include="Sources\Game\ElementFactory.cpp" />
     <ClCompile Include="Sources\Game\ElementManager.cpp" />
     <ClCompile Include="Sources\Game\EmptyObject.cpp" />
     <ClCompile Include="Sources\Game\Field.cpp" />
+    <ClCompile Include="Sources\Game\FireEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\FireMagic.cpp" />
     <ClCompile Include="Sources\Game\FireMagicShooter.cpp" />
     <ClCompile Include="Sources\Game\FixCamera.cpp" />
@@ -203,6 +206,7 @@
     <ClCompile Include="Sources\Game\MagicFactory.cpp" />
     <ClCompile Include="Sources\Game\MagicManager.cpp" />
     <ClCompile Include="Sources\Game\MoveCommand.cpp" />
+    <ClCompile Include="Sources\Game\NormalEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\NormalMagic.cpp" />
     <ClCompile Include="Sources\Game\NormalMagicShooter.cpp" />
     <ClCompile Include="Sources\Game\PauseScene.cpp" />
@@ -224,6 +228,7 @@
     <ClCompile Include="Sources\Game\Transform.cpp" />
     <ClCompile Include="Sources\Parameters\AICommandParameter.cpp" />
     <ClCompile Include="Sources\Parameters\CommandParameter.cpp" />
+    <ClCompile Include="Sources\Parameters\EffectParameter.cpp" />
     <ClCompile Include="Sources\Parameters\ElementParameter.cpp" />
     <ClCompile Include="Sources\Parameters\MagicParameter.cpp" />
     <ClCompile Include="Sources\pch\pch.cpp">
@@ -257,12 +262,18 @@
     <ClInclude Include="Sources\Game\Collider.h" />
     <ClInclude Include="Sources\Game\Collision.h" />
     <ClInclude Include="Sources\Game\CommonServices.h" />
+    <ClInclude Include="Sources\Game\EffectEmitter.h" />
+    <ClInclude Include="Sources\Game\EffectFactory.h" />
+    <ClInclude Include="Sources\Game\EffectID.h" />
+    <ClInclude Include="Sources\Game\EffectManager.h" />
     <ClInclude Include="Sources\Game\EmptyObject.h" />
+    <ClInclude Include="Sources\Game\FireEffectEmitter.h" />
     <ClInclude Include="Sources\Game\FireMagic.h" />
     <ClInclude Include="Sources\Game\FireMagicShooter.h" />
     <ClInclude Include="Sources\Game\Command.h" />
     <ClInclude Include="Sources\Game\FreezeMagic.h" />
     <ClInclude Include="Sources\Game\FreezeMagicShooter.h" />
+    <ClInclude Include="Sources\Game\IEffectEmitter.h" />
     <ClInclude Include="Sources\Game\IMagic.h" />
     <ClInclude Include="Sources\Game\IMagicShooter.h" />
     <ClInclude Include="Sources\Game\IParameterLoader.h" />
@@ -272,6 +283,7 @@
     <ClInclude Include="Sources\Game\MagicID.h" />
     <ClInclude Include="Sources\Game\MagicManager.h" />
     <ClInclude Include="Sources\Game\MoveCommand.h" />
+    <ClInclude Include="Sources\Game\NormalEffectEmitter.h" />
     <ClInclude Include="Sources\Game\NormalMagic.h" />
     <ClInclude Include="Sources\Game\NormalMagicShooter.h" />
     <ClInclude Include="Sources\Game\PauseScene.h" />
@@ -304,6 +316,7 @@
     <ClInclude Include="Sources\Game\UserRenderCommand.h" />
     <ClInclude Include="Sources\Parameters\AICommandParameter.h" />
     <ClInclude Include="Sources\Parameters\CommandParameter.h" />
+    <ClInclude Include="Sources\Parameters\EffectParameter.h" />
     <ClInclude Include="Sources\Parameters\ElementParameter.h" />
     <ClInclude Include="Sources\Parameters\MagicParameter.h" />
     <ClInclude Include="Sources\pch\pch.h" />
@@ -313,6 +326,7 @@
     <ClInclude Include="Sources\Utils\IObserver.h" />
     <ClInclude Include="Sources\Utils\ISubject.h" />
     <ClInclude Include="Sources\Utils\JsonWrapper.h" />
+    <ClInclude Include="Sources\Utils\LamdaUtils.h" />
     <ClInclude Include="Sources\Utils\LoadDataHolder.h" />
     <ClInclude Include="Sources\Utils\LoadDataID.h" />
     <ClInclude Include="Sources\Utils\LoadDataManager.h" />
@@ -346,6 +360,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Jsons\ai_command.json" />
+    <None Include="Resources\Jsons\effect.json" />
     <None Include="Resources\Jsons\element.json" />
     <None Include="Resources\Jsons\magic.json" />
     <None Include="Resources\Jsons\player_command.json" />

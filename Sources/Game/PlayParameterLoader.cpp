@@ -6,6 +6,7 @@
 #include <Parameters\AICommandParameter.h>
 #include <Parameters\ElementParameter.h>
 #include <Parameters\MagicParameter.h>
+#include <Parameters\EffectParameter.h>
 
 
 /// <summary>
@@ -24,6 +25,8 @@ public:
 	LoadDataHolder<AICommandParameter, LoadDataID::PlayScene> aiCommandParameter;
 	LoadDataHolder<ElementParameter, LoadDataID::PlayScene>   elementParameter;
 	LoadDataHolder<MagicParameter, LoadDataID::PlayScene>     magicParameter;
+	LoadDataHolder<EffectParameter, LoadDataID::PlayScene>    effectParameter;
+
 };
 
 /// <summary>
@@ -35,6 +38,7 @@ PlayParameterLoader::Impl::Impl() {
 	manager->Register(&aiCommandParameter);
 	manager->Register(&elementParameter);
 	manager->Register(&magicParameter);
+	manager->Register(&effectParameter);
 }
 
 /// <summary>
@@ -45,7 +49,7 @@ PlayParameterLoader::Impl::~Impl(){
 	manager->Unregister(&commandParameter);
 	manager->Unregister(&aiCommandParameter);
 	manager->Unregister(&elementParameter);
-	manager->Unregister(&magicParameter);
+	manager->Unregister(&effectParameter);
 }
 
 
@@ -123,5 +127,15 @@ const ElementParameter* PlayParameterLoader::GetElementParameter() {
 /// </returns>
 const MagicParameter* PlayParameterLoader::GetMagicParameter() {
 	return m_impl->magicParameter.Get();
+}
+
+/// <summary>
+/// パラメータを取得する
+/// </summary>
+/// <returns>
+/// パラメータへのポインタ
+/// </returns>
+const EffectParameter * PlayParameterLoader::GetEffectParameter() {
+	return m_impl->effectParameter.Get();
 }
 

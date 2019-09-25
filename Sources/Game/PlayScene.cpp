@@ -3,6 +3,7 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include <Utils\MouseWrapper.h>
+#include <Utils\LamdaUtils.h>
 #include "PlayParameterLoader.h"
 #include "ResourceLoader.h"
 #include "ISceneRequest.h"
@@ -127,17 +128,15 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		time -= 10.0f;
 	}
 
-	// 未使用なら飛ばす処理を定義
-	auto live_pred = [](IObject* object) { return object; };
-	// std::find_ifを簡略化した処理を定義
-	auto find_if_pred = [](auto& container, auto& pred) {return std::find_if(container.begin(), container.end(), pred); };
-
+	// 未使用なら飛ばす処理を生成
+	auto live_pred = LamdaUtils::NotNull();
+	
 	// 当たり判定
 	// プレイヤーとエレメントの当たり判定
-	for (std::vector<Element*>::iterator element_itr = find_if_pred(*m_elementManager->GetElements(), live_pred),
-		 element_end = m_elementManager->GetElements()->end();
+	for (std::vector<Element*>::iterator element_itr = LamdaUtils::FindIf(*m_elementManager->GetElements(), live_pred),
+		element_end = m_elementManager->GetElements()->end();
 		element_itr != element_end;
-		element_itr = std::find_if(element_itr + 1, element_end, live_pred)) {
+		LamdaUtils::FindIfNext(element_itr, element_end, live_pred)) {
 		const Collider* element_collider = (*element_itr)->GetCollider();
 		for (std::vector<std::unique_ptr<Player>>::iterator player_itr = m_players.begin(); player_itr != m_players.end(); ++player_itr) {
 			if (Collision::HitCheck(element_collider, (*player_itr)->GetCollider())) {
@@ -149,8 +148,8 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	
 
 	// 魔法同士の当たり判定
-	for (std::vector<IMagic*>::iterator itr = find_if_pred(*m_magicManager->GetMagics(), live_pred),
-		 end = m_magicManager->GetMagics()->end();
+	for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*m_magicManager->GetMagics(), live_pred),
+		end = m_magicManager->GetMagics()->end();
 		itr != end;) {
 		const Collider* collider = (*itr)->GetCollider();
 		std::vector<IMagic*>::iterator next = std::find_if(itr + 1, end, live_pred);
@@ -168,10 +167,10 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	}
 
 	// プレイヤ―と魔法の当たり判定
-	for (std::vector<IMagic*>::iterator magic_itr = find_if_pred(*m_magicManager->GetMagics(), live_pred),
+	for (std::vector<IMagic*>::iterator magic_itr = LamdaUtils::FindIf(*m_magicManager->GetMagics(), live_pred),
 		magic_end = m_magicManager->GetMagics()->end();
 		magic_itr != magic_end;
-		magic_itr = std::find_if(magic_itr + 1, magic_end, live_pred)) {
+		LamdaUtils::FindIfNext(magic_itr, magic_end, live_pred)) {
 		const Collider* magic_collider = (*magic_itr)->GetCollider();
 		for (std::vector<std::unique_ptr<Player>>::iterator player_itr = m_players.begin(); player_itr != m_players.end(); ++player_itr) {
 			// 自身の魔法とは判定しない

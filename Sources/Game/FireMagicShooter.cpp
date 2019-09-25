@@ -1,4 +1,5 @@
 #include <Utils\MathUtils.h>
+#include <Utils\LamdaUtils.h>
 #include "FireMagicShooter.h"
 #include "MagicID.h"
 #include "MagicManager.h"
@@ -25,18 +26,19 @@ FireMagicShooter::FireMagicShooter(MagicManager* magicManager)
 void FireMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
 	const DirectX::SimpleMath::Vector3& dir) {
 	constexpr float angle = Math::PI / 36;
-	int count = 0;
 	auto quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, -angle);
 	auto direction = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
 	quaternion.Inverse(quaternion);
-	for (auto& magic : *m_pMagicManager->GetMagics()) {
-		if (!magic) {
-			magic = magicFactory->Create(MagicID::Fire, playerId, pos, direction);
-			++count;
-			if (count == 3) {
-				break;
-			}
-			direction = DirectX::SimpleMath::Vector3::Transform(direction, quaternion);
-		}
+
+	std::vector<IMagic*>* magics = m_pMagicManager->GetMagics();
+	int count = 0;
+	// 3•ûŒü‚É”­ŽË‚·‚é
+	for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf()(*magics, LamdaUtils::IsNull());
+		itr != magics->end() && count < 3;
+		LamdaUtils::FindIfNext(itr, magics->end(), LamdaUtils::IsNull()), ++count) {
+		(*itr) = magicFactory->Create(MagicID::Fire, playerId, pos, direction);
+		// ”­ŽË‚·‚é‚½‚Ñ‚ÉŒü‚«‚ð‚¸‚ç‚·
+		direction = DirectX::SimpleMath::Vector3::Transform(direction, quaternion);
 	}
+	
 }

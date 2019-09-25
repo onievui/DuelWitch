@@ -1,0 +1,20 @@
+{
+  "MaxNum"      : [ 30, 20 ],
+  "_MaxNum_Size": 2,
+
+  "Normal": {
+
+  },
+  "Fire": {
+
+  },
+  "Freeze": {
+
+  },
+  "Thunder": {
+
+  },
+  "ThunderStrike": {
+
+  }
+}

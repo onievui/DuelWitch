@@ -1,6 +1,6 @@
 #include "ThunderStrikeMagicShooter.h"
-#include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\LamdaUtils.h>
 #include <Parameters\MagicParameter.h>
 #include "PlayParameterLoader.h"
 #include "MagicID.h"
@@ -29,10 +29,10 @@ void ThunderStrikeMagicShooter::Create(MagicFactory* magicFactory, PlayerID play
 	const DirectX::SimpleMath::Vector3& dir) {
 	DirectX::SimpleMath::Vector3 position = pos;
 	position.y += ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderStrikeParam.appearPosY;
-	for (auto& magic : *m_pMagicManager->GetMagics()) {
-		if (!magic) {
-			magic = magicFactory->Create(MagicID::ThunderStrike, playerId, position, dir);
-			break;
-		}
+	std::vector<IMagic*>* magics = m_pMagicManager->GetMagics();
+	std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf()(*magics, LamdaUtils::IsNull());
+	if (itr != magics->end()) {
+		(*itr) = magicFactory->Create(MagicID::ThunderStrike, playerId, pos, dir);
 	}
+
 }

@@ -68,6 +68,12 @@
     <Filter Include="Game\UI">
       <UniqueIdentifier>{64cf1422-e294-4ca7-bcf0-964e831de46f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Object\Effect">
+      <UniqueIdentifier>{15f022d2-29a6-4afe-8457-7a3fcdb9824d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\EffectEmitter">
+      <UniqueIdentifier>{318aad87-bd93-4f32-87ae-435d6ae4b7e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -272,6 +278,21 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\PauseScene.cpp">
       <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\EffectManager.cpp">
+      <Filter>Game\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Parameters\EffectParameter.cpp">
+      <Filter>Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\EffectFactory.cpp">
+      <Filter>Game\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\NormalEffectEmitter.cpp">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FireEffectEmitter.cpp">
+      <Filter>Game\Object\EffectEmitter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -542,6 +563,33 @@
     <ClInclude Include="Sources\Game\PauseScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game\EffectManager.h">
+      <Filter>Game\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Parameters\EffectParameter.h">
+      <Filter>Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\EffectFactory.h">
+      <Filter>Game\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\EffectEmitter.h">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\EffectID.h">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\IEffectEmitter.h">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\NormalEffectEmitter.h">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FireEffectEmitter.h">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\LamdaUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
@@ -562,6 +610,9 @@
       <Filter>Assets\Jsons</Filter>
     </None>
     <None Include="Resources\Jsons\magic.json">
+      <Filter>Assets\Jsons</Filter>
+    </None>
+    <None Include="Resources\Jsons\effect.json">
       <Filter>Assets\Jsons</Filter>
     </None>
   </ItemGroup>

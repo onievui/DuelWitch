@@ -1,5 +1,5 @@
 #include "ThunderMagicShooter.h"
-#include <Framework\DirectX11.h>
+#include <Utils\LamdaUtils.h>
 #include "MagicID.h"
 #include "MagicManager.h"
 #include "MagicFactory.h"
@@ -24,12 +24,13 @@ ThunderMagicShooter::ThunderMagicShooter(MagicManager* magicManager)
 /// <param name="dir">Œü‚«</param>
 void ThunderMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
 	const DirectX::SimpleMath::Vector3& dir) {
-	auto direction = dir;
+	// …•½‚É”­ŽË‚·‚é
+	DirectX::SimpleMath::Vector3 direction = dir;
 	direction.y = 0.0f;
-	for (auto& magic : *m_pMagicManager->GetMagics()) {
-		if (!magic) {
-			magic = magicFactory->Create(MagicID::Thunder, playerId, pos, direction);
-			break;
-		}
+	std::vector<IMagic*>* magics = m_pMagicManager->GetMagics();
+	std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf()(*magics, LamdaUtils::IsNull());
+	if (itr != magics->end()) {
+		(*itr) = magicFactory->Create(MagicID::Thunder, playerId, pos, dir);
 	}
+	
 }

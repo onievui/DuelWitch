@@ -10,6 +10,7 @@ class CommandParameter;
 class AICommandParameter;
 class ElementParameter;
 class MagicParameter;
+class EffectParameter;
 
 
 /// <summary>
@@ -36,6 +37,7 @@ public:
 	const AICommandParameter* GetAICommandParameter();
 	const ElementParameter*   GetElementParameter();
 	const MagicParameter*     GetMagicParameter();
+	const EffectParameter*    GetEffectParameter();
 
 private:
 	// ヘッダファイルでのインクルードを減らすためのクラス

@@ -1,9 +1,9 @@
 #include "Sources\Game\MyGame.h"
 
 // ウィンドウ幅
-constexpr int width = 1024;
+constexpr int width = 1600;
 // ウィンドウ高
-constexpr int height = 768;
+constexpr int height = 900;
 
 // エントリポイント
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow) {

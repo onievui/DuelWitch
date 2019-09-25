@@ -1,4 +1,4 @@
-#include <Framework\DirectX11.h>
+#include <Utils\LamdaUtils.h>
 #include "FreezeMagicShooter.h"
 #include "MagicID.h"
 #include "MagicManager.h"
@@ -24,10 +24,10 @@ FreezeMagicShooter::FreezeMagicShooter(MagicManager* magicManager)
 /// <param name="dir">Œü‚«</param>
 void FreezeMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
 	const DirectX::SimpleMath::Vector3& dir) {
-	for (auto& magic : *m_pMagicManager->GetMagics()) {
-		if (!magic) {
-			magic = magicFactory->Create(MagicID::Freeze, playerId, pos, dir);
-			break;
-		}
+	std::vector<IMagic*>* magics = m_pMagicManager->GetMagics();
+	std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf()(*magics, LamdaUtils::IsNull());
+	if (itr != magics->end()) {
+		(*itr) = magicFactory->Create(MagicID::Freeze, playerId, pos, dir);
 	}
+	
 }
