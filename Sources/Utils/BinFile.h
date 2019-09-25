@@ -4,6 +4,7 @@
 
 
 #include <fstream>
+#include "ErrorMessage.h"
 
 
 /// <summary>
@@ -23,6 +24,11 @@ public:
 			binfile.read(code.get(), data_size);
 			m_size = data_size;
 			m_data = std::move(code);
+
+			binfile.close();
+		}
+		else {
+			ErrorMessage(L"バイナリファイルのオープンの失敗しました");
 		}
 	}
 

@@ -13,6 +13,9 @@ class TextureResource;
 class GeometricPrimitiveResource;
 class ModelResource;
 class FontResource;
+class VertexShaderResource;
+class GeometryShaderResource;
+class PixelShaderResource;
 
 
 /// <summary>
@@ -53,6 +56,9 @@ private:
 	std::unique_ptr<ResourceManager<GeometricPrimitiveResource>>   m_geometricPrimitiveResourceManager;
 	std::unique_ptr<ResourceManager<ModelResource>>                m_modelResourceManager;
 	std::unique_ptr<ResourceManager<FontResource>>                 m_fontResourceManager;
+	std::unique_ptr<ResourceManager<VertexShaderResource>>         m_vertexShaderResourceManager;
+	std::unique_ptr<ResourceManager<GeometryShaderResource>>       m_geometryShaderResourceManager;
+	std::unique_ptr<ResourceManager<PixelShaderResource>>          m_pixelShaderResourceManager;
 };
 
 

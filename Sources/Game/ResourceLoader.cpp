@@ -22,6 +22,9 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	//ResourceManager<GeometricPrimitiveResource>* geometricPrimitiveResourceManager = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get();
 	ResourceManager<ModelResource>* modelResourceManager = ServiceLocater<ResourceManager<ModelResource>>::Get();
 	ResourceManager<FontResource>* fontResourceManager = ServiceLocater<ResourceManager<FontResource>>::Get();
+	ResourceManager<VertexShaderResource>* vertexShaderResourceManager = ServiceLocater<ResourceManager<VertexShaderResource>>::Get();
+	ResourceManager<GeometryShaderResource>* geometryShaderResourceManager = ServiceLocater<ResourceManager<GeometryShaderResource>>::Get();
+	ResourceManager<PixelShaderResource>* pixelShaderResourceManager = ServiceLocater<ResourceManager<PixelShaderResource>>::Get();
 	
 
 	switch (id) {
@@ -66,6 +69,10 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		// ポーズシーンで使うテクスチャも読みこんでおく
 		textureResourceManager->AddResource(TextureID::BlackBack, TextureResource(L"Protected/black_back1024.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
+		// シェーダの読み込み
+		vertexShaderResourceManager->AddResource(VertexShaderID::Default, VertexShaderResource(L"DefaultVS.cso", VertexShaderID::Default));
+		geometryShaderResourceManager->AddResource(GeometryShaderID::Billboard, GeometryShaderResource(L"BillboardGS.cso"));
+		pixelShaderResourceManager->AddResource(PixelShaderID::Default, PixelShaderResource(L"DefaultPS.cso"));
 		// モデルの読み込み
 		modelResourceManager->AddResource(ModelID::BloomModel, ModelResource(L"bloom.cmo", L"Protected"));
 		break;

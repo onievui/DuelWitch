@@ -18,6 +18,9 @@ void CommonServices::Initialize() {
 	RegisterResourceManager(m_geometricPrimitiveResourceManager, L"ジオメトリックプリミティブ");
 	RegisterResourceManager(m_modelResourceManager, L"モデル");
 	RegisterResourceManager(m_fontResourceManager, L"フォント");
+	RegisterResourceManager(m_vertexShaderResourceManager, L"頂点シェーダ");
+	RegisterResourceManager(m_geometryShaderResourceManager, L"ジオメトリシェーダ");
+	RegisterResourceManager(m_pixelShaderResourceManager, L"ピクセルシェーダ");
 
 }
 

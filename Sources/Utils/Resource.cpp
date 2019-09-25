@@ -9,9 +9,9 @@
 const std::wstring TextureResource::TEXTURE_DIR                = L"Resources/Textures/";
 const std::wstring ModelResource::MODEL_DIR                    = L"Resources/Models/";
 const std::wstring FontResource::FONT_DIR                      = L"Resources/Fonts/";
-const std::wstring VertexShaderResource::VERTEX_SHADER_DIR     = L"Resources/Shader/";
-const std::wstring GeometryShaderResource::GEOMETRY_SHADER_DIR = L"Resources/Shader/";
-const std::wstring PixelShaderResource::PIXEL_SHADER_DIR       = L"Resources/Shader/";
+const std::wstring VertexShaderResource::VERTEX_SHADER_DIR     = L"Resources/Shaders/";
+const std::wstring GeometryShaderResource::GEOMETRY_SHADER_DIR = L"Resources/Shaders/";
+const std::wstring PixelShaderResource::PIXEL_SHADER_DIR       = L"Resources/Shaders/";
 
 TextureResource::Type Resource<TextureResource::Type, TextureResource::IDType>::m_defaultResource = nullptr;
 GeometricPrimitiveResource::Type Resource<GeometricPrimitiveResource::Type, GeometricPrimitiveResource::IDType>::m_defaultResource = nullptr;

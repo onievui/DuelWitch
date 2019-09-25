@@ -74,6 +74,9 @@
     <Filter Include="Game\Object\EffectEmitter">
       <UniqueIdentifier>{318aad87-bd93-4f32-87ae-435d6ae4b7e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Shader">
+      <UniqueIdentifier>{16a16d43-0583-4661-8516-185028f8ef03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -621,5 +624,19 @@
     <None Include="Resources\Jsons\effect.json">
       <Filter>Assets\Jsons</Filter>
     </None>
+    <None Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\Default.hlsli">
+      <Filter>Assets\Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\DefaultVS.hlsl">
+      <Filter>Assets\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\BillboardGS.hlsl">
+      <Filter>Assets\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\DefaultPS.hlsl">
+      <Filter>Assets\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
