@@ -20,7 +20,7 @@ public:
 	// エフェクトエミッターを更新する
 	void Update(const DX::StepTimer& timer, const Camera* camera) override;
 	// エフェクトエミッターを描画する
-	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) override;
+	void Render(Batch* batch, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) override;
 
 private:
 

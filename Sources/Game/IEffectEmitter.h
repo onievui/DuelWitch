@@ -15,6 +15,10 @@ class Transform;
 /// </summary>
 class IEffectEmitter {
 public:
+	// 長いので短縮する
+	using Batch = DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>;
+
+public:
 	// デストラクタ
 	virtual ~IEffectEmitter() = default;
 
@@ -24,7 +28,7 @@ public:
 	// エフェクトエミッターを更新する
 	virtual void Update(const DX::StepTimer& timer, const Camera* camera) = 0;
 	// エフェクトエミッターを描画する
-	virtual void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) = 0;
+	virtual void Render(Batch* batch, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) = 0;
 
 public:
 	// 親を設定する

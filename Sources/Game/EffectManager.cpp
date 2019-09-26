@@ -1,4 +1,6 @@
 #include "EffectManager.h"
+#include <Framework\DirectX11.h>
+#include <Utils\ServiceLocater.h>
 #include <Utils\LamdaUtils.h>
 #include <Utils\ErrorMessage.h>
 #include "EffectFactory.h"
@@ -10,7 +12,8 @@
 /// </summary>
 EffectManager::EffectManager()
 	: m_effects()
-	, m_effectFactory() {
+	, m_effectFactory()
+	, m_batch() {
 }
 
 /// <summary>
@@ -21,13 +24,15 @@ EffectManager::~EffectManager() {
 }
 
 /// <summary>
-/// エフェクトマネージャを初期する
+/// エフェクトマネージャを初期化する
 /// </summary>
 void EffectManager::Initialize() {
 	m_effectFactory = std::make_unique<EffectFactory>();
 	m_effectFactory->Initialize(this);
 	m_effects.clear();
 	m_effects.resize(m_effectFactory->GetEffectMaxNum(), nullptr);
+	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
+	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 }
 
 /// <summary>
@@ -36,10 +41,12 @@ void EffectManager::Initialize() {
 /// <param name="timer">ステップタイマー</param>
 /// <param name="camera">カメラ</param>
 void EffectManager::Update(const DX::StepTimer& timer, const Camera* camera) {
-	for (std::vector<IEffectEmitter*>::iterator itr = LamdaUtils::FindIf()(m_effects, LamdaUtils::NotNull());
+	for (std::vector<IEffectEmitter*>::iterator itr = LamdaUtils::FindIf(m_effects, LamdaUtils::NotNull());
 		itr != m_effects.end();
 		LamdaUtils::FindIfNext(itr, m_effects.end(), LamdaUtils::NotNull())) {
-		(*itr)->Update(timer, camera);
+		if ((*itr)->IsUsed()) {
+			(*itr)->Update(timer, camera);
+		}
 		// 未使用なら外す
 		if (!(*itr)->IsUsed()) {
 			*itr = nullptr;
@@ -53,11 +60,23 @@ void EffectManager::Update(const DX::StepTimer& timer, const Camera* camera) {
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void EffectManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
-	for (std::vector<IEffectEmitter*>::iterator itr = LamdaUtils::FindIf()(m_effects, LamdaUtils::NotNull());
+	
+
+	for (std::vector<IEffectEmitter*>::iterator itr = LamdaUtils::FindIf(m_effects, LamdaUtils::NotNull());
 		itr != m_effects.end();
 		LamdaUtils::FindIfNext(itr, m_effects.end(), LamdaUtils::NotNull())) {
-		(*itr)->Render(view, proj);
+		m_batch->Begin();
+		(*itr)->Render(m_batch.get(), view, proj);
+		m_batch->End();
 	}
+
+	
+
+	// シェーダを解除する
+	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
+	context->VSSetShader(nullptr, nullptr, 0);
+	context->GSSetShader(nullptr, nullptr, 0);
+	context->PSSetShader(nullptr, nullptr, 0);
 }
 
 /// <summary>

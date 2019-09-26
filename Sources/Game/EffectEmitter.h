@@ -14,8 +14,7 @@ class EffectEmitter : public IEffectEmitter {
 public:
 	// コンストラクタ
 	EffectEmitter() 
-		: m_inputLayout()
-		, m_cBuffer()
+		: m_cBuffer()
 		, m_transform()
 		, m_parent()
 		, m_isUsed(false)
@@ -28,7 +27,8 @@ public:
 	// エフェクトエミッターを更新する
 	virtual void Update(const DX::StepTimer& timer, const Camera* camera) override { timer, camera; }
 	// エフェクトエミッターを描画する
-	virtual void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) override { view, proj; }
+	virtual void Render(Batch* batch, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) override
+	{ batch, view, proj; }
 
 public:
 	// 親を設定する
@@ -38,9 +38,7 @@ public:
 	// エフェクトを使用するかどうか設定する
 	void IsUsed(bool isUsed) override { m_isUsed = isUsed; }
 
-private:
-	// 入力レイアウト
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+protected:
 	//  定数バッファ
 	Microsoft::WRL::ComPtr<ID3D11Buffer>      m_cBuffer;
 	// 姿勢

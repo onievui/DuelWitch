@@ -66,6 +66,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::HpBar, L"Protected/hp_bar_black.png");
 		textureResourceManager->AddResource(TextureID::SpBar, TextureResource(L"Protected/sp_bar_blue.png"));
 		textureResourceManager->AddResource(TextureID::SpBar, L"Protected/sp_bar_black.png");
+		textureResourceManager->AddResource(TextureID::Particle, TextureResource(L"Protected/particle.png"));
 		// ポーズシーンで使うテクスチャも読みこんでおく
 		textureResourceManager->AddResource(TextureID::BlackBack, TextureResource(L"Protected/black_back1024.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));

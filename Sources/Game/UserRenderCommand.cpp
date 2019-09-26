@@ -27,7 +27,7 @@ void UserRenderCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	}
 	const DirectX::SimpleMath::Vector3& camera_pos = camera.GetEyePosition();
 	const DirectX::SimpleMath::Vector3& enemy_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
-	DirectX::SimpleMath::Vector3 camera_dir = camera.GetCameraVector();
+	DirectX::SimpleMath::Vector3 camera_dir = camera.GetEyeVector();
 	DirectX::SimpleMath::Vector3 other_dir = enemy_pos - camera_pos;
 	float angle = std::acosf(camera_dir.Dot(other_dir) / (camera_dir.Length()*other_dir.Length()));
 	// ƒJƒƒ‰‚ÌŒü‚«‚Æ“G‚Ì•ûŒü‚ªˆê’è‚ÌŠp“xˆÈ“à‚Å‚ ‚ê‚Îˆ—‚µ‚È‚¢

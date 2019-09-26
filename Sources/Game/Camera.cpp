@@ -2,12 +2,12 @@
 
 
 /// <summary>
-/// カメラベクトルを取得する
+/// 視線ベクトルを取得する
 /// </summary>
 /// <returns>
 /// カメラの方向ベクトル
 /// </returns>
-DirectX::SimpleMath::Vector3 Camera::GetCameraVector() const {
+DirectX::SimpleMath::Vector3 Camera::GetEyeVector() const {
 	DirectX::SimpleMath::Vector3 vec = m_target - m_eye;
 	vec.Normalize();
 	return vec;

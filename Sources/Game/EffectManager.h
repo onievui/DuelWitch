@@ -36,9 +36,11 @@ public:
 
 private:
 	// 生成済みエフェクト
-	std::vector<IEffectEmitter*>                    m_effects;
+	std::vector<IEffectEmitter*>                                                  m_effects;
 	// エフェクトファクトリ
-	std::unique_ptr<EffectFactory>                  m_effectFactory;
+	std::unique_ptr<EffectFactory>                                                m_effectFactory;
+	// プリミティブバッチ
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 
 };
 

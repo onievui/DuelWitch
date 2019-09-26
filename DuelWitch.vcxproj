@@ -321,6 +321,7 @@
     <ClInclude Include="Sources\Parameters\MagicParameter.h" />
     <ClInclude Include="Sources\pch\pch.h" />
     <ClInclude Include="Sources\Utils\BinFile.h" />
+    <ClInclude Include="Sources\Utils\ConstBuffer.h" />
     <ClInclude Include="Sources\Utils\ErrorMessage.h" />
     <ClInclude Include="Sources\Utils\ILoadData.h" />
     <ClInclude Include="Sources\Utils\ILoadDataHolder.h" />
@@ -388,6 +389,8 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -78,7 +78,7 @@ void NormalMagic::Lost() {
 void NormalMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::NormalMagic);
-	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
+	resource->GetResource()->Draw(m_world, view, proj, DirectX::SimpleMath::Color(1,0,0,0.5), nullptr, true);
 }
 
 /// <summary>

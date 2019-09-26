@@ -31,6 +31,9 @@ enum class TextureID {
 	HpBar,
 	SpBar,
 	BlackBack,
+
+	Particle,
+
 	Num
 };
 

@@ -78,6 +78,17 @@ public:
 		return m_resources[index].get();
 	}
 
+	// 非constのリソースを取得する
+	T* GetRawResource(IDType id) {
+		int index = m_index[static_cast<int>(id)];
+		if (index == NULL_INDEX) {
+			std::wstring error_message = L"の取得に失敗しました";
+			ErrorMessage((m_kind + error_message).c_str());
+			return nullptr;
+		}
+		return m_resources[index].get();
+	}
+
 	// リソースを置き換える
 	void Replace(IDType id, ResourceType&& resource, int index2 = 0) {
 		int index = m_index[static_cast<int>(id)];

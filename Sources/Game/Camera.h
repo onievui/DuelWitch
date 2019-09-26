@@ -54,8 +54,8 @@ public:
 
 
 public:
-	// カメラベクトルを取得する
-	DirectX::SimpleMath::Vector3 GetCameraVector() const;
+	// 視線ベクトルを取得する
+	DirectX::SimpleMath::Vector3 GetEyeVector() const;
 
 	// スクリーン座標からレイに変換する
 	DirectX::SimpleMath::Ray ScreenPointToRay(const DirectX::SimpleMath::Vector3& point) const;

@@ -12,6 +12,6 @@ void FireMagicEffectEmitter::Update(const DX::StepTimer & timer, const Camera * 
 {
 }
 
-void FireMagicEffectEmitter::Render(const DirectX::SimpleMath::Matrix & view, const DirectX::SimpleMath::Matrix & proj)
+void FireMagicEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Matrix & view, const DirectX::SimpleMath::Matrix & proj)
 {
 }
