@@ -297,6 +297,9 @@
     <ClCompile Include="Sources\Game\FireEffectEmitter.cpp">
       <Filter>Game\Object\EffectEmitter</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\NormalMagicEffect.cpp">
+      <Filter>Game\Object\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -601,6 +604,15 @@
     </ClInclude>
     <ClInclude Include="Sources\Utils\ConstBuffer.h">
       <Filter>Utils\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\IEffect.h">
+      <Filter>Game\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect.h">
+      <Filter>Game\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\NormalMagicEffect.h">
+      <Filter>Game\Object\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -208,6 +208,7 @@
     <ClCompile Include="Sources\Game\MoveCommand.cpp" />
     <ClCompile Include="Sources\Game\NormalEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\NormalMagic.cpp" />
+    <ClCompile Include="Sources\Game\NormalMagicEffect.cpp" />
     <ClCompile Include="Sources\Game\NormalMagicShooter.cpp" />
     <ClCompile Include="Sources\Game\PauseScene.cpp" />
     <ClCompile Include="Sources\Game\Player.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="Sources\Game\Collider.h" />
     <ClInclude Include="Sources\Game\Collision.h" />
     <ClInclude Include="Sources\Game\CommonServices.h" />
+    <ClInclude Include="Sources\Game\Effect.h" />
     <ClInclude Include="Sources\Game\EffectEmitter.h" />
     <ClInclude Include="Sources\Game\EffectFactory.h" />
     <ClInclude Include="Sources\Game\EffectID.h" />
@@ -273,6 +275,7 @@
     <ClInclude Include="Sources\Game\Command.h" />
     <ClInclude Include="Sources\Game\FreezeMagic.h" />
     <ClInclude Include="Sources\Game\FreezeMagicShooter.h" />
+    <ClInclude Include="Sources\Game\IEffect.h" />
     <ClInclude Include="Sources\Game\IEffectEmitter.h" />
     <ClInclude Include="Sources\Game\IMagic.h" />
     <ClInclude Include="Sources\Game\IMagicShooter.h" />
@@ -285,6 +288,7 @@
     <ClInclude Include="Sources\Game\MoveCommand.h" />
     <ClInclude Include="Sources\Game\NormalEffectEmitter.h" />
     <ClInclude Include="Sources\Game\NormalMagic.h" />
+    <ClInclude Include="Sources\Game\NormalMagicEffect.h" />
     <ClInclude Include="Sources\Game\NormalMagicShooter.h" />
     <ClInclude Include="Sources\Game\PauseScene.h" />
     <ClInclude Include="Sources\Game\PlayParameterLoader.h" />
@@ -354,11 +358,19 @@
       <FileType>Document</FileType>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
     </MeshContentTask>
     <MeshContentTask Include="Assets\Models\Protected\skydome.FBX">
       <FileType>Document</FileType>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>

@@ -4,12 +4,20 @@
 #include <Utils\ConstBuffer.h>
 #include <Utils\ResourceManager.h>
 #include "Camera.h"
+#include "NormalMagicEffect.h"
 
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
 NormalMagicEffectEmitter::NormalMagicEffectEmitter() {
+	// メモリを確保しておく
+	m_effects.resize(1);
+	for (std::vector<std::unique_ptr<NormalMagicEffect>>::iterator itr = m_effects.begin();
+		itr != m_effects.end();
+		++itr) {
+		*itr = std::make_unique<NormalMagicEffect>();
+	}
 }
 
 /// <summary>
@@ -30,6 +38,13 @@ void NormalMagicEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, c
 	bd.CPUAccessFlags = 0;
 
 	ServiceLocater<DirectX11>::Get()->GetDevice().Get()->CreateBuffer(&bd, nullptr, m_cBuffer.GetAddressOf());
+
+	// エフェクトの初期化
+	for (std::vector<std::unique_ptr<NormalMagicEffect>>::iterator itr = m_effects.begin();
+		itr != m_effects.end();
+		++itr) {
+		(*itr)->Initialize();
+	}
 }
 
 /// <summary>
@@ -38,10 +53,15 @@ void NormalMagicEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, c
 /// <param name="timer">ステップタイマー</param>
 /// <param name="camera">カメラ</param>
 void NormalMagicEffectEmitter::Update(const DX::StepTimer& timer, const Camera* camera) {
-	timer;
 	// 視線ベクトルを取得する
 	m_eyeVec = camera->GetEyeVector();
 
+	// エフェクトを更新する
+	for (std::vector<std::unique_ptr<NormalMagicEffect>>::iterator itr = m_effects.begin();
+		itr != m_effects.end();
+		++itr) {
+		(*itr)->Update(timer);
+	}
 }
 
 /// <summary>
@@ -101,14 +121,16 @@ void NormalMagicEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::M
 
 	// 頂点情報を作成する
 	std::vector<DirectX::VertexPositionColorTexture> vertex;
-	vertex.emplace_back(DirectX::VertexPositionColorTexture(
-		DirectX::SimpleMath::Vector3(0, 0, 0), DirectX::SimpleMath::Color(1, 1, 1, 1), DirectX::SimpleMath::Vector2(0, 0)
-	));
-
-	// エフェクトを描画する
-	auto a = &vertex[0];
-	auto b = vertex.size();
-	batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, a, b);
-
+	for (std::vector<std::unique_ptr<NormalMagicEffect>>::iterator itr = m_effects.begin();
+		itr != m_effects.end();
+		++itr) {
+		vertex.emplace_back(DirectX::VertexPositionColorTexture(
+			(*itr)->GetPos(), DirectX::SimpleMath::Color(1, 1, 1, 1),
+			DirectX::SimpleMath::Vector2(1.0f, 0) // xがスケール yが回転
+		));
+	}
 	
+	// エフェクトを描画する
+	batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], vertex.size());
+
 }
