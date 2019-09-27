@@ -48,6 +48,8 @@ private:
 	DirectX::SimpleMath::Vector2                        m_pos;
 	// マウス移動量
 	DirectX::SimpleMath::Vector2                        m_moved;
+	// マウスの座標モード
+	DirectX::Mouse::Mode                                m_mode;
 	// マウスを相対モードから絶対モードに変更したかのフラグ
 	bool                                                m_wasChangedToAbsolute;
 	// 絶対モードでのマウスの最終位置

@@ -18,9 +18,15 @@ public:
 		const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const override;
 
 private:
+	// ターゲットの方向を示すアイコンを更新する
+	void UpdateIcon(Player& player);
 	// ターゲットの方向を示すアイコンの位置を計算する
 	DirectX::SimpleMath::Vector2 CalculateIconPos(const DirectX::SimpleMath::Vector3& vec, const DirectX::SimpleMath::Vector2& screenSize,
 		const DirectX::SimpleMath::Vector2& screenOffset);
+	// 照準を更新する
+	void UpdateAiming(Player& player, const DX::StepTimer& timer);
+
+private:
 	// 相手プレイヤーのアイコンを描画する
 	void RenderEnemeyIcon(const Player& player, DirectX::SpriteBatch* spriteBatch) const;
 	// 所持エレメントを描画する
@@ -34,9 +40,13 @@ private:
 
 private:
 	// ターゲットの方向を示すアイコンの位置
-	DirectX::SimpleMath::Vector2 m_targetIconPos;
+	DirectX::SimpleMath::Vector2                   m_targetIconPos;
 	// ターゲットの方向を示すアイコンを描画するかどうか
-	bool                         m_enableRenderTargetIcon;
+	bool                                           m_enableRenderTargetIcon;
+	// 照準の位置
+	DirectX::SimpleMath::Vector2                   m_aimingPos;
+	// 照準のアニメーション用カウンタ
+	float                                          m_aimigRotation;
 };
 
 

@@ -106,6 +106,8 @@ public:
 		float                             damageTimer;
 		// SP消費直後タイマー
 		float                             spDecreaseTimer;
+		// ブースト中かどうか
+		bool                              isBoosting;
 	};
 
 private:

@@ -230,6 +230,7 @@ void Player::InitializeStatus() {
 
 	m_status.damageTimer = 0.0f;
 	m_status.spDecreaseTimer = 0.0f;
+	m_status.isBoosting = false;
 }
 
 /// <summary>

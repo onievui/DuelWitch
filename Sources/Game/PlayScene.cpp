@@ -47,7 +47,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	// マウスを相対モードに変更する
 	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
 	// カーソルを画面の中心に移動させる
-	ServiceLocater<MouseWrapper>::Get()->SetPos( DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.5f));
+	ServiceLocater<MouseWrapper>::Get()->SetPos(DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.5f));
 
 	// リソースをロードする
 	ResourceLoader::Load(ResourceLoaderID::PlayScene);
@@ -233,17 +233,16 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 
 	// エレメントを描画する
 	m_elementManager->Render(view, projection);
-
-	// プレイヤーを描画する
-	for (std::vector<std::unique_ptr<Player>>::const_iterator itr = m_players.cbegin(); itr != m_players.cend(); ++itr) {
-		(*itr)->Render(view, projection, spriteBatch);
-	}
-	
 	// 魔法を描画する
 	m_magicManager->Render(view, projection);
 	// エフェクトを描画する
 	m_effectManager->Render(view, projection);
 	
+	// プレイヤーを描画する
+	for (std::vector<std::unique_ptr<Player>>::const_iterator itr = m_players.cbegin(); itr != m_players.cend(); ++itr) {
+		(*itr)->Render(view, projection, spriteBatch);
+	}
+
 	spriteBatch->End();
 }
 

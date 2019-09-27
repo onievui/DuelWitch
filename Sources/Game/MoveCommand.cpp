@@ -124,10 +124,12 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		pos += move * move_speed*elapsed_time*ref_status.boostSpeedRate;
 		// SP‚ðŒ¸‚ç‚·
 		ref_status.sp -= ref_status.boostSpCost*elapsed_time;
+		ref_status.isBoosting = true;
 		Zoom(GetCamera(player), timer, true);
 	}
 	else {
 		pos += move * move_speed*elapsed_time;
+		ref_status.isBoosting = false;
 		Zoom(GetCamera(player), timer, false);
 		
 	}
