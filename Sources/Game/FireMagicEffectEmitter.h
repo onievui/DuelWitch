@@ -6,6 +6,9 @@
 #include "EffectEmitter.h"
 
 
+class FireMagicEffect;
+
+
 /// <summary>
 /// 炎魔法エフェクトエミッタークラス
 /// </summary>
@@ -23,6 +26,10 @@ public:
 	void Render(Batch* batch, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) override;
 
 private:
+	// エフェクト
+	std::vector<std::unique_ptr<FireMagicEffect>> m_effects;
+	// 視線ベクトル
+	DirectX::SimpleMath::Vector3                  m_eyeVec;
 
 };
 

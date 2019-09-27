@@ -83,33 +83,33 @@ bool MagicParameter::LoadData() {
 		return false;
 	}
 
-	maxNum.resize(root["_MaxNum_Size"].getNumI());
+	maxNum.resize(root["_MaxNum_Size"].GetNumI());
 	for (unsigned int i = 0; i < maxNum.size(); ++i) {
-		maxNum[i] = root["MaxNum"][i].getNumI();
+		maxNum[i] = root["MaxNum"][i].GetNumI();
 	}
-	normalParam.radius            = root["Normal"]["Radius"].getNumF();
-	normalParam.moveSpeed         = root["Normal"]["MoveSpeed"].getNumF();
-	normalParam.lifeTime          = root["Normal"]["LifeTime"].getNumF();
-	fireParam.wayAngle            = Math::Deg2Rad(root["Fire"]["WayAngle_Deg"].getNumF());
-	fireParam.radius              = root["Fire"]["Radius"].getNumF();
-	fireParam.height              = root["Fire"]["Height"].getNumF();
-	fireParam.moveSpeed           = root["Fire"]["MoveSpeed"].getNumF();
-	fireParam.lifeTime            = root["Fire"]["LifeTime"].getNumF();
-	freezeParam.radius            = root["Freeze"]["Radius"].getNumF();
-	freezeParam.lifeTime          = root["Freeze"]["LifeTime"].getNumF();
-	thunderParam.radius           = root["Thunder"]["Radius"].getNumF();
-	thunderParam.colliderRadius   = root["Thunder"]["ColliderRadius"].getNumF();
-	thunderParam.moveSpeed        = root["Thunder"]["MoveSpeed"].getNumF();
-	thunderParam.chaseSpeed       = root["Thunder"]["ChaseSpeed"].getNumF();
-	thunderParam.chaseEndDistance = root["Thunder"]["ChaseEndDistance"].getNumF();
-	thunderParam.chaseLerpSpeed   = root["Thunder"]["ChaseLerpSpeed"].getNumF();
-	thunderParam.chaseEndTime     = root["Thunder"]["ChaseEndTime"].getNumF();
-	thunderParam.lifeTime         = root["Thunder"]["LifeTime"].getNumF();
-	thunderStrikeParam.radius     = root["ThunderStrike"]["Radius"].getNumF();
-	thunderStrikeParam.height     = root["ThunderStrike"]["Height"].getNumF();
-	thunderStrikeParam.appearPosY = root["ThunderStrike"]["AppearPosY"].getNumF();
-	thunderStrikeParam.moveSpeed  = root["ThunderStrike"]["MoveSpeed"].getNumF();
-	thunderStrikeParam.lifeTime   = root["ThunderStrike"]["LifeTime"].getNumF();
+	normalParam.radius            = root["Normal"]["Radius"].GetNumF();
+	normalParam.moveSpeed         = root["Normal"]["MoveSpeed"].GetNumF();
+	normalParam.lifeTime          = root["Normal"]["LifeTime"].GetNumF();
+	fireParam.wayAngle            = Math::Deg2Rad(root["Fire"]["WayAngle_Deg"].GetNumF());
+	fireParam.radius              = root["Fire"]["Radius"].GetNumF();
+	fireParam.height              = root["Fire"]["Height"].GetNumF();
+	fireParam.moveSpeed           = root["Fire"]["MoveSpeed"].GetNumF();
+	fireParam.lifeTime            = root["Fire"]["LifeTime"].GetNumF();
+	freezeParam.radius            = root["Freeze"]["Radius"].GetNumF();
+	freezeParam.lifeTime          = root["Freeze"]["LifeTime"].GetNumF();
+	thunderParam.radius           = root["Thunder"]["Radius"].GetNumF();
+	thunderParam.colliderRadius   = root["Thunder"]["ColliderRadius"].GetNumF();
+	thunderParam.moveSpeed        = root["Thunder"]["MoveSpeed"].GetNumF();
+	thunderParam.chaseSpeed       = root["Thunder"]["ChaseSpeed"].GetNumF();
+	thunderParam.chaseEndDistance = root["Thunder"]["ChaseEndDistance"].GetNumF();
+	thunderParam.chaseLerpSpeed   = root["Thunder"]["ChaseLerpSpeed"].GetNumF();
+	thunderParam.chaseEndTime     = root["Thunder"]["ChaseEndTime"].GetNumF();
+	thunderParam.lifeTime         = root["Thunder"]["LifeTime"].GetNumF();
+	thunderStrikeParam.radius     = root["ThunderStrike"]["Radius"].GetNumF();
+	thunderStrikeParam.height     = root["ThunderStrike"]["Height"].GetNumF();
+	thunderStrikeParam.appearPosY = root["ThunderStrike"]["AppearPosY"].GetNumF();
+	thunderStrikeParam.moveSpeed  = root["ThunderStrike"]["MoveSpeed"].GetNumF();
+	thunderStrikeParam.lifeTime   = root["ThunderStrike"]["LifeTime"].GetNumF();
 
 	return true;
 }

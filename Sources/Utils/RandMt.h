@@ -25,6 +25,10 @@ public:
 	static int GetRand(int range);
 	// 乱数の取得（実数）
 	static float GetRand(float range);
+	// 範囲の中の乱数の取得（整数）
+	static int GetRange(int min, int max);
+	// 範囲の中の乱数の取得（実数）
+	static float GetRange(float min, float max);
 
 private:
 	static RandMt m_randMt;

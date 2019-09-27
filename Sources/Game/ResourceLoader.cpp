@@ -54,19 +54,21 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	// プレイシーン
 	case ResourceLoaderID::PlayScene:
 		// テクスチャの読み込み
-		textureResourceManager->AddResource(TextureID::MagicIcon, TextureResource(L"Protected/element1.png"));
-		textureResourceManager->AddResource(TextureID::MagicIcon, L"Protected/element2.png");
-		textureResourceManager->AddResource(TextureID::MagicIcon, L"Protected/element3.png");
-		textureResourceManager->AddResource(TextureID::MagicAiming, TextureResource(L"Protected/magic_aiming.png"));
-		textureResourceManager->AddResource(TextureID::CharaIcon, TextureResource(L"Protected/chara_icon1.png"));
-		textureResourceManager->AddResource(TextureID::CharaIcon, L"Protected/chara_icon2.png");
-		textureResourceManager->AddResource(TextureID::CharaIcon, L"Protected/chara_icon3.png");
-		textureResourceManager->AddResource(TextureID::HpBar, TextureResource(L"Protected/hp_bar_green.png"));
-		textureResourceManager->AddResource(TextureID::HpBar, L"Protected/hp_bar_red.png");
-		textureResourceManager->AddResource(TextureID::HpBar, L"Protected/hp_bar_black.png");
-		textureResourceManager->AddResource(TextureID::SpBar, TextureResource(L"Protected/sp_bar_blue.png"));
-		textureResourceManager->AddResource(TextureID::SpBar, L"Protected/sp_bar_black.png");
-		textureResourceManager->AddResource(TextureID::Particle, TextureResource(L"Protected/particle.png"));
+		textureResourceManager->AddResource(TextureID::MagicIcon,       TextureResource(L"Protected/element1.png"));
+		textureResourceManager->AddResource(TextureID::MagicIcon,		    L"Protected/element2.png");
+		textureResourceManager->AddResource(TextureID::MagicIcon,           L"Protected/element3.png");
+		textureResourceManager->AddResource(TextureID::MagicAiming,     TextureResource(L"Protected/magic_aiming.png"));
+		textureResourceManager->AddResource(TextureID::CharaIcon,       TextureResource(L"Protected/chara_icon1.png"));
+		textureResourceManager->AddResource(TextureID::CharaIcon,           L"Protected/chara_icon2.png");
+		textureResourceManager->AddResource(TextureID::CharaIcon,           L"Protected/chara_icon3.png");
+		textureResourceManager->AddResource(TextureID::HpBar,           TextureResource(L"Protected/hp_bar_green.png"));
+		textureResourceManager->AddResource(TextureID::HpBar,               L"Protected/hp_bar_red.png");
+		textureResourceManager->AddResource(TextureID::HpBar,               L"Protected/hp_bar_black.png");
+		textureResourceManager->AddResource(TextureID::SpBar,           TextureResource(L"Protected/sp_bar_blue.png"));
+		textureResourceManager->AddResource(TextureID::SpBar,               L"Protected/sp_bar_black.png");
+		textureResourceManager->AddResource(TextureID::Particle,        TextureResource(L"Protected/particle.png"));
+		textureResourceManager->AddResource(TextureID::FireMagicEffect, TextureResource(L"Protected/fire_magic_effect_a.jpg"));
+		textureResourceManager->AddResource(TextureID::FireMagicEffect,     L"Protected/fire_magic_effect_b.png");
 		// ポーズシーンで使うテクスチャも読みこんでおく
 		textureResourceManager->AddResource(TextureID::BlackBack, TextureResource(L"Protected/black_back1024.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));

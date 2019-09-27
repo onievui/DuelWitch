@@ -68,9 +68,9 @@ bool ElementParameter::LoadData() {
 		return false;
 	}
 
-	maxNum = root["MaxNum"].getNumI();
-	alphaRate = root["AlphaRate"].getNumF();
-	radius = root["Radius"].getNumF();
+	maxNum = root["MaxNum"].GetNumI();
+	alphaRate = root["AlphaRate"].GetNumF();
+	radius = root["Radius"].GetNumF();
 
 	return true;
 }

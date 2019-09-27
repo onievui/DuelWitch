@@ -21,15 +21,24 @@ public:
 public:
 	std::vector<int> maxNum;
 
-	struct normal_param {
-
+	struct normal_magic_param {
+		int particleNum;
+		float scale;
 	};
-	normal_param normalParam;
+	normal_magic_param normalMagicParam;
 
-	struct fire_param {
-
+	struct fire_magic_param {
+		int particleNum;
+		float scale;
+		float speed;
+		float maxAccelerationX;
+		float minAccelerationX;
+		float accelerationYZ;
+		float maxLifeTime;
+		float minLifeTime;
+		DirectX::SimpleMath::Color color;
 	};
-	fire_param fireParam;
+	fire_magic_param fireMagicParam;
 
 	struct freeze_param {
 

@@ -65,12 +65,8 @@ void EffectManager::Render(const DirectX::SimpleMath::Matrix& view, const Direct
 	for (std::vector<IEffectEmitter*>::iterator itr = LamdaUtils::FindIf(m_effects, LamdaUtils::NotNull());
 		itr != m_effects.end();
 		LamdaUtils::FindIfNext(itr, m_effects.end(), LamdaUtils::NotNull())) {
-		m_batch->Begin();
 		(*itr)->Render(m_batch.get(), view, proj);
-		m_batch->End();
 	}
-
-	
 
 	// シェーダを解除する
 	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();

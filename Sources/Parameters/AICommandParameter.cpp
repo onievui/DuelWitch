@@ -16,17 +16,17 @@ bool AICommandParameter::Load() {
 		return false;
 	}
 
-	moveParam.moveSpeed = root["MoveCommand"]["MoveSpeed"].getNumF();
-	moveParam.moveSpeedXY = root["MoveCommand"]["MoveSpeedXY"].getNumF();
-	moveParam.rotSpeed = root["MoveCommand"]["RotSpeed"].getNumF();
-	moveParam.rotZLimit = Math::Deg2Rad(root["MoveCommand"]["RotZLimit_Deg"].getNumF());
-	moveParam.rotXLimit = Math::Deg2Rad(root["MoveCommand"]["RotXLimit_Deg"].getNumF());
-	moveParam.rotYLimit = Math::Deg2Rad(root["MoveCommand"]["RotYLimit_Deg"].getNumF());
-	moveParam.lerpSpeed = root["MoveCommand"]["LerpSpeed"].getNumF();
-	moveParam.nearDistance = root["MoveCommand"]["NearDistance"].getNumF();
+	moveParam.moveSpeed = root["MoveCommand"]["MoveSpeed"].GetNumF();
+	moveParam.moveSpeedXY = root["MoveCommand"]["MoveSpeedXY"].GetNumF();
+	moveParam.rotSpeed = root["MoveCommand"]["RotSpeed"].GetNumF();
+	moveParam.rotZLimit = Math::Deg2Rad(root["MoveCommand"]["RotZLimit_Deg"].GetNumF());
+	moveParam.rotXLimit = Math::Deg2Rad(root["MoveCommand"]["RotXLimit_Deg"].GetNumF());
+	moveParam.rotYLimit = Math::Deg2Rad(root["MoveCommand"]["RotYLimit_Deg"].GetNumF());
+	moveParam.lerpSpeed = root["MoveCommand"]["LerpSpeed"].GetNumF();
+	moveParam.nearDistance = root["MoveCommand"]["NearDistance"].GetNumF();
 
-	castParam.shotableAngle = Math::Deg2Rad(root["CastCommand"]["ShotableAngle_Deg"].getNumF());
-	castParam.castDelay = root["CastCommand"]["CastDelay"].getNumF();
+	castParam.shotableAngle = Math::Deg2Rad(root["CastCommand"]["ShotableAngle_Deg"].GetNumF());
+	castParam.castDelay = root["CastCommand"]["CastDelay"].GetNumF();
 
 	return true;
 }

@@ -39,7 +39,12 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 			std::list<ElementID>& ref_have_elements = GetHaveElements(player);
 			// エレメントがないなら通常魔法を発射する
 			if (ref_have_elements.empty()) {
-				GetMagicManager(player).CreateMagic(MagicID::Normal , player.GetPlayerID(), player_pos, direction);
+				// SPが足りているか確認する
+				Player::Status& status = GetStatus(player);
+				if (status.sp >= status.normalMagicSpCost) {
+					status.sp -= status.normalMagicSpCost;
+					GetMagicManager(player).CreateMagic(MagicID::Normal, player.GetPlayerID(), player_pos, direction);
+				}
 			}
 			else {
 				ElementID element_id = GetHaveElements(player).front();

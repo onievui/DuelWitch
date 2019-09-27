@@ -71,20 +71,41 @@ public:
 	void HitMagic(const IMagic* magic);
 
 private:
+	// ステータスを初期化する
+	void InitializeStatus();
+	// ステータスを更新する
+	void UpdateStatus(const DX::StepTimer& timer);
+
+public:
 	/// <summary>
 	/// プレイヤーステータス
 	/// </summary>
 	struct Status {
 		// 最大HP
-		float maxHp;
+		float                             maxHp;
 		// HP
-		float hp;
+		float                             hp;
+		// 前フレームのHP
+		float                             preHp;
 		// 最大SP
-		float maxSp;
+		float                             maxSp;
 		// SP
-		float sp;
+		float                             sp;
+		// 前フレームのSP
+		float                             preSp;
+		// SP回復速度
+		float                             spRecoverySpeed;
+		// 通常魔法の消費SP
+		float                             normalMagicSpCost;
+		// ブースト速度倍率
+		float                             boostSpeedRate;
+		// ブースト消費SP
+		float                             boostSpCost;
+
 		// ダメージ後無敵時間タイマー
-		float damageTimer;
+		float                             damageTimer;
+		// SP消費直後タイマー
+		float                             spDecreaseTimer;
 	};
 
 private:

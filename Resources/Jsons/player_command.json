@@ -1,13 +1,21 @@
 {
   "MoveCommand": {
-    "MoveSpeed"          : 16.0,
-    "MoveSpeedXY"        : 0.3,
-    "RotSpeed"           : 2.0,
-    "RotZLimit_Deg"      : 22.5,
-    "RotXLimit_Deg"      : 22.5,
-    "RotYLimit_Deg"      : 16.25,
-    "LerpSpeed"          : 0.040,
+    "MoveSpeed": 16.0,
+    "MoveSpeedXY": 0.3,
+    "RotSpeed": 2.0,
+    "RotZLimit_Deg": 22.5,
+    "RotXLimit_Deg": 22.5,
+    "RotYLimit_Deg": 16.25,
+    "LerpSpeed": 0.040,
+
     "CameraRotXLimit_Deg": 30.0,
-    "CameraRotYLimit_Deg": 30.0
+    "CameraRotYLimit_Deg": 30.0,
+
+    "NearDistance": 1.8
+  },
+
+  "AICastCommand": {
+    "ShotableAngle_Deg": 60.0,
+    "CastDelay": 2.0
   }
 }

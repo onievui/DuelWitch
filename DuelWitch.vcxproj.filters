@@ -23,9 +23,6 @@
     <Filter Include="Game\Manager">
       <UniqueIdentifier>{62df1444-d1b5-4c52-930c-6ad4fb26d77e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Factory">
-      <UniqueIdentifier>{eab97cfd-ae66-4aec-b145-4a73a6307736}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Scene">
       <UniqueIdentifier>{00948bf6-4ead-40b9-876b-3e63f482983b}</UniqueIdentifier>
     </Filter>
@@ -76,6 +73,9 @@
     </Filter>
     <Filter Include="Assets\Shader">
       <UniqueIdentifier>{16a16d43-0583-4661-8516-185028f8ef03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Factory">
+      <UniqueIdentifier>{eab97cfd-ae66-4aec-b145-4a73a6307736}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -291,14 +291,20 @@
     <ClCompile Include="Sources\Game\EffectFactory.cpp">
       <Filter>Game\Factory</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\NormalEffectEmitter.cpp">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FireEffectEmitter.cpp">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Game\NormalMagicEffect.cpp">
       <Filter>Game\Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FireMagicEffect.cpp">
+      <Filter>Game\Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\NormalMagicEffectEmitter.cpp">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FireMagicEffectEmitter.cpp">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Parameters\CharaStatusParameter.cpp">
+      <Filter>Parameters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -587,12 +593,6 @@
     <ClInclude Include="Sources\Game\IEffectEmitter.h">
       <Filter>Game\Object\EffectEmitter</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\NormalEffectEmitter.h">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FireEffectEmitter.h">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Utils\LamdaUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -613,6 +613,18 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\NormalMagicEffect.h">
       <Filter>Game\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FireMagicEffect.h">
+      <Filter>Game\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\NormalMagicEffectEmitter.h">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FireMagicEffectEmitter.h">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Parameters\CharaStatusParameter.h">
+      <Filter>Parameters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -641,6 +653,9 @@
     </None>
     <None Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\Default.hlsli">
       <Filter>Assets\Shader</Filter>
+    </None>
+    <None Include="Resources\Jsons\chara_status.json">
+      <Filter>Assets\Jsons</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

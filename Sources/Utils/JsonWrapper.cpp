@@ -1,5 +1,6 @@
 #include "JsonWrapper.h"
 #include <fstream>
+#include "ErrorMessage.h"
 
 
 namespace JsonWrapper {
@@ -13,7 +14,7 @@ namespace JsonWrapper {
 	/// 出力先ストリーム
 	/// </returns>
 	std::ostream &operator << (std::ostream& os, JsonWrapper::value &value) {
-		value.getValue().serialize(std::ostream_iterator<char>(os));
+		value.GetValue().serialize(std::ostream_iterator<char>(os));
 		return os;
 	}
 
@@ -27,7 +28,7 @@ namespace JsonWrapper {
 	/// </returns>
 	std::istream &operator >> (std::istream& is, JsonWrapper::value& value) {
 		picojson::set_last_error(std::string());
-		const std::string err(picojson::parse(value.getValue(), is));
+		const std::string err(picojson::parse(value.GetValue(), is));
 		if (!err.empty()) {
 			picojson::set_last_error(err);
 			is.setstate(std::ios::failbit);
@@ -48,6 +49,7 @@ namespace JsonWrapper {
 		std::ifstream ifs;
 		ifs.open(fileName.c_str());
 		if (!ifs.is_open()) {
+			ErrorMessage(L"Jsonファイルの読み込みに失敗しました");
 			return false;
 		}
 

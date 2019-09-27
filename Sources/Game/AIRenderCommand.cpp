@@ -35,6 +35,6 @@ void AIRenderCommand::Render(const Player& player, const DirectX::SimpleMath::Ma
 		// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é
 		model->Draw(context, *states, GetTransform(player).GetMatrix(), view, proj);
 		// “–‚½‚è”»’è‚ð•`‰æ‚·‚é
-		GetCollider(player).Render(view, proj);
+		GetCollider(player).Render(view, proj, DirectX::SimpleMath::Color(1, 1, 1, 0.3f), true);
 	}
 }

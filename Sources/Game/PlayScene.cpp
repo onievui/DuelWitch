@@ -230,12 +230,15 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	m_gridFloor->Render(view, projection);
 	// フィールドを描画する
 	m_field->Render(view, projection);
+
+	// エレメントを描画する
+	m_elementManager->Render(view, projection);
+
 	// プレイヤーを描画する
 	for (std::vector<std::unique_ptr<Player>>::const_iterator itr = m_players.cbegin(); itr != m_players.cend(); ++itr) {
 		(*itr)->Render(view, projection, spriteBatch);
 	}
-	// エレメントを描画する
-	m_elementManager->Render(view, projection);
+	
 	// 魔法を描画する
 	m_magicManager->Render(view, projection);
 	// エフェクトを描画する

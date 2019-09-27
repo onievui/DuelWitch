@@ -12,6 +12,8 @@ public:
 	static constexpr float PI2 = 6.283185307f;
 	static constexpr float HarfPI = 1.570796327f;
 	static constexpr float QuarterPI = 0.785398163f;
+
+	static constexpr float Epsilon = FLT_EPSILON;
 	
 	// 度数法から弧度法に変換する
 	static constexpr float Deg2Rad(float deg) {
@@ -59,6 +61,9 @@ public:
 		const DirectX::SimpleMath::Vector3& vec1,
 		const DirectX::SimpleMath::Vector3& vec2) {
 		DirectX::SimpleMath::Vector3 axis = vec1.Cross(vec2);
+		if (axis.Length() <= 0.0f) {
+			return DirectX::SimpleMath::Quaternion::Identity;
+		}
 		axis.Normalize();
 		float angle = std::acosf(vec1.Dot(vec2) / (vec1.Length()*vec2.Length()));
 		return DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, angle);

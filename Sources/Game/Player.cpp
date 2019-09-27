@@ -4,6 +4,8 @@
 #include <Utils\MathUtils.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\MouseWrapper.h>
+#include <Parameters\CharaStatusParameter.h>
+#include "PlayParameterLoader.h"
 #include "Command.h"
 #include "MoveCommand.h"
 #include "AIMoveCommand.h"
@@ -33,10 +35,11 @@ Player::Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMat
 	, m_sphereCollider(&m_transform, 0.75f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
 	, m_pMagicManager(magicManager)
 	, m_pCamera() {
-	const float hp = 100.0f;
-	const float sp = 100.0f;
-	m_status.maxHp = m_status.hp = hp;
-	m_status.maxSp = m_status.sp = sp;
+
+	// ステータスを初期化する
+	InitializeStatus();
+
+	// プレイヤーと敵プレイヤーでコマンドを変える
 	if (id == PlayerID::Player1) {
 		m_moveCommand = std::make_unique<MoveCommand>();
 		m_castCommand = std::make_unique<CastMagicCommand>();
@@ -62,15 +65,14 @@ Player::~Player() {
 void Player::Update(const DX::StepTimer& timer) {
 	// 移動を行う
 	m_moveCommand->Execute(*this, timer);
-
 	// 魔法を発動する
 	m_castCommand->Execute(*this, timer);
-
 	// 描画のための処理を行う
 	m_renderCommand->Execute(*this, timer);
 
-	// ダメージ後無敵時間を減らす
-	m_status.damageTimer -= static_cast<float>(timer.GetElapsedSeconds());
+	// ステータスを更新する
+	UpdateStatus(timer);
+	
 }
 
 /// <summary>
@@ -84,6 +86,15 @@ void Player::Lost() {
 /// プレイヤーを生成する
 /// </summary>
 void Player::Create() {
+	//ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::FireMagic, m_transform.GetPosition(), DirectX::SimpleMath::Vector3::UnitZ)
+	//	->SetParent(&m_transform);
+	//if (m_id == PlayerID::Player1) {
+	//	static Transform tra;
+	//	tra.SetPosition(DirectX::SimpleMath::Vector3(0, 3, 40));
+	//	ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::FireMagic, m_transform.GetPosition(), DirectX::SimpleMath::Vector3::UnitX)
+	//		->SetParent(&tra);
+	//}
+
 	// エフェクトを設定する
 	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::BloomModel);
 	modelResource->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
@@ -202,5 +213,50 @@ void Player::HitMagic(const IMagic* magic) {
 		m_status.hp -= 10.0f;
 		m_status.damageTimer = 3.0f;
 	}
+}
+
+/// <summary>
+/// ステータスを初期化する
+/// </summary>
+void Player::InitializeStatus() {
+	const CharaStatusParameter::chara1_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCharaStatusParameter()->chara1Param;
+
+	m_status.maxHp = m_status.hp = m_status.preHp = parameter.maxHp;
+	m_status.maxSp = m_status.sp = m_status.preSp = parameter.maxSp;
+	m_status.spRecoverySpeed = parameter.spRecoverySpeed;
+	m_status.normalMagicSpCost = parameter.normalMagicSpCost;
+	m_status.boostSpeedRate = parameter.boostSpeedRate;
+	m_status.boostSpCost = parameter.boostSpCost;
+
+	m_status.damageTimer = 0.0f;
+	m_status.spDecreaseTimer = 0.0f;
+}
+
+/// <summary>
+/// ステータスを更新する
+/// </summary>
+/// <param name="timer">ステップタイマー</param>
+void Player::UpdateStatus(const DX::StepTimer& timer) {
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+
+	m_status.preHp = m_status.hp;
+
+	// SPを回復する
+	if (m_status.preSp > m_status.sp) {
+		// SPを消費した直後は回復しない
+		const float sp_decrease_time = 2.0f;
+		m_status.spDecreaseTimer = sp_decrease_time;
+	}
+	else {
+		m_status.spDecreaseTimer -= elapsed_time;
+	}
+	if (m_status.spDecreaseTimer <= 0) {
+		m_status.sp = std::min(m_status.sp + m_status.spRecoverySpeed*elapsed_time, m_status.maxSp);
+	}
+	m_status.preSp = m_status.sp;
+	
+
+	// ダメージ後無敵時間を減らす
+	m_status.damageTimer -= elapsed_time;
 }
 

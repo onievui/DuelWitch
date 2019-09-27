@@ -42,8 +42,8 @@ void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& 
 	m_lifeTime = parameter->normalParam.lifeTime;
 
 	// 魔法のエフェクトを生成する
-	m_effect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::NormalMagic, pos, dir);
-	m_effect->SetParent(&m_transform);
+	m_pEffect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::NormalMagic, pos, dir);
+	m_pEffect->SetParent(&m_transform);
 }
 
 /// <summary>
@@ -86,7 +86,7 @@ void NormalMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 /// </summary>
 void NormalMagic::Finalize() {
 	// エフェクトを終了させる
-	m_effect->IsUsed(false);
+	m_pEffect->IsUsed(false);
 }
 
 /// <summary>

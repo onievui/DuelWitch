@@ -3,7 +3,7 @@
 #include <Utils\LoadDataHolder.h>
 
 #include <Parameters\CommandParameter.h>
-#include <Parameters\AICommandParameter.h>
+#include <Parameters\CharaStatusParameter.h>
 #include <Parameters\ElementParameter.h>
 #include <Parameters\MagicParameter.h>
 #include <Parameters\EffectParameter.h>
@@ -21,11 +21,11 @@ public:
 
 public:
 	// 読み込みデータ
-	LoadDataHolder<CommandParameter, LoadDataID::PlayScene>   commandParameter;
-	LoadDataHolder<AICommandParameter, LoadDataID::PlayScene> aiCommandParameter;
-	LoadDataHolder<ElementParameter, LoadDataID::PlayScene>   elementParameter;
-	LoadDataHolder<MagicParameter, LoadDataID::PlayScene>     magicParameter;
-	LoadDataHolder<EffectParameter, LoadDataID::PlayScene>    effectParameter;
+	LoadDataHolder<CommandParameter, LoadDataID::PlayScene>     commandParameter;
+	LoadDataHolder<CharaStatusParameter, LoadDataID::PlayScene> charaStatusParameter;
+	LoadDataHolder<ElementParameter, LoadDataID::PlayScene>     elementParameter;
+	LoadDataHolder<MagicParameter, LoadDataID::PlayScene>       magicParameter;
+	LoadDataHolder<EffectParameter, LoadDataID::PlayScene>      effectParameter;
 
 };
 
@@ -35,7 +35,7 @@ public:
 PlayParameterLoader::Impl::Impl() {
 	LoadDataManager* manager = LoadDataManager::GetIns();
 	manager->Register(&commandParameter);
-	manager->Register(&aiCommandParameter);
+	manager->Register(&charaStatusParameter);
 	manager->Register(&elementParameter);
 	manager->Register(&magicParameter);
 	manager->Register(&effectParameter);
@@ -47,7 +47,7 @@ PlayParameterLoader::Impl::Impl() {
 PlayParameterLoader::Impl::~Impl(){
 	LoadDataManager* manager = LoadDataManager::GetIns();
 	manager->Unregister(&commandParameter);
-	manager->Unregister(&aiCommandParameter);
+	manager->Unregister(&charaStatusParameter);
 	manager->Unregister(&elementParameter);
 	manager->Unregister(&effectParameter);
 }
@@ -105,8 +105,8 @@ const CommandParameter* PlayParameterLoader::GetCommandParameter() {
 /// <returns>
 /// パラメータへのポインタ
 /// </returns>
-const AICommandParameter* PlayParameterLoader::GetAICommandParameter() {
-	return m_impl->aiCommandParameter.Get();
+const CharaStatusParameter * PlayParameterLoader::GetCharaStatusParameter() {
+	return m_impl->charaStatusParameter.Get();
 }
 
 /// <summary>

@@ -22,7 +22,7 @@ public:
 public:
 	// “–‚½‚è”»’è‚Ì•\Ž¦
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj,
-		const DirectX::SimpleMath::Vector4& color = DirectX::SimpleMath::Vector4(DirectX::Colors::White)) const;
+		const DirectX::SimpleMath::Color& color = DirectX::SimpleMath::Color(DirectX::Colors::White), bool wireframe = true) const;
 
 public:
 	// ”¼Œa‚ðŽæ“¾‚·‚é

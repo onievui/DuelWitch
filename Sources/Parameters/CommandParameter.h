@@ -19,15 +19,27 @@ public:
 	bool Save() override;
 
 public:
-	float moveSpeed;
-	float moveSpeedXY;
-	float rotSpeed;
-	float rotZLimit;
-	float rotXLimit;
-	float rotYLimit;
-	float lerpSpeed;
-	float cameraRotXLimit;
-	float cameraRotYLimit;
+	struct move_param {
+		float moveSpeed;
+		float moveSpeedXY;
+		float rotSpeed;
+		float rotZLimit;
+		float rotXLimit;
+		float rotYLimit;
+		float lerpSpeed;
+
+		float cameraRotXLimit;
+		float cameraRotYLimit;
+
+		float nearDistance;
+	};
+	move_param moveParam;
+
+	struct ai_cast_param {
+		float shotableAngle;
+		float castDelay;
+	};
+	ai_cast_param aiCastparam;
 };
 
 

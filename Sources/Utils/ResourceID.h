@@ -33,6 +33,7 @@ enum class TextureID {
 	BlackBack,
 
 	Particle,
+	FireMagicEffect,
 
 	Num
 };

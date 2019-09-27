@@ -2,11 +2,20 @@
   "MaxNum"      : [ 30, 20 ],
   "_MaxNum_Size": 2,
 
-  "Normal": {
-
+  "NormalMagic": {
+    "ParticleNum": 1,
+    "Scale": 1.0
   },
-  "Fire": {
-
+  "FireMagic": {
+    "ParticleNum": 40,
+    "Scale": 1.0,
+    "Speed": 0.4,
+    "MaxAccelerationX": -1.0,
+    "MinAccelerationX": -1.4,
+    "AccelerationYZ": -0.3,
+    "MaxLifeTime": 2.0,
+    "MinLifeTime": 1.5,
+    "Color": [ 217, 80, 13, 255 ]
   },
   "Freeze": {
 

@@ -1,8 +1,10 @@
-#include "NormalEffectEmitter.h"
+#include "NormalMagicEffectEmitter.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ConstBuffer.h>
 #include <Utils\ResourceManager.h>
+#include <Parameters\EffectParameter.h>
+#include "PlayParameterLoader.h"
 #include "Camera.h"
 #include "NormalMagicEffect.h"
 
@@ -12,22 +14,12 @@
 /// </summary>
 NormalMagicEffectEmitter::NormalMagicEffectEmitter() {
 	// メモリを確保しておく
-	m_effects.resize(1);
+	m_effects.resize(ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->normalMagicParam.particleNum);
 	for (std::vector<std::unique_ptr<NormalMagicEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
 		*itr = std::make_unique<NormalMagicEffect>();
 	}
-}
-
-/// <summary>
-/// エフェクトエミッターを生成する
-/// </summary>
-/// <param name="pos">出現位置</param>
-/// <param name="dir">向き</param>
-void NormalMagicEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	dir;
-	m_transform.SetPosition(pos);
 
 	// 定数バッファの作成
 	D3D11_BUFFER_DESC bd;
@@ -38,6 +30,17 @@ void NormalMagicEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, c
 	bd.CPUAccessFlags = 0;
 
 	ServiceLocater<DirectX11>::Get()->GetDevice().Get()->CreateBuffer(&bd, nullptr, m_cBuffer.GetAddressOf());
+
+}
+
+/// <summary>
+/// エフェクトエミッターを生成する
+/// </summary>
+/// <param name="pos">出現位置</param>
+/// <param name="dir">向き</param>
+void NormalMagicEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	dir;
+	m_transform.SetPosition(pos);
 
 	// エフェクトの初期化
 	for (std::vector<std::unique_ptr<NormalMagicEffect>>::iterator itr = m_effects.begin();
@@ -95,9 +98,7 @@ void NormalMagicEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::M
 
 	// シェーダに定数バッファを割り当てる
 	ID3D11Buffer* cb[1] = { m_cBuffer.Get() };
-	//context->VSSetConstantBuffers(0, 1, cb);
 	context->GSSetConstantBuffers(0, 1, cb);
-	//context->PSSetConstantBuffers(0, 1, cb);
 
 	// ピクセルシェーダにサンプラーを割り当てる
 	ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
@@ -121,16 +122,19 @@ void NormalMagicEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::M
 
 	// 頂点情報を作成する
 	std::vector<DirectX::VertexPositionColorTexture> vertex;
+	const float partice_scale = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->normalMagicParam.scale;
 	for (std::vector<std::unique_ptr<NormalMagicEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
 		vertex.emplace_back(DirectX::VertexPositionColorTexture(
-			(*itr)->GetPos(), DirectX::SimpleMath::Color(1, 1, 1, 1),
-			DirectX::SimpleMath::Vector2(1.0f, 0) // xがスケール yが回転
+			(*itr)->GetPos(), DirectX::Colors::White,
+			DirectX::SimpleMath::Vector2(partice_scale, 0) // xがスケール yがZ回転
 		));
 	}
 	
 	// エフェクトを描画する
+	batch->Begin();
 	batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], vertex.size());
+	batch->End();
 
 }

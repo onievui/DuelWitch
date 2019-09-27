@@ -195,8 +195,9 @@
     <ClCompile Include="Sources\Game\ElementManager.cpp" />
     <ClCompile Include="Sources\Game\EmptyObject.cpp" />
     <ClCompile Include="Sources\Game\Field.cpp" />
-    <ClCompile Include="Sources\Game\FireEffectEmitter.cpp" />
+    <ClCompile Include="Sources\Game\FireMagicEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\FireMagic.cpp" />
+    <ClCompile Include="Sources\Game\FireMagicEffect.cpp" />
     <ClCompile Include="Sources\Game\FireMagicShooter.cpp" />
     <ClCompile Include="Sources\Game\FixCamera.cpp" />
     <ClCompile Include="Sources\Game\FreezeMagic.cpp" />
@@ -206,7 +207,7 @@
     <ClCompile Include="Sources\Game\MagicFactory.cpp" />
     <ClCompile Include="Sources\Game\MagicManager.cpp" />
     <ClCompile Include="Sources\Game\MoveCommand.cpp" />
-    <ClCompile Include="Sources\Game\NormalEffectEmitter.cpp" />
+    <ClCompile Include="Sources\Game\NormalMagicEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\NormalMagic.cpp" />
     <ClCompile Include="Sources\Game\NormalMagicEffect.cpp" />
     <ClCompile Include="Sources\Game\NormalMagicShooter.cpp" />
@@ -228,6 +229,7 @@
     <ClCompile Include="Sources\Game\TitleScene.cpp" />
     <ClCompile Include="Sources\Game\Transform.cpp" />
     <ClCompile Include="Sources\Parameters\AICommandParameter.cpp" />
+    <ClCompile Include="Sources\Parameters\CharaStatusParameter.cpp" />
     <ClCompile Include="Sources\Parameters\CommandParameter.cpp" />
     <ClCompile Include="Sources\Parameters\EffectParameter.cpp" />
     <ClCompile Include="Sources\Parameters\ElementParameter.cpp" />
@@ -269,8 +271,9 @@
     <ClInclude Include="Sources\Game\EffectID.h" />
     <ClInclude Include="Sources\Game\EffectManager.h" />
     <ClInclude Include="Sources\Game\EmptyObject.h" />
-    <ClInclude Include="Sources\Game\FireEffectEmitter.h" />
+    <ClInclude Include="Sources\Game\FireMagicEffectEmitter.h" />
     <ClInclude Include="Sources\Game\FireMagic.h" />
+    <ClInclude Include="Sources\Game\FireMagicEffect.h" />
     <ClInclude Include="Sources\Game\FireMagicShooter.h" />
     <ClInclude Include="Sources\Game\Command.h" />
     <ClInclude Include="Sources\Game\FreezeMagic.h" />
@@ -286,7 +289,7 @@
     <ClInclude Include="Sources\Game\MagicID.h" />
     <ClInclude Include="Sources\Game\MagicManager.h" />
     <ClInclude Include="Sources\Game\MoveCommand.h" />
-    <ClInclude Include="Sources\Game\NormalEffectEmitter.h" />
+    <ClInclude Include="Sources\Game\NormalMagicEffectEmitter.h" />
     <ClInclude Include="Sources\Game\NormalMagic.h" />
     <ClInclude Include="Sources\Game\NormalMagicEffect.h" />
     <ClInclude Include="Sources\Game\NormalMagicShooter.h" />
@@ -319,6 +322,7 @@
     <ClInclude Include="Sources\Game\Transform.h" />
     <ClInclude Include="Sources\Game\UserRenderCommand.h" />
     <ClInclude Include="Sources\Parameters\AICommandParameter.h" />
+    <ClInclude Include="Sources\Parameters\CharaStatusParameter.h" />
     <ClInclude Include="Sources\Parameters\CommandParameter.h" />
     <ClInclude Include="Sources\Parameters\EffectParameter.h" />
     <ClInclude Include="Sources\Parameters\ElementParameter.h" />
@@ -376,6 +380,7 @@
   <ItemGroup>
     <None Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\Default.hlsli" />
     <None Include="Resources\Jsons\ai_command.json" />
+    <None Include="Resources\Jsons\chara_status.json" />
     <None Include="Resources\Jsons\effect.json" />
     <None Include="Resources\Jsons\element.json" />
     <None Include="Resources\Jsons\magic.json" />

@@ -6,8 +6,8 @@
 #include "EffectManager.h"
 #include "EffectEmitter.h"
 #include "EffectID.h"
-#include "NormalEffectEmitter.h"
-#include "FireEffectEmitter.h"
+#include "NormalMagicEffectEmitter.h"
+#include "FireMagicEffectEmitter.h"
 
 
 /// <summary>

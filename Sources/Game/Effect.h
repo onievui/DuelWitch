@@ -23,10 +23,13 @@ public:
 
 public:
 	// エフェクトを初期化する
-	void Initialize(float life = 0, const DirectX::SimpleMath::Vector3& pos = DirectX::SimpleMath::Vector3::Zero,
-		const DirectX::SimpleMath::Vector3& vel = DirectX::SimpleMath::Vector3::Zero) override { life, pos, vel; }
+	virtual void Initialize(float lifeTime = 0, const DirectX::SimpleMath::Vector3& pos = DirectX::SimpleMath::Vector3::Zero,
+		const DirectX::SimpleMath::Vector3& vel = DirectX::SimpleMath::Vector3::Zero,
+		const DirectX::SimpleMath::Vector3& accel = DirectX::SimpleMath::Vector3::Zero) override { lifeTime, pos, vel, accel; }
 	// エフェクトを更新する
-	void Update(const DX::StepTimer& timer) override { timer; }
+	virtual void Update(const DX::StepTimer& timer) override { timer; }
+	// ループする
+	virtual void Restart() override {}
 
 public:
 	// 座標を取得する
@@ -37,6 +40,8 @@ protected:
 	DirectX::SimpleMath::Vector3		m_pos;
 	// 速度
 	DirectX::SimpleMath::Vector3		m_vel;
+	// 加速度
+	DirectX::SimpleMath::Vector3        m_accel;
 	// エフェクトがループするまでの残り時間
 	float								m_lifeTime;
 
@@ -44,6 +49,8 @@ protected:
 	DirectX::SimpleMath::Vector3		m_startPos;
 	// 初期速度
 	DirectX::SimpleMath::Vector3		m_startVel;
+	// 初期加速度
+	DirectX::SimpleMath::Vector3        m_startAccel;
 	// エフェクトがループするまでの時間
 	float								m_startLifeTime;
 };

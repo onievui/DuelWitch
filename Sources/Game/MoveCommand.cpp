@@ -26,14 +26,14 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
 	DirectX::Keyboard::KeyboardStateTracker* key_tracker = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get();
 	DirectX::Keyboard::State key_state = key_tracker->GetLastState();
-	const CommandParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter();
+	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
 
-	const float move_speed    = parameter->moveSpeed;
-	const float move_speed_xy = parameter->moveSpeedXY;
-	const float rot_z_limit   = parameter->rotZLimit;
-	const float rot_x_limit   = parameter->rotXLimit;
-	const float rot_y_limit   = parameter->rotYLimit;
-	const float lerp_speed    = parameter->lerpSpeed;
+	const float move_speed    = parameter.moveSpeed;
+	const float move_speed_xy = parameter.moveSpeedXY;
+	const float rot_z_limit   = parameter.rotZLimit;
+	const float rot_x_limit   = parameter.rotXLimit;
+	const float rot_y_limit   = parameter.rotYLimit;
+	const float lerp_speed    = parameter.lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
 	Player::MoveDirection& ref_direction = GetMoveDirection(player);
@@ -127,8 +127,8 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	const MouseWrapper* mouse = ServiceLocater<MouseWrapper>::Get();
 	int width = ServiceLocater<DirectX11>::Get()->GetWidth();
 	int height = ServiceLocater<DirectX11>::Get()->GetHeight();
-	const float camera_rot_x_limit = parameter->cameraRotXLimit;
-	const float camera_rot_y_limit = parameter->cameraRotYLimit;
+	const float camera_rot_x_limit = parameter.cameraRotXLimit;
+	const float camera_rot_y_limit = parameter.cameraRotYLimit;
 	DirectX::SimpleMath::Vector2 camera_rot(
 		(mouse->GetPos().y - height / 2) / height * camera_rot_y_limit,
 		-(mouse->GetPos().x - width / 2) / width * camera_rot_x_limit

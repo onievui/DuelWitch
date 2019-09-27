@@ -1,7 +1,7 @@
 #include "AIMoveCommand.h"
 #include <Utils\MathUtils.h>
 #include <Utils\ServiceLocater.h>
-#include <Parameters\AICommandParameter.h>
+#include <Parameters\CommandParameter.h>
 #include "PlayParameterLoader.h"
 
 
@@ -12,14 +12,14 @@
 /// <param name="timer">タイマー</param>
 void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
-	const AICommandParameter::move_param* parameter = &ServiceLocater<PlayParameterLoader>::Get()->GetAICommandParameter()->moveParam;
+	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
 
-	const float move_speed    = parameter->moveSpeed;
-	const float move_speed_xy = parameter->moveSpeedXY;
-	const float rot_z_limit   = parameter->rotZLimit;
-	const float rot_x_limit   = parameter->rotXLimit;
-	const float rot_y_limit   = parameter->rotYLimit;
-	const float lerp_speed    = parameter->lerpSpeed;
+	const float move_speed    = parameter.moveSpeed;
+	const float move_speed_xy = parameter.moveSpeedXY;
+	const float rot_z_limit   = parameter.rotZLimit;
+	const float rot_x_limit   = parameter.rotXLimit;
+	const float rot_y_limit   = parameter.rotYLimit;
+	const float lerp_speed    = parameter.lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
 	Player::MoveDirection& ref_direction = GetMoveDirection(player);
@@ -36,7 +36,7 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	}
 
 	// 移動
-	const float& nearDistance = parameter->nearDistance;
+	const float& nearDistance = parameter.nearDistance;
 	bool is_forward = ref_direction == Player::MoveDirection::Forward;
 	DirectX::SimpleMath::Vector3 distance = other_pos - pos;
 	// すれ違い後の場合

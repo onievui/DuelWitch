@@ -7,6 +7,9 @@
 #include "Magic.h"
 
 
+class IEffectEmitter;
+
+
 /// <summary>
 /// 炎魔法クラス
 /// </summary>
@@ -25,12 +28,18 @@ public:
 	void Lost() override;
 	// 炎魔法を描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
+	// 炎魔法の終了処理を行う
+	void Finalize() override;
 
 public:
 	// プレイヤーとの衝突処理
 	void HitPlayer(const Collider* collider) override;
 	// 魔法との衝突処理
 	void HitMagic(const IMagic* other) override;
+
+private:
+	// 炎魔法エフェクト
+	IEffectEmitter* m_pEffect;
 
 };
 

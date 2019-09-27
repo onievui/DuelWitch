@@ -7,6 +7,8 @@
 #include "PlayParameterLoader.h"
 #include "MagicID.h"
 #include "Player.h"
+#include "EffectManager.h"
+#include "IEffectEmitter.h"
 
 
 /// <summary>
@@ -47,6 +49,10 @@ void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& po
 	m_color = color;
 	m_vel = dir * parameter->fireParam.moveSpeed;
 	m_lifeTime = parameter->fireParam.lifeTime;
+
+	// 魔法のエフェクトを生成する
+	m_pEffect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::FireMagic, pos, dir);
+	m_pEffect->SetParent(&m_transform);
 }
 
 
@@ -80,10 +86,21 @@ void FireMagic::Lost() {
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
-		->GetResource(GeometricPrimitiveID::FireMagic);
-	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
+	view, proj;
+	// 代わりにエフェクトを描画している
+	//const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
+	//	->GetResource(GeometricPrimitiveID::FireMagic);
+	//resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
 	//m_sphereCollider.Render(view, proj,DirectX::SimpleMath::Color(1,1,1,0.7f));
+	
+}
+
+/// <summary>
+/// 炎魔法の終了処理を行う
+/// </summary>
+void FireMagic::Finalize() {
+	// エフェクトを終了させる
+	m_pEffect->IsUsed(false);
 }
 
 /// <summary>

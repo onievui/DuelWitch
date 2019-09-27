@@ -30,33 +30,63 @@ namespace JsonWrapper {
 
 		template <class T>
 		// データを取得する
-		T& get() {
+		T& Get() {
 			return m_val.get<T>();
 		}
 
 		// データを取得する
-		int getNumI() {
+		int GetNumI() {
 			return static_cast<int>(m_val.get<double>());
 		}
 
 		//データを取得する
-		float getNumF() {
+		float GetNumF() {
 			return static_cast<float>(m_val.get<double>());
+		}
+
+		// データを取得する
+		DirectX::SimpleMath::Vector2 GetVector2() {
+			const picojson::array& vec2 = m_val.get<picojson::array>();
+			return DirectX::SimpleMath::Vector2(
+				static_cast<float>(vec2[0].get<double>()),
+				static_cast<float>(vec2[1].get<double>())
+			);
+		}
+
+		// データを取得する
+		DirectX::SimpleMath::Vector3 GetVector3() {
+			const picojson::array& vec3 = m_val.get<picojson::array>();
+			return DirectX::SimpleMath::Vector3(
+				static_cast<float>(vec3[0].get<double>()),
+				static_cast<float>(vec3[1].get<double>()),
+				static_cast<float>(vec3[2].get<double>())
+			);
+		}
+
+		// データを取得する
+		DirectX::SimpleMath::Vector4 GetVector4() {
+			const picojson::array& vec4 = m_val.get<picojson::array>();
+			return DirectX::SimpleMath::Vector4(
+				static_cast<float>(vec4[0].get<double>()),
+				static_cast<float>(vec4[1].get<double>()),
+				static_cast<float>(vec4[2].get<double>()),
+				static_cast<float>(vec4[3].get<double>())
+			);
 		}
 
 		template <class T>
 		// データを設定する
-		void set(const T& val) {
+		void Set(const T& val) {
 			m_val = picojson::value(val);
 		}
 
 		// picojsonオブジェクトを取得する
-		picojson::value& getValue() {
+		picojson::value& GetValue() {
 			return m_val;
 		}
 
 		// シリアライズを行う
-		std::string serialize(bool prettify) const {
+		std::string Serialize(bool prettify) const {
 			return m_val.serialize(prettify);
 		}
 

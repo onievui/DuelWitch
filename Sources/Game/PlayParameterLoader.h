@@ -7,7 +7,7 @@
 
 
 class CommandParameter;
-class AICommandParameter;
+class CharaStatusParameter;
 class ElementParameter;
 class MagicParameter;
 class EffectParameter;
@@ -33,11 +33,11 @@ public:
 
 public:
 	// パラメータを取得する
-	const CommandParameter*   GetCommandParameter();
-	const AICommandParameter* GetAICommandParameter();
-	const ElementParameter*   GetElementParameter();
-	const MagicParameter*     GetMagicParameter();
-	const EffectParameter*    GetEffectParameter();
+	const CommandParameter*     GetCommandParameter();
+	const CharaStatusParameter* GetCharaStatusParameter();
+	const ElementParameter*     GetElementParameter();
+	const MagicParameter*       GetMagicParameter();
+	const EffectParameter*      GetEffectParameter();
 
 private:
 	// ヘッダファイルでのインクルードを減らすためのクラス

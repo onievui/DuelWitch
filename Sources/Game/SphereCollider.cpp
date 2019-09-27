@@ -24,8 +24,9 @@ SphereCollider::SphereCollider(const Transform* pTransform, float radius, const 
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 /// <param name="color">色</param>
+/// <param name="wireframe">ワイヤフレームにするかどうか</param>
 void SphereCollider::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj,
-	const DirectX::SimpleMath::Vector4& color) const {
+	const DirectX::SimpleMath::Color& color, bool wireframe) const {
 	// 実体がない場合は生成する
 	if (!m_debugSphere) {
 		m_debugSphere = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get());
@@ -34,7 +35,7 @@ void SphereCollider::Render(const DirectX::SimpleMath::Matrix& view, const Direc
 	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_offset);
 	matrix *= DirectX::SimpleMath::Matrix::CreateFromQuaternion(m_pTransform->GetRotation());
 	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_pTransform->GetPosition());
-	m_debugSphere->Draw(matrix, view, proj, color, nullptr, true);
+	m_debugSphere->Draw(matrix, view, proj, color, nullptr, wireframe);
 }
 
 /// <summary>

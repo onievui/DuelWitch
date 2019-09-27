@@ -41,7 +41,7 @@ public:
 
 private:
 	// 通常魔法のエフェクト
-	IEffectEmitter* m_effect;
+	IEffectEmitter* m_pEffect;
 
 };
 
