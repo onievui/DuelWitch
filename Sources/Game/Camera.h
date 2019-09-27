@@ -51,6 +51,10 @@ public:
 	// ƒJƒƒ‰‚Ì’‹“_‚ğİ’è‚·‚é
 	virtual void SetTargetPosition(DirectX::SimpleMath::Vector3 target) { m_target = target; }
 
+	// ‰æŠp‚ğİ’è‚·‚é
+	virtual void SetFov(float fov) { fov; }
+	// ‰æŠp‚ğæ“¾‚·‚é
+	virtual float GetFov() const { return 0.0f; }
 
 
 public:

@@ -21,8 +21,16 @@ public:
 	void Execute(Player& player, const DX::StepTimer& timer) override;
 
 private:
+	// 移動によるズーム
+	void Zoom(Camera& camera, const DX::StepTimer& timer, bool isBoosting);
+
+private:
 	// 総経過時間
 	float                        m_totalElapsedTime;
+	// 継続ブースト時間
+	float                        m_boostTime;
+	// デフォルトの画角
+	float                        m_defaultFov;
 	// オイラー角
 	DirectX::SimpleMath::Vector3 m_euler;
 	// カメラターゲット

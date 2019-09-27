@@ -4,7 +4,7 @@
     "MaxSp": 100,
     "SpRecoverySpeed": 10.0,
     "NormalMagicSpCost": 10.0,
-    "BoostSpeedRate": 2.0,
+    "BoostSpeedRate": 1.5,
     "BoostSpCost": 10.0
   }
 }

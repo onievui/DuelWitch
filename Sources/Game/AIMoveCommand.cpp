@@ -28,11 +28,17 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetPosition();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
-	m_totalElapsedTime += elapsedTime;
-	// 10•b‚ÅÜ‚è•Ô‚µ
-	if (m_totalElapsedTime > 10.0f) {
-		m_totalElapsedTime -= 10.0f;
-		ref_direction = (ref_direction == Player::MoveDirection::Forward ? Player::MoveDirection::Backward : Player::MoveDirection::Forward);
+	//m_totalElapsedTime += elapsedTime;
+	//// 10•b‚ÅÜ‚è•Ô‚µ
+	//if (m_totalElapsedTime > 10.0f) {
+	//	m_totalElapsedTime -= 10.0f;
+	//	ref_direction = (ref_direction == Player::MoveDirection::Forward ? Player::MoveDirection::Backward : Player::MoveDirection::Forward);
+	//}
+	if (ref_direction == Player::MoveDirection::Forward && pos.z > 160.0f) {
+		ref_direction = Player::MoveDirection::Backward;
+	}
+	else if (ref_direction == Player::MoveDirection::Backward && pos.z < -4.0f) {
+		ref_direction = Player::MoveDirection::Forward;
 	}
 
 	// ˆÚ“®
