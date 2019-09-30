@@ -15,6 +15,8 @@
 /// </summary>
 class Command {
 public:
+	// コマンドを初期化する
+	virtual void Initialize(Player& player) { player; }
 	// コマンドを処理する
 	virtual void Execute(Player& player, const DX::StepTimer& timer) = 0;
 
@@ -42,7 +44,7 @@ protected:
 	// 魔法マネージャを取得する
 	MagicManager&                GetMagicManager(Player& player)             { return *player.m_pMagicManager; }
 	// 敵プレイヤーを取得する
-	const Player&                GetOtherPlayer(Player& player)              { return *player.m_otherPlayer; }
+	const Player&                GetOtherPlayer(Player& player)              { return *player.m_pOtherPlayer; }
 };
 
 

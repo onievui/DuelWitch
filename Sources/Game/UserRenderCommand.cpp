@@ -79,7 +79,7 @@ void UserRenderCommand::UpdateIcon(Player& player) {
 		area_angle = Math::HarfPI;
 	}
 	const DirectX::SimpleMath::Vector3& camera_pos = camera.GetEyePosition();
-	const DirectX::SimpleMath::Vector3& enemy_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
+	const DirectX::SimpleMath::Vector3& enemy_pos = GetTransform(GetOtherPlayer(player)).GetLocalPosition();
 	DirectX::SimpleMath::Vector3 camera_dir = camera.GetEyeVector();
 	DirectX::SimpleMath::Vector3 other_dir = enemy_pos - camera_pos;
 	float angle = std::acosf(camera_dir.Dot(other_dir) / (camera_dir.Length()*other_dir.Length()));

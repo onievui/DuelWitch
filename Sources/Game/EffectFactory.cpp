@@ -8,6 +8,7 @@
 #include "EffectID.h"
 #include "NormalMagicEffectEmitter.h"
 #include "FireMagicEffectEmitter.h"
+#include "PlayerTrailEffectEmitter.h"
 
 
 /// <summary>
@@ -48,6 +49,7 @@ void EffectFactory::Initialize(EffectManager* effectManager) {
 	// エフェクトを初期化する
 	InitializeEffect<NormalMagicEffectEmitter>(EffectID::NormalMagic);
 	InitializeEffect<FireMagicEffectEmitter>(EffectID::FireMagic);
+	InitializeEffect<PlayerTrailEffectEmitter>(EffectID::PlayerTrail);
 }
 
 /// <summary>
@@ -75,6 +77,9 @@ IEffectEmitter* EffectFactory::Create(EffectID id, const DirectX::SimpleMath::Ve
 		(*itr)->Create(pos, dir);
 		break;
 	case EffectID::FireMagic:
+		(*itr)->Create(pos, dir);
+		break;
+	case EffectID::PlayerTrail:
 		(*itr)->Create(pos, dir);
 		break;
 	default:

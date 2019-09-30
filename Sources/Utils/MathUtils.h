@@ -56,13 +56,33 @@ public:
 		return a + (b - a)*t;
 	}
 
+	// あるベクトルに垂直なベクトルを生成する
+	static DirectX::SimpleMath::Vector3 CreateNormalVector3(const DirectX::SimpleMath::Vector3& vec) {
+		if (vec.Length() <= Math::Epsilon) {
+			// ゼロベクトルの場合はゼロベクトルを返す
+			return DirectX::SimpleMath::Vector3::Zero;
+		}
+		if (vec.x >= -Math::Epsilon && vec.x <= Math::Epsilon) {
+			return DirectX::SimpleMath::Vector3(1, 0, 0);
+		}
+		if (vec.y >= -Math::Epsilon && vec.y <= Math::Epsilon) {
+			return DirectX::SimpleMath::Vector3(0, 1, 0);
+		}
+		return DirectX::SimpleMath::Vector3(1, -vec.x / vec.y, 0);
+	}
+
 	// ベクトルからベクトルへのクォータニオンを生成する
 	static DirectX::SimpleMath::Quaternion CreateQuaternionFromVector3(
 		const DirectX::SimpleMath::Vector3& vec1,
 		const DirectX::SimpleMath::Vector3& vec2) {
 		DirectX::SimpleMath::Vector3 axis = vec1.Cross(vec2);
-		if (axis.Length() <= 0.0f) {
-			return DirectX::SimpleMath::Quaternion::Identity;
+		if (axis.Length() <= Math::Epsilon) {
+			// 同じベクトルの場合
+			if (vec1.Dot(vec2) >= Math::Epsilon) {
+				return DirectX::SimpleMath::Quaternion::Identity;
+			}
+			// 逆ベクトルの場合
+			return DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(CreateNormalVector3(vec1), PI);
 		}
 		axis.Normalize();
 		float angle = std::acosf(vec1.Dot(vec2) / (vec1.Length()*vec2.Length()));

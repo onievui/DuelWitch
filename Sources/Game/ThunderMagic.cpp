@@ -48,7 +48,7 @@ void ThunderMagic::Update(const DX::StepTimer& timer) {
 		}
 	}
 	
-	DirectX::SimpleMath::Vector3 pos = m_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 pos = m_transform.GetLocalPosition();
 	pos += m_vel*elapsed_time;	
 	m_transform.SetPosition(pos);
 
@@ -96,7 +96,7 @@ void ThunderMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::ThunderMagic);
 	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
-	m_sphereCollider.Render(view, proj);
+	//m_sphereCollider.Render(view, proj);
 }
 
 /// <summary>
@@ -105,7 +105,7 @@ void ThunderMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// <param name="collider">ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è</param>
 void ThunderMagic::HitPlayer(const Collider* collider) {
 	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
-	DirectX::SimpleMath::Vector3 direction = collider->GetTransform()->GetPosition() - m_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 direction = collider->GetTransform()->GetLocalPosition() - m_transform.GetLocalPosition();
 	// ”½‘Î•ûŒü‚È‚çˆ—‚µ‚È‚¢
 	if (direction.z*m_vel.z < 0) {
 		return;

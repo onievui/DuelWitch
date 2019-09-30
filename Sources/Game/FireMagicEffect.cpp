@@ -48,6 +48,7 @@ void FireMagicEffect::Update(const DX::StepTimer& timer) {
 void FireMagicEffect::Restart() {
 	m_pos = m_startPos;
 	m_vel = m_startVel;
+	m_accel = m_startAccel;
 	m_lifeTime = m_startLifeTime;
 	m_angle = RandMt::GetRand(Math::PI2);
 }

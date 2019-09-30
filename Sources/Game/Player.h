@@ -39,15 +39,18 @@ public:
 	};
 
 public:
-	Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMath::Vector3& pos, MoveDirection direction);
+	// コンストラクタ
+	Player(PlayerID id, const DirectX::SimpleMath::Vector3& pos, MoveDirection direction);
+	// デストラクタ
 	~Player();
 
+public:
+	// プレイヤーを初期化する
+	void Initialize(MagicManager* pMagicManager, Camera* pCamera, Player* pOtherPlayer);
 	// プレイヤーを更新する
 	void Update(const DX::StepTimer& timer) override;
 	// プレイヤーを開放する
 	void Lost() override;
-	// プレイヤーを生成する
-	void Create();
 	// プレイヤーを描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const;
@@ -59,10 +62,6 @@ public:
 	const Collider* GetCollider() const override;
 	// プレイヤーIDを取得する
 	PlayerID GetPlayerID() const;
-	// 敵プレイヤーを設定する
-	void SetOtherPlayer(Player* otherPlayer);
-	// カメラを設定する
-	void SetCamera(Camera* camera);
 	// エレメントの取得処理を行う
 	void GetElement(ElementID elementId);
 	// プレイヤー同士の衝突処理を行う
@@ -133,7 +132,7 @@ private:
 	std::unique_ptr<RenderCommand>         m_renderCommand;
 
 	// 敵プレイヤー
-	Player*                                m_otherPlayer;
+	Player*                                m_pOtherPlayer;
 	// 魔法マネージャ
 	MagicManager*                          m_pMagicManager;
 	// カメラ

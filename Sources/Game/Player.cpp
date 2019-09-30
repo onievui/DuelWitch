@@ -22,22 +22,18 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="magicManager">魔法マネージャ</param>
 /// <param name="id">プレイヤーID</param>
 /// <param name="pos">初期座標</param>
 /// <param name="direction">進行方向</param>
-Player::Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMath::Vector3& pos, MoveDirection direction)
+Player::Player(PlayerID id, const DirectX::SimpleMath::Vector3& pos, MoveDirection direction)
 	: m_id(id)
 	, m_status()
 	, m_direction(direction)
 	, m_haveElements()
 	, m_transform(pos, DirectX::SimpleMath::Vector3(0, (m_direction == MoveDirection::Forward ? 0 : Math::PI), 0))
 	, m_sphereCollider(&m_transform, 0.75f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
-	, m_pMagicManager(magicManager)
+	, m_pMagicManager()
 	, m_pCamera() {
-
-	// ステータスを初期化する
-	InitializeStatus();
 
 	// プレイヤーと敵プレイヤーでコマンドを変える
 	if (id == PlayerID::Player1) {
@@ -57,6 +53,53 @@ Player::Player(MagicManager* magicManager, PlayerID id, const DirectX::SimpleMat
 /// </summary>
 Player::~Player() {
 }
+
+/// <summary>
+/// プレイヤーを初期化する
+/// </summary>
+/// <param name="pMagicManager">魔法マネージャへのポインタ</param>
+/// <param name="pCamera">カメラへのポインタ</param>
+/// <param name="pOtherPlayer">敵プレイヤーへのポインタ</param>
+void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, Player* pOtherPlayer) {
+	// エフェクトを設定する
+	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::BloomModel);
+	modelResource->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
+		DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
+		if (lights) {
+			lights->SetLightingEnabled(true);
+			lights->SetPerPixelLighting(true);
+			lights->SetLightEnabled(0, true);
+			lights->SetLightDiffuseColor(0, DirectX::Colors::AntiqueWhite);
+			lights->SetAmbientLightColor(DirectX::Colors::AntiqueWhite*0.3f);
+			lights->SetLightEnabled(1, false);
+			lights->SetLightEnabled(2, false);
+		}
+	});
+
+	// ポインタを受け取る
+	m_pMagicManager = pMagicManager;
+	m_pCamera = pCamera;
+	m_pOtherPlayer = pOtherPlayer;
+
+	// ステータスを初期化する
+	InitializeStatus();
+
+	// コマンドを初期化する
+	m_moveCommand->Initialize(*this);
+	m_castCommand->Initialize(*this);
+	m_renderCommand->Initialize(*this);
+
+	//ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::PlayerTrail, m_transform.GetPosition(), -DirectX::SimpleMath::Vector3::UnitZ)
+	//	->SetParent(&m_transform);
+	//if (m_id == PlayerID::Player1) {
+	//	static Transform tra;
+	//	tra.SetPosition(DirectX::SimpleMath::Vector3(0, 3, 40));
+	//	ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::FireMagic, m_transform.GetPosition(), DirectX::SimpleMath::Vector3::UnitX)
+	//		->SetParent(&tra);
+	//}
+
+}
+
 
 /// <summary>
 /// プレイヤーを更新する
@@ -79,36 +122,6 @@ void Player::Update(const DX::StepTimer& timer) {
 /// プレイヤーを解放する
 /// </summary>
 void Player::Lost() {
-
-}
-
-/// <summary>
-/// プレイヤーを生成する
-/// </summary>
-void Player::Create() {
-	//ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::FireMagic, m_transform.GetPosition(), DirectX::SimpleMath::Vector3::UnitZ)
-	//	->SetParent(&m_transform);
-	//if (m_id == PlayerID::Player1) {
-	//	static Transform tra;
-	//	tra.SetPosition(DirectX::SimpleMath::Vector3(0, 3, 40));
-	//	ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::FireMagic, m_transform.GetPosition(), DirectX::SimpleMath::Vector3::UnitX)
-	//		->SetParent(&tra);
-	//}
-
-	// エフェクトを設定する
-	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::BloomModel);
-	modelResource->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
-		DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
-		if (lights) {
-			lights->SetLightingEnabled(true);
-			lights->SetPerPixelLighting(true);
-			lights->SetLightEnabled(0, true);
-			lights->SetLightDiffuseColor(0, DirectX::Colors::AntiqueWhite);
-			lights->SetAmbientLightColor(DirectX::Colors::AntiqueWhite*0.3f);
-			lights->SetLightEnabled(1, false);
-			lights->SetLightEnabled(2, false);
-		}
-	});
 
 }
 
@@ -162,22 +175,6 @@ PlayerID Player::GetPlayerID() const {
 }
 
 /// <summary>
-/// 敵プレイヤーを設定する
-/// </summary>
-/// <param name="otherPlayer">敵プレイヤーへのポインタ</param>
-void Player::SetOtherPlayer(Player* otherPlayer) {
-	m_otherPlayer = otherPlayer;
-}
-
-/// <summary>
-/// カメラを設定する
-/// </summary>
-/// <param name="camera">カメラへのポインタ</param>
-void Player::SetCamera(Camera* camera) {
-	m_pCamera = camera;
-}
-
-/// <summary>
 /// エレメントの取得処理を行う
 /// </summary>
 /// <param name="elementId">エレメントID</param>
@@ -192,8 +189,8 @@ void Player::GetElement(ElementID elementId) {
 void Player::HitPlayer(const Player& player) {
 	constexpr float reflect_distance = 0.25f;
 
-	DirectX::SimpleMath::Vector3 my_pos = m_transform.GetPosition();
-	const DirectX::SimpleMath::Vector3& other_pos = player.m_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 my_pos = m_transform.GetLocalPosition();
+	const DirectX::SimpleMath::Vector3& other_pos = player.m_transform.GetLocalPosition();
 	// 相手プレイヤーと判定方向に進む
 	float angle = std::atan2f(my_pos.y - other_pos.y, my_pos.x - other_pos.x);
 	my_pos += DirectX::SimpleMath::Vector3(std::cosf(angle), std::sinf(angle), 0.0f)*reflect_distance;

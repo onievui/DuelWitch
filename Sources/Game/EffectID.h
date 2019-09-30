@@ -9,7 +9,7 @@
 enum class EffectID {
 	NormalMagic, // 通常魔法エフェクト
 	FireMagic,	 // 炎魔法エフェクト
-
+	PlayerTrail, // プレイヤーの軌道エフェクト
 	Num,
 };
 

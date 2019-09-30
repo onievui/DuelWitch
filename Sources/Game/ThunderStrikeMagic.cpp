@@ -36,7 +36,7 @@ void ThunderStrikeMagic::Update(const DX::StepTimer& timer) {
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
-	DirectX::SimpleMath::Vector3 pos = m_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 pos = m_transform.GetLocalPosition();
 	pos += m_vel * elapsed_time;;
 	m_transform.SetPosition(pos);
 
@@ -98,7 +98,7 @@ void ThunderStrikeMagic::HitMagic(const IMagic* other) {
 	MagicID other_id = other->GetID();
 	// •X–‚–@‚ÆÕ“Ë‚µ‚½‚ç’µ‚Ë•Ô‚é
 	if (other_id == MagicID::Freeze) {
-		DirectX::SimpleMath::Vector3 direction = m_transform.GetPosition() - other->GetCollider()->GetPos();
+		DirectX::SimpleMath::Vector3 direction = m_transform.GetLocalPosition() - other->GetCollider()->GetPos();
 		direction.y *= 0.0f;
 		direction.Normalize();
 

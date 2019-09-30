@@ -29,7 +29,7 @@ Element::~Element() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void Element::Update(const DX::StepTimer& timer) {
-	DirectX::SimpleMath::Quaternion rot = m_transform.GetRotation();
+	DirectX::SimpleMath::Quaternion rot = m_transform.GetLocalRotation();
 	rot *= DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY,
 		static_cast<float>(timer.GetElapsedSeconds())*Math::HarfPI);
 	m_transform.SetRotation(rot);

@@ -8,6 +8,9 @@
 #include "EmptyObject.h"
 
 
+class PlayerTrailEffectEmitter;
+
+
 /// <summary>
 /// 移動コマンドクラス
 /// </summary>
@@ -17,6 +20,8 @@ public:
 	MoveCommand();
 
 public:
+	// 移動コマンドを初期化する
+	void Initialize(Player& player) override;
 	// 移動コマンドを処理する
 	void Execute(Player& player, const DX::StepTimer& timer) override;
 
@@ -25,17 +30,18 @@ private:
 	void Zoom(Camera& camera, const DX::StepTimer& timer, bool isBoosting);
 
 private:
-	// 総経過時間
-	float                        m_totalElapsedTime;
-	// 継続ブースト時間
-	float                        m_boostTime;
-	// デフォルトの画角
-	float                        m_defaultFov;
-	// オイラー角
-	DirectX::SimpleMath::Vector3 m_euler;
 	// カメラターゲット
-	EmptyObject                  m_cameraTarget;
-
+	EmptyObject                             m_cameraTarget;
+	// 継続ブースト時間
+	float                                   m_boostTime;
+	// デフォルトの画角
+	float                                   m_defaultFov;
+	// オイラー角
+	DirectX::SimpleMath::Vector3            m_euler;
+	//　プレイヤーの軌跡エフェクトへのポインタ
+	PlayerTrailEffectEmitter*               m_pEffect;
+	// エフェクト用の姿勢クラス
+	ChildTransform                          m_effectTransform;
 };
 
 

@@ -66,7 +66,7 @@ void FireMagic::Update(const DX::StepTimer& timer) {
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
-	DirectX::SimpleMath::Vector3 pos = m_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 pos = m_transform.GetLocalPosition();
 	pos += m_vel*elapsed_time;
 	m_transform.SetPosition(pos);
 

@@ -2,8 +2,39 @@
 #include <Utils\MathUtils.h>
 #include <Utils\ServiceLocater.h>
 #include <Parameters\CommandParameter.h>
+#include <Parameters\EffectParameter.h>
 #include "PlayParameterLoader.h"
+#include "EffectManager.h"
+#include "EffectID.h"
+#include "PlayerTrailEffectEmitter.h"
 
+
+/// <summary>
+/// コンストラクタ
+/// </summary>
+AIMoveCommand::AIMoveCommand()
+	: m_euler()
+	, m_effectTransform(nullptr)
+	, m_pEffect() {
+}
+
+/// <summary>
+/// AI移動コマンドを初期化する
+/// </summary>
+/// <param name="player">プレイヤー</param>
+void AIMoveCommand::Initialize(Player& player) {
+	// プレイヤーの軌跡エフェクトを生成する
+	const EffectParameter::player_trail_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerTrailParam;
+	m_effectTransform.SetParent(&GetTransform(player));
+	m_effectTransform.SetPosition(parameter.appearPosOffset);
+	IEffectEmitter* effect = ServiceLocater<EffectManager>::Get()->CreateEffect(
+		EffectID::PlayerTrail, m_effectTransform.GetPosition(), -DirectX::SimpleMath::Vector3::UnitZ);
+	effect->SetParent(&m_effectTransform);
+	m_pEffect = dynamic_cast<PlayerTrailEffectEmitter*>(effect);
+	if (!m_pEffect) {
+		ErrorMessage(L"プレイヤーの軌跡エフェクトの生成に失敗しました");
+	}
+}
 
 /// <summary>
 /// AI移動コマンドを処理する
@@ -23,17 +54,11 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 
 	Transform& ref_transform = GetTransform(player);
 	Player::MoveDirection& ref_direction = GetMoveDirection(player);
-	const DirectX::SimpleMath::Vector3& other_pos = GetTransform(GetOtherPlayer(player)).GetPosition();
+	const DirectX::SimpleMath::Vector3& other_pos = GetTransform(GetOtherPlayer(player)).GetLocalPosition();
 
-	DirectX::SimpleMath::Vector3 pos = ref_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
-	//m_totalElapsedTime += elapsedTime;
-	//// 10秒で折り返し
-	//if (m_totalElapsedTime > 10.0f) {
-	//	m_totalElapsedTime -= 10.0f;
-	//	ref_direction = (ref_direction == Player::MoveDirection::Forward ? Player::MoveDirection::Backward : Player::MoveDirection::Forward);
-	//}
 	if (ref_direction == Player::MoveDirection::Forward && pos.z > 160.0f) {
 		ref_direction = Player::MoveDirection::Backward;
 	}

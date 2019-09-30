@@ -56,7 +56,7 @@ void NormalMagic::Update(const DX::StepTimer& timer) {
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
-	DirectX::SimpleMath::Vector3 pos = m_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 pos = m_transform.GetLocalPosition();
 	pos += m_vel*elapsed_time;
 	m_transform.SetPosition(pos);
 
@@ -78,7 +78,7 @@ void NormalMagic::Lost() {
 void NormalMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::NormalMagic);
-	resource->GetResource()->Draw(m_world, view, proj, DirectX::SimpleMath::Color(1,0,0,0.5), nullptr, true);
+	resource->GetResource()->Draw(m_world, view, proj, DirectX::SimpleMath::Color(0,0.5f,1,0.5f), nullptr, true);
 }
 
 /// <summary>

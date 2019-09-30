@@ -34,6 +34,20 @@ bool EffectParameter::Load() {
 	fireMagicParam.minLifeTime      = root["FireMagic"]["MinLifeTime"].GetNumF();
 	fireMagicParam.color            = root["FireMagic"]["Color"].GetVector4();
 
+	playerTrailParam.particleNum     = root["PlayerTrail"]["ParticleNum"].GetNumI();
+	playerTrailParam.appearPosOffset = root["PlayerTrail"]["AppearPosOffset"].GetVector3();
+	playerTrailParam.lifeTime        = root["PlayerTrail"]["LifeTime"].GetNumF();
+	playerTrailParam.speed           = root["PlayerTrail"]["Speed"].GetNumF();
+	playerTrailParam.acceleration    = root["PlayerTrail"]["Acceleration"].GetNumF();
+	playerTrailParam.apexAngle       = Math::Deg2Rad(root["PlayerTrail"]["ApexAngle_Deg"].GetNumF());
+	playerTrailParam.maxScale        = root["PlayerTrail"]["MaxScale"].GetNumF();
+	playerTrailParam.minScale        = root["PlayerTrail"]["MinScale"].GetNumF();
+	playerTrailParam.maxHColor       = root["PlayerTrail"]["MaxHColor"].GetNumI();
+	playerTrailParam.minHColor       = root["PlayerTrail"]["MinHColor"].GetNumI();
+	playerTrailParam.sColor          = root["PlayerTrail"]["SColor"].GetNumI();
+	playerTrailParam.vColor          = root["PlayerTrail"]["VColor"].GetNumI();
+
+
 	return true;
 }
 

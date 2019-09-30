@@ -33,7 +33,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 		float distance;
 		if (ray.Intersects(plane, distance)) {
 			DirectX::SimpleMath::Vector3 ray_pos = ray.position + ray.direction * distance;
-			const DirectX::SimpleMath::Vector3& player_pos = ref_transform.GetPosition();
+			const DirectX::SimpleMath::Vector3& player_pos = ref_transform.GetLocalPosition();
 			DirectX::SimpleMath::Vector3 direction = ray_pos - player_pos;
 			direction.Normalize();
 			std::list<ElementID>& ref_have_elements = GetHaveElements(player);
@@ -65,7 +65,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 /// </returns>
 DirectX::SimpleMath::Plane CastMagicCommand::CreatePlaneForMagic(const Transform& transform, Player::MoveDirection direction) {
 	//DirectX::SimpleMath::Vector3 normal = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
-	DirectX::SimpleMath::Vector3 plane_pos = transform.GetPosition() + DirectX::SimpleMath::Vector3::UnitZ *
+	DirectX::SimpleMath::Vector3 plane_pos = transform.GetLocalPosition() + DirectX::SimpleMath::Vector3::UnitZ *
 		(direction == Player::MoveDirection::Forward ? 20.0f : -20.0f);
 	DirectX::SimpleMath::Plane plane = DirectX::SimpleMath::Plane(plane_pos, DirectX::SimpleMath::Vector3::UnitZ);
 	return plane;

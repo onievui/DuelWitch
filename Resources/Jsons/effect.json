@@ -1,6 +1,6 @@
 {
-  "MaxNum"      : [ 30, 30 ],
-  "_MaxNum_Size": 2,
+  "MaxNum": [ 30, 30, 2 ],
+  "_MaxNum_Size": 3,
 
   "NormalMagic": {
     "ParticleNum": 1,
@@ -17,6 +17,20 @@
     "MinLifeTime": 1.5,
     "Color": [ 217, 80, 13, 255 ]
   },
+  "PlayerTrail": {
+    "ParticleNum": 40,
+    "AppearPosOffset": [ 0, 0, -1.75 ],
+    "LifeTime": 3.0,
+    "Speed": 1.0,
+    "Acceleration": -0.2,
+    "ApexAngle_Deg": 150.0,
+    "MaxScale": 0.5,
+    "MinScale": 0.25,
+    "MaxHColor": 290,
+    "MinHColor": 110,
+    "SColor": 250,
+    "VColor": 225
+  },
   "Freeze": {
 
   },
@@ -26,4 +40,5 @@
   "ThunderStrike": {
 
   }
+
 }

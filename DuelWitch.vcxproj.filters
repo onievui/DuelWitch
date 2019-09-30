@@ -47,9 +47,6 @@
     <Filter Include="Utils\Json">
       <UniqueIdentifier>{b932f234-0c6e-44da-884c-c70e97556e88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets\Jsons">
-      <UniqueIdentifier>{af038f85-a652-424e-906d-a4cd73af81f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Load">
       <UniqueIdentifier>{d12d5140-74bf-4c2b-8bc4-1f1bc124e172}</UniqueIdentifier>
     </Filter>
@@ -76,6 +73,9 @@
     </Filter>
     <Filter Include="Game\Factory">
       <UniqueIdentifier>{eab97cfd-ae66-4aec-b145-4a73a6307736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Jsons">
+      <UniqueIdentifier>{af038f85-a652-424e-906d-a4cd73af81f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -305,6 +305,18 @@
     </ClCompile>
     <ClCompile Include="Sources\Parameters\CharaStatusParameter.cpp">
       <Filter>Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect.cpp">
+      <Filter>Game\Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\PlayerTrailEffectEmitter.cpp">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\PlayerTrailEffect.cpp">
+      <Filter>Game\Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\Color.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -625,6 +637,15 @@
     </ClInclude>
     <ClInclude Include="Sources\Parameters\CharaStatusParameter.h">
       <Filter>Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\PlayerTrailEffectEmitter.h">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\PlayerTrailEffect.h">
+      <Filter>Game\Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\Color.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

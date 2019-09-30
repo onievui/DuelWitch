@@ -5,14 +5,14 @@
   "Normal": {
     "Radius"   : 0.4,
     "MoveSpeed": 60.0,
-    "LifeTime" : 8.0
+    "LifeTime" : 6.0
   },
   "Fire": {
     "WayAngle_Deg": 5.0,
     "Radius": 0.5,
     "Height": 1.6,
     "MoveSpeed": 60.0,
-    "LifeTime": 8.0
+    "LifeTime": 6.0
   },
   "Freeze": {
     "Radius"  : 1.25,
@@ -26,13 +26,13 @@
     "ChaseEndDistance": 3.0,
     "ChaseLerpSpeed"  : 0.5,
     "ChaseEndTime"    : 0.5,
-    "LifeTime"        : 5.0
+    "LifeTime"        : 3.0
   },
   "ThunderStrike": {
     "Radius"    : 2.5,
     "Height"    : 25.0,
     "AppearPosY": 55.0,
     "MoveSpeed" : 600.0,
-    "LifeTime"  : 5.0
+    "LifeTime"  : 3.0
   }
 }

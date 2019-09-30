@@ -71,14 +71,8 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	ServiceLocater<EffectManager>::Register(m_effectManager.get());
 
 	// プレイヤーを生成する
-	m_players.emplace_back(std::make_unique<Player>(m_magicManager.get(), PlayerID::Player1,
-		DirectX::SimpleMath::Vector3::Zero, Player::MoveDirection::Forward));
-	m_players.emplace_back(std::make_unique<Player>(m_magicManager.get(), PlayerID::Player2,
-		DirectX::SimpleMath::Vector3(0, 0, 150), Player::MoveDirection::Backward));
-	m_players[0]->Create();
-	m_players[1]->Create();
-	m_players[0]->SetOtherPlayer(m_players[1].get());
-	m_players[1]->SetOtherPlayer(m_players[0].get());
+	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player1, DirectX::SimpleMath::Vector3::Zero, Player::MoveDirection::Forward));
+	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, DirectX::SimpleMath::Vector3(0, 0, 150), Player::MoveDirection::Backward));
 
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());
@@ -87,8 +81,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
 		PerspectiveFovInfo(Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 5000.0f));
 
-	m_players[0]->SetCamera(m_targetCamera.get());
-	m_players[1]->SetCamera(m_targetCamera.get());
+	// プレイヤーを初期化する
+	m_players[0]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players[1].get());
+	m_players[1]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players[0].get());
 
 	//グリッド床を生成する
 	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 400.0f, 200);
@@ -235,13 +230,16 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	m_elementManager->Render(view, projection);
 	// 魔法を描画する
 	m_magicManager->Render(view, projection);
-	// エフェクトを描画する
-	m_effectManager->Render(view, projection);
-	
+
 	// プレイヤーを描画する
 	for (std::vector<std::unique_ptr<Player>>::const_iterator itr = m_players.cbegin(); itr != m_players.cend(); ++itr) {
 		(*itr)->Render(view, projection, spriteBatch);
 	}
+
+	// エフェクトを描画する
+	m_effectManager->Render(view, projection);
+	
+
 
 	spriteBatch->End();
 }

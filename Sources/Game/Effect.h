@@ -25,11 +25,11 @@ public:
 	// エフェクトを初期化する
 	virtual void Initialize(float lifeTime = 0, const DirectX::SimpleMath::Vector3& pos = DirectX::SimpleMath::Vector3::Zero,
 		const DirectX::SimpleMath::Vector3& vel = DirectX::SimpleMath::Vector3::Zero,
-		const DirectX::SimpleMath::Vector3& accel = DirectX::SimpleMath::Vector3::Zero) override { lifeTime, pos, vel, accel; }
+		const DirectX::SimpleMath::Vector3& accel = DirectX::SimpleMath::Vector3::Zero) override;
 	// エフェクトを更新する
-	virtual void Update(const DX::StepTimer& timer) override { timer; }
+	virtual void Update(const DX::StepTimer& timer) override;
 	// ループする
-	virtual void Restart() override {}
+	virtual void Restart() override;
 
 public:
 	// 座標を取得する

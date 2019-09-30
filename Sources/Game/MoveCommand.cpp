@@ -4,25 +4,62 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\MouseWrapper.h>
 #include <Parameters\CommandParameter.h>
+#include <Parameters\EffectParameter.h>
 #include "PlayParameterLoader.h"
 #include "TargetCamera.h"
+#include "EffectManager.h"
+#include "EffectID.h"
+#include "PlayerTrailEffectEmitter.h"
 
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
 MoveCommand::MoveCommand()
-	: m_totalElapsedTime()
+	: m_cameraTarget()
 	, m_boostTime()
 	, m_euler()
-	, m_cameraTarget() {
+	, m_pEffect()
+	, m_effectTransform(nullptr) {
+}
+
+/// <summary>
+/// 移動コマンドを初期化する
+/// </summary>
+/// <param name="player">プレイヤー</param>
+void MoveCommand::Initialize(Player& player) {
+	Camera& ref_camera = GetCamera(player);
+	TargetCamera* target_camera = dynamic_cast<TargetCamera*>(&ref_camera);
+	// ターゲットカメラでない場合は処理をしない
+	if (!target_camera) {
+		return;
+	}
+	// 追従するオブジェクトが存在しない場合はターゲットを設定する
+	if (!target_camera->HasTargetObject()) {
+		target_camera->SetTargetObject(&m_cameraTarget);
+	}
+
+	// 初期の画角を記憶する
+	m_defaultFov = ref_camera.GetFov();
+
+	// プレイヤーの軌跡エフェクトを生成する
+	const EffectParameter::player_trail_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerTrailParam;
+	m_effectTransform.SetParent(&GetTransform(player));
+	m_effectTransform.SetPosition(parameter.appearPosOffset);
+	IEffectEmitter* effect = ServiceLocater<EffectManager>::Get()->CreateEffect(
+		EffectID::PlayerTrail, m_effectTransform.GetPosition(), -DirectX::SimpleMath::Vector3::UnitZ);
+	effect->SetParent(&m_effectTransform);
+	m_pEffect = dynamic_cast<PlayerTrailEffectEmitter*>(effect);
+	if (!m_pEffect) {
+		ErrorMessage(L"プレイヤーの軌跡エフェクトの生成に失敗しました");
+	}
 }
 
 /// <summary>
 /// 移動コマンドを処理する
 /// </summary>
 /// <param name="player">プレイヤー</param>
-/// <param name="timer">タイマー</param>
+/// <param name="timer">ステップタイマー</param>
 void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 	DirectX::Keyboard::KeyboardStateTracker* key_tracker = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get();
@@ -39,20 +76,10 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	Transform& ref_transform = GetTransform(player);
 	Player::MoveDirection& ref_direction = GetMoveDirection(player);
 
-	DirectX::SimpleMath::Vector3 pos = ref_transform.GetPosition();
+	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
-	// １０秒で折り返す
-	//m_totalElapsedTime += elapsed_time;
-	//if (m_totalElapsedTime > 10.0f) {
-	//	m_totalElapsedTime -= 10.0f;
-	//	if (ref_direction == Player::MoveDirection::Forward) {
-	//		ref_direction = Player::MoveDirection::Backward;
-	//	}
-	//	else {
-	//		ref_direction = Player::MoveDirection::Forward;
-	//	}
-	//}
+
 	if (ref_direction == Player::MoveDirection::Forward && pos.z > 160.0f) {
 		ref_direction = Player::MoveDirection::Backward;
 	}
@@ -140,16 +167,6 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	GetWorld(player) = ref_transform.GetMatrix();
 
 	// 照準のある方へカメラを少し向ける
-	TargetCamera* target_camera = dynamic_cast<TargetCamera*>(&GetCamera(player));
-	// ターゲットカメラでない場合は処理をしない
-	if (!target_camera) {
-		return;
-	}
-	// 追従するオブジェクトが存在しない場合はターゲットを設定する
-	if (!target_camera->HasTargetObject()) {
-		target_camera->SetTargetObject(&m_cameraTarget);
-	}
-
 	int width = ServiceLocater<DirectX11>::Get()->GetWidth();
 	int height = ServiceLocater<DirectX11>::Get()->GetHeight();
 	const float camera_rot_x_limit = parameter.cameraRotXLimit;
@@ -160,6 +177,7 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	);
 	DirectX::SimpleMath::Matrix target_matrix = DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(camera_rot.y, camera_rot.x, 0.0f);
 	m_cameraTarget.GetMatrixRef() = target_matrix * GetWorld(player);
+	
 }
 
 /// <summary>
@@ -176,20 +194,16 @@ void MoveCommand::Zoom(Camera& camera, const DX::StepTimer& timer, bool isBoosti
 	if (isBoosting) {
 		//画角を狭くする
 		if (m_boostTime < zoom_time) {
-			float pre_boost_time = m_boostTime;
 			m_boostTime = std::min(m_boostTime + elapsed_time, zoom_time);
-			float fov = camera.GetFov();
-			fov -= (m_boostTime - pre_boost_time)*zoom_fov;
+			float fov = m_defaultFov + m_boostTime / zoom_time * zoom_fov;
 			camera.SetFov(fov);
 		}
 	}
 	else {
 		//画角を元に戻す
 		if (m_boostTime > 0.0f) {
-			float pre_boost_time = m_boostTime;
 			m_boostTime = std::max(m_boostTime - elapsed_time, 0.0f);
-			float fov = camera.GetFov();
-			fov += (pre_boost_time - m_boostTime)*zoom_fov;
+			float fov = m_defaultFov + m_boostTime / zoom_time * zoom_fov;
 			camera.SetFov(fov);
 		}
 	}
