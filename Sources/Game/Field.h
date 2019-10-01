@@ -24,19 +24,20 @@ private:
 
 private:
 	// コモンステート
-	std::unique_ptr<DirectX::CommonStates> m_states;
+	std::unique_ptr<DirectX::CommonStates>                                   m_states;
 	// スカイドーム
-	std::unique_ptr<DirectX::Model> m_skydome;
+	std::unique_ptr<DirectX::Model>                                          m_skydome;
 	//バッチエフェクト
-	std::unique_ptr<DirectX::AlphaTestEffect> m_batchEffect;
+	std::unique_ptr<DirectX::AlphaTestEffect>                                m_batchEffect;
 	//プリミティブバッチ
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_batch;
 	// 入力レイアウト
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout>                                m_inputLayout;
 
 	// Uターン画像
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_turnTexture;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                         m_turnTexture;
 
+	std::unique_ptr<DirectX::GeometricPrimitive>                             m_wall;
 };
 
 

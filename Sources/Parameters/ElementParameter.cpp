@@ -68,9 +68,10 @@ bool ElementParameter::LoadData() {
 		return false;
 	}
 
-	maxNum = root["MaxNum"].GetNumI();
-	alphaRate = root["AlphaRate"].GetNumF();
-	radius = root["Radius"].GetNumF();
+	maxNum           = root["MaxNum"].GetNumI();
+	alphaRate        = root["AlphaRate"].GetNumF();
+	radius           = root["Radius"].GetNumF();
+	creationInterval = root["CreationInterval"].GetNumF();
 
 	return true;
 }

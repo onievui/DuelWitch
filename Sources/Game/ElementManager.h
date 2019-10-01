@@ -36,9 +36,11 @@ public:
 
 private:
 	// 生成済みエレメント
-	std::vector<Element*> m_elements;
+	std::vector<Element*>           m_elements;
 	// エレメントファクトリ
 	std::unique_ptr<ElementFactory> m_elementFactory;
+	// 生成用タイマー
+	float                           m_creationTimer;
 
 };
 

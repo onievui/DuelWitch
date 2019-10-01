@@ -1,5 +1,6 @@
 {
   "MaxNum"   : 30,
   "AlphaRate": 0.8,
-  "Radius"   : 0.75
+  "Radius": 0.75,
+  "CreationInterval": 10.0
 }

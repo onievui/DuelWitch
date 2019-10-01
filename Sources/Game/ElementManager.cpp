@@ -1,8 +1,11 @@
 #include "ElementManager.h"
+#include <Utils\ServiceLocater.h>
 #include <Utils\RandMt.h>
 #include <Utils\MathUtils.h>
+#include <Parameters\ElementParameter.h>
 #include "Element.h"
 #include "ElementFactory.h"
+#include "PlayParameterLoader.h"
 
 
 /// <summary>
@@ -10,7 +13,8 @@
 /// </summary>
 ElementManager::ElementManager()
 	: m_elements()
-	, m_elementFactory() {
+	, m_elementFactory()
+	, m_creationTimer() {
 }
 
 /// <summary>
@@ -27,6 +31,7 @@ void ElementManager::Initialize() {
 	m_elements.resize(ElementFactory::GetMaxElementNum(), nullptr);
 	m_elementFactory = std::make_unique<ElementFactory>();
 	m_elementFactory->Initialize();
+	m_creationTimer = 0.0f;
 }
 
 /// <summary>
@@ -34,6 +39,8 @@ void ElementManager::Initialize() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void ElementManager::Update(const DX::StepTimer& timer) {
+	m_creationTimer += static_cast<float>(timer.GetElapsedSeconds());
+
 	for (std::vector<Element*>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
 		if (*itr) {
 			(*itr)->Update(timer);
@@ -41,6 +48,18 @@ void ElementManager::Update(const DX::StepTimer& timer) {
 				*itr = nullptr;
 			}
 		}
+	}
+
+	// エレメントを生成する
+	const float creation_interval = ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->creationInterval;
+	if (m_creationTimer >= creation_interval) {
+		DirectX::SimpleMath::Vector3 area_offset(0, 0, -60);
+		DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3(-3, -3, -2);
+		DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3(3, 3, 2);
+		CreateElement(area_start + area_offset, area_end + area_offset, 3);
+		area_offset.z = 60.0f;
+		CreateElement(area_start + area_offset, area_end + area_offset, 3);
+		m_creationTimer -= creation_interval;
 	}
 }
 

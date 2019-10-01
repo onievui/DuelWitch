@@ -71,13 +71,13 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	ServiceLocater<EffectManager>::Register(m_effectManager.get());
 
 	// プレイヤーを生成する
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player1, DirectX::SimpleMath::Vector3::Zero, Player::MoveDirection::Forward));
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, DirectX::SimpleMath::Vector3(0, 0, 150), Player::MoveDirection::Backward));
+	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player1, DirectX::SimpleMath::Vector3(0, 0, -75), Player::MoveDirection::Forward));
+	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, DirectX::SimpleMath::Vector3(0, 0, 75), Player::MoveDirection::Backward));
 
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());
 	//ターゲットカメラを生成する
-	m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
+	m_targetCamera = std::make_unique<TargetCamera>(m_players[0].get(), DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
 		PerspectiveFovInfo(Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 5000.0f));
 
@@ -86,7 +86,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_players[1]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players[0].get());
 
 	//グリッド床を生成する
-	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 400.0f, 200);
+	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 200.0f, 100);
 	// フィールドを生成する
 	m_field = std::make_unique<Field>();
 	
@@ -118,18 +118,6 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	m_magicManager->Update(timer);
 	// エフェクトマネージャを更新する
 	m_effectManager->Update(timer, m_targetCamera.get());
-
-	static float time = 0;
-	time += static_cast<float>(timer.GetElapsedSeconds());
-	if (time >= 10.0f) {
-		DirectX::SimpleMath::Vector3 area_offset(0, 0, 23);
-		DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3(-3, -3, -2);
-		DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3(3, 3, 2);
-		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 3);
-		area_offset.z = 127.0f;
-		m_elementManager->CreateElement(area_start + area_offset, area_end + area_offset, 3);
-		time -= 10.0f;
-	}
 
 	// 未使用なら飛ばす処理を生成
 	auto live_pred = LamdaUtils::NotNull();

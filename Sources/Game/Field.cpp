@@ -57,6 +57,9 @@ Field::Field() {
 
 	//テクスチャのロード
 	DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/Protected/u_turn.png", nullptr, m_turnTexture.GetAddressOf());
+
+	// 壁の生成
+	m_wall = DirectX::GeometricPrimitive::CreateSphere(context, 160.0f, 8U, false, true);
 }
 
 Field::~Field() {
@@ -72,13 +75,15 @@ void Field::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simpl
 
 	world = DirectX::SimpleMath::Matrix::CreateScale(4.0f);
 	world *= DirectX::SimpleMath::Matrix::CreateRotationY(Math::PI);
-	world *= DirectX::SimpleMath::Matrix::CreateTranslation(0, 3, -12);
+	world *= DirectX::SimpleMath::Matrix::CreateTranslation(0, 3, -82);
 	DrawTurn(world, view, proj);
 
 	world = DirectX::SimpleMath::Matrix::CreateScale(4.0f);
 	world *= DirectX::SimpleMath::Matrix::CreateRotationY(0);
-	world *= DirectX::SimpleMath::Matrix::CreateTranslation(0, 3, 162);
+	world *= DirectX::SimpleMath::Matrix::CreateTranslation(0, 3, 82);
 	DrawTurn(world, view, proj);
+	world = DirectX::SimpleMath::Matrix::CreateScale(1.0f);
+	m_wall->Draw(world, view, proj, DirectX::SimpleMath::Color(30/255.0f, 130/255.0f, 240/255.0f, 1.0f), nullptr, true);
 }
 
 void Field::DrawTurn(const DirectX::SimpleMath::Matrix& world, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {

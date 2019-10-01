@@ -275,7 +275,7 @@ void UserRenderCommand::RenderSpBar(const Player& player, DirectX::SpriteBatch* 
 	// SP‚ªŒ¸­‚µ‚½’¼Œã‚ÍˆÃ‚­‚·‚é
 	DirectX::SimpleMath::Color color = DirectX::Colors::White;
 	if (status.spDecreaseTimer > 0.0f) {
-		color = DirectX::SimpleMath::Color(0.8f, 0.8f, 0.8f, 1);
+		color = DirectX::SimpleMath::Color(0.7f, 0.7f, 0.7f, 1);
 	}
 	spriteBatch->Draw(texture->GetResource(0).Get(), pos, &rect,
 		color, 0, DirectX::SimpleMath::Vector2::Zero, scale);

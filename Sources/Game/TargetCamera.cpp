@@ -13,7 +13,7 @@
 /// <param name="target">’‹“_‚Ì‘Š‘ÎÀ•W</param>
 /// <param name="up">ƒJƒƒ‰‚Ìã•ûŒü</param>
 /// <param name="perspectiveFovInfo">“§‹“Š‰e‚ÉŠÖ‚·‚éî•ñ</param>
-TargetCamera::TargetCamera(IObject * targetObject, DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 target,
+TargetCamera::TargetCamera(const IObject* targetObject, DirectX::SimpleMath::Vector3 eye, DirectX::SimpleMath::Vector3 target,
 	DirectX::SimpleMath::Vector3 up, PerspectiveFovInfo perspectiveFovInfo)
 	: m_pTargetObject(targetObject)
 	, m_relativeEye(eye)
@@ -39,8 +39,8 @@ TargetCamera::TargetCamera(IObject * targetObject, DirectX::SimpleMath::Vector3 
 /// </summary>
 void TargetCamera::Update() {
 	m_targetMatrix = DirectX::SimpleMath::Matrix::Lerp(m_targetMatrix, m_pTargetObject->GetMatrix(), m_lerpSpeed);
-	m_eye = DirectX::SimpleMath::Vector3::Transform(m_relativeEye, m_targetMatrix);
-	m_target = DirectX::SimpleMath::Vector3::Transform(m_relativeTarget, m_targetMatrix);
+	m_eye = DirectX::SimpleMath::Vector3::Transform(m_relativeEye, m_matrix*m_targetMatrix);
+	m_target = DirectX::SimpleMath::Vector3::Transform(m_relativeTarget, m_matrix*m_targetMatrix);
 	//DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::TransformNormal(DirectX::SimpleMath::Vector3::UnitY, m_targetMatrix);
 	DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::UnitY;
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, up);

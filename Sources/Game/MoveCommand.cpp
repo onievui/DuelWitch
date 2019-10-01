@@ -29,15 +29,15 @@ MoveCommand::MoveCommand()
 /// <param name="player">プレイヤー</param>
 void MoveCommand::Initialize(Player& player) {
 	Camera& ref_camera = GetCamera(player);
-	TargetCamera* target_camera = dynamic_cast<TargetCamera*>(&ref_camera);
-	// ターゲットカメラでない場合は処理をしない
-	if (!target_camera) {
-		return;
-	}
-	// 追従するオブジェクトが存在しない場合はターゲットを設定する
-	if (!target_camera->HasTargetObject()) {
-		target_camera->SetTargetObject(&m_cameraTarget);
-	}
+	//TargetCamera* target_camera = dynamic_cast<TargetCamera*>(&ref_camera);
+	//// ターゲットカメラでない場合は処理をしない
+	//if (!target_camera) {
+	//	return;
+	//}
+	//// 追従するオブジェクトが存在しない場合はターゲットを設定する
+	//if (!target_camera->HasTargetObject()) {
+	//	target_camera->SetTargetObject(&m_cameraTarget);
+	//}
 
 	// 初期の画角を記憶する
 	m_defaultFov = ref_camera.GetFov();
@@ -80,68 +80,112 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
 
-	if (ref_direction == Player::MoveDirection::Forward && pos.z > 160.0f) {
+	if (ref_direction == Player::MoveDirection::Forward && pos.z > 80.0f) {
 		ref_direction = Player::MoveDirection::Backward;
 	}
-	else if (ref_direction == Player::MoveDirection::Backward && pos.z < -4.0f) {
+	else if (ref_direction == Player::MoveDirection::Backward && pos.z < -80.0f) {
 		ref_direction = Player::MoveDirection::Forward;
 	}
 
 	// 移動
+	//if (key_state.A || key_state.Left) {
+	//	m_euler.z = Math::Lerp(m_euler.z, -rot_z_limit, lerp_speed);
+	//	if (ref_direction == Player::MoveDirection::Forward) {
+	//		m_euler.y = Math::Lerp(m_euler.y, rot_y_limit, lerp_speed);
+	//		move.x = 1.0f;
+	//	}
+	//	else {
+	//		m_euler.y = Math::Lerp(m_euler.y, Math::PI + rot_y_limit, lerp_speed);
+	//		move.x = -1.0f;
+	//	}
+	//}
+	//else if (key_state.D || key_state.Right) {
+	//	m_euler.z = Math::Lerp(m_euler.z, rot_z_limit, lerp_speed);
+	//	if (ref_direction == Player::MoveDirection::Forward) {
+	//		m_euler.y = Math::Lerp(m_euler.y, -rot_y_limit, lerp_speed);
+	//		move.x = -1.0f;
+	//	}
+	//	else {
+	//		m_euler.y = Math::Lerp(m_euler.y, Math::PI - rot_y_limit, lerp_speed);
+	//		move.x = 1.0f;
+	//	}
+	//}
+	////押していないときは戻す
+	//else {
+	//	m_euler.z = Math::Lerp(m_euler.z, 0.0f, lerp_speed);
+	//	if (ref_direction == Player::MoveDirection::Forward) {
+	//		m_euler.y = Math::Lerp(m_euler.y, 0.0f, lerp_speed);
+	//	}
+	//	else {
+	//		m_euler.y = Math::Lerp(m_euler.y, Math::PI, lerp_speed);
+	//	}
+	//}
+
+	//if (key_state.W || key_state.Up) {
+	//	m_euler.x = Math::Lerp(m_euler.x, -rot_x_limit, lerp_speed);
+	//	move.y = 1.0f;
+	//}
+	//else if (key_state.S || key_state.Down) {
+	//	m_euler.x = Math::Lerp(m_euler.x, rot_x_limit, lerp_speed);
+	//	move.y = -1.0f;
+	//}
+	////押していないときは戻す
+	//else {
+	//	m_euler.x = Math::Lerp(m_euler.x, 0.0f, lerp_speed);
+	//}
+
+	const float rot_speed = Math::QuarterPI;
+	const float rot_x_lim = Math::PI / 3;
+
+	// 回転の変化量
+	DirectX::SimpleMath::Vector3 change_euler;
+
+	// 左右移動
 	if (key_state.A || key_state.Left) {
-		m_euler.z = Math::Lerp(m_euler.z, -rot_z_limit, lerp_speed);
-		if (ref_direction == Player::MoveDirection::Forward) {
-			m_euler.y = Math::Lerp(m_euler.y, rot_y_limit, lerp_speed);
-			move.x = 1.0f;
-		}
-		else {
-			m_euler.y = Math::Lerp(m_euler.y, Math::PI + rot_y_limit, lerp_speed);
-			move.x = -1.0f;
-		}
+		change_euler.z = Math::Lerp(m_euler.z, -rot_z_limit, lerp_speed) - m_euler.z;
+		change_euler.y = rot_speed *elapsed_time;
 	}
 	else if (key_state.D || key_state.Right) {
-		m_euler.z = Math::Lerp(m_euler.z, rot_z_limit, lerp_speed);
-		if (ref_direction == Player::MoveDirection::Forward) {
-			m_euler.y = Math::Lerp(m_euler.y, -rot_y_limit, lerp_speed);
-			move.x = -1.0f;
-		}
-		else {
-			m_euler.y = Math::Lerp(m_euler.y, Math::PI - rot_y_limit, lerp_speed);
-			move.x = 1.0f;
-		}
+		change_euler.z = Math::Lerp(m_euler.z, rot_z_limit, lerp_speed) - m_euler.z;
+		change_euler.y = -rot_speed *elapsed_time;
 	}
 	//押していないときは戻す
 	else {
-		m_euler.z = Math::Lerp(m_euler.z, 0.0f, lerp_speed);
-		if (ref_direction == Player::MoveDirection::Forward) {
-			m_euler.y = Math::Lerp(m_euler.y, 0.0f, lerp_speed);
-		}
-		else {
-			m_euler.y = Math::Lerp(m_euler.y, Math::PI, lerp_speed);
-		}
+		change_euler.z = Math::Lerp(m_euler.z, 0.0f, lerp_speed) - m_euler.z;
 	}
 
+	// 上下移動
 	if (key_state.W || key_state.Up) {
-		m_euler.x = Math::Lerp(m_euler.x, -rot_x_limit, lerp_speed);
-		move.y = 1.0f;
+		change_euler.x = -rot_speed * elapsed_time;
 	}
 	else if (key_state.S || key_state.Down) {
-		m_euler.x = Math::Lerp(m_euler.x, rot_x_limit, lerp_speed);
-		move.y = -1.0f;
+		change_euler.x = rot_speed * elapsed_time;
 	}
 	//押していないときは戻す
 	else {
-		m_euler.x = Math::Lerp(m_euler.x, 0.0f, lerp_speed);
+
 	}
 
-	move.Normalize();
-	move *= move_speed_xy;
-	if (ref_direction == Player::MoveDirection::Forward) {
-		move.z = 1.0f;
+	// 斜め移動の場合
+	if (change_euler.x != 0.0f && change_euler.y != 0.0f) {
+		change_euler *= 0.5f;
 	}
-	else {
-		move.z = -1.0f;
-	}
+
+	m_euler += change_euler;
+
+	m_euler.x = Math::Clamp(m_euler.x, -rot_x_lim, rot_x_lim);
+
+	//move.Normalize();
+	//move *= move_speed_xy;
+	//if (ref_direction == Player::MoveDirection::Forward) {
+	//	move.z = 1.0f;
+	//}
+	//else {
+	//	move.z = -1.0f;
+	//}
+
+	move = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ,
+		DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
 
 	MouseWrapper* mouse = ServiceLocater<MouseWrapper>::Get();
 	Player::Status& ref_status = GetStatus(player);
@@ -175,8 +219,11 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		(mouse->GetPos().y - height / 2) / height * camera_rot_y_limit,
 		-(mouse->GetPos().x - width / 2) / width * camera_rot_x_limit
 	);
-	DirectX::SimpleMath::Matrix target_matrix = DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(camera_rot.y, camera_rot.x, 0.0f);
-	m_cameraTarget.GetMatrixRef() = target_matrix * GetWorld(player);
+	DirectX::SimpleMath::Matrix camera_matrix = DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(camera_rot.y, camera_rot.x, 0.0f);
+	TargetCamera* target_camera = dynamic_cast<TargetCamera*>(&GetCamera(player));
+	if (target_camera) {
+		target_camera->SetMatrix(camera_matrix);
+	}
 	
 }
 

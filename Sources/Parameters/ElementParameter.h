@@ -26,6 +26,7 @@ public:
 	int maxNum;
 	float alphaRate;
 	float radius;
+	float creationInterval;
 };
 
 

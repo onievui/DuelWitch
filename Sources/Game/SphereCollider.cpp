@@ -29,7 +29,7 @@ void SphereCollider::Render(const DirectX::SimpleMath::Matrix& view, const Direc
 	const DirectX::SimpleMath::Color& color, bool wireframe) const {
 	// é¿ëÃÇ™Ç»Ç¢èÍçáÇÕê∂ê¨Ç∑ÇÈ
 	if (!m_debugSphere) {
-		m_debugSphere = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get());
+		m_debugSphere = DirectX::GeometricPrimitive::CreateSphere(ServiceLocater<DirectX11>::Get()->GetContext().Get(), 1.0f, 8U);
 	}
 	DirectX::SimpleMath::Matrix matrix = DirectX::SimpleMath::Matrix::CreateScale(m_radius*2);
 	matrix *= DirectX::SimpleMath::Matrix::CreateTranslation(m_offset);
