@@ -15,19 +15,22 @@ class MagicManager;
 /// </summary>
 class ThunderMagic : public Magic {
 public:
-	ThunderMagic(MagicManager* magicManager);
+	// コンストラクタ
+	ThunderMagic(MagicManager* pMagicManager);
+	// デストラクタ
 	~ThunderMagic();
 
 public:
+	// 雷魔法を生成する
+	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 	// 雷魔法を更新する
 	void Update(const DX::StepTimer& timer) override;
 	// 雷魔法を開放する
 	void Lost() override;
-	// 雷魔法を生成する
-	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-		const DirectX::SimpleMath::Vector4& color) override;
 	// 雷魔法を描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
+	// 雷魔法の終了処理を行う
+	void Finalize() override;
 
 public:
 	// プレイヤーとの衝突処理

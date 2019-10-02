@@ -26,9 +26,9 @@ protected:
 	Collider(Type type, const Transform* pTransform, const DirectX::SimpleMath::Vector3& offset = DirectX::SimpleMath::Vector3::Zero);
 
 public:
-	// 姿勢クラスへのポインタを取得する
+	// 姿勢へのポインタを取得する
 	const Transform* GetTransform() const {	return m_pTransform; }
-	// 姿勢クラスへのポインタを設定する
+	// 姿勢へのポインタを設定する
 	void SetTransform(const Transform* pTransform) { m_pTransform = pTransform; }
 	// オフセットを取得する
 	const DirectX::SimpleMath::Vector3& GetOffset() const { return m_offset; }
@@ -38,11 +38,16 @@ public:
 public:
 	// 実際の座標を取得する
 	DirectX::SimpleMath::Vector3 GetPos() const;
+	// 当たり判定を描画する
+	virtual void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj,
+		const DirectX::SimpleMath::Color& color = DirectX::SimpleMath::Color(DirectX::Colors::White), bool wireframe = true) const {
+		view, proj, color, wireframe;
+	}
 
 protected:
 	// 当たり判定の種類
 	Type                         m_type;
-	// 姿勢クラスへのポインタ
+	// 姿勢へのポインタ
 	const Transform*             m_pTransform;
 	// 座標のオフセット
 	DirectX::SimpleMath::Vector3 m_offset;

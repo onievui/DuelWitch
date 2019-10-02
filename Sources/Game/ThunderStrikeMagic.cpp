@@ -6,7 +6,7 @@
 #include <Parameters\MagicParameter.h>
 #include "PlayParameterLoader.h"
 #include "MagicID.h"
-#include "Player.h"
+#include "CapsuleCollider.h"
 
 
 /// <summary>
@@ -14,9 +14,9 @@
 /// </summary>
 ThunderStrikeMagic::ThunderStrikeMagic()
 	: Magic(MagicID::ThunderStrike) {
-	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
-	m_sphereCollider.SetRadius(parameter->thunderStrikeParam.radius);
-	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0,-parameter->thunderStrikeParam.height*0.25f,0));
+	const MagicParameter::thunder_strike_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderStrikeParam;
+	m_collider = std::make_unique<CapsuleCollider>(&m_transform, parameter.radius,
+		DirectX::SimpleMath::Vector3(0, parameter.height*0.5f, 0), DirectX::SimpleMath::Vector3(0, -parameter.height*0.5f, 0));
 
 }
 
@@ -24,6 +24,26 @@ ThunderStrikeMagic::ThunderStrikeMagic()
 /// デストラクタ
 /// </summary>
 ThunderStrikeMagic::~ThunderStrikeMagic() {
+}
+
+/// <summary>
+/// 落雷魔法を生成する
+/// </summary>
+/// <param name="playerId">プレイヤーID</param>
+/// <param name="pos">座標</param>
+/// <param name="dir">方向</param>
+void ThunderStrikeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	const MagicParameter::thunder_strike_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderStrikeParam;
+
+	m_playerId = playerId;
+	m_transform.SetPosition(pos);
+	CapsuleCollider* collider = static_cast<CapsuleCollider*>(m_collider.get());
+	collider->SetRadius(parameter.radius);
+	collider->SetStartPos(DirectX::SimpleMath::Vector3(0, parameter.height*0.5f, 0));
+	collider->SetEndPos(DirectX::SimpleMath::Vector3(0, -parameter.height*0.5f, 0));
+	m_color = DirectX::Colors::Yellow;
+	m_vel = dir * parameter.moveSpeed;
+	m_lifeTime = parameter.lifeTime;
 }
 
 /// <summary>
@@ -48,25 +68,6 @@ void ThunderStrikeMagic::Update(const DX::StepTimer& timer) {
 /// </summary>
 void ThunderStrikeMagic::Lost() {
 
-}
-
-/// <summary>
-/// 落雷魔法を生成する
-/// </summary>
-/// <param name="playerId">プレイヤーID</param>
-/// <param name="pos">座標</param>
-/// <param name="dir">方向</param>
-/// <param name="color">色</param>
-void ThunderStrikeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-	const DirectX::SimpleMath::Vector4& color) {
-	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
-	m_playerId = playerId;
-	m_transform.SetPosition(pos);
-	m_sphereCollider.SetRadius(parameter->thunderStrikeParam.radius);
-	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, -parameter->thunderStrikeParam.height*0.25f, 0));
-	m_color = color;
-	m_vel = dir*parameter->thunderStrikeParam.moveSpeed;
-	m_lifeTime = parameter->thunderStrikeParam.lifeTime;
 }
 
 /// <summary>

@@ -190,7 +190,7 @@ void Field::DrawTurn(const DirectX::SimpleMath::Matrix& world, const DirectX::Si
 	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
 	// 深度バッファに書き込み参照する
 	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
-	// カリングは左周り
+	// カリングなし
 	context->RSSetState(m_states->CullNone());
 	// 不透明のみ描画する設定
 	m_batchEffect->SetAlphaFunction(D3D11_COMPARISON_NOT_EQUAL);

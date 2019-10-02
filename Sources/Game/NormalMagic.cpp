@@ -5,7 +5,7 @@
 #include <Parameters\MagicParameter.h>
 #include "PlayParameterLoader.h"
 #include "MagicID.h"
-#include "Player.h"
+#include "SphereCollider.h"
 #include "EffectManager.h"
 #include "IEffectEmitter.h"
 
@@ -15,7 +15,8 @@
 /// </summary>
 NormalMagic::NormalMagic()
 	: Magic(MagicID::Normal) {
-	m_sphereCollider.SetRadius(ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->normalParam.radius);
+	const MagicParameter::normal_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->normalParam;
+	m_collider = std::make_unique<SphereCollider>(&m_transform, parameter.radius);
 }
 
 /// <summary>
@@ -30,16 +31,15 @@ NormalMagic::~NormalMagic() {
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">方向</param>
-/// <param name="color">色</param>
-void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-	const DirectX::SimpleMath::Vector4& color) {
-	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
+void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	const MagicParameter::normal_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->normalParam;
+
 	m_playerId = playerId;
 	m_transform.SetPosition(pos);
-	m_sphereCollider.SetRadius(parameter->normalParam.radius);
-	m_color = color;
-	m_vel = dir * parameter->normalParam.moveSpeed;
-	m_lifeTime = parameter->normalParam.lifeTime;
+	static_cast<SphereCollider*>(m_collider.get())->SetRadius(parameter.radius);
+	m_color = DirectX::Colors::White;
+	m_vel = dir * parameter.moveSpeed;
+	m_lifeTime = parameter.lifeTime;
 
 	// 魔法のエフェクトを生成する
 	m_pEffect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::NormalMagic, pos, dir);

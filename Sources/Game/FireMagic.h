@@ -15,13 +15,14 @@ class IEffectEmitter;
 /// </summary>
 class FireMagic : public Magic {
 public:
+	// コンストラクタ
 	FireMagic();
+	// デストラクタ
 	~FireMagic();
 
 public:
 	// 炎魔法を生成する
-	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-		const DirectX::SimpleMath::Vector4& color) override;
+	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 	// 炎魔法を更新する
 	void Update(const DX::StepTimer& timer) override;
 	// 炎魔法を開放する

@@ -12,17 +12,18 @@
 /// </summary>
 class FreezeMagic : public Magic {
 public:
+	// コンストラクタ
 	FreezeMagic();
+	// デストラクタ
 	~FreezeMagic();
 
 public:
+	// 氷魔法を生成する
+	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 	// 氷魔法を更新する
 	void Update(const DX::StepTimer& timer) override;
 	// 氷魔法を開放する
 	void Lost() override;
-	// 氷魔法を生成する
-	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-		const DirectX::SimpleMath::Vector4& color) override;
 	// 氷魔法を描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
 

@@ -73,27 +73,8 @@ IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::Simpl
 		return nullptr;
 	}
 
-	switch (id) {
-	case MagicID::Normal:
-		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::White));
-		break;
-	case MagicID::Fire:
-		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Red));
-		break;
-	case MagicID::Thunder:
-		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
-		break;
-	case MagicID::ThunderStrike:
-		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::Yellow));
-		break;
-	case MagicID::Freeze:
-		(*itr)->Create(playerId, pos, dir, DirectX::SimpleMath::Vector4(DirectX::Colors::SkyBlue) +
-			DirectX::SimpleMath::Vector4(0,0,0,-0.8f));
-		break;
-	default:
-		return nullptr;
-	}
-
+	// –‚–@‚ğ¶¬‚·‚é
+	(*itr)->Create(playerId, pos, dir);
 	(*itr)->SetUsed(true);
 
 	return itr->get();

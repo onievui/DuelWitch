@@ -324,6 +324,9 @@
     <ClCompile Include="Sources\Game\FieldShieldEffect.cpp">
       <Filter>Game\Object\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\CapsuleCollider.cpp">
+      <Filter>Game\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -661,6 +664,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\PlayerID.h">
       <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\CapsuleCollider.h">
+      <Filter>Game\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -30,9 +30,9 @@
   },
   "ThunderStrike": {
     "Radius"    : 2.5,
-    "Height"    : 25.0,
-    "AppearPosY": 55.0,
-    "MoveSpeed" : 600.0,
+    "Height"    : 75.0,
+    "AppearPosY": 80.0,
+    "MoveSpeed" : 150.0,
     "LifeTime"  : 3.0
   }
 }

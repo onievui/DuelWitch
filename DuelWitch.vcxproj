@@ -180,6 +180,7 @@
     <ClCompile Include="Sources\Game\AIMoveCommand.cpp" />
     <ClCompile Include="Sources\Game\AIRenderCommand.cpp" />
     <ClCompile Include="Sources\Game\Camera.cpp" />
+    <ClCompile Include="Sources\Game\CapsuleCollider.cpp" />
     <ClCompile Include="Sources\Game\CastMagicCommand.cpp" />
     <ClCompile Include="Sources\Game\CharaSelectMarker.cpp" />
     <ClCompile Include="Sources\Game\CharaSelectScene.cpp" />
@@ -264,6 +265,7 @@
     <ClInclude Include="Sources\Game\AIMoveCommand.h" />
     <ClInclude Include="Sources\Game\AIRenderCommand.h" />
     <ClInclude Include="Sources\Game\Camera.h" />
+    <ClInclude Include="Sources\Game\CapsuleCollider.h" />
     <ClInclude Include="Sources\Game\CastMagicCommand.h" />
     <ClInclude Include="Sources\Game\CharaIcon.h" />
     <ClInclude Include="Sources\Game\CharaSelectMarker.h" />

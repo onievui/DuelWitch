@@ -5,7 +5,7 @@
 #include <Parameters\MagicParameter.h>
 #include "PlayParameterLoader.h"
 #include "MagicID.h"
-#include "Player.h"
+#include "SphereCollider.h"
 
 
 /// <summary>
@@ -14,13 +14,32 @@
 FreezeMagic::FreezeMagic()
 	: Magic(MagicID::Freeze)
 	, m_pPlayerPos() {
-	m_sphereCollider.SetRadius(ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->freezeParam.radius);
+	const MagicParameter::freeze_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->freezeParam;
+	m_collider = std::make_unique<SphereCollider>(&m_transform, parameter.radius);
 }
 
 /// <summary>
 /// デストラクタ
 /// </summary>
 FreezeMagic::~FreezeMagic() {
+}
+
+/// <summary>
+/// 氷魔法を生成する
+/// </summary>
+/// <param name="playerId">プレイヤーID</param>
+/// <param name="pos">座標</param>
+/// <param name="dir">方向</param>
+void FreezeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	const MagicParameter::freeze_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->freezeParam;
+
+	m_playerId = playerId;
+	m_transform.SetPosition(pos);
+	static_cast<SphereCollider*>(m_collider.get())->SetRadius(parameter.radius);
+	m_pPlayerPos = &pos;
+	m_color = DirectX::Colors::SkyBlue + DirectX::SimpleMath::Color(0, 0, 0, -0.8f);
+	m_vel = dir;
+	m_lifeTime = parameter.lifeTime;
 }
 
 /// <summary>
@@ -45,25 +64,6 @@ void FreezeMagic::Update(const DX::StepTimer& timer) {
 /// </summary>
 void FreezeMagic::Lost() {
 
-}
-
-/// <summary>
-/// 氷魔法を生成する
-/// </summary>
-/// <param name="playerId">プレイヤーID</param>
-/// <param name="pos">座標</param>
-/// <param name="dir">方向</param>
-/// <param name="color">色</param>
-void FreezeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-	const DirectX::SimpleMath::Vector4& color) {
-	m_playerId = playerId;
-	m_transform.SetPosition(pos);
-	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
-	m_sphereCollider.SetRadius(parameter->freezeParam.radius);
-	m_pPlayerPos = &pos;
-	m_color = color;
-	m_vel = dir;
-	m_lifeTime = parameter->freezeParam.lifeTime;
 }
 
 /// <summary>

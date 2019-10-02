@@ -22,8 +22,7 @@ public:
 
 public:
 	// 通常魔法を生成する
-	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-		const DirectX::SimpleMath::Vector4& color) override;
+	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 	// 通常魔法を更新する
 	void Update(const DX::StepTimer& timer) override;
 	// 通常魔法を開放する

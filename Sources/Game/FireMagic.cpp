@@ -6,7 +6,7 @@
 #include <Parameters\MagicParameter.h>
 #include "PlayParameterLoader.h"
 #include "MagicID.h"
-#include "Player.h"
+#include "SphereCollider.h"
 #include "EffectManager.h"
 #include "IEffectEmitter.h"
 
@@ -16,9 +16,9 @@
 /// </summary>
 FireMagic::FireMagic()
 	: Magic(MagicID::Fire) {
-	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
-	m_sphereCollider.SetRadius(parameter->fireParam.radius);
-	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, 0, 0));
+	const MagicParameter::fire_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam;
+	m_collider = std::make_unique<SphereCollider>(&m_transform, parameter.radius);
+
 }
 
 /// <summary>
@@ -33,22 +33,18 @@ FireMagic::~FireMagic() {
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">方向</param>
-/// <param name="color">色</param>
-void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-	const DirectX::SimpleMath::Vector4& color) {
+void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	const MagicParameter::fire_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam;
+
 	m_playerId = playerId;
 	m_transform.SetPosition(pos);
-	const MagicParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter();
-	m_sphereCollider.SetRadius(parameter->fireParam.radius);
-	m_sphereCollider.SetOffset(DirectX::SimpleMath::Vector3(0, 0, 0));
+	static_cast<SphereCollider*>(m_collider.get())->SetRadius(parameter.radius);
+	m_color = DirectX::Colors::Red;
+	m_vel = dir * parameter.moveSpeed;
+	m_lifeTime = parameter.lifeTime;
 
 	// 方向ベクトルを元に円錐の回転角度を求める
 	m_transform.SetRotation(Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::Up, dir));
-
-
-	m_color = color;
-	m_vel = dir * parameter->fireParam.moveSpeed;
-	m_lifeTime = parameter->fireParam.lifeTime;
 
 	// 魔法のエフェクトを生成する
 	m_pEffect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::FireMagic, pos, dir);

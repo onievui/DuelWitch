@@ -20,15 +20,15 @@ public:
 	SphereCollider(const Transform* pTransform, float radius, const DirectX::SimpleMath::Vector3& offset = DirectX::SimpleMath::Vector3::Zero);
 
 public:
-	// “–‚½‚è”»’è‚Ì•\¦
+	// “–‚½‚è”»’è‚ğ•`‰æ‚·‚é
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj,
-		const DirectX::SimpleMath::Color& color = DirectX::SimpleMath::Color(DirectX::Colors::White), bool wireframe = true) const;
+		const DirectX::SimpleMath::Color& color = DirectX::SimpleMath::Color(DirectX::Colors::White), bool wireframe = true) const override;
 
 public:
 	// ”¼Œa‚ğæ“¾‚·‚é
-	float GetRadius() const;
+	float GetRadius() const { return m_radius; }
 	// ”¼Œa‚ğİ’è‚·‚é
-	void SetRadius(float radius);
+	void SetRadius(float radius) { m_radius = radius; }
 
 private:
 	// ”¼Œa

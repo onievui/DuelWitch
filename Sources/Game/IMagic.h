@@ -20,8 +20,7 @@ public:
 
 public:
 	// 魔法を生成する
-	virtual void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir,
-		const DirectX::SimpleMath::Vector4& color) = 0;
+	virtual void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) = 0;
 	// 魔法を更新する
 	virtual void Update(const DX::StepTimer& timer) = 0;
 	// 魔法を開放する

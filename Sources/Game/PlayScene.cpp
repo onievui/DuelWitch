@@ -192,7 +192,6 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		}
 	}
 
-
 	// フィールドの更新
 	m_field->Update(timer);
 
