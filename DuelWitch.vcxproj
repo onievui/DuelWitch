@@ -302,6 +302,7 @@
     <ClInclude Include="Sources\Game\NormalMagicEffect.h" />
     <ClInclude Include="Sources\Game\NormalMagicShooter.h" />
     <ClInclude Include="Sources\Game\PauseScene.h" />
+    <ClInclude Include="Sources\Game\PlayerID.h" />
     <ClInclude Include="Sources\Game\PlayerTrailEffect.h" />
     <ClInclude Include="Sources\Game\PlayerTrailEffectEmitter.h" />
     <ClInclude Include="Sources\Game\PlayParameterLoader.h" />

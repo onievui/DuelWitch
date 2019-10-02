@@ -58,8 +58,7 @@ void GridFloor::Render(DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::M
 
 	size_t divs = std::max<size_t>(1, m_divs);
 	DirectX::FXMVECTOR origin {};
-	for (size_t i = 0; i <= divs; ++i)
-	{
+	for (size_t i = 0; i <= divs; ++i) {
 		float fPercent = static_cast<float>(i) / static_cast<float>(divs);
 		fPercent = (fPercent * 1.0f) - 0.5f;
 		// スケールを設定する
@@ -74,8 +73,7 @@ void GridFloor::Render(DirectX::SimpleMath::Matrix& view, DirectX::SimpleMath::M
 		m_primitiveBatch->DrawLine(v1, v2);
 	}
 
-	for (size_t i = 0; i <= divs; i++)
-	{
+	for (size_t i = 0; i <= divs; i++) {
 		FLOAT fPercent = static_cast<float>(i) / static_cast<float>(divs);
 		fPercent = (fPercent * 1.0f) - 0.5f;
 		// スケールを設定する

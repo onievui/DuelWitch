@@ -209,11 +209,13 @@ void UserRenderCommand::RenderEnemeyIcon(const Player& player, DirectX::SpriteBa
 /// <param name="spriteBatch">スプライトバッチ</param>
 void UserRenderCommand::RenderElements(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
 	const std::list<ElementID>& have_elements = GetHaveElements(player);
+	const Player::Status& status = GetStatus(player);
 	int i = have_elements.size() - 1;
+	// 最初に取得したエレメントが左に来るように表示する
 	for (std::list<ElementID>::const_reverse_iterator itr = have_elements.rbegin(); itr != have_elements.rend(); ++itr) {
 		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicIcon);
 		spriteBatch->Draw(texture->GetResource(static_cast<int>(*itr)).Get(), DirectX::SimpleMath::Vector2(80 + i * 60.0f, 640.0f), nullptr,
-			DirectX::Colors::White, 0, texture->GetCenter(), DirectX::SimpleMath::Vector2::One*(i == 0 ? 1.75f : 1.25f));
+			DirectX::Colors::White, 0, texture->GetCenter(), DirectX::SimpleMath::Vector2::One*(i <= status.chargeLevel ? 1.75f : 1.25f));
 		--i;
 	}
 }

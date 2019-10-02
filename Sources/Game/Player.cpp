@@ -13,6 +13,7 @@
 #include "AICastMagicCommand.h"
 #include "UserRenderCommand.h"
 #include "AIRenderCommand.h"
+#include "PlayerID.h"
 #include "MagicID.h"
 #include "IMagic.h"
 #include "MagicManager.h"
@@ -229,14 +230,19 @@ void Player::InitializeStatus() {
 
 	m_status.maxHp = m_status.hp = m_status.preHp = parameter.maxHp;
 	m_status.maxSp = m_status.sp = m_status.preSp = parameter.maxSp;
-	m_status.spRecoverySpeed = parameter.spRecoverySpeed;
-	m_status.normalMagicSpCost = parameter.normalMagicSpCost;
-	m_status.boostSpeedRate = parameter.boostSpeedRate;
-	m_status.boostSpCost = parameter.boostSpCost;
 
-	m_status.damageTimer = 0.0f;
+	m_status.spRecoverySpeed   = parameter.spRecoverySpeed;
+	m_status.normalMagicSpCost = parameter.normalMagicSpCost;
+	m_status.boostSpeedRate    = parameter.boostSpeedRate;
+	m_status.boostSpCost       = parameter.boostSpCost;
+	m_status.firstChargeTime   = parameter.firstChargeTime;
+	m_status.secoundChargeTime = parameter.secoundChargeTime;
+
+	m_status.damageTimer     = 0.0f;
 	m_status.spDecreaseTimer = 0.0f;
-	m_status.isBoosting = false;
+	m_status.isBoosting      = false;
+
+	m_status.chargeLevel = 0;
 }
 
 /// <summary>

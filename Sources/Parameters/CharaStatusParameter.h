@@ -26,6 +26,8 @@ public:
 		float normalMagicSpCost;
 		float boostSpeedRate;
 		float boostSpCost;
+		float firstChargeTime;
+		float secoundChargeTime;
 	};
 	chara1_param chara1Param;
 

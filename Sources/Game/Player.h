@@ -15,15 +15,8 @@ class Camera;
 class Command;
 class RenderCommand;
 enum class ElementID;
+enum class PlayerID;
 
-
-/// <summary>
-/// プレイヤーID
-/// </summary>
-enum class PlayerID {
-	Player1,
-	Player2
-};
 
 /// <summary>
 /// プレイヤークラス
@@ -102,6 +95,10 @@ public:
 		float                             boostSpeedRate;
 		// ブースト消費SP
 		float                             boostSpCost;
+		// 1段階目のチャージタイム
+		float                             firstChargeTime;
+		// 2段階目のチャージタイム
+		float                             secoundChargeTime;
 
 		// ダメージ後無敵時間タイマー
 		float                             damageTimer;
@@ -109,6 +106,9 @@ public:
 		float                             spDecreaseTimer;
 		// ブースト中かどうか
 		bool                              isBoosting;
+
+		// チャージ段階
+		int                               chargeLevel;
 	};
 
 private:

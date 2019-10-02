@@ -659,6 +659,9 @@
     <ClInclude Include="Sources\Game\FieldShieldEffect.h">
       <Filter>Game\Object\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game\PlayerID.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">

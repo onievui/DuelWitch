@@ -34,8 +34,8 @@ public:
 
 public:
 	// –‚–@‚ğ¶¬‚·‚é
-	void CreateMagic(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
-	void CreateMagic(ElementID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
+	void CreateMagic(MagicID id, int level, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
+	void CreateMagic(ElementID id, int level, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 	// –‚–@‚ğæ“¾‚·‚é
 	std::vector<IMagic*>* GetMagics();
 

@@ -10,6 +10,7 @@
 #include "DebugCamera.h"
 #include "GridFloor.h"
 #include "Player.h"
+#include "PlayerID.h"
 #include "Element.h"
 #include "ElementManager.h"
 #include "IMagic.h"

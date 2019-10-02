@@ -21,37 +21,45 @@ bool EffectParameter::Load() {
 		maxNum[i] = root["MaxNum"][i].GetNumI();
 	}
 
-	playerTrailParam.particleNum     = root["PlayerTrail"]["ParticleNum"].GetNumI();
-	playerTrailParam.appearPosOffset = root["PlayerTrail"]["AppearPosOffset"].GetVector3();
-	playerTrailParam.lifeTime        = root["PlayerTrail"]["LifeTime"].GetNumF();
-	playerTrailParam.speed           = root["PlayerTrail"]["Speed"].GetNumF();
-	playerTrailParam.acceleration    = root["PlayerTrail"]["Acceleration"].GetNumF();
-	playerTrailParam.apexAngle       = Math::Deg2Rad(root["PlayerTrail"]["ApexAngle_Deg"].GetNumF());
-	playerTrailParam.maxScale        = root["PlayerTrail"]["MaxScale"].GetNumF();
-	playerTrailParam.minScale        = root["PlayerTrail"]["MinScale"].GetNumF();
-	playerTrailParam.maxHColor       = root["PlayerTrail"]["MaxHColor"].GetNumI();
-	playerTrailParam.minHColor       = root["PlayerTrail"]["MinHColor"].GetNumI();
-	playerTrailParam.sColor          = root["PlayerTrail"]["SColor"].GetNumI();
-	playerTrailParam.vColor          = root["PlayerTrail"]["VColor"].GetNumI();
-
-	fieldShieldParam.particleNum = root["FieldShield"]["ParticleNum"].GetNumI();
-	fieldShieldParam.lifeTime    = root["FieldShield"]["LifeTime"].GetNumF();
-	fieldShieldParam.scale       = root["FieldShield"]["Scale"].GetNumF();
-	fieldShieldParam.scaleSpeed  = root["FieldShield"]["ScaleSpeed"].GetNumF();
-
-	normalMagicParam.particleNum    = root["NormalMagic"]["ParticleNum"].GetNumI();
-	normalMagicParam.scale          = root["NormalMagic"]["Scale"].GetNumF();
-
-	fireMagicParam.particleNum      = root["FireMagic"]["ParticleNum"].GetNumI();
-	fireMagicParam.scale            = root["FireMagic"]["Scale"].GetNumF();
-	fireMagicParam.speed            = root["FireMagic"]["Speed"].GetNumF();
-	fireMagicParam.maxAccelerationX = root["FireMagic"]["MaxAccelerationX"].GetNumF();
-	fireMagicParam.minAccelerationX = root["FireMagic"]["MinAccelerationX"].GetNumF();
-	fireMagicParam.accelerationYZ   = root["FireMagic"]["AccelerationYZ"].GetNumF();
-	fireMagicParam.maxLifeTime      = root["FireMagic"]["MaxLifeTime"].GetNumF();
-	fireMagicParam.minLifeTime      = root["FireMagic"]["MinLifeTime"].GetNumF();
-	fireMagicParam.color            = root["FireMagic"]["Color"].GetVector4();
-
+	{
+		JsonWrapper::value player_trail(root["PlayerTrail"]);
+		playerTrailParam.particleNum     = player_trail["ParticleNum"].GetNumI();
+		playerTrailParam.appearPosOffset = player_trail["AppearPosOffset"].GetVector3();
+		playerTrailParam.lifeTime        = player_trail["LifeTime"].GetNumF();
+		playerTrailParam.speed           = player_trail["Speed"].GetNumF();
+		playerTrailParam.acceleration    = player_trail["Acceleration"].GetNumF();
+		playerTrailParam.apexAngle       = Math::Deg2Rad(player_trail["ApexAngle_Deg"].GetNumF());
+		playerTrailParam.maxScale        = player_trail["MaxScale"].GetNumF();
+		playerTrailParam.minScale        = player_trail["MinScale"].GetNumF();
+		playerTrailParam.maxHColor       = player_trail["MaxHColor"].GetNumI();
+		playerTrailParam.minHColor       = player_trail["MinHColor"].GetNumI();
+		playerTrailParam.sColor          = player_trail["SColor"].GetNumI();
+		playerTrailParam.vColor          = player_trail["VColor"].GetNumI();
+	}
+	{
+		JsonWrapper::value field_shield(root["FieldShield"]);
+		fieldShieldParam.particleNum = field_shield["ParticleNum"].GetNumI();
+		fieldShieldParam.lifeTime    = field_shield["LifeTime"].GetNumF();
+		fieldShieldParam.scale       = field_shield["Scale"].GetNumF();
+		fieldShieldParam.scaleSpeed  = field_shield["ScaleSpeed"].GetNumF();
+	}
+	{
+		JsonWrapper::value normal_magic(root["NormalMagic"]);
+		normalMagicParam.particleNum = normal_magic["ParticleNum"].GetNumI();
+		normalMagicParam.scale       = normal_magic["Scale"].GetNumF();
+	}
+	{
+		JsonWrapper::value fire_magic(root["FireMagic"]);
+		fireMagicParam.particleNum      = fire_magic["ParticleNum"].GetNumI();
+		fireMagicParam.scale            = fire_magic["Scale"].GetNumF();
+		fireMagicParam.speed            = fire_magic["Speed"].GetNumF();
+		fireMagicParam.maxAccelerationX = fire_magic["MaxAccelerationX"].GetNumF();
+		fireMagicParam.minAccelerationX = fire_magic["MinAccelerationX"].GetNumF();
+		fireMagicParam.accelerationYZ   = fire_magic["AccelerationYZ"].GetNumF();
+		fireMagicParam.maxLifeTime      = fire_magic["MaxLifeTime"].GetNumF();
+		fireMagicParam.minLifeTime      = fire_magic["MinLifeTime"].GetNumF();
+		fireMagicParam.color            = fire_magic["Color"].GetVector4();
+	}
 
 	return true;
 }

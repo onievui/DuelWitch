@@ -18,17 +18,20 @@ ThunderMagicShooter::ThunderMagicShooter(MagicManager* magicManager)
 /// <summary>
 /// 雷魔法を発射する
 /// </summary>
+/// <param name="level">レベル</param>
 /// <param name="magicFactory">魔法ファクトリへのポインタ</param>
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">向き</param>
-void ThunderMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
+void ThunderMagicShooter::Create(int level, MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
 	const DirectX::SimpleMath::Vector3& dir) {
+	level;
+
 	// 水平に発射する
 	DirectX::SimpleMath::Vector3 direction = dir;
 	direction.y = 0.0f;
 	std::vector<IMagic*>* magics = m_pMagicManager->GetMagics();
-	std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf()(*magics, LamdaUtils::IsNull());
+	std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*magics, LamdaUtils::IsNull());
 	if (itr != magics->end()) {
 		(*itr) = magicFactory->Create(MagicID::Thunder, playerId, pos, dir);
 	}

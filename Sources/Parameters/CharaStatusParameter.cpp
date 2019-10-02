@@ -16,12 +16,17 @@ bool CharaStatusParameter::Load() {
 		return false;
 	}
 
-	chara1Param.maxHp             = root["Chara1"]["MaxHp"].GetNumF();
-	chara1Param.maxSp             = root["Chara1"]["MaxSp"].GetNumF();
-	chara1Param.spRecoverySpeed   = root["Chara1"]["SpRecoverySpeed"].GetNumF();
-	chara1Param.normalMagicSpCost = root["Chara1"]["NormalMagicSpCost"].GetNumF();
-	chara1Param.boostSpeedRate    = root["Chara1"]["BoostSpeedRate"].GetNumF();
-	chara1Param.boostSpCost       = root["Chara1"]["BoostSpCost"].GetNumF();
+	{
+		JsonWrapper::value chara1(root["Chara1"]);
+		chara1Param.maxHp             = chara1["MaxHp"].GetNumF();
+		chara1Param.maxSp             = chara1["MaxSp"].GetNumF();
+		chara1Param.spRecoverySpeed   = chara1["SpRecoverySpeed"].GetNumF();
+		chara1Param.normalMagicSpCost = chara1["NormalMagicSpCost"].GetNumF();
+		chara1Param.boostSpeedRate    = chara1["BoostSpeedRate"].GetNumF();
+		chara1Param.boostSpCost       = chara1["BoostSpCost"].GetNumF();
+		chara1Param.firstChargeTime   = chara1["FirstChargeTime"].GetNumF();
+		chara1Param.secoundChargeTime = chara1["SecoundChargeTime"].GetNumF();
+	}
 
 	return true;
 }

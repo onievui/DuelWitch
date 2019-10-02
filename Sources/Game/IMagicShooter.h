@@ -16,8 +16,8 @@ public:
 
 public:
 	// ñÇñ@ÇçXêVÇ∑ÇÈ
-	virtual void Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
-		const DirectX::SimpleMath::Vector3& dir) = 0;
+	virtual void Create(int level, MagicFactory* magicFactory, PlayerID playerId,
+		const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) = 0;
 
 };
 

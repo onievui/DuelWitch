@@ -22,12 +22,15 @@ FireMagicShooter::FireMagicShooter(MagicManager* magicManager)
 /// <summary>
 /// 炎魔法を発射する
 /// </summary>
+/// <param name="level">レベル</param>
 /// <param name="magicFactory">魔法ファクトリへのポインタ</param>
 /// <param name="playerId">プレイヤーID</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">向き</param>
-void FireMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
+void FireMagicShooter::Create(int level, MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
 	const DirectX::SimpleMath::Vector3& dir) {
+	level;
+
 	const float angle = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam.wayAngle;
 	auto quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, -angle);
 	auto direction = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
@@ -36,7 +39,7 @@ void FireMagicShooter::Create(MagicFactory* magicFactory, PlayerID playerId, con
 	std::vector<IMagic*>* magics = m_pMagicManager->GetMagics();
 	int count = 0;
 	// 3方向に発射する
-	for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf()(*magics, LamdaUtils::IsNull());
+	for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*magics, LamdaUtils::IsNull());
 		itr != magics->end() && count < 3;
 		LamdaUtils::FindIfNext(itr, magics->end(), LamdaUtils::IsNull()), ++count) {
 		(*itr) = magicFactory->Create(MagicID::Fire, playerId, pos, direction);

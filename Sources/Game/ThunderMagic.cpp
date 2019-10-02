@@ -54,7 +54,7 @@ void ThunderMagic::Update(const DX::StepTimer& timer) {
 
 	// 消滅・タイマーのカウントが達したら落雷魔法を生成する
 	if (!m_isUsed) {
-		m_pMagicManager->CreateMagic(MagicID::ThunderStrike, m_playerId, pos, DirectX::SimpleMath::Vector3::Down);
+		m_pMagicManager->CreateMagic(MagicID::ThunderStrike, 0, m_playerId, pos, DirectX::SimpleMath::Vector3::Down);
 	}
 
 	m_world = m_transform.GetMatrix();

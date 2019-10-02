@@ -19,8 +19,8 @@ public:
 
 public:
 	// 通常魔法を発射する
-	void Create(MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
-		const DirectX::SimpleMath::Vector3& dir) override;
+	void Create(int level, MagicFactory* magicFactory, PlayerID playerId,
+		const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 
 private:
 	// 魔法マネージャへのポインタ
