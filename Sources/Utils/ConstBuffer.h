@@ -12,6 +12,8 @@ struct BillboardBuffer {
 	DirectX::SimpleMath::Matrix		matProj;
 	DirectX::SimpleMath::Vector4	eye;
 	DirectX::SimpleMath::Vector4	Diffuse;
+	int                lookAt;
+	DirectX::SimpleMath::Vector3 _dummy;
 };
 
 

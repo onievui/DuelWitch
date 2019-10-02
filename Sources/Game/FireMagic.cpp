@@ -100,7 +100,7 @@ void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::S
 /// </summary>
 void FireMagic::Finalize() {
 	// エフェクトを終了させる
-	m_pEffect->IsUsed(false);
+	m_pEffect->SetUsed(false);
 }
 
 /// <summary>

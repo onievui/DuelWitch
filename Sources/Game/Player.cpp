@@ -213,6 +213,15 @@ void Player::HitMagic(const IMagic* magic) {
 }
 
 /// <summary>
+/// フィールドとの衝突判定を行う
+/// </summary>
+/// <param name="hitPos">衝突点</param>
+void Player::HitField(const DirectX::SimpleMath::Vector3& hitPos) {
+	DirectX::SimpleMath::Vector3 change = hitPos - m_sphereCollider.GetPos();
+	m_transform.SetPosition(m_transform.GetLocalPosition() + change);
+}
+
+/// <summary>
 /// ステータスを初期化する
 /// </summary>
 void Player::InitializeStatus() {

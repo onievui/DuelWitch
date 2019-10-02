@@ -29,7 +29,7 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 		// レイの作成
 		DirectX::SimpleMath::Ray ray = GetCamera(player).ScreenPointToRay(DirectX::SimpleMath::Vector3(mouse_pos.x, mouse_pos.y, 0));
 		// 平面の作成
-		DirectX::SimpleMath::Plane plane = CreatePlaneForMagic(ref_transform, GetMoveDirection(player));
+		DirectX::SimpleMath::Plane plane = CreatePlaneForMagic(ref_transform);
 		float distance;
 		if (ray.Intersects(plane, distance)) {
 			DirectX::SimpleMath::Vector3 ray_pos = ray.position + ray.direction * distance;
@@ -59,14 +59,12 @@ void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 /// 魔法のためのレイ用平面の作成
 /// </summary>
 /// <param name="transform">姿勢</param>
-/// <param name="direction">進行方向</param>
 /// <returns>
 /// 平面
 /// </returns>
-DirectX::SimpleMath::Plane CastMagicCommand::CreatePlaneForMagic(const Transform& transform, Player::MoveDirection direction) {
-	//DirectX::SimpleMath::Vector3 normal = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
-	DirectX::SimpleMath::Vector3 plane_pos = transform.GetLocalPosition() + DirectX::SimpleMath::Vector3::UnitZ *
-		(direction == Player::MoveDirection::Forward ? 20.0f : -20.0f);
-	DirectX::SimpleMath::Plane plane = DirectX::SimpleMath::Plane(plane_pos, DirectX::SimpleMath::Vector3::UnitZ);
+DirectX::SimpleMath::Plane CastMagicCommand::CreatePlaneForMagic(const Transform& transform) {
+	DirectX::SimpleMath::Vector3 normal = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
+	DirectX::SimpleMath::Vector3 plane_pos = transform.GetLocalPosition() + normal*20.0f;
+	DirectX::SimpleMath::Plane plane = DirectX::SimpleMath::Plane(plane_pos, normal);
 	return plane;
 }

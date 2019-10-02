@@ -9,6 +9,7 @@
 #include "PlayParameterLoader.h"
 #include "FireMagicEffect.h"
 #include "Camera.h"
+#include "FieldShieldEffectEmitter.h"
 
 
 /// <summary>
@@ -104,6 +105,7 @@ void FireMagicEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Mat
 	cbuff.matProj = proj.Transpose();
 	cbuff.matWorld = m_pParent->GetMatrix().Transpose();
 	cbuff.eye = DirectX::SimpleMath::Vector4(m_eyeVec.x, m_eyeVec.y, m_eyeVec.z, 0);
+	cbuff.lookAt = false;
 	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
 
 	//定数バッファの内容更新

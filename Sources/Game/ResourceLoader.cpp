@@ -66,7 +66,9 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::HpBar,               L"Protected/hp_bar_black.png");
 		textureResourceManager->AddResource(TextureID::SpBar,           TextureResource(L"Protected/sp_bar_blue.png"));
 		textureResourceManager->AddResource(TextureID::SpBar,               L"Protected/sp_bar_black.png");
+		// エフェクトで使うテクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::Particle,        TextureResource(L"Protected/particle.png"));
+		textureResourceManager->AddResource(TextureID::FieldShield,     TextureResource(L"Protected/field_shield_effect.png"));
 		textureResourceManager->AddResource(TextureID::FireMagicEffect, TextureResource(L"Protected/fire_magic_effect_a.jpg"));
 		textureResourceManager->AddResource(TextureID::FireMagicEffect,     L"Protected/fire_magic_effect_b.png");
 		// ポーズシーンで使うテクスチャも読みこんでおく

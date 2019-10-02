@@ -74,67 +74,11 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	const float lerp_speed    = parameter.lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
-	Player::MoveDirection& ref_direction = GetMoveDirection(player);
 
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
-
-	if (ref_direction == Player::MoveDirection::Forward && pos.z > 80.0f) {
-		ref_direction = Player::MoveDirection::Backward;
-	}
-	else if (ref_direction == Player::MoveDirection::Backward && pos.z < -80.0f) {
-		ref_direction = Player::MoveDirection::Forward;
-	}
-
-	// ˆÚ“®
-	//if (key_state.A || key_state.Left) {
-	//	m_euler.z = Math::Lerp(m_euler.z, -rot_z_limit, lerp_speed);
-	//	if (ref_direction == Player::MoveDirection::Forward) {
-	//		m_euler.y = Math::Lerp(m_euler.y, rot_y_limit, lerp_speed);
-	//		move.x = 1.0f;
-	//	}
-	//	else {
-	//		m_euler.y = Math::Lerp(m_euler.y, Math::PI + rot_y_limit, lerp_speed);
-	//		move.x = -1.0f;
-	//	}
-	//}
-	//else if (key_state.D || key_state.Right) {
-	//	m_euler.z = Math::Lerp(m_euler.z, rot_z_limit, lerp_speed);
-	//	if (ref_direction == Player::MoveDirection::Forward) {
-	//		m_euler.y = Math::Lerp(m_euler.y, -rot_y_limit, lerp_speed);
-	//		move.x = -1.0f;
-	//	}
-	//	else {
-	//		m_euler.y = Math::Lerp(m_euler.y, Math::PI - rot_y_limit, lerp_speed);
-	//		move.x = 1.0f;
-	//	}
-	//}
-	////‰Ÿ‚µ‚Ä‚¢‚È‚¢‚Æ‚«‚Í–ß‚·
-	//else {
-	//	m_euler.z = Math::Lerp(m_euler.z, 0.0f, lerp_speed);
-	//	if (ref_direction == Player::MoveDirection::Forward) {
-	//		m_euler.y = Math::Lerp(m_euler.y, 0.0f, lerp_speed);
-	//	}
-	//	else {
-	//		m_euler.y = Math::Lerp(m_euler.y, Math::PI, lerp_speed);
-	//	}
-	//}
-
-	//if (key_state.W || key_state.Up) {
-	//	m_euler.x = Math::Lerp(m_euler.x, -rot_x_limit, lerp_speed);
-	//	move.y = 1.0f;
-	//}
-	//else if (key_state.S || key_state.Down) {
-	//	m_euler.x = Math::Lerp(m_euler.x, rot_x_limit, lerp_speed);
-	//	move.y = -1.0f;
-	//}
-	////‰Ÿ‚µ‚Ä‚¢‚È‚¢‚Æ‚«‚Í–ß‚·
-	//else {
-	//	m_euler.x = Math::Lerp(m_euler.x, 0.0f, lerp_speed);
-	//}
-
-	const float rot_speed = Math::QuarterPI;
+	const float rot_speed = Math::PI / 3;
 	const float rot_x_lim = Math::PI / 3;
 
 	// ‰ñ“]‚Ì•Ï‰»—Ê
@@ -161,10 +105,7 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	else if (key_state.S || key_state.Down) {
 		change_euler.x = rot_speed * elapsed_time;
 	}
-	//‰Ÿ‚µ‚Ä‚¢‚È‚¢‚Æ‚«‚Í–ß‚·
-	else {
-
-	}
+	
 
 	// ŽÎ‚ßˆÚ“®‚Ìê‡
 	if (change_euler.x != 0.0f && change_euler.y != 0.0f) {
@@ -174,15 +115,6 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	m_euler += change_euler;
 
 	m_euler.x = Math::Clamp(m_euler.x, -rot_x_lim, rot_x_lim);
-
-	//move.Normalize();
-	//move *= move_speed_xy;
-	//if (ref_direction == Player::MoveDirection::Forward) {
-	//	move.z = 1.0f;
-	//}
-	//else {
-	//	move.z = -1.0f;
-	//}
 
 	move = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ,
 		DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
@@ -202,9 +134,12 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		pos += move * move_speed*elapsed_time;
 		ref_status.isBoosting = false;
 		Zoom(GetCamera(player), timer, false);
-		
 	}
 
+	//if (pos.Length() > 80.0f) {
+	//	pos.Normalize();
+	//	pos = pos * 80.0f;
+	//}
 
 	ref_transform.SetPosition(pos);
 	ref_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
@@ -225,6 +160,7 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		target_camera->SetMatrix(camera_matrix);
 	}
 	
+
 }
 
 /// <summary>

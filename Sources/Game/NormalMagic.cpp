@@ -86,7 +86,7 @@ void NormalMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 /// </summary>
 void NormalMagic::Finalize() {
 	// エフェクトを終了させる
-	m_pEffect->IsUsed(false);
+	m_pEffect->SetUsed(false);
 }
 
 /// <summary>

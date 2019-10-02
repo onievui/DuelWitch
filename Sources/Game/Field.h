@@ -2,24 +2,40 @@
 #ifndef FIELD_DEFINED
 #define FIELD_DEFINED
 
-//#include "DirectX11.h"
-//#include "Model.h"
-//#include "CommonStates.h"
-//#include "SimpleMath.h"
+
+#include <map>
+#include <Framework\StepTimer.h>
+#include "Transform.h"
+
+
+class Player;
+class FieldShieldEffectEmitter;
+
 
 /// <summary>
 /// フィールドクラス
 /// </summary>
 class Field {
 public:
+	// コンストラクタ
 	Field();
+	// デストラクタ
 	~Field();
 
 public:
-	void Update();
+	// フィールドを更新する
+	void Update(const DX::StepTimer& timer);
+	// フィールドを描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj);
 
+public:
+	// プレイヤーとフィールドの当たり判定を行う
+	void CollisionCheckPlayer(Player& player);
+
 private:
+	// フィールド衝突エフェクトを生成する
+	void CreateEffect(const Player* pPlayer, const DirectX::SimpleMath::Vector3& pos);
+	// 目印となる画像を描画する
 	void DrawTurn(const DirectX::SimpleMath::Matrix& world, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj);
 
 private:
@@ -37,7 +53,17 @@ private:
 	// Uターン画像
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>                         m_turnTexture;
 
+	// 姿勢
+	Transform                                                                m_transform;
+	// フィールド外壁
 	std::unique_ptr<DirectX::GeometricPrimitive>                             m_wall;
+	// フィールド半径
+	float                                                                    m_radius;
+
+	// フィールド衝突エフェクト
+	FieldShieldEffectEmitter*                                                m_pEffect;
+	// エフェクトを発生させるかどうかの判定用タイマー
+	std::map<const Player*, float>                                           m_effectTimer;
 };
 
 

@@ -1,5 +1,6 @@
 #include "ElementFactory.h"
 #include <Utils\ServiceLocater.h>
+#include <Utils\LamdaUtils.h>
 #include <Parameters\ElementParameter.h>
 #include "PlayParameterLoader.h"
 #include "Element.h"
@@ -38,8 +39,7 @@ void ElementFactory::Initialize() {
 /// </returns>
 Element* ElementFactory::Create(ElementID id, const DirectX::SimpleMath::Vector3& position) {
 	// 使用していないオブジェクトを探す
-	std::vector<std::unique_ptr<Element>>::iterator itr = std::find_if(m_elements.begin(), m_elements.end(),
-		[](std::unique_ptr<Element>& element) {return !element->IsUsed(); });
+	std::vector<std::unique_ptr<Element>>::iterator itr = LamdaUtils::FindIfNot(m_elements, LamdaUtils::GetLamda(&Element::IsUsed));
 
 	// これ以上生成できないならnullptrを返す
 	if (itr == m_elements.end()) {
@@ -69,7 +69,7 @@ Element* ElementFactory::Create(ElementID id, const DirectX::SimpleMath::Vector3
 		return nullptr;
 	}
 
-	(*itr)->IsUsed(true);
+	(*itr)->SetUsed(true);
 
 	return itr->get();
 }

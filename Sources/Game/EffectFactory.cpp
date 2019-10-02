@@ -6,9 +6,10 @@
 #include "EffectManager.h"
 #include "EffectEmitter.h"
 #include "EffectID.h"
+#include "PlayerTrailEffectEmitter.h"
+#include "FieldShieldEffectEmitter.h"
 #include "NormalMagicEffectEmitter.h"
 #include "FireMagicEffectEmitter.h"
-#include "PlayerTrailEffectEmitter.h"
 
 
 /// <summary>
@@ -47,9 +48,11 @@ void EffectFactory::Initialize(EffectManager* effectManager) {
 	m_effects.resize(GetEffectMaxNum());
 
 	// エフェクトを初期化する
+	InitializeEffect<PlayerTrailEffectEmitter>(EffectID::PlayerTrail);
+	InitializeEffect<FieldShieldEffectEmitter>(EffectID::FieldShield);
 	InitializeEffect<NormalMagicEffectEmitter>(EffectID::NormalMagic);
 	InitializeEffect<FireMagicEffectEmitter>(EffectID::FireMagic);
-	InitializeEffect<PlayerTrailEffectEmitter>(EffectID::PlayerTrail);
+
 }
 
 /// <summary>
@@ -65,28 +68,15 @@ IEffectEmitter* EffectFactory::Create(EffectID id, const DirectX::SimpleMath::Ve
 	// 使用していないオブジェクトを探す
 	std::vector<std::unique_ptr<IEffectEmitter>>::iterator begin = m_effects.begin() + m_beginIndex[static_cast<int>(id)];
 	std::vector<std::unique_ptr<IEffectEmitter>>::iterator end = begin + m_maxNum[static_cast<int>(id)];
-	std::vector<std::unique_ptr<IEffectEmitter>>::iterator itr = std::find_if(begin, end, [](const auto& effct) {return !effct->IsUsed(); });
+	std::vector<std::unique_ptr<IEffectEmitter>>::iterator itr = std::find_if_not(begin, end, LamdaUtils::GetLamda(&IEffectEmitter::IsUsed));
 
 	// これ以上生成できないならnullptrを返す
 	if (itr == end) {
 		return nullptr;
 	}
 
-	switch (id) {
-	case EffectID::NormalMagic:
-		(*itr)->Create(pos, dir);
-		break;
-	case EffectID::FireMagic:
-		(*itr)->Create(pos, dir);
-		break;
-	case EffectID::PlayerTrail:
-		(*itr)->Create(pos, dir);
-		break;
-	default:
-		return nullptr;
-	}
-
-	(*itr)->IsUsed(true);
+	(*itr)->Create(pos, dir);
+	(*itr)->SetUsed(true);
 
 	return itr->get();
 }

@@ -68,6 +68,8 @@ public:
 	void HitPlayer(const Player& player);
 	// 魔法との衝突処理を行う
 	void HitMagic(const IMagic* magic);
+	// フィールドとの衝突処理を行う
+	void HitField(const DirectX::SimpleMath::Vector3& hitPos);
 
 private:
 	// ステータスを初期化する

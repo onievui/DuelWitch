@@ -1,26 +1,27 @@
-#include "PlayerTrailEffectEmitter.h"
+#include "FieldShieldEffectEmitter.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include <Utils\RandMt.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\ConstBuffer.h>
+#include <Utils\LamdaUtils.h>
 #include <Parameters\EffectParameter.h>
 #include "PlayParameterLoader.h"
-#include "PlayerTrailEffect.h"
+#include "FieldShieldEffect.h"
 #include "Camera.h"
 
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
-PlayerTrailEffectEmitter::PlayerTrailEffectEmitter() {
+FieldShieldEffectEmitter::FieldShieldEffectEmitter() {
 	// メモリを確保しておく
-	m_effects.resize(ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerTrailParam.particleNum);
-	for (std::vector<std::unique_ptr<PlayerTrailEffect>>::iterator itr = m_effects.begin();
+	m_effects.resize(ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->fieldShieldParam.particleNum);
+	for (std::vector<std::unique_ptr<FieldShieldEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
-		*itr = std::make_unique<PlayerTrailEffect>();
+		*itr = std::make_unique<FieldShieldEffect>();
 	}
 
 	// 定数バッファの作成
@@ -36,64 +37,70 @@ PlayerTrailEffectEmitter::PlayerTrailEffectEmitter() {
 }
 
 /// <summary>
-/// エフェクトを生成する
+/// エフェクトエミッターを生成する
 /// </summary>
-/// <param name="pos"></param>
-/// <param name="dir"></param>
-void PlayerTrailEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	const EffectParameter::player_trail_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerTrailParam;
-
-	m_createDir = dir;
-
-	const float delay_interval = parameter.lifeTime / m_effects.size();
-	float interval = 0.0f;
-	for (std::vector<std::unique_ptr<PlayerTrailEffect>>::iterator itr = m_effects.begin();
-		itr != m_effects.end();
-		++itr) {
-		(*itr)->SetParent(&m_transform);
-		(*itr)->SetDelayTime(interval);
-		(*itr)->Initialize(parameter.lifeTime, pos, dir, dir);
-		// エフェクト側で初期化を行う
-		(*itr)->Restart();
-		interval += delay_interval;
-	}
+/// <param name="pos">座標</param>
+/// <param name="dir">方向</param>
+void FieldShieldEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	// AddEffcet関数からエフェクトを追加する
+	pos; dir;
 }
 
 /// <summary>
-/// エフェクトを更新する
+/// エフェクトエミッターを更新する
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 /// <param name="camera">カメラ</param>
-void PlayerTrailEffectEmitter::Update(const DX::StepTimer& timer, const Camera* camera) {
-	// 視線ベクトルを取得する
-	m_eyeVec = camera->GetEyeVector();
+void FieldShieldEffectEmitter::Update(const DX::StepTimer& timer, const Camera* camera) {
+	camera;
 
 	// エフェクトを更新する
-	for (std::vector<std::unique_ptr<PlayerTrailEffect>>::iterator itr = m_effects.begin();
+	for (std::vector<std::unique_ptr<FieldShieldEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
-		(*itr)->Update(timer);
+		if ((*itr)->IsUsed()) {
+			(*itr)->Update(timer);
+		}
 	}
 }
 
 /// <summary>
-/// エフェクトを描画する
+/// エフェクトエミッターを描画する
 /// </summary>
 /// <param name="batch">プリミティブバッチ</param>
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
-void PlayerTrailEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
-	const EffectParameter::player_trail_param parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerTrailParam;
+void FieldShieldEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
 	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 	DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();
+
+	// 頂点情報を作成する
+	std::vector<DirectX::VertexPositionColorTexture> vertex;
+	for (std::vector<std::unique_ptr<FieldShieldEffect>>::iterator itr = m_effects.begin();
+		itr != m_effects.end();
+		++itr) {
+		if (!(*itr)->IsUsed()) {
+			continue;
+		}
+		vertex.emplace_back(DirectX::VertexPositionColorTexture(
+			(*itr)->GetPos(), (*itr)->GetColor(),
+			DirectX::SimpleMath::Vector2((*itr)->GetScale(), 0) // xがスケール yがZ回転
+		));
+	}
+
+	// エフェクトが出現していない場合は処理しない
+	if (vertex.size() == 0) {
+		return;
+	}
 
 	// 定数バッファの作成
 	BillboardBuffer cbuff;
 	cbuff.matView = view.Transpose();
 	cbuff.matProj = proj.Transpose();
 	cbuff.matWorld = DirectX::SimpleMath::Matrix::Identity;
-	cbuff.eye = DirectX::SimpleMath::Vector4(m_eyeVec.x, m_eyeVec.y, m_eyeVec.z, 0);
-	cbuff.lookAt = false;
+	const DirectX::SimpleMath::Vector3& eye_pos = m_pParent->GetLocalPosition();
+	cbuff.eye = DirectX::SimpleMath::Vector4(eye_pos.x, eye_pos.y, eye_pos.z, 0);
+	cbuff.lookAt = true;
 	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
 
 	//定数バッファの内容更新
@@ -124,41 +131,36 @@ void PlayerTrailEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::M
 	context->VSSetShader(vertex_shader->GetResource().Get(), nullptr, 0);
 	context->GSSetShader(geometry_shader->GetResource().Get(), nullptr, 0);
 	context->PSSetShader(pixel_shader->GetResource().Get(), nullptr, 0);
+	// テクスチャを割り当てる
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::FieldShield);
+	context->PSSetShaderResources(0, 1, texture->GetResource().GetAddressOf());
 
 	// 入力レイアウトを割り当てる
 	context->IASetInputLayout(vertex_shader->GetInputLayout());
-
-	// 頂点情報を作成する
-	std::vector<DirectX::VertexPositionColorTexture> vertex;
-	for (std::vector<std::unique_ptr<PlayerTrailEffect>>::iterator itr = m_effects.begin();
-		itr != m_effects.end();
-		++itr) {
-		if ((*itr)->IsWaiting()) {
-			continue;
-		}
-		vertex.emplace_back(DirectX::VertexPositionColorTexture(
-			(*itr)->GetPos(), (*itr)->GetColor(),
-			DirectX::SimpleMath::Vector2((*itr)->GetScale()*1.0f, 0.0f) // xがスケール yがZ回転
-		));
-	}
-
-	// テクスチャを割り当てる
-	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Particle);
-	context->PSSetShaderResources(0, 1, texture->GetResource().GetAddressOf());
 
 	// エフェクトを描画する
 	batch->Begin();
 	batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], vertex.size());
 	batch->End();
-	
+
 }
 
 /// <summary>
-/// 親オブジェクトを設定する
+/// エフェクトを追加する
 /// </summary>
-/// <param name="pParent">親オブジェクトへのポインタ</param>
-void PlayerTrailEffectEmitter::SetParent(const Transform* pParent) {
-	m_pParent = pParent;
-	m_transform.SetParent(pParent);
-	m_transform.SetRotation(Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::UnitZ, m_createDir));
+/// <param name="pos">座標</param>
+/// <param name="normal">方向</param>
+void FieldShieldEffectEmitter::AddEffect(const DirectX::SimpleMath::Vector3& pos) {
+	// 未使用のエフェクトを探す
+	std::vector<std::unique_ptr<FieldShieldEffect>>::iterator itr =
+		LamdaUtils::FindIfNot(m_effects, LamdaUtils::GetLamda(&FieldShieldEffect::IsUsed));
+
+	if (itr == m_effects.end()) {
+		return;
+	}
+
+	const EffectParameter::field_shield_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->fieldShieldParam;
+
+	// 初期化して追加
+	(*itr)->Initialize(parameter.lifeTime, pos);
 }

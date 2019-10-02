@@ -44,7 +44,7 @@ public:
 	// エレメントを使用しているかどうか取得する
 	bool IsUsed() const;
 	// エレメントを使用するかどうか設定する
-	void IsUsed(bool isUsed);
+	void SetUsed(bool isUsed);
 
 private:
 	// エレメントID

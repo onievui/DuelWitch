@@ -36,7 +36,7 @@ public:
 	// エフェクトを使用しているかどうか取得する
 	virtual bool IsUsed() const = 0;
 	// エフェクトを使用するかどうか設定する
-	virtual void IsUsed(bool isUsed) = 0;
+	virtual void SetUsed(bool isUsed) = 0;
 
 };
 

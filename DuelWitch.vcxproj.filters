@@ -318,6 +318,12 @@
     <ClCompile Include="Sources\Utils\Color.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\FieldShieldEffectEmitter.cpp">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\FieldShieldEffect.cpp">
+      <Filter>Game\Object\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -646,6 +652,12 @@
     </ClInclude>
     <ClInclude Include="Sources\Utils\Color.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FieldShieldEffectEmitter.h">
+      <Filter>Game\Object\EffectEmitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\FieldShieldEffect.h">
+      <Filter>Game\Object\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

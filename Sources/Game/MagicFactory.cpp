@@ -1,5 +1,6 @@
 #include "MagicFactory.h"
 #include <Utils\ServiceLocater.h>
+#include <Utils\LamdaUtils.h>
 #include <Parameters\MagicParameter.h>
 #include "PlayParameterLoader.h"
 #include "MagicID.h"
@@ -65,8 +66,7 @@ IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::Simpl
 	// 使用していないオブジェクトを探す
 	std::vector<std::unique_ptr<IMagic>>::iterator begin = m_magics.begin() + m_beginIndex[static_cast<int>(id)];
 	std::vector<std::unique_ptr<IMagic>>::iterator end = begin + m_maxNum[static_cast<int>(id)];
-	std::vector<std::unique_ptr<IMagic>>::iterator itr = std::find_if(begin, end,
-		[](std::unique_ptr<IMagic>& element) {return !element->IsUsed(); });
+	std::vector<std::unique_ptr<IMagic>>::iterator itr = std::find_if_not(begin, end, LamdaUtils::GetLamda(&IMagic::IsUsed));
 
 	// これ以上生成できないならnullptrを返す
 	if (itr == end) {
@@ -94,7 +94,7 @@ IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::Simpl
 		return nullptr;
 	}
 
-	(*itr)->IsUsed(true);
+	(*itr)->SetUsed(true);
 
 	return itr->get();
 }

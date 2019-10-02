@@ -196,6 +196,8 @@
     <ClCompile Include="Sources\Game\ElementManager.cpp" />
     <ClCompile Include="Sources\Game\EmptyObject.cpp" />
     <ClCompile Include="Sources\Game\Field.cpp" />
+    <ClCompile Include="Sources\Game\FieldShieldEffect.cpp" />
+    <ClCompile Include="Sources\Game\FieldShieldEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\FireMagicEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\FireMagic.cpp" />
     <ClCompile Include="Sources\Game\FireMagicEffect.cpp" />
@@ -275,6 +277,8 @@
     <ClInclude Include="Sources\Game\EffectID.h" />
     <ClInclude Include="Sources\Game\EffectManager.h" />
     <ClInclude Include="Sources\Game\EmptyObject.h" />
+    <ClInclude Include="Sources\Game\FieldShieldEffect.h" />
+    <ClInclude Include="Sources\Game\FieldShieldEffectEmitter.h" />
     <ClInclude Include="Sources\Game\FireMagicEffectEmitter.h" />
     <ClInclude Include="Sources\Game\FireMagic.h" />
     <ClInclude Include="Sources\Game\FireMagicEffect.h" />

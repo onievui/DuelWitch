@@ -59,10 +59,10 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
-	if (ref_direction == Player::MoveDirection::Forward && pos.z > 80.0f) {
+	if (ref_direction == Player::MoveDirection::Forward && pos.z > 79.0f) {
 		ref_direction = Player::MoveDirection::Backward;
 	}
-	else if (ref_direction == Player::MoveDirection::Backward && pos.z < -80.0f) {
+	else if (ref_direction == Player::MoveDirection::Backward && pos.z < -79.0f) {
 		ref_direction = Player::MoveDirection::Forward;
 	}
 

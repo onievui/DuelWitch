@@ -21,19 +21,6 @@ bool EffectParameter::Load() {
 		maxNum[i] = root["MaxNum"][i].GetNumI();
 	}
 
-	normalMagicParam.particleNum    = root["NormalMagic"]["ParticleNum"].GetNumI();
-	normalMagicParam.scale          = root["NormalMagic"]["Scale"].GetNumF();
-
-	fireMagicParam.particleNum      = root["FireMagic"]["ParticleNum"].GetNumI();
-	fireMagicParam.scale            = root["FireMagic"]["Scale"].GetNumF();
-	fireMagicParam.speed            = root["FireMagic"]["Speed"].GetNumF();
-	fireMagicParam.maxAccelerationX = root["FireMagic"]["MaxAccelerationX"].GetNumF();
-	fireMagicParam.minAccelerationX = root["FireMagic"]["MinAccelerationX"].GetNumF();
-	fireMagicParam.accelerationYZ   = root["FireMagic"]["AccelerationYZ"].GetNumF();
-	fireMagicParam.maxLifeTime      = root["FireMagic"]["MaxLifeTime"].GetNumF();
-	fireMagicParam.minLifeTime      = root["FireMagic"]["MinLifeTime"].GetNumF();
-	fireMagicParam.color            = root["FireMagic"]["Color"].GetVector4();
-
 	playerTrailParam.particleNum     = root["PlayerTrail"]["ParticleNum"].GetNumI();
 	playerTrailParam.appearPosOffset = root["PlayerTrail"]["AppearPosOffset"].GetVector3();
 	playerTrailParam.lifeTime        = root["PlayerTrail"]["LifeTime"].GetNumF();
@@ -46,6 +33,24 @@ bool EffectParameter::Load() {
 	playerTrailParam.minHColor       = root["PlayerTrail"]["MinHColor"].GetNumI();
 	playerTrailParam.sColor          = root["PlayerTrail"]["SColor"].GetNumI();
 	playerTrailParam.vColor          = root["PlayerTrail"]["VColor"].GetNumI();
+
+	fieldShieldParam.particleNum = root["FieldShield"]["ParticleNum"].GetNumI();
+	fieldShieldParam.lifeTime    = root["FieldShield"]["LifeTime"].GetNumF();
+	fieldShieldParam.scale       = root["FieldShield"]["Scale"].GetNumF();
+	fieldShieldParam.scaleSpeed  = root["FieldShield"]["ScaleSpeed"].GetNumF();
+
+	normalMagicParam.particleNum    = root["NormalMagic"]["ParticleNum"].GetNumI();
+	normalMagicParam.scale          = root["NormalMagic"]["Scale"].GetNumF();
+
+	fireMagicParam.particleNum      = root["FireMagic"]["ParticleNum"].GetNumI();
+	fireMagicParam.scale            = root["FireMagic"]["Scale"].GetNumF();
+	fireMagicParam.speed            = root["FireMagic"]["Speed"].GetNumF();
+	fireMagicParam.maxAccelerationX = root["FireMagic"]["MaxAccelerationX"].GetNumF();
+	fireMagicParam.minAccelerationX = root["FireMagic"]["MinAccelerationX"].GetNumF();
+	fireMagicParam.accelerationYZ   = root["FireMagic"]["AccelerationYZ"].GetNumF();
+	fireMagicParam.maxLifeTime      = root["FireMagic"]["MaxLifeTime"].GetNumF();
+	fireMagicParam.minLifeTime      = root["FireMagic"]["MinLifeTime"].GetNumF();
+	fireMagicParam.color            = root["FireMagic"]["Color"].GetVector4();
 
 
 	return true;

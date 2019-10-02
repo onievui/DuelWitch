@@ -113,7 +113,7 @@ bool Element::IsUsed() const {
 /// エレメントを使用するかどうか設定する
 /// </summary>
 /// <param name="isUsed">true : 使用する, false : 使用しない</param>
-void Element::IsUsed(bool isUsed) {
+void Element::SetUsed(bool isUsed) {
 	m_isUsed = isUsed;
 }
 

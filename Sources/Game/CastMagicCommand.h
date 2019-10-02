@@ -20,7 +20,7 @@ public:
 
 private:
 	// –‚–@‚Ì‚½‚ß‚ÌƒŒƒC—p•½–Ê‚Ìì¬
-	DirectX::SimpleMath::Plane CreatePlaneForMagic(const Transform& transform, Player::MoveDirection direction);
+	DirectX::SimpleMath::Plane CreatePlaneForMagic(const Transform& transform);
 
 };
 

@@ -21,6 +21,30 @@ public:
 public:
 	std::vector<int> maxNum;
 
+	struct player_trail_param {
+		int particleNum;
+		DirectX::SimpleMath::Vector3 appearPosOffset;
+		float lifeTime;
+		float speed;
+		float acceleration;
+		float apexAngle;
+		float maxScale;
+		float minScale;
+		int maxHColor;
+		int minHColor;
+		int sColor;
+		int vColor;
+	};
+	player_trail_param playerTrailParam;
+
+	struct field_shield_param {
+		int particleNum;
+		float lifeTime;
+		float scale;
+		float scaleSpeed;
+	};
+	field_shield_param fieldShieldParam;
+
 	struct normal_magic_param {
 		int particleNum;
 		float scale;
@@ -40,21 +64,7 @@ public:
 	};
 	fire_magic_param fireMagicParam;
 
-	struct player_trail_param {
-		int particleNum;
-		DirectX::SimpleMath::Vector3 appearPosOffset;
-		float lifeTime;
-		float speed;
-		float acceleration;
-		float apexAngle;
-		float maxScale;
-		float minScale;
-		int maxHColor;
-		int minHColor;
-		int sColor;
-		int vColor;
-	};
-	player_trail_param playerTrailParam;
+	
 
 	struct freeze_param {
 

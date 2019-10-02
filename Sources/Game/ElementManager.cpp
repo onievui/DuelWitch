@@ -2,6 +2,7 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\RandMt.h>
 #include <Utils\MathUtils.h>
+#include <Utils\LamdaUtils.h>
 #include <Parameters\ElementParameter.h>
 #include "Element.h"
 #include "ElementFactory.h"
@@ -41,16 +42,18 @@ void ElementManager::Initialize() {
 void ElementManager::Update(const DX::StepTimer& timer) {
 	m_creationTimer += static_cast<float>(timer.GetElapsedSeconds());
 
-	for (std::vector<Element*>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
-		if (*itr) {
-			(*itr)->Update(timer);
-			if (!(*itr)->IsUsed()) {
-				*itr = nullptr;
-			}
+	// エレメントを更新する
+	for (std::vector<Element*>::iterator itr = LamdaUtils::FindIf(m_elements, LamdaUtils::NotNull());
+		itr != m_elements.end();
+		LamdaUtils::FindIfNext(itr, m_elements.end(), LamdaUtils::NotNull())) {
+		(*itr)->Update(timer);
+		if (!(*itr)->IsUsed()) {
+			*itr = nullptr;
 		}
 	}
 
 	// エレメントを生成する
+	m_creationTimer = m_creationTimer;
 	const float creation_interval = ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->creationInterval;
 	if (m_creationTimer >= creation_interval) {
 		DirectX::SimpleMath::Vector3 area_offset(0, 0, -60);
@@ -92,16 +95,11 @@ void ElementManager::CreateElement(const DirectX::SimpleMath::Vector3& areaStart
 		);
 		Element* created_element = m_elementFactory->Create(ElementID(rand), pos);
 		// 未使用のオブジェクトを探す
-		std::vector<Element*>::iterator itr = std::find_if(m_elements.begin(), m_elements.end(), [&](Element* element) {return !element; });
+		std::vector<Element*>::iterator itr = LamdaUtils::FindIf(m_elements, LamdaUtils::IsNull());
 		if (itr != m_elements.end()) {
 			*itr = created_element;
 		}
-		//for (std::vector<Element*>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
-		//	if (!*itr) {
-		//		*itr = created_element;
-		//		break;
-		//	}
-		//}
+
 		rand = (rand + 1) % 3;
 	}
 }

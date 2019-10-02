@@ -22,5 +22,5 @@ Collider::Collider(Type type, const Transform* pTransform, const DirectX::Simple
 /// </returns>
 DirectX::SimpleMath::Vector3 Collider::GetPos() const {
 	DirectX::SimpleMath::Vector3 offset = DirectX::SimpleMath::Vector3::Transform(m_offset, m_pTransform->GetLocalRotation());
-	return m_pTransform->GetLocalPosition() + offset;
+	return m_pTransform->GetPosition() + offset;
 }

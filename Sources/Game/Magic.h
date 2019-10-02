@@ -62,7 +62,7 @@ public:
 	// 魔法を使用しているかどうか取得する
 	bool IsUsed() const { return m_isUsed; }
 	// 魔法を使用するかどうか設定する
-	void IsUsed(bool isUsed) { m_isUsed = isUsed; }
+	void SetUsed(bool isUsed) { m_isUsed = isUsed; }
 
 protected:
 	// 魔法ID

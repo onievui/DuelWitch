@@ -36,7 +36,7 @@ public:
 	// エフェクトを使用しているかどうか取得する
 	bool IsUsed() const override { return m_isUsed; }
 	// エフェクトを使用するかどうか設定する
-	void IsUsed(bool isUsed) override { m_isUsed = isUsed; }
+	void SetUsed(bool isUsed) override { m_isUsed = isUsed; }
 
 protected:
 	//  定数バッファ

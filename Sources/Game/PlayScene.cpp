@@ -119,6 +119,11 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	// エフェクトマネージャを更新する
 	m_effectManager->Update(timer, m_targetCamera.get());
 
+	// プレイヤーとフィールドの当たり判定
+	for (std::vector<std::unique_ptr<Player>>::iterator itr = m_players.begin(); itr != m_players.end(); ++itr) {
+		m_field->CollisionCheckPlayer(*(*itr));
+	}
+
 	// 未使用なら飛ばす処理を生成
 	auto live_pred = LamdaUtils::NotNull();
 	
@@ -132,7 +137,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		for (std::vector<std::unique_ptr<Player>>::iterator player_itr = m_players.begin(); player_itr != m_players.end(); ++player_itr) {
 			if (Collision::HitCheck(element_collider, (*player_itr)->GetCollider())) {
 				(*player_itr)->GetElement((*element_itr)->GetID());
-				(*element_itr)->IsUsed(false);
+				(*element_itr)->SetUsed(false);
 			}
 		}
 	}
@@ -188,7 +193,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 
 
 	// フィールドの更新
-	m_field->Update();
+	m_field->Update(timer);
 
 	// デバッグカメラの更新
 	m_debugCamera->Update();
@@ -218,7 +223,7 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	m_elementManager->Render(view, projection);
 	// 魔法を描画する
 	m_magicManager->Render(view, projection);
-
+	
 	// プレイヤーを描画する
 	for (std::vector<std::unique_ptr<Player>>::const_iterator itr = m_players.cbegin(); itr != m_players.cend(); ++itr) {
 		(*itr)->Render(view, projection, spriteBatch);
@@ -226,8 +231,6 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 
 	// エフェクトを描画する
 	m_effectManager->Render(view, projection);
-	
-
 
 	spriteBatch->End();
 }
