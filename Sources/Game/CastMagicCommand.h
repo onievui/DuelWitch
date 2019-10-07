@@ -20,7 +20,7 @@ public:
 
 private:
 	// 通常状態の処理を行う
-	void ExecuteIdel(Player& player, const DX::StepTimer& timer);
+	void ExecuteIdle(Player& player, const DX::StepTimer& timer);
 	// チャージ中の処理を行う
 	void ExecuteCharging(Player& player, const DX::StepTimer& timer);
 	// チャージショットが出来る段階を調べる
@@ -32,7 +32,7 @@ private:
 private:
 	// チャージショット用ステート
 	enum class ChargeState {
-		Idel,		// 通常状態
+		Idle,		// 通常状態
 		Charging	// チャージ中
 	};
 

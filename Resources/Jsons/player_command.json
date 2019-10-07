@@ -2,14 +2,17 @@
   "MoveCommand": {
     "MoveSpeed": 16.0,
     "MoveSpeedXY": 0.3,
-    "RotSpeed": 2.0,
+    "RotSpeed_Deg": 80.0,
+    "BoostRotSpeed_Deg": 40.0,
     "RotZLimit_Deg": 22.5,
-    "RotXLimit_Deg": 22.5,
+    "RotXLimit_Deg": 60.0,
     "RotYLimit_Deg": 16.25,
     "LerpSpeed": 0.040,
 
     "CameraRotXLimit_Deg": 30.0,
     "CameraRotYLimit_Deg": 30.0,
+    "ZoomFov_Deg": 10.0,
+    "ZoomTime": 0.5,
 
     "NearDistance": 1.8
   },

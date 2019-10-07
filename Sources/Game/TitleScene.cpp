@@ -49,6 +49,11 @@ void TitleScene::Update(const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 	m_time += elapsed_time;
 
+	// エスケープキーで終了
+	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
+		ExitGame();
+	}
+
 	// スペースキーを押すか左クリックした場合
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space) ||
 		ServiceLocater<MouseWrapper>::Get()->GetTracker()->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED ) {
@@ -75,14 +80,15 @@ void TitleScene::Update(const DX::StepTimer& timer) {
 			ErrorMessage(L"未実装");
 			break;
 		case UIEventID::Play:
-			// キャラセレクトシーンに進む
+		// キャラセレクトシーンに進む
 			m_pSceneRequest->RequestScene("CharaSelect");
 			break;
 		case UIEventID::Option:
 			ErrorMessage(L"未実装");
 			break;
+		// ゲームを終了する
 		case UIEventID::Exit:
-			ErrorMessage(L"未実装");
+			ExitGame();
 			break;
 		default:
 			ErrorMessage(L"不正なUIイベントを取得しました");

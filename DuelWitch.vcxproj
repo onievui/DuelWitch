@@ -297,6 +297,7 @@
     <ClInclude Include="Sources\Game\Magic.h" />
     <ClInclude Include="Sources\Game\MagicFactory.h" />
     <ClInclude Include="Sources\Game\MagicID.h" />
+    <ClInclude Include="Sources\Game\MagicInfo.h" />
     <ClInclude Include="Sources\Game\MagicManager.h" />
     <ClInclude Include="Sources\Game\MoveCommand.h" />
     <ClInclude Include="Sources\Game\NormalMagicEffectEmitter.h" />

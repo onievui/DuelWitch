@@ -17,7 +17,7 @@
 /// </summary>
 /// <param name="magicManager">魔法マネージャへのポインタ</param>
 ThunderMagic::ThunderMagic(MagicManager* pMagicManager)
-	: Magic(MagicID::Thunder)
+	: Magic()
 	, m_pMagicManager(pMagicManager)
 	, m_startTimer() 
 	, m_time() {
@@ -34,13 +34,13 @@ ThunderMagic::~ThunderMagic() {
 /// <summary>
 /// 雷魔法を生成する
 /// </summary>
-/// <param name="playerId">プレイヤーID</param>
+/// <param name="magicInfo">魔法に関する情報</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">方向</param>
-void ThunderMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+void ThunderMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	const MagicParameter::thunder_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderParam;
 
-	m_playerId = playerId;
+	m_info = magicInfo;
 	m_transform.SetPosition(pos);
 	static_cast<SphereCollider*>(m_collider.get())->SetRadius(parameter.colliderRadius);
 	m_color = DirectX::Colors::Yellow;
@@ -100,7 +100,21 @@ void ThunderMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// </summary>
 void ThunderMagic::Finalize() {
 	// 消滅・タイマーのカウントが達したら落雷魔法を生成する
-	m_pMagicManager->CreateMagic(MagicID::ThunderStrike, 0, m_playerId, m_transform.GetLocalPosition(), DirectX::SimpleMath::Vector3::Down);
+	MagicInfo info = m_info;
+	info.id = MagicID::ThunderStrike;
+	m_pMagicManager->CreateMagic(info, m_transform.GetLocalPosition(), DirectX::SimpleMath::Vector3::Down);
+}
+
+/// <summary>
+///  ダメージを取得する
+/// </summary>
+/// <returns>
+/// ダメージ量
+/// </returns>
+float ThunderMagic::GetPower() const {
+	const MagicParameter::thunder_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderParam;
+
+	return parameter.power*m_info.powerRate;
 }
 
 /// <summary>

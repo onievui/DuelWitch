@@ -22,7 +22,7 @@ public:
 
 public:
 	// 雷魔法を生成する
-	void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
+	void Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 	// 雷魔法を更新する
 	void Update(const DX::StepTimer& timer) override;
 	// 雷魔法を開放する
@@ -33,6 +33,8 @@ public:
 	void Finalize() override;
 
 public:
+	// ダメージを取得する
+	float GetPower() const override;
 	// プレイヤーとの衝突処理
 	void HitPlayer(const Collider* collider) override;
 	// 魔法との衝突処理

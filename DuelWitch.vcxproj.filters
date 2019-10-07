@@ -50,9 +50,6 @@
     <Filter Include="Game\Load">
       <UniqueIdentifier>{d12d5140-74bf-4c2b-8bc4-1f1bc124e172}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Parameters">
-      <UniqueIdentifier>{be7d3ff3-0a63-4cf7-a0e1-ec78d9bb61f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils\Resource">
       <UniqueIdentifier>{a8f0914d-a87a-4af0-91f5-771c188b541a}</UniqueIdentifier>
     </Filter>
@@ -76,6 +73,9 @@
     </Filter>
     <Filter Include="Assets\Jsons">
       <UniqueIdentifier>{af038f85-a652-424e-906d-a4cd73af81f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Parameters">
+      <UniqueIdentifier>{be7d3ff3-0a63-4cf7-a0e1-ec78d9bb61f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -223,13 +223,13 @@
       <Filter>Game\Load</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Parameters\CommandParameter.cpp">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Parameters\AICommandParameter.cpp">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Parameters\ElementParameter.cpp">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Game\CommonServices.cpp">
       <Filter>Game</Filter>
@@ -244,7 +244,7 @@
       <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Parameters\MagicParameter.cpp">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Utils\MouseWrapper.cpp">
       <Filter>Utils</Filter>
@@ -286,7 +286,7 @@
       <Filter>Game\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Parameters\EffectParameter.cpp">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Game\EffectFactory.cpp">
       <Filter>Game\Factory</Filter>
@@ -304,7 +304,7 @@
       <Filter>Game\Object\EffectEmitter</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Parameters\CharaStatusParameter.cpp">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Game\Effect.cpp">
       <Filter>Game\Object\Effect</Filter>
@@ -522,16 +522,16 @@
       <Filter>Game\Load</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Parameters\CommandParameter.h">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Utils\ILoadData.h">
       <Filter>Utils\Json</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Parameters\AICommandParameter.h">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Parameters\ElementParameter.h">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\CommonServices.h">
       <Filter>Game</Filter>
@@ -546,7 +546,7 @@
       <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Parameters\MagicParameter.h">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\MagicID.h">
       <Filter>Game\Object\Magic</Filter>
@@ -600,7 +600,7 @@
       <Filter>Game\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Parameters\EffectParameter.h">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\EffectFactory.h">
       <Filter>Game\Factory</Filter>
@@ -645,7 +645,7 @@
       <Filter>Game\Object\EffectEmitter</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Parameters\CharaStatusParameter.h">
-      <Filter>Parameters</Filter>
+      <Filter>Game\Parameters</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\PlayerTrailEffectEmitter.h">
       <Filter>Game\Object\EffectEmitter</Filter>
@@ -667,6 +667,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\CapsuleCollider.h">
       <Filter>Game\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\MagicInfo.h">
+      <Filter>Game\Object\Magic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

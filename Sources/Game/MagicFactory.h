@@ -3,6 +3,9 @@
 #define MAGIC_FACTORY_DEFINED
 
 
+#include "MagicInfo.h"
+
+
 class IMagic;
 class MagicManager;
 enum class PlayerID;
@@ -16,13 +19,14 @@ class MagicFactory {
 public:
 	// コンストラクタ
 	MagicFactory();
+	// デストラクタ
 	~MagicFactory();
 
 public:
 	// 魔法ファクトリを初期化する
 	void Initialize(MagicManager* magicManager);
 	// 魔法を生成する
-	IMagic* Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
+	IMagic* Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 	// 全魔法の最大出現数を取得する
 	int GetMagicMaxNum();
 	

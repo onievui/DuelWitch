@@ -16,11 +16,11 @@ enum class PlayerID;
 class FreezeMagicShooter : public IMagicShooter {
 public:
 	// コンストラクタ
-	FreezeMagicShooter(MagicManager* magicManager);
+	FreezeMagicShooter(MagicManager* pMagicManager);
 
 public:
 	// 氷魔法を発射する
-	void Create(int level, MagicFactory* magicFactory, PlayerID playerId,
+	void Create(MagicFactory* magicFactory, const MagicInfo& magicInfo,
 		const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 
 private:

@@ -26,6 +26,7 @@ public:
 	std::vector<int> maxNum;
 
 	struct normal_param {
+		float power;
 		float radius;
 		float moveSpeed;
 		float lifeTime;
@@ -33,6 +34,7 @@ public:
 	normal_param normalParam;
 
 	struct fire_param {
+		float power;
 		float wayAngle;
 		float radius;
 		float height;
@@ -42,12 +44,14 @@ public:
 	fire_param fireParam;
 
 	struct freeze_param {
+		float power;
 		float radius;
 		float lifeTime;
 	};
 	freeze_param freezeParam;
 
 	struct thunder_param {
+		float power;
 		float radius;
 		float colliderRadius;
 		float moveSpeed;
@@ -60,6 +64,7 @@ public:
 	thunder_param thunderParam;
 
 	struct thunder_strike_param {
+		float power;
 		float radius;
 		float height;
 		float appearPosY;

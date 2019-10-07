@@ -20,7 +20,7 @@ public:
 
 public:
 	// —Ž—‹–‚–@‚ð”­ŽË‚·‚é
-	void Create(int level, MagicFactory* magicFactory, PlayerID playerId,
+	void Create(MagicFactory* magicFactory, const MagicInfo& magicInfo,
 		const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 
 private:

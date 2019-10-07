@@ -43,13 +43,14 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		Player::Status& status = GetStatus(player);
 		if (status.sp >= status.normalMagicSpCost) {
 			status.sp -= status.normalMagicSpCost;
-			GetMagicManager(player).CreateMagic(MagicID::Normal, 0, player.GetPlayerID(), pos, direction);
+			GetMagicManager(player).CreateMagic(MagicInfo(MagicID::Normal,player.GetPlayerID(),0,1.0f), pos, direction);
 		}
 	}
 	else {
 		ElementID element_id = GetHaveElements(player).front();
 		GetHaveElements(player).pop_front();
-		GetMagicManager(player).CreateMagic(element_id, 0, player.GetPlayerID(), pos, direction);
+		GetMagicManager(player).CreateMagic(element_id, MagicInfo(MagicID::Normal,
+			player.GetPlayerID(), 0, player.GetMagicPowerRate(element_id)), pos, direction);
 	}
 
 	const float cast_delay = parameter.castDelay;

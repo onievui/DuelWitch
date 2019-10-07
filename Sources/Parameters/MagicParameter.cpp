@@ -90,12 +90,14 @@ bool MagicParameter::LoadData() {
 
 	{
 		JsonWrapper::value normal(root["Normal"]);
+		normalParam.power     = normal["Power"].GetNumF();
 		normalParam.radius    = normal["Radius"].GetNumF();
 		normalParam.moveSpeed = normal["MoveSpeed"].GetNumF();
 		normalParam.lifeTime  = normal["LifeTime"].GetNumF();
 	}
 	{
 		JsonWrapper::value fire(root["Fire"]);
+		fireParam.power    = fire["Power"].GetNumF();
 		fireParam.wayAngle  = Math::Deg2Rad(fire["WayAngle_Deg"].GetNumF());
 		fireParam.radius    = fire["Radius"].GetNumF();
 		fireParam.height    = fire["Height"].GetNumF();
@@ -104,11 +106,13 @@ bool MagicParameter::LoadData() {
 	}
 	{
 		JsonWrapper::value freeze(root["Freeze"]);
+		freezeParam.power   = freeze["Power"].GetNumF();
 		freezeParam.radius   = freeze["Radius"].GetNumF();
 		freezeParam.lifeTime = freeze["LifeTime"].GetNumF();
 	}
 	{
 		JsonWrapper::value thunder(root["Thunder"]);
+		thunderParam.power            = thunder["Power"].GetNumF();
 		thunderParam.radius           = thunder["Radius"].GetNumF();
 		thunderParam.colliderRadius   = thunder["ColliderRadius"].GetNumF();
 		thunderParam.moveSpeed        = thunder["MoveSpeed"].GetNumF();
@@ -120,6 +124,7 @@ bool MagicParameter::LoadData() {
 	}
 	{
 		JsonWrapper::value thunder_strike(root["ThunderStrike"]);
+		thunderStrikeParam.power      = thunder_strike["Power"].GetNumF();
 		thunderStrikeParam.radius     = thunder_strike["Radius"].GetNumF();
 		thunderStrikeParam.height     = thunder_strike["Height"].GetNumF();
 		thunderStrikeParam.appearPosY = thunder_strike["AppearPosY"].GetNumF();

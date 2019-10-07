@@ -28,6 +28,9 @@ public:
 		float boostSpCost;
 		float firstChargeTime;
 		float secoundChargeTime;
+		float fireMagicPowerRate;
+		float freezeMagicPowerRate;
+		float thunderMagicPowerRate;
 	};
 	chara1_param chara1Param;
 

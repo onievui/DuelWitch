@@ -3,6 +3,9 @@
 #define IMAGIC_SHOOTER_DEFINED
 
 
+#include "MagicInfo.h"
+
+
 class MagicFactory;
 enum class PlayerID;
 
@@ -16,7 +19,7 @@ public:
 
 public:
 	// ñÇñ@ÇçXêVÇ∑ÇÈ
-	virtual void Create(int level, MagicFactory* magicFactory, PlayerID playerId,
+	virtual void Create(MagicFactory* magicFactory, const MagicInfo& magicInfo,
 		const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) = 0;
 
 };

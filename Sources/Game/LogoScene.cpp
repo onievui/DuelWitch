@@ -47,6 +47,11 @@ void LogoScene::Update(const DX::StepTimer& timer) {
 
 	m_time += elapsed_time;
 
+	// エスケープキーで終了
+	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
+		ExitGame();
+	}
+
 	// スペースキーを押すか左クリック、または5秒経過でタイトルシーンに移行する
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space) ||
 		ServiceLocater<MouseWrapper>::Get()->GetTracker()->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED ||

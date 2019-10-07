@@ -15,6 +15,7 @@
 #include "AIRenderCommand.h"
 #include "PlayerID.h"
 #include "MagicID.h"
+#include "ElementFactory.h"
 #include "IMagic.h"
 #include "MagicManager.h"
 #include "Camera.h"
@@ -176,6 +177,29 @@ PlayerID Player::GetPlayerID() const {
 }
 
 /// <summary>
+/// 魔法のダメージ倍率を取得する
+/// </summary>
+/// <param name="elementId">エレメントID</param>
+/// <returns>
+/// ダメージ倍率
+/// </returns>
+float Player::GetMagicPowerRate(ElementID elementId) const {
+	switch (elementId) {
+	case ElementID::Fire:
+		return m_status.fireMagicPowerRate;
+	case ElementID::Freeze:
+		return m_status.freezeMagicPowerRate;
+	case ElementID::Thunder:
+		return m_status.thunderMagicPowerRate;
+	default:
+		break;
+	}
+
+	ErrorMessage(L"魔法のダメージ倍率の取得で不正なIDが渡されました");
+	return 0.0f;
+}
+
+/// <summary>
 /// エレメントの取得処理を行う
 /// </summary>
 /// <param name="elementId">エレメントID</param>
@@ -231,12 +255,15 @@ void Player::InitializeStatus() {
 	m_status.maxHp = m_status.hp = m_status.preHp = parameter.maxHp;
 	m_status.maxSp = m_status.sp = m_status.preSp = parameter.maxSp;
 
-	m_status.spRecoverySpeed   = parameter.spRecoverySpeed;
-	m_status.normalMagicSpCost = parameter.normalMagicSpCost;
-	m_status.boostSpeedRate    = parameter.boostSpeedRate;
-	m_status.boostSpCost       = parameter.boostSpCost;
-	m_status.firstChargeTime   = parameter.firstChargeTime;
-	m_status.secoundChargeTime = parameter.secoundChargeTime;
+	m_status.spRecoverySpeed       = parameter.spRecoverySpeed;
+	m_status.normalMagicSpCost     = parameter.normalMagicSpCost;
+	m_status.boostSpeedRate        = parameter.boostSpeedRate;
+	m_status.boostSpCost           = parameter.boostSpCost;
+	m_status.firstChargeTime       = parameter.firstChargeTime;
+	m_status.secoundChargeTime     = parameter.secoundChargeTime;
+	m_status.fireMagicPowerRate    = parameter.fireMagicPowerRate;
+	m_status.freezeMagicPowerRate  = parameter.freezeMagicPowerRate;
+	m_status.thunderMagicPowerRate = parameter.thunderMagicPowerRate;
 
 	m_status.damageTimer     = 0.0f;
 	m_status.spDecreaseTimer = 0.0f;

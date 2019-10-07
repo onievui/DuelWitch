@@ -7,6 +7,9 @@
     "BoostSpeedRate": 1.5,
     "BoostSpCost": 10.0,
     "FirstChargeTime": 1.0,
-    "SecoundChargeTime": 2.0
+    "SecoundChargeTime": 2.0,
+    "FireMagicPowerRate": 1.5,
+    "FreezeMagicPowerRate": 1.0,
+    "ThunderMagicPowerRate": 1.0
   }
 }

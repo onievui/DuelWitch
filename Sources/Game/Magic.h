@@ -18,9 +18,8 @@ public:
 	virtual ~Magic() = default;
 
 protected:
-	Magic(MagicID id) 
-		: m_id(id)
-		, m_playerId()
+	Magic()
+		: m_info()
 		, m_transform()
 		, m_collider()
 		, m_world()
@@ -32,8 +31,8 @@ protected:
 
 public:
 	// 魔法を生成する
-	virtual void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-		m_playerId = playerId;
+	virtual void Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+		m_info = magicInfo;
 		m_transform.SetPosition(pos);
 		m_vel = dir;
 	}
@@ -52,9 +51,11 @@ public:
 	// オブジェクトの当たり判定を取得する
 	const Collider* GetCollider() const                  { return m_collider.get(); }
 	// 魔法IDを取得する
-	MagicID GetID() const                                { return m_id; }
+	MagicID GetID() const                                { return m_info.id; }
 	// プレイヤーIDを取得する
-	PlayerID GetPlayerID() const                         { return m_playerId; }
+	PlayerID GetPlayerID() const                         { return m_info.playerId; }
+	// ダメージを取得する
+	virtual float GetPower() const                       { return m_info.powerRate; }
 	// プレイヤーとの衝突処理
 	virtual void HitPlayer(const Collider* collider)     { collider; }
 	// 魔法との衝突処理
@@ -65,10 +66,8 @@ public:
 	void SetUsed(bool isUsed)                            { m_isUsed = isUsed; }
 
 protected:
-	// 魔法ID
-	MagicID                                      m_id;
-	// プレイヤーID
-	PlayerID                                     m_playerId;
+	// 魔法に関する情報
+	MagicInfo                                    m_info;
 	// 姿勢
 	Transform                                    m_transform;
 	// 球当たり判定

@@ -3,11 +3,13 @@
   "_MaxNum_Size": 5,
 
   "Normal": {
-    "Radius"   : 0.4,
+    "Power": 10.0,
+    "Radius": 0.4,
     "MoveSpeed": 60.0,
-    "LifeTime" : 6.0
+    "LifeTime": 6.0
   },
   "Fire": {
+    "Power": 10.0,
     "WayAngle_Deg": 5.0,
     "Radius": 0.5,
     "Height": 1.6,
@@ -15,24 +17,27 @@
     "LifeTime": 6.0
   },
   "Freeze": {
-    "Radius"  : 1.25,
+    "Power": 10.0,
+    "Radius": 1.25,
     "LifeTime": 6.0
   },
   "Thunder": {
-    "Radius"          : 0.4,
-    "ColliderRadius"  : 6.5,
-    "MoveSpeed"       : 60.0,
-    "ChaseSpeed"      : 30.0,
+    "Power": 0.0,
+    "Radius": 0.4,
+    "ColliderRadius": 6.5,
+    "MoveSpeed": 60.0,
+    "ChaseSpeed": 30.0,
     "ChaseEndDistance": 3.0,
-    "ChaseLerpSpeed"  : 0.5,
-    "ChaseEndTime"    : 0.5,
-    "LifeTime"        : 3.0
+    "ChaseLerpSpeed": 0.5,
+    "ChaseEndTime": 0.5,
+    "LifeTime": 3.0
   },
   "ThunderStrike": {
-    "Radius"    : 2.5,
-    "Height"    : 75.0,
-    "AppearPosY": 80.0,
-    "MoveSpeed" : 150.0,
-    "LifeTime"  : 3.0
+    "Power": 10.0,
+    "Radius": 2.5,
+    "Height": 75.0,
+    "AppearPosY": 150.0,
+    "MoveSpeed": 300.0,
+    "LifeTime": 3.0
   }
 }

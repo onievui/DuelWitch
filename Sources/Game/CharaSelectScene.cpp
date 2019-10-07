@@ -54,6 +54,11 @@ void CharaSelectScene::Update(const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 	m_time += elapsed_time;
 
+	// エスケープキーで終了
+	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
+		ExitGame();
+	}
+
 	// UIを更新する
 	// 戻る・進むボタン
 	for (std::vector<std::unique_ptr<UISubject>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {

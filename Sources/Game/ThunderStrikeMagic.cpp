@@ -13,7 +13,7 @@
 /// コンストラクタ
 /// </summary>
 ThunderStrikeMagic::ThunderStrikeMagic()
-	: Magic(MagicID::ThunderStrike) {
+	: Magic() {
 	const MagicParameter::thunder_strike_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderStrikeParam;
 	m_collider = std::make_unique<CapsuleCollider>(&m_transform, parameter.radius,
 		DirectX::SimpleMath::Vector3(0, parameter.height*0.5f, 0), DirectX::SimpleMath::Vector3(0, -parameter.height*0.5f, 0));
@@ -29,13 +29,13 @@ ThunderStrikeMagic::~ThunderStrikeMagic() {
 /// <summary>
 /// 落雷魔法を生成する
 /// </summary>
-/// <param name="playerId">プレイヤーID</param>
+/// <param name="magicInfo">魔法に関する情報</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">方向</param>
-void ThunderStrikeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+void ThunderStrikeMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	const MagicParameter::thunder_strike_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderStrikeParam;
 
-	m_playerId = playerId;
+	m_info = magicInfo;
 	m_transform.SetPosition(pos);
 	CapsuleCollider* collider = static_cast<CapsuleCollider*>(m_collider.get());
 	collider->SetRadius(parameter.radius);
@@ -83,6 +83,18 @@ void ThunderStrikeMagic::Render(const DirectX::SimpleMath::Matrix& view, const D
 }
 
 /// <summary>
+/// ダメージを取得する
+/// </summary>
+/// <returns>
+/// ダメージ量
+/// </returns>
+float ThunderStrikeMagic::GetPower() const {
+	const MagicParameter::thunder_strike_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderStrikeParam;
+
+	return parameter.power*m_info.powerRate;
+}
+
+/// <summary>
 /// プレイヤーとの衝突処理
 /// </summary>
 /// <param name="collider">プレイヤーの当たり判定</param>
@@ -107,6 +119,6 @@ void ThunderStrikeMagic::HitMagic(const IMagic* other) {
 
 		m_vel = direction * m_vel.Length();
 		//跳ね返り後は相手の魔法扱いになる
-		m_playerId = other->GetPlayerID();
+		m_info.playerId = other->GetPlayerID();
 	}
 }

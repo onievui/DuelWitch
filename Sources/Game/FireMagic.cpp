@@ -15,7 +15,7 @@
 /// コンストラクタ
 /// </summary>
 FireMagic::FireMagic()
-	: Magic(MagicID::Fire) {
+	: Magic() {
 	const MagicParameter::fire_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam;
 	m_collider = std::make_unique<SphereCollider>(&m_transform, parameter.radius);
 
@@ -30,13 +30,13 @@ FireMagic::~FireMagic() {
 /// <summary>
 /// 炎魔法を生成する
 /// </summary>
-/// <param name="playerId">プレイヤーID</param>
+/// <param name="magicInfo">魔法に関する情報</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">方向</param>
-void FireMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+void FireMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	const MagicParameter::fire_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam;
 
-	m_playerId = playerId;
+	m_info = magicInfo;
 	m_transform.SetPosition(pos);
 	static_cast<SphereCollider*>(m_collider.get())->SetRadius(parameter.radius);
 	m_color = DirectX::Colors::Red;
@@ -97,6 +97,18 @@ void FireMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::S
 void FireMagic::Finalize() {
 	// エフェクトを終了させる
 	m_pEffect->SetUsed(false);
+}
+
+/// <summary>
+/// ダメージを取得する
+/// </summary>
+/// <returns>
+/// ダメージ量
+/// </returns>
+float FireMagic::GetPower() const {
+	const MagicParameter::fire_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam;
+
+	return parameter.power*m_info.powerRate;
 }
 
 /// <summary>

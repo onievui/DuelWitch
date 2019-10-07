@@ -12,7 +12,7 @@
 /// コンストラクタ
 /// </summary>
 FreezeMagic::FreezeMagic()
-	: Magic(MagicID::Freeze)
+	: Magic()
 	, m_pPlayerPos() {
 	const MagicParameter::freeze_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->freezeParam;
 	m_collider = std::make_unique<SphereCollider>(&m_transform, parameter.radius);
@@ -27,13 +27,13 @@ FreezeMagic::~FreezeMagic() {
 /// <summary>
 /// 氷魔法を生成する
 /// </summary>
-/// <param name="playerId">プレイヤーID</param>
+/// <param name="magicInfo">魔法に関する情報</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">方向</param>
-void FreezeMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+void FreezeMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	const MagicParameter::freeze_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->freezeParam;
 
-	m_playerId = playerId;
+	m_info = magicInfo;
 	m_transform.SetPosition(pos);
 	static_cast<SphereCollider*>(m_collider.get())->SetRadius(parameter.radius);
 	m_pPlayerPos = &pos;
@@ -76,6 +76,18 @@ void FreezeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 		->GetResource(GeometricPrimitiveID::FreezeMagic);
 	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
 	//m_sphereCollider.Render(view, proj);
+}
+
+/// <summary>
+/// ダメージを取得する
+/// </summary>
+/// <returns>
+/// ダメージ量
+/// </returns>
+float FreezeMagic::GetPower() const {
+	const MagicParameter::freeze_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->freezeParam;
+
+	return parameter.power*m_info.powerRate;
 }
 
 /// <summary>

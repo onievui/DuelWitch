@@ -4,6 +4,7 @@
 
 
 #include <Framework\StepTimer.h>
+#include "MagicInfo.h"
 
 
 class IMagic;
@@ -34,8 +35,8 @@ public:
 
 public:
 	// –‚–@‚ğ¶¬‚·‚é
-	void CreateMagic(MagicID id, int level, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
-	void CreateMagic(ElementID id, int level, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
+	void CreateMagic(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
+	void CreateMagic(ElementID id, const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir);
 	// –‚–@‚ğæ“¾‚·‚é
 	std::vector<IMagic*>* GetMagics();
 

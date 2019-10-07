@@ -128,7 +128,6 @@ void MouseWrapper::SetPos(const DirectX::SimpleMath::Vector2& pos) {
 		POINT mouse_pos;
 		mouse_pos.x = 0, mouse_pos.y = 0;
 		GetCursorPos(&mouse_pos);
-
 		// w’è‚µ‚½À•W‚Ü‚Å‚Ì·•ª‚ğ‰Á‚¦‚Ä”½‰f‚·‚é
 		mouse_pos.x += static_cast<LONG>(pos.x - m_preAbsolutePos.x);
 		mouse_pos.y += static_cast<LONG>(pos.y - m_preAbsolutePos.y);

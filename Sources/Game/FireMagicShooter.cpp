@@ -14,26 +14,24 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="magicManager"></param>
-FireMagicShooter::FireMagicShooter(MagicManager* magicManager)
-	: m_pMagicManager(magicManager) {
+/// <param name="magicManager">魔法マネージャへのポインタ</param>
+FireMagicShooter::FireMagicShooter(MagicManager* pMagicManager)
+	: m_pMagicManager(pMagicManager) {
 }
 
 /// <summary>
 /// 炎魔法を発射する
 /// </summary>
-/// <param name="level">レベル</param>
 /// <param name="magicFactory">魔法ファクトリへのポインタ</param>
-/// <param name="playerId">プレイヤーID</param>
+/// <param name="magicInfo">魔法に関する情報</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">向き</param>
-void FireMagicShooter::Create(int level, MagicFactory* magicFactory, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos,
+void FireMagicShooter::Create(MagicFactory* magicFactory, const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos,
 	const DirectX::SimpleMath::Vector3& dir) {
-	level;
-
 	const float angle = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam.wayAngle;
-	auto quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, -angle);
-	auto direction = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
+	DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(
+		DirectX::SimpleMath::Vector3::UnitY, -angle);
+	DirectX::SimpleMath::Vector3 direction = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
 	quaternion.Inverse(quaternion);
 
 	std::vector<IMagic*>* magics = m_pMagicManager->GetMagics();
@@ -42,7 +40,7 @@ void FireMagicShooter::Create(int level, MagicFactory* magicFactory, PlayerID pl
 	for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*magics, LamdaUtils::IsNull());
 		itr != magics->end() && count < 3;
 		LamdaUtils::FindIfNext(itr, magics->end(), LamdaUtils::IsNull()), ++count) {
-		(*itr) = magicFactory->Create(MagicID::Fire, playerId, pos, direction);
+		(*itr) = magicFactory->Create(magicInfo, pos, direction);
 		// 発射するたびに向きをずらす
 		direction = DirectX::SimpleMath::Vector3::Transform(direction, quaternion);
 	}

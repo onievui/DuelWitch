@@ -4,6 +4,7 @@
 
 
 #include "IObject.h"
+#include "MagicInfo.h"
 
 
 class SphereCollider;
@@ -20,7 +21,7 @@ public:
 
 public:
 	// 魔法を生成する
-	virtual void Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) = 0;
+	virtual void Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) = 0;
 	// 魔法を更新する
 	virtual void Update(const DX::StepTimer& timer) = 0;
 	// 魔法を開放する
@@ -35,6 +36,8 @@ public:
 	virtual MagicID GetID() const = 0;
 	// プレイヤーIDを取得する
 	virtual PlayerID GetPlayerID() const = 0;
+	// ダメージを取得する
+	virtual float GetPower() const = 0;
 	// プレイヤーとの衝突処理
 	virtual void HitPlayer(const Collider* collider) = 0;
 	// 魔法との衝突処理

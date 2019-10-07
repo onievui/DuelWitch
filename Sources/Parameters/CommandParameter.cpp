@@ -20,7 +20,8 @@ bool CommandParameter::Load() {
 		JsonWrapper::value move_command(root["MoveCommand"]);
 		moveParam.moveSpeed       = move_command["MoveSpeed"].GetNumF();
 		moveParam.moveSpeedXY     = move_command["MoveSpeedXY"].GetNumF();
-		moveParam.rotSpeed        = move_command["RotSpeed"].GetNumF();
+		moveParam.rotSpeed        = Math::Deg2Rad(move_command["RotSpeed_Deg"].GetNumF());
+		moveParam.boostRotSpeed   = Math::Deg2Rad(move_command["BoostRotSpeed_Deg"].GetNumF());
 		moveParam.rotZLimit       = Math::Deg2Rad(move_command["RotZLimit_Deg"].GetNumF());
 		moveParam.rotXLimit       = Math::Deg2Rad(move_command["RotXLimit_Deg"].GetNumF());
 		moveParam.rotYLimit       = Math::Deg2Rad(move_command["RotYLimit_Deg"].GetNumF());
@@ -28,6 +29,8 @@ bool CommandParameter::Load() {
 
 		moveParam.cameraRotXLimit = Math::Deg2Rad(move_command["CameraRotXLimit_Deg"].GetNumF());
 		moveParam.cameraRotYLimit = Math::Deg2Rad(move_command["CameraRotYLimit_Deg"].GetNumF());
+		moveParam.zoomFov         = Math::Deg2Rad(move_command["ZoomFov_Deg"].GetNumF());
+		moveParam.zoomTime        = move_command["ZoomTime"].GetNumF();
 
 		moveParam.nearDistance    = move_command["NearDistance"].GetNumF();
 	}

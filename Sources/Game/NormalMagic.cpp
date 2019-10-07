@@ -14,7 +14,7 @@
 /// コンストラクタ
 /// </summary>
 NormalMagic::NormalMagic()
-	: Magic(MagicID::Normal) {
+	: Magic() {
 	const MagicParameter::normal_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->normalParam;
 	m_collider = std::make_unique<SphereCollider>(&m_transform, parameter.radius);
 }
@@ -28,13 +28,13 @@ NormalMagic::~NormalMagic() {
 /// <summary>
 /// 通常魔法を生成する
 /// </summary>
-/// <param name="playerId">プレイヤーID</param>
+/// <param name="magicInfo">魔法に関する情報</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">方向</param>
-void NormalMagic::Create(PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+void NormalMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	const MagicParameter::normal_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->normalParam;
 
-	m_playerId = playerId;
+	m_info = magicInfo;
 	m_transform.SetPosition(pos);
 	static_cast<SphereCollider*>(m_collider.get())->SetRadius(parameter.radius);
 	m_color = DirectX::Colors::White;
@@ -87,6 +87,18 @@ void NormalMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 void NormalMagic::Finalize() {
 	// エフェクトを終了させる
 	m_pEffect->SetUsed(false);
+}
+
+/// <summary>
+///  ダメージを取得する
+/// </summary>
+/// <returns>
+/// ダメージ量
+/// </returns>
+float NormalMagic::GetPower() const {
+	const MagicParameter::normal_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->normalParam;
+
+	return parameter.power*m_info.powerRate;
 }
 
 /// <summary>

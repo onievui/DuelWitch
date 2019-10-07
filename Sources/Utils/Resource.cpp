@@ -37,16 +37,14 @@ TextureResource::TextureResource(const std::wstring& fileName) {
 void TextureResource::AddResource(const std::wstring& fileName) {
 	m_resources.emplace_back(nullptr);
 	// 画像のロード
+	Microsoft::WRL::ComPtr<ID3D11Resource> resource;
 	DirectX::CreateWICTextureFromFile(ServiceLocater<DirectX11>::Get()->GetDevice().Get(),
-		(TEXTURE_DIR + fileName).c_str(), nullptr, m_resources.back().GetAddressOf());
+		(TEXTURE_DIR + fileName).c_str(), resource.GetAddressOf(), m_resources.back().GetAddressOf());
 	if (m_resources.back().Get() == m_defaultResource.Get()) {
 		ErrorMessage(L"画像の読み込みに失敗しました");
 	}
 
 	// 画像サイズを調べる
-	ID3D11ShaderResourceView* texture = m_resources.back().Get();
-	Microsoft::WRL::ComPtr<ID3D11Resource> resource;
-	texture->GetResource(resource.GetAddressOf());
 	D3D11_RESOURCE_DIMENSION dimension;
 	resource->GetType(&dimension);
 	// Texture2Dでない場合は処理しない

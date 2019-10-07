@@ -15,11 +15,11 @@ class MagicManager;
 class NormalMagicShooter : public IMagicShooter {
 public:
 	// コンストラクタ
-	NormalMagicShooter(MagicManager* magicManager);
+	NormalMagicShooter(MagicManager* pMagicManager);
 
 public:
 	// 通常魔法を発射する
-	void Create(int level, MagicFactory* magicFactory, PlayerID playerId,
+	void Create(MagicFactory* magicFactory, const MagicInfo& magicInfo,
 		const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 
 private:

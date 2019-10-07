@@ -82,25 +82,24 @@ void MagicManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// <summary>
 /// 魔法を生成する
 /// </summary>
-/// <param name="id">魔法ID</param>
-/// <param name="level">レベル</param>
-/// <param name="playerId">プレイヤーID</param>
+/// <param name="magicInfo">魔法に関する情報</param>
 /// <param name="pos">座標</param>
 /// <param name="vec">向き</param>
-void MagicManager::CreateMagic(MagicID id, int level, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	m_magicShooters[static_cast<int>(id)]->Create(level, m_magicFactory.get(), playerId, pos, dir);
+void MagicManager::CreateMagic(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	m_magicShooters[static_cast<int>(magicInfo.id)]->Create(m_magicFactory.get(), magicInfo, pos, dir);
 }
 
 /// <summary>
 /// 魔法を生成する
 /// </summary>
 /// <param name="id">エレメントID</param>
-/// <param name="level">レベル</param>
-/// <param name="playerId">プレイヤーID</param>
+/// <param name="magicInfo">魔法に関する情報</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">向き</param>
-void MagicManager::CreateMagic(ElementID id, int level, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	CreateMagic(ElementID2MagicID(id), level, playerId, pos, dir);
+void MagicManager::CreateMagic(ElementID id, const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	MagicInfo info = magicInfo;
+	info.id = ElementID2MagicID(id);
+	CreateMagic(magicInfo, pos, dir);
 }
 
 

@@ -55,17 +55,16 @@ void MagicFactory::Initialize(MagicManager* magicManager) {
 /// <summary>
 /// 魔法の生成処理
 /// </summary>
-/// <param name="id">魔法ID</param>
-/// <param name="playerId">プレイヤーID</param>
+/// <param name="magicInfo">魔法に関する情報</param>
 /// <param name="pos">座標</param>
 /// <param name="dir">向き</param>
 /// <returns>
 /// 魔法
 /// </returns>
-IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+IMagic* MagicFactory::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	// 使用していないオブジェクトを探す
-	std::vector<std::unique_ptr<IMagic>>::iterator begin = m_magics.begin() + m_beginIndex[static_cast<int>(id)];
-	std::vector<std::unique_ptr<IMagic>>::iterator end = begin + m_maxNum[static_cast<int>(id)];
+	std::vector<std::unique_ptr<IMagic>>::iterator begin = m_magics.begin() + m_beginIndex[static_cast<int>(magicInfo.id)];
+	std::vector<std::unique_ptr<IMagic>>::iterator end = begin + m_maxNum[static_cast<int>(magicInfo.id)];
 	std::vector<std::unique_ptr<IMagic>>::iterator itr = std::find_if_not(begin, end, LamdaUtils::GetLamda(&IMagic::IsUsed));
 
 	// これ以上生成できないならnullptrを返す
@@ -74,7 +73,7 @@ IMagic* MagicFactory::Create(MagicID id, PlayerID playerId, const DirectX::Simpl
 	}
 
 	// 魔法を生成する
-	(*itr)->Create(playerId, pos, dir);
+	(*itr)->Create(magicInfo, pos, dir);
 	(*itr)->SetUsed(true);
 
 	return itr->get();

@@ -66,23 +66,21 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	DirectX::Keyboard::State key_state = key_tracker->GetLastState();
 	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
 
-	const float move_speed    = parameter.moveSpeed;
-	const float move_speed_xy = parameter.moveSpeedXY;
-	const float rot_z_limit   = parameter.rotZLimit;
-	const float rot_x_limit   = parameter.rotXLimit;
-	const float rot_y_limit   = parameter.rotYLimit;
-	const float lerp_speed    = parameter.lerpSpeed;
+	const float move_speed       = parameter.moveSpeed;
+	const float rot_z_limit      = parameter.rotZLimit;
+	const float rot_x_limit      = parameter.rotXLimit;
+	const float lerp_speed       = parameter.lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
+	Player::Status& ref_status = GetStatus(player);
 
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
-	const float rot_speed = Math::PI / 3;
-	const float rot_x_lim = Math::PI / 3;
-
 	// 回転の変化量
 	DirectX::SimpleMath::Vector3 change_euler;
+	// 回転量
+	float rot_speed = (ref_status.isBoosting ? parameter.boostRotSpeed : parameter.rotSpeed);
 
 	// 左右移動
 	if (key_state.A || key_state.Left) {
@@ -109,18 +107,17 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 
 	// 斜め移動の場合
 	if (change_euler.x != 0.0f && change_euler.y != 0.0f) {
-		change_euler *= 0.5f;
+		change_euler /= std::sqrtf(2);
 	}
 
 	m_euler += change_euler;
 
-	m_euler.x = Math::Clamp(m_euler.x, -rot_x_lim, rot_x_lim);
+	m_euler.x = Math::Clamp(m_euler.x, -rot_x_limit, rot_x_limit);
 
 	move = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ,
 		DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
 
 	MouseWrapper* mouse = ServiceLocater<MouseWrapper>::Get();
-	Player::Status& ref_status = GetStatus(player);
 	// 右クリックしていて、残りSPが10％以上ならブースト移動
 	if (mouse->GetTracker()->rightButton == DirectX::Mouse::ButtonStateTracker::ButtonState::HELD &&
 		ref_status.sp / ref_status.maxSp >= 0.1f) {
@@ -135,11 +132,6 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		ref_status.isBoosting = false;
 		Zoom(GetCamera(player), timer, false);
 	}
-
-	//if (pos.Length() > 80.0f) {
-	//	pos.Normalize();
-	//	pos = pos * 80.0f;
-	//}
 
 	ref_transform.SetPosition(pos);
 	ref_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
@@ -171,14 +163,18 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 /// <param name="isBoosting">ブーストしているかどうか</param>
 void MoveCommand::Zoom(Camera& camera, const DX::StepTimer& timer, bool isBoosting) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
-	const float zoom_fov = Math::PI / 18;
-	const float zoom_time = 0.5f;
+	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
+
+	const float zoom_fov = parameter.zoomFov;
+	const float zoom_time = parameter.zoomTime;
 
 	if (isBoosting) {
 		//画角を狭くする
 		if (m_boostTime < zoom_time) {
 			m_boostTime = std::min(m_boostTime + elapsed_time, zoom_time);
-			float fov = m_defaultFov + m_boostTime / zoom_time * zoom_fov;
+			float t = m_boostTime / zoom_time;
+			t = t * (2 - t);
+			float fov = m_defaultFov +  t * zoom_fov;
 			camera.SetFov(fov);
 		}
 	}
@@ -186,7 +182,8 @@ void MoveCommand::Zoom(Camera& camera, const DX::StepTimer& timer, bool isBoosti
 		//画角を元に戻す
 		if (m_boostTime > 0.0f) {
 			m_boostTime = std::max(m_boostTime - elapsed_time, 0.0f);
-			float fov = m_defaultFov + m_boostTime / zoom_time * zoom_fov;
+			float t = m_boostTime / zoom_time;
+			float fov = m_defaultFov + t * zoom_fov;
 			camera.SetFov(fov);
 		}
 	}

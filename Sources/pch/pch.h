@@ -68,6 +68,10 @@
 #include <dxgidebug.h>
 #endif
 
+
+extern void ExitGame();
+
+
 namespace DX
 {
     // Helper class for COM exceptions

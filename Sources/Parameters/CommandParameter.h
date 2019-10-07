@@ -23,6 +23,7 @@ public:
 		float moveSpeed;
 		float moveSpeedXY;
 		float rotSpeed;
+		float boostRotSpeed;
 		float rotZLimit;
 		float rotXLimit;
 		float rotYLimit;
@@ -30,6 +31,8 @@ public:
 
 		float cameraRotXLimit;
 		float cameraRotYLimit;
+		float zoomFov;
+		float zoomTime;
 
 		float nearDistance;
 	};

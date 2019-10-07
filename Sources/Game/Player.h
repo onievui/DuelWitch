@@ -55,6 +55,8 @@ public:
 	const Collider* GetCollider() const override;
 	// プレイヤーIDを取得する
 	PlayerID GetPlayerID() const;
+	// 魔法のダメージ倍率を取得する
+	float GetMagicPowerRate(ElementID elementId) const;
 	// エレメントの取得処理を行う
 	void GetElement(ElementID elementId);
 	// プレイヤー同士の衝突処理を行う
@@ -99,6 +101,12 @@ public:
 		float                             firstChargeTime;
 		// 2段階目のチャージタイム
 		float                             secoundChargeTime;
+		// 炎魔法のダメージ倍率
+		float                             fireMagicPowerRate;
+		// 氷魔法のダメージ倍率
+		float                             freezeMagicPowerRate;
+		// 雷魔法のダメージ倍率
+		float                             thunderMagicPowerRate;
 
 		// ダメージ後無敵時間タイマー
 		float                             damageTimer;
