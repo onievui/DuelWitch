@@ -230,6 +230,7 @@ void UserRenderCommand::RenderHpBar(const Player& player, DirectX::SpriteBatch* 
 	DirectX::SimpleMath::Vector2 pos(20.0f, 750.0f);
 	DirectX::SimpleMath::Vector2 scale(0.6f, 0.55f);
 
+	// •‚Ì•”•ª‚ð•`‰æ‚·‚é
 	spriteBatch->Draw(texture->GetResource(2).Get(), pos, nullptr,
 		DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, scale);
 

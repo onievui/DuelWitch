@@ -96,10 +96,11 @@ void MagicManager::CreateMagic(const MagicInfo& magicInfo, const DirectX::Simple
 /// <param name="magicInfo">–‚–@‚ÉŠÖ‚·‚éî•ñ</param>
 /// <param name="pos">À•W</param>
 /// <param name="dir">Œü‚«</param>
-void MagicManager::CreateMagic(ElementID id, const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+void MagicManager::CreateMagic(ElementID id, const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos,
+	const DirectX::SimpleMath::Vector3& dir) {
 	MagicInfo info = magicInfo;
 	info.id = ElementID2MagicID(id);
-	CreateMagic(magicInfo, pos, dir);
+	CreateMagic(info, pos, dir);
 }
 
 

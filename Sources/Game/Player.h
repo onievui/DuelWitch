@@ -16,6 +16,7 @@ class Command;
 class RenderCommand;
 enum class ElementID;
 enum class PlayerID;
+enum class MoveCommandState;
 
 
 /// <summary>
@@ -77,6 +78,7 @@ public:
 	/// プレイヤーステータス
 	/// </summary>
 	struct Status {
+		// 外部データ
 		// 最大HP
 		float                             maxHp;
 		// HP
@@ -108,15 +110,17 @@ public:
 		// 雷魔法のダメージ倍率
 		float                             thunderMagicPowerRate;
 
+		// 内部データ
 		// ダメージ後無敵時間タイマー
 		float                             damageTimer;
 		// SP消費直後タイマー
 		float                             spDecreaseTimer;
 		// ブースト中かどうか
 		bool                              isBoosting;
-
 		// チャージ段階
 		int                               chargeLevel;
+		// 移動コマンドの状態
+		MoveCommandState                  moveCommandState;
 	};
 
 private:

@@ -3,7 +3,7 @@
   "_MaxNum_Size": 5,
 
   "Normal": {
-    "Power": 10.0,
+    "Power": 5.0,
     "Radius": 0.4,
     "MoveSpeed": 60.0,
     "LifeTime": 6.0

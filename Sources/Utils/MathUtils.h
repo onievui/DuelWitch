@@ -25,6 +25,12 @@ public:
 		return rad/PI*180.0f;
 	}
 
+	// 小数がゼロかどうか調べる
+	static constexpr bool Equal0(float val) {
+		return (val >= -Math::Epsilon && val <= Math::Epsilon);
+	}
+
+
 	template<class T>
 	// クランプ
 	static T Clamp(const T& value, const T& min, const T& max) {
@@ -58,14 +64,14 @@ public:
 
 	// あるベクトルに垂直なベクトルを生成する
 	static DirectX::SimpleMath::Vector3 CreateNormalVector3(const DirectX::SimpleMath::Vector3& vec) {
-		if (vec.Length() <= Math::Epsilon) {
+		if (Math::Equal0(vec.Length())) {
 			// ゼロベクトルの場合はゼロベクトルを返す
 			return DirectX::SimpleMath::Vector3::Zero;
 		}
-		if (vec.x >= -Math::Epsilon && vec.x <= Math::Epsilon) {
+		if (Math::Equal0(vec.x)) {
 			return DirectX::SimpleMath::Vector3(1, 0, 0);
 		}
-		if (vec.y >= -Math::Epsilon && vec.y <= Math::Epsilon) {
+		if (Math::Equal0(vec.y)) {
 			return DirectX::SimpleMath::Vector3(0, 1, 0);
 		}
 		return DirectX::SimpleMath::Vector3(1, -vec.x / vec.y, 0);
@@ -76,9 +82,9 @@ public:
 		const DirectX::SimpleMath::Vector3& vec1,
 		const DirectX::SimpleMath::Vector3& vec2) {
 		DirectX::SimpleMath::Vector3 axis = vec1.Cross(vec2);
-		if (axis.Length() <= Math::Epsilon) {
+		if (Math::Equal0(axis.Length())) {
 			// 同じベクトルの場合
-			if (vec1.Dot(vec2) >= Math::Epsilon) {
+			if (Math::Equal0(vec1.Dot(vec2))) {
 				return DirectX::SimpleMath::Quaternion::Identity;
 			}
 			// 逆ベクトルの場合

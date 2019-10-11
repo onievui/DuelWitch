@@ -41,6 +41,8 @@ protected:
 	const SphereCollider&        GetCollider(const Player& player) const     { return player.m_sphereCollider; }
 	// カメラを取得する
 	Camera&                      GetCamera(Player& player)                   { return *player.m_pCamera; }
+	// カメラを取得する
+	const Camera&                GetCamera(const Player& player) const       { return *player.m_pCamera; }
 	// 魔法マネージャを取得する
 	MagicManager&                GetMagicManager(Player& player)             { return *player.m_pMagicManager; }
 	// 敵プレイヤーを取得する

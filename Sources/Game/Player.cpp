@@ -8,6 +8,7 @@
 #include "PlayParameterLoader.h"
 #include "Command.h"
 #include "MoveCommand.h"
+#include "MoveCommandState.h"
 #include "AIMoveCommand.h"
 #include "CastMagicCommand.h"
 #include "AICastMagicCommand.h"
@@ -232,7 +233,7 @@ void Player::HitMagic(const IMagic* magic) {
 	}
 	// –³“GŠÔ‚Å‚È‚¯‚ê‚Îƒ_ƒ[ƒW‚ğó‚¯‚é
 	if (m_status.damageTimer <= 0.0f) {
-		m_status.hp -= 10.0f;
+		m_status.hp -= magic->GetPower();
 		m_status.damageTimer = 3.0f;
 	}
 }
@@ -268,8 +269,8 @@ void Player::InitializeStatus() {
 	m_status.damageTimer     = 0.0f;
 	m_status.spDecreaseTimer = 0.0f;
 	m_status.isBoosting      = false;
-
 	m_status.chargeLevel = 0;
+	m_status.moveCommandState = MoveCommandState::Move;
 }
 
 /// <summary>
