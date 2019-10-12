@@ -27,17 +27,17 @@ public:
 
 public:
 	// オブジェクトの行列を取得する
-	const DirectX::SimpleMath::Matrix& GetMatrix() const override { return m_world; }
+	const DirectX::SimpleMath::Matrix& GetMatrix() const override   { return m_world; }
 	// オブジェクトの当たり判定を取得する
-	const Collider* GetCollider() const override { return m_collider.get(); }
+	const Collider*                    GetCollider() const override { return m_collider.get(); }
 
 public:
 	// オブジェクトの行列の参照を取得する
-	DirectX::SimpleMath::Matrix& GetMatrixRef() { return m_world; }
+	DirectX::SimpleMath::Matrix& GetMatrixRef()    { return m_world; }
 	// オブジェクトの姿勢の参照を取得する
-	Transform& GetTransformRef() { return m_transform; }
+	Transform&                   GetTransformRef() { return m_transform; }
 	// オブジェクトの当たり判定の参照を取得する
-	std::unique_ptr<Collider>& GetColliderRef() { return m_collider; }
+	std::unique_ptr<Collider>&   GetColliderRef()  { return m_collider; }
 
 private:
 	// 姿勢

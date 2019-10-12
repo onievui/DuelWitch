@@ -27,6 +27,10 @@ bool CommandParameter::Load() {
 		moveParam.rotYLimit       = Math::Deg2Rad(move_command["RotYLimit_Deg"].GetNumF());
 		moveParam.lerpSpeed       = move_command["LerpSpeed"].GetNumF();
 
+		moveParam.rollingTime     = move_command["RollingTime"].GetNumF();
+		moveParam.rollAngle       = Math::Deg2Rad(move_command["RollAngle_Deg"].GetNumF());
+		moveParam.rollMoveLength  = move_command["RollMoveLength"].GetNumF();
+
 		moveParam.cameraRotXLimit = Math::Deg2Rad(move_command["CameraRotXLimit_Deg"].GetNumF());
 		moveParam.cameraRotYLimit = Math::Deg2Rad(move_command["CameraRotYLimit_Deg"].GetNumF());
 		moveParam.zoomFov         = Math::Deg2Rad(move_command["ZoomFov_Deg"].GetNumF());

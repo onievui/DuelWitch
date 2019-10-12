@@ -86,9 +86,6 @@ void LogoScene::Render(DirectX::SpriteBatch* spriteBatch) {
 		nullptr, DirectX::SimpleMath::Vector4(1, 1, 1, alpha), 0,
 		texture->GetCenter(), DirectX::SimpleMath::Vector2(1.0f, 1.0f));
 
-	const DirectX::SpriteFont* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default)->GetResource().get();
-	font->DrawString(spriteBatch, L"LogoScene press Space", DirectX::SimpleMath::Vector2(0, 0), DirectX::Colors::White);
-
 	spriteBatch->End();
 }
 

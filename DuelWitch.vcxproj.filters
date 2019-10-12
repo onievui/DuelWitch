@@ -671,9 +671,6 @@
     <ClInclude Include="Sources\Game\MagicInfo.h">
       <Filter>Game\Object\Magic</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\MoveCommandState.h">
-      <Filter>Game\Command</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">

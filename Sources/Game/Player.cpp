@@ -8,7 +8,6 @@
 #include "PlayParameterLoader.h"
 #include "Command.h"
 #include "MoveCommand.h"
-#include "MoveCommandState.h"
 #include "AIMoveCommand.h"
 #include "CastMagicCommand.h"
 #include "AICastMagicCommand.h"
@@ -269,8 +268,8 @@ void Player::InitializeStatus() {
 	m_status.damageTimer     = 0.0f;
 	m_status.spDecreaseTimer = 0.0f;
 	m_status.isBoosting      = false;
-	m_status.chargeLevel = 0;
-	m_status.moveCommandState = MoveCommandState::Move;
+	m_status.chargeLevel     = 0;
+	m_status.canCast         = true;
 }
 
 /// <summary>

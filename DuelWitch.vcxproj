@@ -300,7 +300,6 @@
     <ClInclude Include="Sources\Game\MagicInfo.h" />
     <ClInclude Include="Sources\Game\MagicManager.h" />
     <ClInclude Include="Sources\Game\MoveCommand.h" />
-    <ClInclude Include="Sources\Game\MoveCommandState.h" />
     <ClInclude Include="Sources\Game\NormalMagicEffectEmitter.h" />
     <ClInclude Include="Sources\Game\NormalMagic.h" />
     <ClInclude Include="Sources\Game\NormalMagicEffect.h" />

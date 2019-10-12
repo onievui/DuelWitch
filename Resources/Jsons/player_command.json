@@ -9,6 +9,10 @@
     "RotYLimit_Deg": 16.25,
     "LerpSpeed": 0.040,
 
+    "RollingTime": 0.8,
+    "RollAngle_Deg": 360.0,
+    "RollMoveLength": 10.0,
+
     "CameraRotXLimit_Deg": 30.0,
     "CameraRotYLimit_Deg": 30.0,
     "ZoomFov_Deg": 10.0,

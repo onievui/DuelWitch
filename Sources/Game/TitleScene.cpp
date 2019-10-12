@@ -127,9 +127,6 @@ void TitleScene::Render(DirectX::SpriteBatch* spriteBatch) {
 		}
 	}
 
-	const DirectX::SpriteFont* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default)->GetResource().get();
-	font->DrawString(spriteBatch, L"TitleScene press Space", DirectX::SimpleMath::Vector2(0, 0), DirectX::Colors::White);
-
 	spriteBatch->End();
 }
 

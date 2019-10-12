@@ -16,7 +16,6 @@ class Command;
 class RenderCommand;
 enum class ElementID;
 enum class PlayerID;
-enum class MoveCommandState;
 
 
 /// <summary>
@@ -119,8 +118,8 @@ public:
 		bool                              isBoosting;
 		// チャージ段階
 		int                               chargeLevel;
-		// 移動コマンドの状態
-		MoveCommandState                  moveCommandState;
+		// 詠唱可能かどうか
+		bool                              canCast;
 	};
 
 private:

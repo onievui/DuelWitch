@@ -29,6 +29,10 @@ public:
 		float rotYLimit;
 		float lerpSpeed;
 
+		float rollingTime;
+		float rollAngle;
+		float rollMoveLength;
+
 		float cameraRotXLimit;
 		float cameraRotYLimit;
 		float zoomFov;

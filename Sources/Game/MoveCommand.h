@@ -9,6 +9,7 @@
 
 
 class PlayerTrailEffectEmitter;
+class TargetCamera;
 
 
 /// <summary>
@@ -26,10 +27,43 @@ public:
 	void Execute(Player& player, const DX::StepTimer& timer) override;
 
 private:
+	// 通常移動の処理を行う
+	void ExcuteMove(Player& player, const DX::StepTimer& timer);
+	// ロール回避の処理を行う
+	void ExcuteRoll(Player& player, const DX::StepTimer& timer);
+	// ロール回避の入力判定
+	void RollInputCheck(const DX::StepTimer& timer);
 	// 移動によるズーム
 	void Zoom(Camera& camera, const DX::StepTimer& timer, bool isBoosting);
+	// 照準によるカメラ向きを調整する
+	void AdjustCamera(TargetCamera* targetCamera);
 
 private:
+	// 移動コマンド用ステート
+	enum class MoveState {
+		Move,
+		Roll,
+	};
+
+	// ロール回避に関する情報
+	struct RollInfo {
+		// 左にロールする時の入力猶予時間
+		float                           leftGraceTime;
+		// 右にロールする時の入力猶予時間
+		float                           rightGraceTime;
+		// ロールしてから経過時間
+		float                           rollingTime;
+		// ロールしている方向
+		bool                            isRollingLeft;
+		// ロール前のZ軸回転量
+		float                           preRotZ;
+	};
+
+private:
+	// 現在のステート
+	MoveState                               m_state;
+	// ロールに関する情報
+	RollInfo                                m_rollInfo;
 	// カメラターゲット
 	EmptyObject                             m_cameraTarget;
 	// 継続ブースト時間
