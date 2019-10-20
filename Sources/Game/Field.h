@@ -46,6 +46,8 @@ private:
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout>                                m_inputLayout;
 
+	// フィールドのサイズ変更用タイマー
+	float                                                                    m_time;
 	// 姿勢
 	Transform                                                                m_transform;
 	// フィールド外壁

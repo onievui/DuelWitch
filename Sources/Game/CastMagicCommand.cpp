@@ -135,6 +135,7 @@ void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& time
 			for (int i = 0; i < ref_status.chargeLevel + 1; ++i) {
 				ref_have_elements.pop_front();
 			}
+			// –‚–@‚ð¶¬‚·‚é
 			GetMagicManager(player).CreateMagic(element_id, MagicInfo(MagicID::Num,
 				player.GetPlayerID(), ref_status.chargeLevel, player.GetMagicPowerRate(element_id)), player_pos, direction);
 			ref_status.chargeLevel = 0;

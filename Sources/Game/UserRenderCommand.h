@@ -11,6 +11,8 @@
 /// </summary>
 class UserRenderCommand : public RenderCommand {
 public:
+	// ユーザ描画コマンドを初期化する
+	void Initialize(Player& player) override;
 	// ユーザ描画コマンドを処理する
 	void Execute(Player& player, const DX::StepTimer& timer) override;
 	// プレイヤーを描画する
@@ -39,10 +41,17 @@ private:
 	void RenderAiming(const Player& player, DirectX::SpriteBatch* spriteBatch) const;
 
 private:
-	// ターゲットの方向を示すアイコンの位置
-	DirectX::SimpleMath::Vector2                   m_targetIconPos;
-	// ターゲットの方向を示すアイコンを描画するかどうか
-	bool                                           m_enableRenderTargetIcon;
+	// ターゲットの方向を示すアイコンに関する情報
+	struct TargetIconInfo {
+		// 位置
+		DirectX::SimpleMath::Vector2 pos;
+		// 描画するかどうか
+		bool                         enable;
+	};
+
+private:
+	// ターゲットの方向を示すアイコンに関する情報
+	std::vector<TargetIconInfo>                    m_targetIconInfo;
 	// 照準の位置
 	DirectX::SimpleMath::Vector2                   m_aimingPos;
 	// 照準のアニメーション用カウンタ

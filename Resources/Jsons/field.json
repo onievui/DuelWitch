@@ -1,0 +1,6 @@
+{
+  "StartScaleDownTime": 10.0,
+  "ScaleDownSpeed": 1.0,
+  "DefaultScale": 80.0,
+  "MinScale": 40.0
+}

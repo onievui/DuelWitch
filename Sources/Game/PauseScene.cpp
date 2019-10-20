@@ -6,6 +6,7 @@
 #include <Utils\MathUtils.h>
 #include <Utils\UIObserver.h>
 #include <Utils\ScaleUpUI.h>
+#include <Utils\LoadDataManager.h>
 #include "ISceneRequest.h"
 #include "ResourceLoader.h"
 
@@ -48,6 +49,11 @@ void PauseScene::Initialize(ISceneRequest* pSceneRequest) {
 /// <param name="timer">ステップタイマー</param>
 void PauseScene::Update(const DX::StepTimer& timer) {
 	timer;
+
+	// F2キーでパラメータを再読み込みする
+	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F2)) {
+		LoadDataManager::GetIns()->Reload(LoadDataID::PlayScene);
+	}
 
 	// エスケープキーを押して、プレイシーンを再開する
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {

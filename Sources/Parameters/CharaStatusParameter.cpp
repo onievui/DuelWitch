@@ -24,6 +24,7 @@ bool CharaStatusParameter::Load() {
 		chara1Param.normalMagicSpCost     = chara1["NormalMagicSpCost"].GetNumF();
 		chara1Param.boostSpeedRate        = chara1["BoostSpeedRate"].GetNumF();
 		chara1Param.boostSpCost           = chara1["BoostSpCost"].GetNumF();
+		chara1Param.rollSpCost            = chara1["RollSpCost"].GetNumF();
 		chara1Param.firstChargeTime       = chara1["FirstChargeTime"].GetNumF();
 		chara1Param.secoundChargeTime     = chara1["SecoundChargeTime"].GetNumF();
 		chara1Param.fireMagicPowerRate    = chara1["FireMagicPowerRate"].GetNumF();

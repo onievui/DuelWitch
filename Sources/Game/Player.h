@@ -39,7 +39,7 @@ public:
 
 public:
 	// プレイヤーを初期化する
-	void Initialize(MagicManager* pMagicManager, Camera* pCamera, Player* pOtherPlayer);
+	void Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vector<std::unique_ptr<Player>>& pOtherPlayers);
 	// プレイヤーを更新する
 	void Update(const DX::StepTimer& timer) override;
 	// プレイヤーを開放する
@@ -98,6 +98,8 @@ public:
 		float                             boostSpeedRate;
 		// ブースト消費SP
 		float                             boostSpCost;
+		// ロール回避消費SP
+		float                             rollSpCost;
 		// 1段階目のチャージタイム
 		float                             firstChargeTime;
 		// 2段階目のチャージタイム
@@ -145,7 +147,7 @@ private:
 	std::unique_ptr<RenderCommand>         m_renderCommand;
 
 	// 敵プレイヤー
-	Player*                                m_pOtherPlayer;
+	std::vector<Player*>                   m_pOtherPlayers;
 	// 魔法マネージャ
 	MagicManager*                          m_pMagicManager;
 	// カメラ

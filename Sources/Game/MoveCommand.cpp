@@ -180,7 +180,7 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	m_cameraTarget.Update(timer);
 
 	// ロール回避の入力判定を行う
-	RollInputCheck(timer);
+	RollInputCheck(player, timer);
 
 }
 
@@ -264,10 +264,21 @@ void MoveCommand::ExcuteRoll(Player& player, const DX::StepTimer& timer) {
 /// <summary>
 /// ロール回避の入力判定を行う
 /// </summary>
+/// <param name="player">プレイヤー</param>
 /// <param name="timer">ステップタイマー</param>
-void MoveCommand::RollInputCheck(const DX::StepTimer& timer) {
+void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 	DirectX::Keyboard::KeyboardStateTracker* key_tracker = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get();
+	Player::Status& ref_status = GetStatus(player);
+
+	// タイマーを進める
+	m_rollInfo.leftGraceTime -= elapsed_time;
+	m_rollInfo.rightGraceTime -= elapsed_time;
+
+	// SPが足りない時は判定しない
+	if (ref_status.sp < ref_status.rollSpCost) {
+		return;
+	}
 
 	// ロール回避の入力判定を行う
 	const float grace_time = 0.2f;
@@ -279,12 +290,12 @@ void MoveCommand::RollInputCheck(const DX::StepTimer& timer) {
 			m_rollInfo.rollingTime = 0.0f;
 			m_rollInfo.isRollingLeft = true;
 			m_rollInfo.preRotZ = m_euler.z;
+			// SPを消費する
+			ref_status.sp -= ref_status.rollSpCost;
 		}
 		m_rollInfo.leftGraceTime = grace_time;
 	}
-	else {
-		m_rollInfo.leftGraceTime -= elapsed_time;
-	}
+	
 	// 右にロールする
 	if (key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::D) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Right)) {
 		// 素早く2回入力した時に判定する
@@ -293,12 +304,12 @@ void MoveCommand::RollInputCheck(const DX::StepTimer& timer) {
 			m_rollInfo.rollingTime = 0.0f;
 			m_rollInfo.isRollingLeft = false;
 			m_rollInfo.preRotZ = m_euler.z;
+			// SPを消費する
+			ref_status.sp -= ref_status.rollSpCost;
 		}
 		m_rollInfo.rightGraceTime = grace_time;
 	}
-	else {
-		m_rollInfo.rightGraceTime -= elapsed_time;
-	}
+	
 }
 
 /// <summary>

@@ -327,6 +327,9 @@
     <ClCompile Include="Sources\Game\CapsuleCollider.cpp">
       <Filter>Game\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Parameters\FieldParameter.cpp">
+      <Filter>Game\Parameters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -671,6 +674,9 @@
     <ClInclude Include="Sources\Game\MagicInfo.h">
       <Filter>Game\Object\Magic</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Parameters\FieldParameter.h">
+      <Filter>Game\Parameters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
@@ -700,6 +706,9 @@
       <Filter>Assets\Shader</Filter>
     </None>
     <None Include="Resources\Jsons\chara_status.json">
+      <Filter>Assets\Jsons</Filter>
+    </None>
+    <None Include="Resources\Jsons\field.json">
       <Filter>Assets\Jsons</Filter>
     </None>
   </ItemGroup>

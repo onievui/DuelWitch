@@ -73,7 +73,8 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 
 	// プレイヤーを生成する
 	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player1, DirectX::SimpleMath::Vector3(0, 0, -75), Player::MoveDirection::Forward));
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, DirectX::SimpleMath::Vector3(0, 0, 75), Player::MoveDirection::Backward));
+	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, DirectX::SimpleMath::Vector3(10, 0, 75), Player::MoveDirection::Backward));
+	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player3, DirectX::SimpleMath::Vector3(-10, 0, 75), Player::MoveDirection::Backward));
 
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());
@@ -83,8 +84,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 		PerspectiveFovInfo(Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 5000.0f));
 
 	// プレイヤーを初期化する
-	m_players[0]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players[1].get());
-	m_players[1]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players[0].get());
+	m_players[0]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players);
+	m_players[1]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players);
+	m_players[2]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players);
 
 	//グリッド床を生成する
 	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 200.0f, 100);
@@ -215,7 +217,7 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	DirectX::SimpleMath::Matrix projection = m_targetCamera->GetProjectionMatrix();
 
 	//グリッド床を描画する
-	m_gridFloor->Render(view, projection);
+	//m_gridFloor->Render(view, projection);
 	// フィールドを描画する
 	m_field->Render(view, projection);
 

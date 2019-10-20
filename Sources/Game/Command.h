@@ -46,7 +46,7 @@ protected:
 	// 魔法マネージャを取得する
 	MagicManager&                GetMagicManager(Player& player)             { return *player.m_pMagicManager; }
 	// 敵プレイヤーを取得する
-	const Player&                GetOtherPlayer(Player& player)              { return *player.m_pOtherPlayer; }
+	const std::vector<Player*>&  GetOtherPlayers(Player& player)             { return player.m_pOtherPlayers; }
 };
 
 

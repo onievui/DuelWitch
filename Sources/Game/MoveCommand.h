@@ -32,7 +32,7 @@ private:
 	// ロール回避の処理を行う
 	void ExcuteRoll(Player& player, const DX::StepTimer& timer);
 	// ロール回避の入力判定
-	void RollInputCheck(const DX::StepTimer& timer);
+	void RollInputCheck(Player& player, const DX::StepTimer& timer);
 	// 移動によるズーム
 	void Zoom(Camera& camera, const DX::StepTimer& timer, bool isBoosting);
 	// 照準によるカメラ向きを調整する
@@ -41,8 +41,8 @@ private:
 private:
 	// 移動コマンド用ステート
 	enum class MoveState {
-		Move,
-		Roll,
+		Move,	// 通常移動
+		Roll,	// ロール回避
 	};
 
 	// ロール回避に関する情報

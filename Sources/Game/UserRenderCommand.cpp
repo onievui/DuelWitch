@@ -8,6 +8,14 @@
 
 
 /// <summary>
+/// ユーザ描画コマンドを初期化する
+/// </summary>
+/// <param name="player">プレイヤー</param>
+void UserRenderCommand::Initialize(Player& player) {
+	m_targetIconInfo.resize(GetOtherPlayers(player).size());
+}
+
+/// <summary>
 /// ユーザ描画コマンドを処理する
 /// </summary>
 /// <param name="player">プレイヤー</param>
@@ -43,10 +51,8 @@ void UserRenderCommand::Render(const Player& player, const DirectX::SimpleMath::
 		GetCollider(player).Render(view, proj, DirectX::SimpleMath::Color(1, 1, 1, 0.3f), true);
 	}
 
-	// 相手プレイヤーが画面外にいる場合、アイコンを表示する
-	if (m_enableRenderTargetIcon) {
-		RenderEnemeyIcon(player, spriteBatch);
-	}
+	// 相手プレイヤーのアイコンを表示する
+	RenderEnemeyIcon(player, spriteBatch);
 
 	// 所持エレメントを描画する
 	RenderElements(player, spriteBatch);
@@ -79,40 +85,44 @@ void UserRenderCommand::UpdateIcon(Player& player) {
 		area_angle = Math::HarfPI;
 	}
 	const DirectX::SimpleMath::Vector3& camera_pos = camera.GetEyePosition();
-	const DirectX::SimpleMath::Vector3& enemy_pos = GetTransform(GetOtherPlayer(player)).GetLocalPosition();
 	DirectX::SimpleMath::Vector3 camera_dir = camera.GetEyeVector();
-	DirectX::SimpleMath::Vector3 other_dir = enemy_pos - camera_pos;
-	float angle = std::acosf(camera_dir.Dot(other_dir) / (camera_dir.Length()*other_dir.Length()));
-	// カメラの向きと敵の方向が一定の角度以内であれば処理しない
-	if (angle < area_angle) {
-		// アイコンの描画を無効にする
-		m_enableRenderTargetIcon = false;
-		return;
-	}
-	// 敵プレイヤーへのベクトル
-	DirectX::SimpleMath::Vector3 vec;
-	// カメラの方向を-Z方向に向ける回転行列を生成する
-	if (camera_dir.z <= 0.0f) {
-		DirectX::SimpleMath::Quaternion rotation = Math::CreateQuaternionFromVector3(camera_dir, -DirectX::SimpleMath::Vector3::UnitZ);
-		// 敵プレイヤーへのベクトルを既定の方向の回転させる
-		vec = DirectX::SimpleMath::Vector3::Transform(other_dir, rotation);
-	}
-	else {
-		DirectX::SimpleMath::Quaternion rotation = Math::CreateQuaternionFromVector3(camera_dir, DirectX::SimpleMath::Vector3::UnitZ);
-		// 敵プレイヤーへのベクトルを既定の方向の回転させる
-		vec = DirectX::SimpleMath::Vector3::Transform(other_dir, rotation);
-		// Y軸で180度回転させる
-		vec *= DirectX::SimpleMath::Vector3(-1, 1, -1);
+	const std::vector<Player*>& other_players = GetOtherPlayers(player);
+
+	for (unsigned int i = 0; i < other_players.size(); i++) {
+		const DirectX::SimpleMath::Vector3& other_player_pos = GetTransform(*other_players[i]).GetLocalPosition();
+		DirectX::SimpleMath::Vector3 other_dir = other_player_pos - camera_pos;
+		float angle = std::acosf(camera_dir.Dot(other_dir) / (camera_dir.Length()*other_dir.Length()));
+		// カメラの向きと敵の方向が一定の角度以内であれば処理しない
+		if (angle < area_angle) {
+			// アイコンの描画を無効にする
+			m_targetIconInfo[i].enable = false;
+			return;
+		}
+		// 敵プレイヤーへのベクトル
+		DirectX::SimpleMath::Vector3 vec;
+		// カメラの方向を-Z方向に向ける回転行列を生成する
+		if (camera_dir.z <= 0.0f) {
+			DirectX::SimpleMath::Quaternion rotation = Math::CreateQuaternionFromVector3(camera_dir, -DirectX::SimpleMath::Vector3::UnitZ);
+			// 敵プレイヤーへのベクトルを既定の方向の回転させる
+			vec = DirectX::SimpleMath::Vector3::Transform(other_dir, rotation);
+		}
+		else {
+			DirectX::SimpleMath::Quaternion rotation = Math::CreateQuaternionFromVector3(camera_dir, DirectX::SimpleMath::Vector3::UnitZ);
+			// 敵プレイヤーへのベクトルを既定の方向の回転させる
+			vec = DirectX::SimpleMath::Vector3::Transform(other_dir, rotation);
+			// Y軸で180度回転させる
+			vec *= DirectX::SimpleMath::Vector3(-1, 1, -1);
 
 
+		}
+		constexpr float screen_offset = 50.0f;
+		const DirectX11* directX = ServiceLocater<DirectX11>::Get();
+		DirectX::SimpleMath::Vector2 screen_size(static_cast<float>(directX->GetWidth()), static_cast<float>(directX->GetHeight()));
+		// アイコンの座標を計算する
+		m_targetIconInfo[i].pos = CalculateIconPos(vec, screen_size, DirectX::SimpleMath::Vector2(screen_offset, screen_offset));
+		// アイコンの描画を有効にする
+		m_targetIconInfo[i].enable = true;
 	}
-	constexpr float screen_offset = 50.0f;
-	const DirectX11* directX = ServiceLocater<DirectX11>::Get();
-	DirectX::SimpleMath::Vector2 screen_size(static_cast<float>(directX->GetWidth()), static_cast<float>(directX->GetHeight()));
-	// アイコンの座標を計算する
-	m_targetIconPos = CalculateIconPos(vec, screen_size, DirectX::SimpleMath::Vector2(screen_offset, screen_offset));
-	// アイコンの描画を有効にする
-	m_enableRenderTargetIcon = true;
 }
 
 
@@ -197,9 +207,14 @@ void UserRenderCommand::UpdateAiming(Player& player, const DX::StepTimer& timer)
 void UserRenderCommand::RenderEnemeyIcon(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
 	player;
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaIcon);
-	spriteBatch->Draw(texture->GetResource(1).Get(),
-		m_targetIconPos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, 0.8f), 0,
-		texture->GetCenter(), DirectX::SimpleMath::Vector2(0.4f, 0.4f));
+	for (unsigned int i = 0; i < m_targetIconInfo.size(); ++i) {
+		// 有効なアイコンのみ描画する
+		if (m_targetIconInfo[i].enable) {
+			spriteBatch->Draw(texture->GetResource(1).Get(),
+				m_targetIconInfo[i].pos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, 0.8f), 0,
+				texture->GetCenter(), DirectX::SimpleMath::Vector2(0.4f, 0.4f));
+		}
+	}
 }
 
 /// <summary>

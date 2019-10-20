@@ -24,7 +24,7 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	const Transform& transform = GetTransform(player);
 	const DirectX::SimpleMath::Quaternion& rot = transform.GetLocalRotation();
 	const DirectX::SimpleMath::Vector3& pos = transform.GetLocalPosition();
-	const DirectX::SimpleMath::Vector3& target_pos = GetTransform(GetOtherPlayer(player)).GetLocalPosition();
+	const DirectX::SimpleMath::Vector3& target_pos = GetTransform(*GetOtherPlayers(player)[0]).GetLocalPosition();
 
 	// çUåÇîÕàÕÇêßå¿Ç∑ÇÈ
 	const float shotable_angle = parameter.shotableAngle;

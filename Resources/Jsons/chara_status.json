@@ -6,6 +6,7 @@
     "NormalMagicSpCost": 10.0,
     "BoostSpeedRate": 1.5,
     "BoostSpCost": 10.0,
+    "RollSpCost": 5.0,
     "FirstChargeTime": 1.0,
     "SecoundChargeTime": 2.0,
     "FireMagicPowerRate": 1.5,

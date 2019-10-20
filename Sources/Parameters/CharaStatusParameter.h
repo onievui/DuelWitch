@@ -26,6 +26,7 @@ public:
 		float normalMagicSpCost;
 		float boostSpeedRate;
 		float boostSpCost;
+		float rollSpCost;
 		float firstChargeTime;
 		float secoundChargeTime;
 		float fireMagicPowerRate;

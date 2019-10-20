@@ -239,6 +239,7 @@
     <ClCompile Include="Sources\Parameters\CommandParameter.cpp" />
     <ClCompile Include="Sources\Parameters\EffectParameter.cpp" />
     <ClCompile Include="Sources\Parameters\ElementParameter.cpp" />
+    <ClCompile Include="Sources\Parameters\FieldParameter.cpp" />
     <ClCompile Include="Sources\Parameters\MagicParameter.cpp" />
     <ClCompile Include="Sources\pch\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -340,6 +341,7 @@
     <ClInclude Include="Sources\Parameters\CommandParameter.h" />
     <ClInclude Include="Sources\Parameters\EffectParameter.h" />
     <ClInclude Include="Sources\Parameters\ElementParameter.h" />
+    <ClInclude Include="Sources\Parameters\FieldParameter.h" />
     <ClInclude Include="Sources\Parameters\MagicParameter.h" />
     <ClInclude Include="Sources\pch\pch.h" />
     <ClInclude Include="Sources\Utils\BinFile.h" />
@@ -398,6 +400,7 @@
     <None Include="Resources\Jsons\chara_status.json" />
     <None Include="Resources\Jsons\effect.json" />
     <None Include="Resources\Jsons\element.json" />
+    <None Include="Resources\Jsons\field.json" />
     <None Include="Resources\Jsons\magic.json" />
     <None Include="Resources\Jsons\player_command.json" />
   </ItemGroup>

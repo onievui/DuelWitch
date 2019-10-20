@@ -61,8 +61,8 @@ Player::~Player() {
 /// </summary>
 /// <param name="pMagicManager">魔法マネージャへのポインタ</param>
 /// <param name="pCamera">カメラへのポインタ</param>
-/// <param name="pOtherPlayer">敵プレイヤーへのポインタ</param>
-void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, Player* pOtherPlayer) {
+/// <param name="pOtherPlayers">敵プレイヤーへのポインタの配列</param>
+void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vector<std::unique_ptr<Player>>& pOtherPlayers) {
 	// エフェクトを設定する
 	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::BloomModel);
 	modelResource->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
@@ -81,7 +81,12 @@ void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, Player* pO
 	// ポインタを受け取る
 	m_pMagicManager = pMagicManager;
 	m_pCamera = pCamera;
-	m_pOtherPlayer = pOtherPlayer;
+	for (std::vector<std::unique_ptr<Player>>::iterator itr = pOtherPlayers.begin(); itr != pOtherPlayers.end(); itr++) {
+		// 自身のポインタは判定しない
+		if ((*itr).get() != this) {
+			m_pOtherPlayers.push_back((*itr).get());
+		}
+	}
 
 	// ステータスを初期化する
 	InitializeStatus();
@@ -259,6 +264,7 @@ void Player::InitializeStatus() {
 	m_status.normalMagicSpCost     = parameter.normalMagicSpCost;
 	m_status.boostSpeedRate        = parameter.boostSpeedRate;
 	m_status.boostSpCost           = parameter.boostSpCost;
+	m_status.rollSpCost            = parameter.rollSpCost;
 	m_status.firstChargeTime       = parameter.firstChargeTime;
 	m_status.secoundChargeTime     = parameter.secoundChargeTime;
 	m_status.fireMagicPowerRate    = parameter.fireMagicPowerRate;

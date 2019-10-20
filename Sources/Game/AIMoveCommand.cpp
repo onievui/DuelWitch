@@ -54,7 +54,7 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 
 	Transform& ref_transform = GetTransform(player);
 	Player::MoveDirection& ref_direction = GetMoveDirection(player);
-	const DirectX::SimpleMath::Vector3& other_pos = GetTransform(GetOtherPlayer(player)).GetLocalPosition();
+	const DirectX::SimpleMath::Vector3& other_pos = GetTransform(*GetOtherPlayers(player)[0]).GetLocalPosition();
 
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
 	DirectX::SimpleMath::Vector3 move(0, 0, 0);

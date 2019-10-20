@@ -3,6 +3,7 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include <Parameters\EffectParameter.h>
+#include <Parameters\FieldParameter.h>
 #include "PlayParameterLoader.h"
 #include "Player.h"
 #include "EffectManager.h"
@@ -16,6 +17,7 @@
 Field::Field() {
 	ID3D11Device* device = ServiceLocater<DirectX11>::Get()->GetDevice().Get();
 	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
+	const FieldParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetFieldParameter();
 
 	// エフェクトファクトリーを作成する
 	std::unique_ptr<DirectX::EffectFactory> fxFactory = std::make_unique<DirectX::EffectFactory>(device);
@@ -39,7 +41,8 @@ Field::Field() {
 	});
 
 	// フィールドの情報を初期化
-	m_radius = 80.0f;
+	m_time = 0.0f;
+	m_radius = parameter->defaultScale;
 	m_transform.SetPosition(DirectX::SimpleMath::Vector3(0, 0, 0));
 
 	// 壁の生成
@@ -66,10 +69,20 @@ Field::~Field() {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void Field::Update(const DX::StepTimer& timer) {
+	const FieldParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetFieldParameter();
+
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+
+	m_time += elapsed_time;
+
 	// エフェクト用タイマーを更新する
 	for (std::map<const Player*, float>::iterator itr = m_effectTimer.begin(); itr != m_effectTimer.end(); ++itr) {
 		itr->second -= elapsed_time;
+	}
+
+	// 一定時間経過後、フィールドを徐々に小さくする
+	if (m_time > parameter->startScaleDownTime) {
+		m_radius = std::max(m_radius - elapsed_time * parameter->scaleDownSpeed, parameter->minScale);
 	}
 }
 
@@ -81,13 +94,18 @@ void Field::Update(const DX::StepTimer& timer) {
 void Field::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
 	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 	DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();
+	const FieldParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetFieldParameter();
 
 	DirectX::SimpleMath::Vector3 center_pos = m_transform.GetLocalPosition();
 
-	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateTranslation(center_pos);
+	// フィールドの行列を作成する
+	DirectX::SimpleMath::Matrix world = DirectX::SimpleMath::Matrix::CreateScale(m_radius / parameter->defaultScale);
+	world *= DirectX::SimpleMath::Matrix::CreateTranslation(center_pos);
+
+	// スカイドームを描画する
 	m_skydome->Draw(context, *states, world, view, proj);
 
-	world = DirectX::SimpleMath::Matrix::CreateTranslation(center_pos);
+	// 外壁を描画する
 	m_wall->Draw(world, view, proj, DirectX::SimpleMath::Color(30/255.0f, 130/255.0f, 240/255.0f, 1.0f), nullptr, true);
 
 }

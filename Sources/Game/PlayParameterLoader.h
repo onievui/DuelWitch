@@ -8,6 +8,7 @@
 
 class CommandParameter;
 class CharaStatusParameter;
+class FieldParameter;
 class ElementParameter;
 class MagicParameter;
 class EffectParameter;
@@ -35,6 +36,7 @@ public:
 	// ƒpƒ‰ƒ[ƒ^‚ğæ“¾‚·‚é
 	const CommandParameter*     GetCommandParameter();
 	const CharaStatusParameter* GetCharaStatusParameter();
+	const FieldParameter*       GetFieldParameter();
 	const ElementParameter*     GetElementParameter();
 	const MagicParameter*       GetMagicParameter();
 	const EffectParameter*      GetEffectParameter();
