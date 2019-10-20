@@ -19,8 +19,7 @@ public:
 
 public:
 	// ñÇñ@ÇçXêVÇ∑ÇÈ
-	virtual void Create(MagicFactory* magicFactory, const MagicInfo& magicInfo,
-		const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) = 0;
+	virtual void Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) = 0;
 
 };
 

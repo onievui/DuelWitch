@@ -34,16 +34,21 @@ MagicManager::~MagicManager() {
 /// 魔法マネージャを初期化する
 /// </summary>
 void MagicManager::Initialize() {
+	// 魔法ファクトリを初期化する
 	m_magicFactory = std::make_unique<MagicFactory>();
 	m_magicFactory->Initialize(this);
+
+	// 生成済み魔法を初期化する
 	m_magics.clear();
 	m_magics.resize(m_magicFactory->GetMagicMaxNum(), nullptr);
+
+	// 魔法発射クラスを初期化する
 	m_magicShooters.resize(static_cast<int>(MagicID::Num));
-	m_magicShooters[static_cast<int>(MagicID::Normal)]        = std::make_unique<NormalMagicShooter>(this);
-	m_magicShooters[static_cast<int>(MagicID::Fire)]          = std::make_unique<FireMagicShooter>(this);
-	m_magicShooters[static_cast<int>(MagicID::Thunder)]       = std::make_unique<ThunderMagicShooter>(this);
-	m_magicShooters[static_cast<int>(MagicID::ThunderStrike)] = std::make_unique<ThunderStrikeMagicShooter>(this);
-	m_magicShooters[static_cast<int>(MagicID::Freeze)]        = std::make_unique<FreezeMagicShooter>(this);
+	m_magicShooters[static_cast<int>(MagicID::Normal)]        = std::make_unique<NormalMagicShooter>(&m_magics, m_magicFactory.get());
+	m_magicShooters[static_cast<int>(MagicID::Fire)]          = std::make_unique<FireMagicShooter>(&m_magics, m_magicFactory.get());
+	m_magicShooters[static_cast<int>(MagicID::Thunder)]       = std::make_unique<ThunderMagicShooter>(&m_magics, m_magicFactory.get());
+	m_magicShooters[static_cast<int>(MagicID::ThunderStrike)] = std::make_unique<ThunderStrikeMagicShooter>(&m_magics, m_magicFactory.get());
+	m_magicShooters[static_cast<int>(MagicID::Freeze)]        = std::make_unique<FreezeMagicShooter>(&m_magics, m_magicFactory.get());
 }
 
 
@@ -86,7 +91,7 @@ void MagicManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX
 /// <param name="pos">座標</param>
 /// <param name="vec">向き</param>
 void MagicManager::CreateMagic(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	m_magicShooters[static_cast<int>(magicInfo.id)]->Create(m_magicFactory.get(), magicInfo, pos, dir);
+	m_magicShooters[static_cast<int>(magicInfo.id)]->Create(magicInfo, pos, dir);
 }
 
 /// <summary>

@@ -17,12 +17,12 @@ public:
 	
 	// 度数法から弧度法に変換する
 	static constexpr float Deg2Rad(float deg) {
-		return deg/180.0f*PI;
+		return deg/180.0f*Math::PI;
 	}
 
 	// 弧度法から度数法に変換する
 	static constexpr float Rad2Deg(float rad) {
-		return rad/PI*180.0f;
+		return rad/Math::PI*180.0f;
 	}
 
 	// 小数がゼロかどうか調べる
@@ -88,7 +88,7 @@ public:
 				return DirectX::SimpleMath::Quaternion::Identity;
 			}
 			// 逆ベクトルの場合
-			return DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(CreateNormalVector3(vec1), PI);
+			return DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(CreateNormalVector3(vec1), Math::PI);
 		}
 		axis.Normalize();
 		float angle = std::acosf(vec1.Dot(vec2) / (vec1.Length()*vec2.Length()));
