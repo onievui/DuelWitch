@@ -36,15 +36,19 @@ public:
 
 public:
 	// エレメントの行列を取得する
-	const DirectX::SimpleMath::Matrix& GetMatrix() const override;
+	const DirectX::SimpleMath::Matrix& GetMatrix() const override { return m_world; }
 	// エレメントの当たり判定を取得する
-	const Collider* GetCollider() const override;
+	const Collider* GetCollider() const override                  { return &m_sphereCollider; }
+	// エレメントの座標を取得する
+	const DirectX::SimpleMath::Vector3& GetPos() const            { return m_transform.GetPosition(); }
 	// エレメントのIDを取得する
-	ElementID GetID() const;
+	ElementID GetID() const                                       { return m_id; }
 	// エレメントを使用しているかどうか取得する
-	bool IsUsed() const;
+	bool IsUsed() const                                           { return m_isUsed; }
 	// エレメントを使用するかどうか設定する
-	void SetUsed(bool isUsed);
+	void SetUsed(bool isUsed)                                     { m_isUsed = isUsed; }
+	// フィールドの範囲内に収める
+	void FitField(const DirectX::SimpleMath::Vector3& center, float radius);
 
 private:
 	// エレメントID

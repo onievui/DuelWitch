@@ -56,7 +56,9 @@ enum class GeometricPrimitiveID {
 /// ƒ‚ƒfƒ‹ID
 /// </summary>
 enum class ModelID {
-	BloomModel,
+	Bloom,
+	Skydome,
+
 	Num,
 };
 

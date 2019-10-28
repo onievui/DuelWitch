@@ -280,6 +280,7 @@
     <ClInclude Include="Sources\Game\EffectID.h" />
     <ClInclude Include="Sources\Game\EffectManager.h" />
     <ClInclude Include="Sources\Game\EmptyObject.h" />
+    <ClInclude Include="Sources\Game\FieldData.h" />
     <ClInclude Include="Sources\Game\FieldShieldEffect.h" />
     <ClInclude Include="Sources\Game\FieldShieldEffectEmitter.h" />
     <ClInclude Include="Sources\Game\FireMagicEffectEmitter.h" />
@@ -348,6 +349,7 @@
     <ClInclude Include="Sources\Utils\Color.h" />
     <ClInclude Include="Sources\Utils\ConstBuffer.h" />
     <ClInclude Include="Sources\Utils\ErrorMessage.h" />
+    <ClInclude Include="Sources\Utils\FuzzyUtils.h" />
     <ClInclude Include="Sources\Utils\ILoadData.h" />
     <ClInclude Include="Sources\Utils\ILoadDataHolder.h" />
     <ClInclude Include="Sources\Utils\InputLayoutData.h" />
@@ -392,6 +394,10 @@
       </ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\skydome_space.FBX">
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>

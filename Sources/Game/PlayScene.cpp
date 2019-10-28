@@ -58,6 +58,15 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_parameterLoader->Load();
 	ServiceLocater<PlayParameterLoader>::Register(m_parameterLoader.get());
 
+	// エフェクトマネージャを生成する
+	m_effectManager = std::make_unique<EffectManager>();
+	m_effectManager->Initialize();
+	// エフェクトマネージャをサービスロケータに登録する
+	ServiceLocater<EffectManager>::Register(m_effectManager.get());
+
+	// フィールドを生成する
+	m_field = std::make_unique<Field>();
+
 	// エレメントマネージャを作成する
 	m_elementManager = std::make_unique<ElementManager>();
 	m_elementManager->Initialize();
@@ -65,12 +74,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_magicManager = std::make_unique<MagicManager>();
 	m_magicManager->Initialize();
 	m_pMagics = m_magicManager->GetMagics();
-	// エフェクトマネージャを生成する
-	m_effectManager = std::make_unique<EffectManager>();
-	m_effectManager->Initialize();
-	// エフェクトマネージャをサービスロケータに登録する
-	ServiceLocater<EffectManager>::Register(m_effectManager.get());
-
+	
 	// プレイヤーを生成する
 	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player1, DirectX::SimpleMath::Vector3(0, 0, -75), Player::MoveDirection::Forward));
 	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, DirectX::SimpleMath::Vector3(10, 0, 75), Player::MoveDirection::Backward));
@@ -90,8 +94,6 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 
 	//グリッド床を生成する
 	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 200.0f, 100);
-	// フィールドを生成する
-	m_field = std::make_unique<Field>();
 	
 }
 
@@ -116,6 +118,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	}
 
 	// エレメントマネージャを更新する
+	m_elementManager->SetRadius(m_field->GetRadius());
 	m_elementManager->Update(timer);
 	// 魔法マネージャを更新する
 	m_magicManager->Update(timer);

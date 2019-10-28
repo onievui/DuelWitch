@@ -6,6 +6,7 @@
 #include <map>
 #include <Framework\StepTimer.h>
 #include "Transform.h"
+#include "FieldData.h"
 
 
 class Player;
@@ -29,6 +30,8 @@ public:
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj);
 
 public:
+	// フィールドの半径を取得する
+	float GetRadius() const { return m_radius; }
 	// プレイヤーとフィールドの当たり判定を行う
 	void CollisionCheckPlayer(Player& player);
 
@@ -37,15 +40,6 @@ private:
 	void CreateEffect(const Player* pPlayer, const DirectX::SimpleMath::Vector3& pos);
 
 private:
-	// スカイドーム
-	std::unique_ptr<DirectX::Model>                                          m_skydome;
-	//バッチエフェクト
-	std::unique_ptr<DirectX::AlphaTestEffect>                                m_batchEffect;
-	//プリミティブバッチ
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_batch;
-	// 入力レイアウト
-	Microsoft::WRL::ComPtr<ID3D11InputLayout>                                m_inputLayout;
-
 	// フィールドのサイズ変更用タイマー
 	float                                                                    m_time;
 	// 姿勢
@@ -54,6 +48,8 @@ private:
 	std::unique_ptr<DirectX::GeometricPrimitive>                             m_wall;
 	// フィールド半径
 	float                                                                    m_radius;
+	// フィールド情報
+	FieldData                                                                m_fieldData;
 
 	// フィールド衝突エフェクト
 	FieldShieldEffectEmitter*                                                m_pEffect;

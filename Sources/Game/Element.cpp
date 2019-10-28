@@ -69,51 +69,20 @@ void Element::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Sim
 }
 
 /// <summary>
-/// エレメントの行列を取得する
+/// フィールドの範囲内に収める
 /// </summary>
-/// <returns>
-/// 行列
-/// </returns>
-const DirectX::SimpleMath::Matrix& Element::GetMatrix() const {
-	return m_world;
+/// <param name="center">フィールドの中心点</param>
+/// <param name="radius">フィールドの半径</param>
+void Element::FitField(const DirectX::SimpleMath::Vector3& center, float radius) {
+	constexpr float offset = 1.0f;
+	// 半径を考慮した範囲
+	float limit_range = radius - m_sphereCollider.GetRadius() - 1.0f;
+	// 範囲外にいるか判定する
+	if (DirectX::SimpleMath::Vector3::DistanceSquared(m_transform.GetPosition(), center) > limit_range*limit_range) {
+		// 位置を調整する
+		DirectX::SimpleMath::Vector3 dir = m_transform.GetPosition() - center;
+		dir.Normalize();
+		DirectX::SimpleMath::Vector3 pos = center + dir * limit_range;
+		m_transform.SetPosition(pos);
+	}
 }
-
-/// <summary>
-/// エレメントの当たり判定を取得する
-/// </summary>
-/// <returns>
-/// 当たり判定
-/// </returns>
-const Collider* Element::GetCollider() const {
-	return &m_sphereCollider;
-}
-
-/// <summary>
-/// エレメントのIDを取得する
-/// </summary>
-/// <returns>
-/// エレメントID
-/// </returns>
-ElementID Element::GetID() const {
-	return m_id;
-}
-
-/// <summary>
-/// エレメントを使用しているかどうか取得する
-/// </summary>
-/// <returns>
-/// true : 使用している
-/// false : 使用していない
-/// </returns>
-bool Element::IsUsed() const {
-	return m_isUsed;
-}
-
-/// <summary>
-/// エレメントを使用するかどうか設定する
-/// </summary>
-/// <param name="isUsed">true : 使用する, false : 使用しない</param>
-void Element::SetUsed(bool isUsed) {
-	m_isUsed = isUsed;
-}
-

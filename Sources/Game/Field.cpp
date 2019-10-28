@@ -1,6 +1,7 @@
 #include "Field.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
 #include <Parameters\EffectParameter.h>
 #include <Parameters\FieldParameter.h>
@@ -15,16 +16,12 @@
 /// コンストラクタ
 /// </summary>
 Field::Field() {
-	ID3D11Device* device = ServiceLocater<DirectX11>::Get()->GetDevice().Get();
 	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 	const FieldParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetFieldParameter();
 
-	// エフェクトファクトリーを作成する
-	std::unique_ptr<DirectX::EffectFactory> fxFactory = std::make_unique<DirectX::EffectFactory>(device);
-	// CMOを読み込んでスカイドームを作成する
-	m_skydome = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Protected/skydome.cmo", *fxFactory);
-
-	m_skydome->UpdateEffects([](DirectX::IEffect* effect) {
+	// モデルのエフェクトを設定する
+	const ModelResource* skydome = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::Skydome);
+	skydome->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
 		DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
 		if (lights) {
 			// ライトの影響をなくす 
@@ -45,6 +42,12 @@ Field::Field() {
 	m_radius = parameter->defaultScale;
 	m_transform.SetPosition(DirectX::SimpleMath::Vector3(0, 0, 0));
 
+	// フィールド情報を設定してサービスロケータに登録する
+	m_fieldData.fieldCenter = m_transform.GetPosition();
+	m_fieldData.fieldRadius = m_radius;
+	m_fieldData.pElements = nullptr;
+	ServiceLocater<FieldData>::Register(&m_fieldData);
+
 	// 壁の生成
 	m_wall = DirectX::GeometricPrimitive::CreateSphere(context, m_radius*2.0f, 8U, false, true);
 
@@ -62,6 +65,8 @@ Field::Field() {
 /// デストラクタ
 /// </summary>
 Field::~Field() {
+	// フィールド情報をサービスロケータから解除する
+	ServiceLocater<FieldData>::Unregister();
 }
 
 /// <summary>
@@ -83,6 +88,7 @@ void Field::Update(const DX::StepTimer& timer) {
 	// 一定時間経過後、フィールドを徐々に小さくする
 	if (m_time > parameter->startScaleDownTime) {
 		m_radius = std::max(m_radius - elapsed_time * parameter->scaleDownSpeed, parameter->minScale);
+		m_fieldData.fieldRadius = m_radius;
 	}
 }
 
@@ -103,7 +109,8 @@ void Field::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simpl
 	world *= DirectX::SimpleMath::Matrix::CreateTranslation(center_pos);
 
 	// スカイドームを描画する
-	m_skydome->Draw(context, *states, world, view, proj);
+	ModelResource* skydome = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetRawResource(ModelID::Skydome);
+	skydome->GetResource()->Draw(context, *states, DirectX::SimpleMath::Matrix::CreateScale(1)*world, view, proj);
 
 	// 外壁を描画する
 	m_wall->Draw(world, view, proj, DirectX::SimpleMath::Color(30/255.0f, 130/255.0f, 240/255.0f, 1.0f), nullptr, true);

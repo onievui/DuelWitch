@@ -53,7 +53,7 @@ void AIRenderCommand::Render(const Player& player, const DirectX::SimpleMath::Ma
 	const auto& ref_status = GetStatus(player);
 	if (ref_status.damageTimer <= 0.0f || sin(ref_status.damageTimer*Math::PI2 * 2) > 0) {
 		const std::unique_ptr<DirectX::Model>& model = ServiceLocater<ResourceManager<ModelResource>>::Get()->
-			GetResource(ModelID::BloomModel)->GetResource();
+			GetResource(ModelID::Bloom)->GetResource();
 		ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 		const DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();
 		// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é

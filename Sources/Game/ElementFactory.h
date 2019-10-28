@@ -14,6 +14,8 @@ enum class ElementID {
 	Fire,       // 炎エレメント
 	Thunder,	// 雷エレメント
 	Freeze,     // 氷エレメント
+
+	Num
 };
 
 

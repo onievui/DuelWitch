@@ -677,12 +677,21 @@
     <ClInclude Include="Sources\Parameters\FieldParameter.h">
       <Filter>Game\Parameters</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game\FieldData.h">
+      <Filter>Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\FuzzyUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
       <Filter>Assets</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\Models\Protected\skydome.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\skydome_space.FBX">
       <Filter>Assets</Filter>
     </MeshContentTask>
   </ItemGroup>

@@ -25,11 +25,12 @@ FireMagicShooter::FireMagicShooter(std::vector<IMagic*>* pMagics, MagicFactory* 
 /// <param name="dir">Œü‚«</param>
 void FireMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	const float angle = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam.wayAngle;
-	// 3way‚É•ªŠò‚³‚¹‚é‚½‚ß‚Ì‰ñ“]‚ğì¬‚·‚é
-	//DirectX::SimpleMath::Vector3 right = DirectX::SimpleMath::Vector3::Transform(-DirectX::SimpleMath::Vector3::UnitX,
-	//	Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::UnitZ, dir));
-	//DirectX::SimpleMath::Vector3 axis = dir.Cross(right);
-	DirectX::SimpleMath::Vector3 axis = DirectX::SimpleMath::Vector3::UnitY;
+	// 3•ûŒü‚É•ªŠò‚³‚¹‚é‚½‚ß‚Ì‰ñ“]‚ğì¬‚·‚é
+	DirectX::SimpleMath::Vector3 xz_dir(dir.x, 0.0f, dir.z);
+	DirectX::SimpleMath::Vector3 axis = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitY,
+		Math::CreateQuaternionFromVector3(xz_dir, dir));
+
+	//DirectX::SimpleMath::Vector3 axis = DirectX::SimpleMath::Vector3::UnitY;
 	DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, -angle);
 	DirectX::SimpleMath::Vector3 direction = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
 	quaternion.Inverse(quaternion);

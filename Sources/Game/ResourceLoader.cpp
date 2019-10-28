@@ -79,7 +79,8 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		geometryShaderResourceManager->AddResource(GeometryShaderID::Billboard, GeometryShaderResource(L"BillboardGS.cso"));
 		pixelShaderResourceManager->AddResource(PixelShaderID::Default, PixelShaderResource(L"DefaultPS.cso"));
 		// モデルの読み込み
-		modelResourceManager->AddResource(ModelID::BloomModel, ModelResource(L"bloom.cmo", L"Protected"));
+		modelResourceManager->AddResource(ModelID::Bloom, ModelResource(L"bloom.cmo", L"Protected"));
+		modelResourceManager->AddResource(ModelID::Skydome, ModelResource(L"skydome.cmo", L"Protected"));
 		break;
 	default:
 		ErrorMessage(L"リソースのロードで不正なIDが渡されました");

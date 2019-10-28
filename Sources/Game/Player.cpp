@@ -64,7 +64,7 @@ Player::~Player() {
 /// <param name="pOtherPlayers">敵プレイヤーへのポインタの配列</param>
 void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vector<std::unique_ptr<Player>>& pOtherPlayers) {
 	// エフェクトを設定する
-	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::BloomModel);
+	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::Bloom);
 	modelResource->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
 		DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
 		if (lights) {
