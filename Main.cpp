@@ -11,11 +11,15 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	if (!DirectX::XMVerifyCPUSupport())
+	// DirectXMathライブラリが現在のプラットフォームをサポートしているか確認する
+	if (!DirectX::XMVerifyCPUSupport()) {
 		return 1;
+	}
+
 	// COMライブラリを初期化する
-	if (FAILED(CoInitializeEx(nullptr, COINITBASE_MULTITHREADED)))
+	if (FAILED(CoInitializeEx(nullptr, COINITBASE_MULTITHREADED))) {
 		return 1;
+	}
 
 	// MyGameオブジェクトを生成する
 	MyGame myGame(width, height);

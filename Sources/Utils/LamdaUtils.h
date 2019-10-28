@@ -33,6 +33,12 @@ public:
 		return std::find_if(container.begin(), container.end(), pred);
 	}
 
+	template<class T, class U>
+	// std::find_if‚ÌŠÈˆÕ”Å
+	inline static auto FindIf(const T& container, U pred) {
+		return std::find_if(container.cbegin(), container.cend(), pred);
+	}
+
 	// std::find_if_not‚ÌŠÈˆÕ”Å
 	inline static auto FindIfNot() {
 		return [](auto& container, auto pred) {return std::find_if_not(container.begin(), container.end(), pred); };
@@ -42,6 +48,12 @@ public:
 	// std::find_if_not‚ÌŠÈˆÕ”Å
 	inline static auto FindIfNot(T& container, U pred) {
 		return std::find_if_not(container.begin(), container.end(), pred);
+	}
+
+	template<class T, class U>
+	// std::find_if_not‚ÌŠÈˆÕ”Å
+	inline static auto FindIfNot(const T& container, U pred) {
+		return std::find_if_not(container.cbegin(), container.cend(), pred);
 	}
 
 	// std::find_if‚ð‘±‚¯‚é

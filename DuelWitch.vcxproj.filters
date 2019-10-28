@@ -20,26 +20,14 @@
     <Filter Include="Game\Camera">
       <UniqueIdentifier>{f8c123b2-be52-42e4-8bf9-5f6258d06dbf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Manager">
-      <UniqueIdentifier>{62df1444-d1b5-4c52-930c-6ad4fb26d77e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Scene">
       <UniqueIdentifier>{00948bf6-4ead-40b9-876b-3e63f482983b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object">
-      <UniqueIdentifier>{4bb48832-8494-452a-a067-e3b794838c8c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Strategy">
-      <UniqueIdentifier>{be172b32-fe44-4e85-9fd4-7c77efbd196b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Collision">
       <UniqueIdentifier>{69626ec8-61e9-4f50-baf3-211e61961de8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Command">
       <UniqueIdentifier>{9a0eadae-73bd-4bc6-9511-961f906a3b7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Magic">
-      <UniqueIdentifier>{4f33ca50-14ab-4439-86c0-6896d7f98a78}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{ee61a34d-c016-451a-ad4c-a0dd3cb8ddb3}</UniqueIdentifier>
@@ -59,23 +47,47 @@
     <Filter Include="Game\UI">
       <UniqueIdentifier>{64cf1422-e294-4ca7-bcf0-964e831de46f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Object\Effect">
-      <UniqueIdentifier>{15f022d2-29a6-4afe-8457-7a3fcdb9824d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\EffectEmitter">
-      <UniqueIdentifier>{318aad87-bd93-4f32-87ae-435d6ae4b7e6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Assets\Shader">
       <UniqueIdentifier>{16a16d43-0583-4661-8516-185028f8ef03}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Factory">
-      <UniqueIdentifier>{eab97cfd-ae66-4aec-b145-4a73a6307736}</UniqueIdentifier>
     </Filter>
     <Filter Include="Assets\Jsons">
       <UniqueIdentifier>{af038f85-a652-424e-906d-a4cd73af81f3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Parameters">
       <UniqueIdentifier>{be7d3ff3-0a63-4cf7-a0e1-ec78d9bb61f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Fuzzy">
+      <UniqueIdentifier>{d71d10c2-9c18-4165-a60b-8b64468196e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Fuzzy">
+      <UniqueIdentifier>{7d81c0fc-d38e-4b96-9751-84f93e6eeb65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Element">
+      <UniqueIdentifier>{82de2fab-2e37-47ca-b888-4aae89aa8233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Effect">
+      <UniqueIdentifier>{9a5a2034-765a-4da0-bb76-962875244c12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Effect\Emmiter">
+      <UniqueIdentifier>{352f4931-aed6-4684-847f-11dac4a5ee4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Effect\Effect">
+      <UniqueIdentifier>{3a583a9a-2d53-471e-bfae-0f7fe5c0035c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Magic">
+      <UniqueIdentifier>{be172b32-fe44-4e85-9fd4-7c77efbd196b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Magic\Shooter">
+      <UniqueIdentifier>{f0eea573-7ca5-456d-8175-7ee9994a1540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Magic\Magic">
+      <UniqueIdentifier>{389a2334-26dc-4e3b-8653-11c1ae8e784f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Player">
+      <UniqueIdentifier>{4ab63e9c-e51a-4ba1-922b-d905daed3fd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Common">
+      <UniqueIdentifier>{4bb48832-8494-452a-a067-e3b794838c8c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -105,104 +117,8 @@
     <ClCompile Include="Sources\Framework\DirectX11.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\Field.cpp">
-      <Filter>Game\Field</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\GridFloor.cpp">
-      <Filter>Game\Field</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FixCamera.cpp">
-      <Filter>Game\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\DebugCamera.cpp">
-      <Filter>Game\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\Element.cpp">
-      <Filter>Game\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\Player.cpp">
-      <Filter>Game\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\Transform.cpp">
-      <Filter>Game\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\TargetCamera.cpp">
-      <Filter>Game\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\ElementFactory.cpp">
-      <Filter>Game\Factory</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\ElementManager.cpp">
-      <Filter>Game\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\SceneManager.cpp">
-      <Filter>Game\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\PlayScene.cpp">
-      <Filter>Game\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\SphereCollider.cpp">
-      <Filter>Game\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\MagicFactory.cpp">
-      <Filter>Game\Factory</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\MagicManager.cpp">
-      <Filter>Game\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\Camera.cpp">
-      <Filter>Game\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\NormalMagicShooter.cpp">
-      <Filter>Game\Strategy</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FireMagicShooter.cpp">
-      <Filter>Game\Strategy</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\MoveCommand.cpp">
-      <Filter>Game\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\CastMagicCommand.cpp">
-      <Filter>Game\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\AICastMagicCommand.cpp">
-      <Filter>Game\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\AIMoveCommand.cpp">
-      <Filter>Game\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\ThunderMagicShooter.cpp">
-      <Filter>Game\Strategy</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FreezeMagicShooter.cpp">
-      <Filter>Game\Strategy</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FireMagic.cpp">
-      <Filter>Game\Object\Magic</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FreezeMagic.cpp">
-      <Filter>Game\Object\Magic</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\NormalMagic.cpp">
-      <Filter>Game\Object\Magic</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\ThunderMagic.cpp">
-      <Filter>Game\Object\Magic</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\ThunderStrikeMagic.cpp">
-      <Filter>Game\Object\Magic</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\ThunderStrikeMagicShooter.cpp">
-      <Filter>Game\Strategy</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\Collision.cpp">
-      <Filter>Game\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Utils\RandMt.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\LogoScene.cpp">
-      <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Utils\Resource.cpp">
       <Filter>Utils\Resource</Filter>
@@ -216,12 +132,6 @@
     <ClCompile Include="Sources\Utils\LoadDataManager.cpp">
       <Filter>Utils\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\ResourceLoader.cpp">
-      <Filter>Game\Load</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\PlayParameterLoader.cpp">
-      <Filter>Game\Load</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Parameters\CommandParameter.cpp">
       <Filter>Game\Parameters</Filter>
     </ClCompile>
@@ -231,29 +141,11 @@
     <ClCompile Include="Sources\Parameters\ElementParameter.cpp">
       <Filter>Game\Parameters</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\CommonServices.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\TitleScene.cpp">
-      <Filter>Game\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\CharaSelectScene.cpp">
-      <Filter>Game\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\ResultScene.cpp">
-      <Filter>Game\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Parameters\MagicParameter.cpp">
       <Filter>Game\Parameters</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Utils\MouseWrapper.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\Collider.cpp">
-      <Filter>Game\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\EmptyObject.cpp">
-      <Filter>Game\Object</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Utils\Subject.cpp">
       <Filter>Utils\UI</Filter>
@@ -267,68 +159,191 @@
     <ClCompile Include="Sources\Utils\ScaleUpUI.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\CharaSelectMarker.cpp">
-      <Filter>Game\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\CharaIcon.cpp">
-      <Filter>Game\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\UserRenderCommand.cpp">
-      <Filter>Game\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\AIRenderCommand.cpp">
-      <Filter>Game\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\PauseScene.cpp">
-      <Filter>Game\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\EffectManager.cpp">
-      <Filter>Game\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Parameters\EffectParameter.cpp">
       <Filter>Game\Parameters</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\EffectFactory.cpp">
-      <Filter>Game\Factory</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\NormalMagicEffect.cpp">
-      <Filter>Game\Object\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FireMagicEffect.cpp">
-      <Filter>Game\Object\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\NormalMagicEffectEmitter.cpp">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FireMagicEffectEmitter.cpp">
-      <Filter>Game\Object\EffectEmitter</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Parameters\CharaStatusParameter.cpp">
       <Filter>Game\Parameters</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\Effect.cpp">
-      <Filter>Game\Object\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\PlayerTrailEffectEmitter.cpp">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\PlayerTrailEffect.cpp">
-      <Filter>Game\Object\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Utils\Color.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\FieldShieldEffectEmitter.cpp">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\FieldShieldEffect.cpp">
-      <Filter>Game\Object\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Game\CapsuleCollider.cpp">
-      <Filter>Game\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Parameters\FieldParameter.cpp">
       <Filter>Game\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Command\MoveCommand.cpp">
+      <Filter>Game\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Command\UserRenderCommand.cpp">
+      <Filter>Game\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Command\AICastMagicCommand.cpp">
+      <Filter>Game\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Command\AIMoveCommand.cpp">
+      <Filter>Game\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Command\AIRenderCommand.cpp">
+      <Filter>Game\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Command\CastMagicCommand.cpp">
+      <Filter>Game\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Fuzzy\AIMoveFuzzy.cpp">
+      <Filter>Game\Fuzzy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Camera\TargetCamera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Camera\Camera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Camera\DebugCamera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Camera\FixCamera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\UI\CharaSelectMarker.cpp">
+      <Filter>Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\UI\CharaIcon.cpp">
+      <Filter>Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Scene\PlayScene.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Scene\ResultScene.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Scene\TitleScene.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Scene\CharaSelectScene.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Scene\LogoScene.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Scene\PauseScene.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Load\ResourceLoader.cpp">
+      <Filter>Game\Load</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Load\PlayParameterLoader.cpp">
+      <Filter>Game\Load</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Collision\Collision.cpp">
+      <Filter>Game\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Collision\SphereCollider.cpp">
+      <Filter>Game\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Collision\CapsuleCollider.cpp">
+      <Filter>Game\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Collision\Collider.cpp">
+      <Filter>Game\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Element\ElementFactory.cpp">
+      <Filter>Game\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Element\ElementManager.cpp">
+      <Filter>Game\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Element\Element.cpp">
+      <Filter>Game\Element</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Scene\SceneManager.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\EffectFactory.cpp">
+      <Filter>Game\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\EffectManager.cpp">
+      <Filter>Game\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\FieldShieldEffectEmitter.cpp">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\FireMagicEffectEmitter.cpp">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\NormalMagicEffectEmitter.cpp">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\PlayerTrailEffectEmitter.cpp">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\Effect.cpp">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\FieldShieldEffect.cpp">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\FireMagicEffect.cpp">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\NormalMagicEffect.cpp">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\PlayerTrailEffect.cpp">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\FireMagicShooter.cpp">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\FreezeMagicShooter.cpp">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\NormalMagicShooter.cpp">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\ThunderMagicShooter.cpp">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\ThunderStrikeMagicShooter.cpp">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\ThunderStrikeMagic.cpp">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\FireMagic.cpp">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\FreezeMagic.cpp">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\NormalMagic.cpp">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\ThunderMagic.cpp">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\MagicManager.cpp">
+      <Filter>Game\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Magic\MagicFactory.cpp">
+      <Filter>Game\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Field\Field.cpp">
+      <Filter>Game\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Player\Player.cpp">
+      <Filter>Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Load\CommonServices.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Common\Transform.cpp">
+      <Filter>Game\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Common\EmptyObject.cpp">
+      <Filter>Game\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Common\GridFloor.cpp">
+      <Filter>Game\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -350,131 +365,11 @@
     <ClInclude Include="Sources\Framework\DirectX11.h">
       <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\Field.h">
-      <Filter>Game\Field</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\GridFloor.h">
-      <Filter>Game\Field</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FixCamera.h">
-      <Filter>Game\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\DebugCamera.h">
-      <Filter>Game\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\TargetCamera.h">
-      <Filter>Game\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Element.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\IObject.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Player.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Transform.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\ElementManager.h">
-      <Filter>Game\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\ElementFactory.h">
-      <Filter>Game\Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\IScene.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\ISceneRequest.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\SceneManager.h">
-      <Filter>Game\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\PlayScene.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\SphereCollider.h">
-      <Filter>Game\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\MagicManager.h">
-      <Filter>Game\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\MagicFactory.h">
-      <Filter>Game\Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Camera.h">
-      <Filter>Game\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\IMagicShooter.h">
-      <Filter>Game\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\NormalMagicShooter.h">
-      <Filter>Game\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FireMagicShooter.h">
-      <Filter>Game\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\MoveCommand.h">
-      <Filter>Game\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Command.h">
-      <Filter>Game\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\CastMagicCommand.h">
-      <Filter>Game\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\AICastMagicCommand.h">
-      <Filter>Game\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\AIMoveCommand.h">
-      <Filter>Game\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\ThunderMagicShooter.h">
-      <Filter>Game\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FreezeMagicShooter.h">
-      <Filter>Game\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FireMagic.h">
-      <Filter>Game\Object\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FreezeMagic.h">
-      <Filter>Game\Object\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\IMagic.h">
-      <Filter>Game\Object\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Magic.h">
-      <Filter>Game\Object\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\NormalMagic.h">
-      <Filter>Game\Object\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\ThunderStrikeMagic.h">
-      <Filter>Game\Object\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\ThunderMagic.h">
-      <Filter>Game\Object\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\ThunderStrikeMagicShooter.h">
-      <Filter>Game\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Collider.h">
-      <Filter>Game\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Collision.h">
-      <Filter>Game\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Utils\RandMt.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Utils\MathUtils.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\LogoScene.h">
-      <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Utils\ErrorMessage.h">
       <Filter>Utils</Filter>
@@ -515,15 +410,6 @@
     <ClInclude Include="Sources\Utils\LoadDataHolder.h">
       <Filter>Utils\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\ResourceLoader.h">
-      <Filter>Game\Load</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\IParameterLoader.h">
-      <Filter>Game\Load</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\PlayParameterLoader.h">
-      <Filter>Game\Load</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Parameters\CommandParameter.h">
       <Filter>Game\Parameters</Filter>
     </ClInclude>
@@ -536,29 +422,11 @@
     <ClInclude Include="Sources\Parameters\ElementParameter.h">
       <Filter>Game\Parameters</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\CommonServices.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\TitleScene.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\CharaSelectScene.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\ResultScene.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Parameters\MagicParameter.h">
       <Filter>Game\Parameters</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\MagicID.h">
-      <Filter>Game\Object\Magic</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Utils\MouseWrapper.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\EmptyObject.h">
-      <Filter>Game\Object</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Utils\Subject.h">
       <Filter>Utils\UI</Filter>
@@ -581,41 +449,8 @@
     <ClInclude Include="Sources\Utils\ScaleUpUI.h">
       <Filter>Utils\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\CharaSelectMarker.h">
-      <Filter>Game\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\CharaIcon.h">
-      <Filter>Game\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\RenderCommand.h">
-      <Filter>Game\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\UserRenderCommand.h">
-      <Filter>Game\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\AIRenderCommand.h">
-      <Filter>Game\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\PauseScene.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\EffectManager.h">
-      <Filter>Game\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Parameters\EffectParameter.h">
       <Filter>Game\Parameters</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\EffectFactory.h">
-      <Filter>Game\Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\EffectEmitter.h">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\EffectID.h">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\IEffectEmitter.h">
-      <Filter>Game\Object\EffectEmitter</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Utils\LamdaUtils.h">
       <Filter>Utils</Filter>
@@ -629,59 +464,245 @@
     <ClInclude Include="Sources\Utils\ConstBuffer.h">
       <Filter>Utils\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\IEffect.h">
-      <Filter>Game\Object\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Effect.h">
-      <Filter>Game\Object\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\NormalMagicEffect.h">
-      <Filter>Game\Object\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FireMagicEffect.h">
-      <Filter>Game\Object\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\NormalMagicEffectEmitter.h">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FireMagicEffectEmitter.h">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Parameters\CharaStatusParameter.h">
       <Filter>Game\Parameters</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\PlayerTrailEffectEmitter.h">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\PlayerTrailEffect.h">
-      <Filter>Game\Object\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Utils\Color.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\FieldShieldEffectEmitter.h">
-      <Filter>Game\Object\EffectEmitter</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\FieldShieldEffect.h">
-      <Filter>Game\Object\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\PlayerID.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\CapsuleCollider.h">
-      <Filter>Game\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\MagicInfo.h">
-      <Filter>Game\Object\Magic</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Parameters\FieldParameter.h">
       <Filter>Game\Parameters</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\FieldData.h">
+    <ClInclude Include="Sources\Utils\FuzzyUtils.h">
+      <Filter>Utils\Fuzzy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\FuzzyObject.h">
+      <Filter>Utils\Fuzzy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Command\CastMagicCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Command\MoveCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Command\RenderCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Command\UserRenderCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Command\AICastMagicCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Command\AIMoveCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Command\AIRenderCommand.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Command\Command.h">
+      <Filter>Game\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Fuzzy\AIMoveFuzzy.h">
+      <Filter>Game\Fuzzy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Camera\FixCamera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Camera\TargetCamera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Camera\Camera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Camera\DebugCamera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\UI\CharaSelectMarker.h">
+      <Filter>Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\UI\CharaIcon.h">
+      <Filter>Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\PauseScene.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\PlayScene.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\ResultScene.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\TitleScene.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\CharaSelectScene.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\IScene.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\ISceneRequest.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\LogoScene.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Load\ResourceLoader.h">
+      <Filter>Game\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Load\IParameterLoader.h">
+      <Filter>Game\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Load\PlayParameterLoader.h">
+      <Filter>Game\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Collision\Collision.h">
+      <Filter>Game\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Collision\SphereCollider.h">
+      <Filter>Game\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Collision\CapsuleCollider.h">
+      <Filter>Game\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Collision\Collider.h">
+      <Filter>Game\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Element\ElementFactory.h">
+      <Filter>Game\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Element\ElementManager.h">
+      <Filter>Game\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Element\Element.h">
+      <Filter>Game\Element</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\SceneManager.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\EffectFactory.h">
+      <Filter>Game\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\EffectID.h">
+      <Filter>Game\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\EffectManager.h">
+      <Filter>Game\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\EffectEmitter.h">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\FieldShieldEffectEmitter.h">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\FireMagicEffectEmitter.h">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\NormalMagicEffectEmitter.h">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\IEffectEmitter.h">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\PlayerTrailEffectEmitter.h">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\Effect.h">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\FieldShieldEffect.h">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\FireMagicEffect.h">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\IEffect.h">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\NormalMagicEffect.h">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\PlayerTrailEffect.h">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\FireMagicShooter.h">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\FreezeMagicShooter.h">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\IMagicShooter.h">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\NormalMagicShooter.h">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\ThunderMagicShooter.h">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\ThunderStrikeMagicShooter.h">
+      <Filter>Game\Magic\Shooter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\ThunderStrikeMagic.h">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\FireMagic.h">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\FreezeMagic.h">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\IMagic.h">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\Magic.h">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\NormalMagic.h">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\ThunderMagic.h">
+      <Filter>Game\Magic\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\MagicID.h">
+      <Filter>Game\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\MagicInfo.h">
+      <Filter>Game\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\MagicManager.h">
+      <Filter>Game\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Magic\MagicFactory.h">
+      <Filter>Game\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Field\Field.h">
       <Filter>Game\Field</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Utils\FuzzyUtils.h">
-      <Filter>Utils</Filter>
+    <ClInclude Include="Sources\Game\Field\FieldData.h">
+      <Filter>Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Player\Player.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Player\PlayerID.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Load\CommonServices.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Common\GridFloor.h">
+      <Filter>Game\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Common\IObject.h">
+      <Filter>Game\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Common\Transform.h">
+      <Filter>Game\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Common\EmptyObject.h">
+      <Filter>Game\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

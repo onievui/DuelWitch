@@ -6,9 +6,9 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\MouseWrapper.h>
-#include "CommonServices.h"
-#include "SceneManager.h"
-#include "ResourceLoader.h"
+#include <Game\Load\CommonServices.h>
+#include <Game\Load\ResourceLoader.h>
+#include <Game\Scene\SceneManager.h>
 
 
 /// <summary>
