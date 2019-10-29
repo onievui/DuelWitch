@@ -31,12 +31,12 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		break;
 	// タイトルシーン
 	case ResourceLoaderID::TitleScene:
-		textureResourceManager->AddResource(TextureID::Title,   TextureResource(L"Protected/title1600.png"));
+		textureResourceManager->AddResource(TextureID::Title,   TextureResource(L"Protected/title1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
 		break;
 	// キャラセレクトシーン
 	case ResourceLoaderID::CharaSelectScene:
-		textureResourceManager->AddResource(TextureID::CharaSelectBackGround, TextureResource(L"Protected/chara_select1600.png"));
+		textureResourceManager->AddResource(TextureID::CharaSelectBackGround, TextureResource(L"Protected/chara_select1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame,               TextureResource(L"Protected/title_ui_frame.png"));
 		textureResourceManager->AddResource(TextureID::CharaIcon,             TextureResource(L"Protected/chara_icon1.png"));
 		textureResourceManager->AddResource(TextureID::CharaIcon,                 L"Protected/chara_icon2.png");
@@ -65,7 +65,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::FireMagicEffect, TextureResource(L"Protected/fire_magic_effect_a.jpg"));
 		textureResourceManager->AddResource(TextureID::FireMagicEffect,     L"Protected/fire_magic_effect_b.png");
 		// ポーズシーンで使うテクスチャも読みこんでおく
-		textureResourceManager->AddResource(TextureID::BlackBack, TextureResource(L"Protected/black_back1600.png"));
+		textureResourceManager->AddResource(TextureID::BlackBack, TextureResource(L"Protected/black_back1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame,   TextureResource(L"Protected/title_ui_frame.png"));
 		// シェーダの読み込み
 		vertexShaderResourceManager->AddResource(VertexShaderID::Default,       VertexShaderResource(L"DefaultVS.cso", VertexShaderID::Default));

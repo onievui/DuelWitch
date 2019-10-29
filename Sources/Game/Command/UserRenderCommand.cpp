@@ -229,8 +229,8 @@ void UserRenderCommand::RenderElements(const Player& player, DirectX::SpriteBatc
 	// 最初に取得したエレメントが左に来るように表示する
 	for (std::list<ElementID>::const_reverse_iterator itr = have_elements.rbegin(); itr != have_elements.rend(); ++itr) {
 		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicIcon);
-		spriteBatch->Draw(texture->GetResource(static_cast<int>(*itr)).Get(), DirectX::SimpleMath::Vector2(80 + i * 60.0f, 640.0f), nullptr,
-			DirectX::Colors::White, 0, texture->GetCenter(), DirectX::SimpleMath::Vector2::One*(i <= status.chargeLevel ? 1.75f : 1.25f));
+		spriteBatch->Draw(texture->GetResource(static_cast<int>(*itr)).Get(), DirectX::SimpleMath::Vector2(90 + i * 50.0f, 540.0f), nullptr,
+			DirectX::Colors::White, 0, texture->GetCenter(), DirectX::SimpleMath::Vector2::One*(i <= status.chargeLevel ? 1.5f : 1.1f));
 		--i;
 	}
 }
@@ -242,8 +242,8 @@ void UserRenderCommand::RenderElements(const Player& player, DirectX::SpriteBatc
 /// <param name="spriteBatch">スプライトバッチ</param>
 void UserRenderCommand::RenderHpBar(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::HpBar);
-	DirectX::SimpleMath::Vector2 pos(20.0f, 750.0f);
-	DirectX::SimpleMath::Vector2 scale(0.6f, 0.55f);
+	DirectX::SimpleMath::Vector2 pos(30.0f, 650.0f);
+	DirectX::SimpleMath::Vector2 scale(0.55f, 0.5f);
 
 	// 黒の部分を描画する
 	spriteBatch->Draw(texture->GetResource(2).Get(), pos, nullptr,
@@ -274,8 +274,8 @@ void UserRenderCommand::RenderHpBar(const Player& player, DirectX::SpriteBatch* 
 /// <param name="spriteBatch">スプライトバッチ</param>
 void UserRenderCommand::RenderSpBar(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::SpBar);
-	DirectX::SimpleMath::Vector2 pos(20.0f, 710.0f);
-	DirectX::SimpleMath::Vector2 scale(0.5f, 0.35f);
+	DirectX::SimpleMath::Vector2 pos(30.0f, 610.0f);
+	DirectX::SimpleMath::Vector2 scale(0.45f, 0.3f);
 
 	// 黒の部分を描画する
 	spriteBatch->Draw(texture->GetResource(1).Get(), pos, nullptr,
