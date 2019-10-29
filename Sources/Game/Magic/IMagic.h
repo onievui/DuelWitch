@@ -3,7 +3,7 @@
 #define IMAGIC_DEFINED
 
 
-#include <Game\Common\IObject.h>
+#include <Game\Object\IObject.h>
 #include "MagicInfo.h"
 
 

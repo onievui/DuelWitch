@@ -74,7 +74,7 @@ void CastMagicCommand::ExecuteIdle(Player& player, const DX::StepTimer& timer) {
 			// エレメントがないなら通常魔法を発射する
 			if (ref_have_elements.empty()) {
 				// SPが足りているか確認する
-				Player::Status& status = GetStatus(player);
+				PlayerStatus& status = GetStatus(player);
 				if (status.sp >= status.normalMagicSpCost) {
 					status.sp -= status.normalMagicSpCost;
 					GetMagicManager(player).CreateMagic(MagicInfo(MagicID::Normal, player.GetPlayerID(), 0, 1.0f), player_pos, direction);
@@ -98,7 +98,7 @@ void CastMagicCommand::ExecuteIdle(Player& player, const DX::StepTimer& timer) {
 /// <param name="timer">ステップタイマー</param>
 void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& timer) {
 	Transform& ref_transform = GetTransform(player);
-	Player::Status& ref_status = GetStatus(player);
+	PlayerStatus& ref_status = GetStatus(player);
 	DirectX::Mouse::ButtonStateTracker* mouse_tracker = ServiceLocater<MouseWrapper>::Get()->GetTracker();
 	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
 

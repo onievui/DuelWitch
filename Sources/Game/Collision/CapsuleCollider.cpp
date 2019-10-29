@@ -1,5 +1,5 @@
 #include "CapsuleCollider.h"
-#include <Game\Common\Transform.h>
+#include <Game\Object\Transform.h>
 
 
 /// <summary>

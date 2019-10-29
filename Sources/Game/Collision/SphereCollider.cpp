@@ -1,7 +1,7 @@
 #include "SphereCollider.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
-#include <Game\Common\Transform.h>
+#include <Game\Object\Transform.h>
 
 
 std::unique_ptr<DirectX::GeometricPrimitive> SphereCollider::m_debugSphere = nullptr;

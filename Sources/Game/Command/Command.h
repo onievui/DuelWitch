@@ -4,7 +4,7 @@
 
 
 #include <Framework\StepTimer.h>
-#include <Game\Common\Transform.h>
+#include <Game\Object\Transform.h>
 #include <Game\Player\Player.h>
 #include <Game\Camera\Camera.h>
 #include <Game\Magic\MagicManager.h>
@@ -28,9 +28,9 @@ protected:
 	// プレイヤーの行列を取得する
 	DirectX::SimpleMath::Matrix& GetWorld(Player& player)                    { return player.m_world; }
 	// プレイヤーのステータスを取得する
-	Player::Status&              GetStatus(Player& player)                   { return player.m_status; }
+	PlayerStatus&                GetStatus(Player& player)                   { return player.m_status; }
 	// プレイヤーのステータスを取得する
-	const Player::Status&        GetStatus(const Player& player) const       { return player.m_status; }
+	const PlayerStatus&          GetStatus(const Player& player) const       { return player.m_status; }
 	// プレイヤーの進行方向を取得する
 	Player::MoveDirection&       GetMoveDirection(Player& player)            { return player.m_direction; }
 	// プレイヤーの所持エレメントを取得する

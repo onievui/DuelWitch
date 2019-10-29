@@ -5,8 +5,8 @@
 
 #include <Framework\StepTimer.h>
 #include <Utils\LoadDataHolder.h>
-#include <Game\Common\IObject.h>
-#include <Game\Common\Transform.h>
+#include <Game\Object\IObject.h>
+#include <Game\Object\Transform.h>
 #include <Game\Collision\SphereCollider.h>
 
 

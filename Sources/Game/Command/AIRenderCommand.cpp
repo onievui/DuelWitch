@@ -98,7 +98,7 @@ void AIRenderCommand::RenderHpBar(const Player& player, DirectX::SpriteBatch* sp
 
 	// ‰æ‘œ‚Ì‹éŒ`‚ğì¬‚·‚é
 	DirectX::SimpleMath::Vector2 size = texture->GetSize();
-	const Player::Status& status = GetStatus(player);
+	const PlayerStatus& status = GetStatus(player);
 	RECT rect;
 	rect.left = 0; rect.top = 0;
 	// HP‚ÌŠ„‡‚É‰‚¶‚Ä•`‰æ”ÍˆÍ‚ğŒˆ‚ß‚é

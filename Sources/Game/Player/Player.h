@@ -4,9 +4,10 @@
 
 #include <Framework\StepTimer.h>
 #include <list>
-#include <Game\Common\IObject.h>
-#include <Game\Common\Transform.h>
+#include <Game\Object\IObject.h>
+#include <Game\Object\Transform.h>
 #include <Game\Collision\SphereCollider.h>
+#include "PlayerStatus.h"
 
 
 class MagicManager;
@@ -73,62 +74,62 @@ private:
 	void UpdateStatus(const DX::StepTimer& timer);
 
 public:
-	/// <summary>
-	/// プレイヤーステータス
-	/// </summary>
-	struct Status {
-		// 外部データ
-		// 最大HP
-		float                             maxHp;
-		// HP
-		float                             hp;
-		// 前フレームのHP
-		float                             preHp;
-		// 最大SP
-		float                             maxSp;
-		// SP
-		float                             sp;
-		// 前フレームのSP
-		float                             preSp;
-		// SP回復速度
-		float                             spRecoverySpeed;
-		// 通常魔法の消費SP
-		float                             normalMagicSpCost;
-		// ブースト速度倍率
-		float                             boostSpeedRate;
-		// ブースト消費SP
-		float                             boostSpCost;
-		// ロール回避消費SP
-		float                             rollSpCost;
-		// 1段階目のチャージタイム
-		float                             firstChargeTime;
-		// 2段階目のチャージタイム
-		float                             secoundChargeTime;
-		// 炎魔法のダメージ倍率
-		float                             fireMagicPowerRate;
-		// 氷魔法のダメージ倍率
-		float                             freezeMagicPowerRate;
-		// 雷魔法のダメージ倍率
-		float                             thunderMagicPowerRate;
+	///// <summary>
+	///// プレイヤーステータス
+	///// </summary>
+	//struct Status {
+	//	// 外部データ
+	//	// 最大HP
+	//	float                             maxHp;
+	//	// HP
+	//	float                             hp;
+	//	// 前フレームのHP
+	//	float                             preHp;
+	//	// 最大SP
+	//	float                             maxSp;
+	//	// SP
+	//	float                             sp;
+	//	// 前フレームのSP
+	//	float                             preSp;
+	//	// SP回復速度
+	//	float                             spRecoverySpeed;
+	//	// 通常魔法の消費SP
+	//	float                             normalMagicSpCost;
+	//	// ブースト速度倍率
+	//	float                             boostSpeedRate;
+	//	// ブースト消費SP
+	//	float                             boostSpCost;
+	//	// ロール回避消費SP
+	//	float                             rollSpCost;
+	//	// 1段階目のチャージタイム
+	//	float                             firstChargeTime;
+	//	// 2段階目のチャージタイム
+	//	float                             secoundChargeTime;
+	//	// 炎魔法のダメージ倍率
+	//	float                             fireMagicPowerRate;
+	//	// 氷魔法のダメージ倍率
+	//	float                             freezeMagicPowerRate;
+	//	// 雷魔法のダメージ倍率
+	//	float                             thunderMagicPowerRate;
 
-		// 内部データ
-		// ダメージ後無敵時間タイマー
-		float                             damageTimer;
-		// SP消費直後タイマー
-		float                             spDecreaseTimer;
-		// ブースト中かどうか
-		bool                              isBoosting;
-		// チャージ段階
-		int                               chargeLevel;
-		// 詠唱可能かどうか
-		bool                              canCast;
-	};
+	//	// 内部データ
+	//	// ダメージ後無敵時間タイマー
+	//	float                             damageTimer;
+	//	// SP消費直後タイマー
+	//	float                             spDecreaseTimer;
+	//	// ブースト中かどうか
+	//	bool                              isBoosting;
+	//	// チャージ段階
+	//	int                               chargeLevel;
+	//	// 詠唱可能かどうか
+	//	bool                              canCast;
+	//};
 
 private:
 	// プレイヤーID
 	PlayerID                               m_id;
 	// ステータス
-	Status                                 m_status;
+	PlayerStatus                           m_status;
 	// 進行方向
 	MoveDirection                          m_direction;
 	// 所持エレメント

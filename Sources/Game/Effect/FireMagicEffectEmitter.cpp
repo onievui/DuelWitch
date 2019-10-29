@@ -142,6 +142,7 @@ void FireMagicEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Mat
 
 	// ’¸“_î•ñ‚ğì¬‚·‚é
 	std::vector<DirectX::VertexPositionColorTexture> vertex;
+	vertex.reserve(m_effects.size());
 	for (std::vector<std::unique_ptr<FireMagicEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {

@@ -5,7 +5,7 @@
 
 #include <map>
 #include <Framework\StepTimer.h>
-#include <Game\Common\Transform.h>
+#include <Game\Object\Transform.h>
 #include "FieldData.h"
 
 

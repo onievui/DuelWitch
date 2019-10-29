@@ -5,7 +5,7 @@
 #include <Utils\ServiceLocater.h>
 #include <Parameters\EffectParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
-#include <Game\Common\Transform.h>
+#include <Game\Object\Transform.h>
 
 
 /// <summary>

@@ -199,14 +199,14 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 /// </summary>
 /// <param name="player">プレイヤー</param>
 void AIMoveCommand::ExecuteAI(Player& player) {
-	const Player::Status& status = GetStatus(player);
+	const PlayerStatus& status = GetStatus(player);
 	const Transform& transform = GetTransform(player);
 	const DirectX::SimpleMath::Vector3& pos = transform.GetPosition();
 	// 最も近い敵プレイヤーとの距離
 	float distance = 0;
 	// 最も近い敵プレイヤーを取得する
 	const Player* other_player = GetNearestPlayer(pos, GetOtherPlayers(player), &distance);
-	const Player::Status& other_status = GetStatus(*other_player);
+	const PlayerStatus& other_status = GetStatus(*other_player);
 
 	// 最も近い敵プレイヤーとのHPの差
 	float hp_gap = status.hp - other_status.hp;

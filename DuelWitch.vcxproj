@@ -190,9 +190,6 @@
     <ClCompile Include="Sources\Game\Command\CastMagicCommand.cpp" />
     <ClCompile Include="Sources\Game\Command\MoveCommand.cpp" />
     <ClCompile Include="Sources\Game\Command\UserRenderCommand.cpp" />
-    <ClCompile Include="Sources\Game\Common\EmptyObject.cpp" />
-    <ClCompile Include="Sources\Game\Common\GridFloor.cpp" />
-    <ClCompile Include="Sources\Game\Common\Transform.cpp" />
     <ClCompile Include="Sources\Game\Effect\Effect.cpp" />
     <ClCompile Include="Sources\Game\Effect\EffectFactory.cpp" />
     <ClCompile Include="Sources\Game\Effect\EffectManager.cpp" />
@@ -208,6 +205,7 @@
     <ClCompile Include="Sources\Game\Element\ElementFactory.cpp" />
     <ClCompile Include="Sources\Game\Element\ElementManager.cpp" />
     <ClCompile Include="Sources\Game\Field\Field.cpp" />
+    <ClCompile Include="Sources\Game\Field\GridFloor.cpp" />
     <ClCompile Include="Sources\Game\Fuzzy\AIMoveFuzzy.cpp" />
     <ClCompile Include="Sources\Game\Load\CommonServices.cpp" />
     <ClCompile Include="Sources\Game\Load\PlayParameterLoader.cpp" />
@@ -225,6 +223,8 @@
     <ClCompile Include="Sources\Game\Magic\ThunderStrikeMagic.cpp" />
     <ClCompile Include="Sources\Game\Magic\ThunderStrikeMagicShooter.cpp" />
     <ClCompile Include="Sources\Game\MyGame.cpp" />
+    <ClCompile Include="Sources\Game\Object\EmptyObject.cpp" />
+    <ClCompile Include="Sources\Game\Object\Transform.cpp" />
     <ClCompile Include="Sources\Game\Player\Player.cpp" />
     <ClCompile Include="Sources\Game\Scene\CharaSelectScene.cpp" />
     <ClCompile Include="Sources\Game\Scene\LogoScene.cpp" />
@@ -279,10 +279,6 @@
     <ClInclude Include="Sources\Game\Command\MoveCommand.h" />
     <ClInclude Include="Sources\Game\Command\RenderCommand.h" />
     <ClInclude Include="Sources\Game\Command\UserRenderCommand.h" />
-    <ClInclude Include="Sources\Game\Common\EmptyObject.h" />
-    <ClInclude Include="Sources\Game\Common\GridFloor.h" />
-    <ClInclude Include="Sources\Game\Common\IObject.h" />
-    <ClInclude Include="Sources\Game\Common\Transform.h" />
     <ClInclude Include="Sources\Game\Effect\Effect.h" />
     <ClInclude Include="Sources\Game\Effect\EffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\EffectFactory.h" />
@@ -303,6 +299,7 @@
     <ClInclude Include="Sources\Game\Element\ElementManager.h" />
     <ClInclude Include="Sources\Game\Field\Field.h" />
     <ClInclude Include="Sources\Game\Field\FieldData.h" />
+    <ClInclude Include="Sources\Game\Field\GridFloor.h" />
     <ClInclude Include="Sources\Game\Fuzzy\AIMoveFuzzy.h" />
     <ClInclude Include="Sources\Game\Load\CommonServices.h" />
     <ClInclude Include="Sources\Game\Load\IParameterLoader.h" />
@@ -325,8 +322,12 @@
     <ClInclude Include="Sources\Game\Magic\ThunderMagicShooter.h" />
     <ClInclude Include="Sources\Game\Magic\ThunderStrikeMagic.h" />
     <ClInclude Include="Sources\Game\Magic\ThunderStrikeMagicShooter.h" />
+    <ClInclude Include="Sources\Game\Object\EmptyObject.h" />
+    <ClInclude Include="Sources\Game\Object\IObject.h" />
+    <ClInclude Include="Sources\Game\Object\Transform.h" />
     <ClInclude Include="Sources\Game\Player\Player.h" />
     <ClInclude Include="Sources\Game\Player\PlayerID.h" />
+    <ClInclude Include="Sources\Game\Player\PlayerStatus.h" />
     <ClInclude Include="Sources\Game\Scene\CharaSelectScene.h" />
     <ClInclude Include="Sources\Game\Scene\IScene.h" />
     <ClInclude Include="Sources\Game\Scene\ISceneRequest.h" />

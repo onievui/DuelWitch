@@ -5,7 +5,7 @@
 
 #include "Command.h"
 #include <Utils\LoadDataHolder.h>
-#include <Game\Common\EmptyObject.h>
+#include <Game\Object\EmptyObject.h>
 
 
 class PlayerTrailEffectEmitter;

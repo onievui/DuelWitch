@@ -9,7 +9,6 @@
 #include "ISceneRequest.h"
 #include <Game\Camera\DebugCamera.h>
 #include <Game\Camera\TargetCamera.h>
-#include <Game\Common\GridFloor.h>
 #include <Game\Player\Player.h>
 #include <Game\Player\PlayerID.h>
 #include <Game\Element\Element.h>
@@ -18,6 +17,7 @@
 #include <Game\Magic\MagicManager.h>
 #include <Game\Effect\EffectManager.h>
 #include <Game\Field\Field.h>
+#include <Game\Field\GridFloor.h>
 #include <Game\Collision\Collision.h>
 
 

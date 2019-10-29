@@ -76,6 +76,7 @@ void FieldShieldEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::M
 
 	// ’¸“_î•ñ‚ğì¬‚·‚é
 	std::vector<DirectX::VertexPositionColorTexture> vertex;
+	vertex.reserve(m_effects.size());
 	for (std::vector<std::unique_ptr<FieldShieldEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {

@@ -40,7 +40,7 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	// エレメントがないなら通常魔法を発射する
 	if (ref_have_elements.empty()) {
 		// SPが足りているか確認する
-		Player::Status& status = GetStatus(player);
+		PlayerStatus& status = GetStatus(player);
 		if (status.sp >= status.normalMagicSpCost) {
 			status.sp -= status.normalMagicSpCost;
 			GetMagicManager(player).CreateMagic(MagicInfo(MagicID::Normal,player.GetPlayerID(),0,1.0f), pos, direction);

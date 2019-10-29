@@ -86,7 +86,7 @@
     <Filter Include="Game\Player">
       <UniqueIdentifier>{4ab63e9c-e51a-4ba1-922b-d905daed3fd8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Common">
+    <Filter Include="Game\Object">
       <UniqueIdentifier>{4bb48832-8494-452a-a067-e3b794838c8c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -336,14 +336,14 @@
     <ClCompile Include="Sources\Game\Load\CommonServices.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\Common\Transform.cpp">
-      <Filter>Game\Common</Filter>
+    <ClCompile Include="Sources\Game\Field\GridFloor.cpp">
+      <Filter>Game\Field</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\Common\EmptyObject.cpp">
-      <Filter>Game\Common</Filter>
+    <ClCompile Include="Sources\Game\Object\Transform.cpp">
+      <Filter>Game\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\Common\GridFloor.cpp">
-      <Filter>Game\Common</Filter>
+    <ClCompile Include="Sources\Game\Object\EmptyObject.cpp">
+      <Filter>Game\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -692,17 +692,20 @@
     <ClInclude Include="Sources\Game\Load\CommonServices.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\Common\GridFloor.h">
-      <Filter>Game\Common</Filter>
+    <ClInclude Include="Sources\Game\Player\PlayerStatus.h">
+      <Filter>Game\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\Common\IObject.h">
-      <Filter>Game\Common</Filter>
+    <ClInclude Include="Sources\Game\Field\GridFloor.h">
+      <Filter>Game\Field</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\Common\Transform.h">
-      <Filter>Game\Common</Filter>
+    <ClInclude Include="Sources\Game\Object\EmptyObject.h">
+      <Filter>Game\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\Common\EmptyObject.h">
-      <Filter>Game\Common</Filter>
+    <ClInclude Include="Sources\Game\Object\IObject.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Object\Transform.h">
+      <Filter>Game\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

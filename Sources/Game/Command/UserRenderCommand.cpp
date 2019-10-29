@@ -39,7 +39,7 @@ void UserRenderCommand::Execute(Player& player, const DX::StepTimer& timer) {
 void UserRenderCommand::Render(const Player& player, const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const {
 	// ダメージ後はプレイヤーを点滅させる
-	const Player::Status& ref_status = GetStatus(player);
+	const PlayerStatus& ref_status = GetStatus(player);
 	if (ref_status.damageTimer <= 0.0f || sin(ref_status.damageTimer*Math::PI2 * 2) > 0) {
 		const std::unique_ptr<DirectX::Model>& model = ServiceLocater<ResourceManager<ModelResource>>::Get()->
 			GetResource(ModelID::Bloom)->GetResource();
@@ -187,7 +187,7 @@ DirectX::SimpleMath::Vector2 UserRenderCommand::CalculateIconPos(const DirectX::
 /// <param name="timer">ステップタイマー</param>
 void UserRenderCommand::UpdateAiming(Player& player, const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
-	const Player::Status& status = GetStatus(player);
+	const PlayerStatus& status = GetStatus(player);
 	m_aimingPos = ServiceLocater<MouseWrapper>::Get()->GetPos();
 	const float aiming_rotation_speed = Math::HarfPI;
 	// ブースト中なら照準の回転を速くする
@@ -224,7 +224,7 @@ void UserRenderCommand::RenderEnemeyIcon(const Player& player, DirectX::SpriteBa
 /// <param name="spriteBatch">スプライトバッチ</param>
 void UserRenderCommand::RenderElements(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
 	const std::list<ElementID>& have_elements = GetHaveElements(player);
-	const Player::Status& status = GetStatus(player);
+	const PlayerStatus& status = GetStatus(player);
 	int i = have_elements.size() - 1;
 	// 最初に取得したエレメントが左に来るように表示する
 	for (std::list<ElementID>::const_reverse_iterator itr = have_elements.rbegin(); itr != have_elements.rend(); ++itr) {
@@ -251,7 +251,7 @@ void UserRenderCommand::RenderHpBar(const Player& player, DirectX::SpriteBatch* 
 
 	// 画像の矩形を作成する
 	DirectX::SimpleMath::Vector2 size = texture->GetSize();
-	const Player::Status& status = GetStatus(player);
+	const PlayerStatus& status = GetStatus(player);
 	RECT rect;
 	rect.left = 0; rect.top = 0;
 	// HPの割合に応じて描画範囲を決める
@@ -283,7 +283,7 @@ void UserRenderCommand::RenderSpBar(const Player& player, DirectX::SpriteBatch* 
 
 	// 画像の矩形を作成する
 	DirectX::SimpleMath::Vector2 size = texture->GetSize();
-	const Player::Status& status = GetStatus(player);
+	const PlayerStatus& status = GetStatus(player);
 	RECT rect;
 	rect.left = 0; rect.top = 0;
 	// SPの割合に応じて描画範囲を決める

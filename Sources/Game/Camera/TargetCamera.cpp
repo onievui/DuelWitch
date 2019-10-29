@@ -2,7 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
-#include <Game\Common\IObject.h>
+#include <Game\Object\IObject.h>
 
 
 /// <summary>

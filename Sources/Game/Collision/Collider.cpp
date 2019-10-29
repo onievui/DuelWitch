@@ -1,5 +1,5 @@
 #include "Collider.h"
-#include <Game\Common\Transform.h>
+#include <Game\Object\Transform.h>
 
 
 /// <summary>

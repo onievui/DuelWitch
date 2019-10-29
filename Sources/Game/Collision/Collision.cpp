@@ -3,7 +3,7 @@
 #include "Collider.h"
 #include "SphereCollider.h"
 #include "CapsuleCollider.h"
-#include <Game\Common\Transform.h>
+#include <Game\Object\Transform.h>
 
 
 /// <summary>

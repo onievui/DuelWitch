@@ -4,7 +4,7 @@
 
 
 #include "IMagic.h"
-#include <Game\Common\Transform.h>
+#include <Game\Object\Transform.h>
 
 
 class Collider;

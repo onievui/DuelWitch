@@ -106,7 +106,7 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	const float lerp_speed = parameter.lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
-	Player::Status& ref_status = GetStatus(player);
+	PlayerStatus& ref_status = GetStatus(player);
 
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
 
@@ -198,7 +198,7 @@ void MoveCommand::ExcuteRoll(Player& player, const DX::StepTimer& timer) {
 	const float roll_angle = parameter.rollAngle;
 	const float roll_move_length = parameter.rollMoveLength;
 
-	Player::Status& ref_status = GetStatus(player);
+	PlayerStatus& ref_status = GetStatus(player);
 	Transform& ref_transform = GetTransform(player);
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
 
@@ -269,7 +269,7 @@ void MoveCommand::ExcuteRoll(Player& player, const DX::StepTimer& timer) {
 void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 	DirectX::Keyboard::KeyboardStateTracker* key_tracker = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get();
-	Player::Status& ref_status = GetStatus(player);
+	PlayerStatus& ref_status = GetStatus(player);
 
 	// タイマーを進める
 	m_rollInfo.leftGraceTime -= elapsed_time;
