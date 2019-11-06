@@ -62,6 +62,17 @@ public:
 		return a + (b - a)*t;
 	}
 
+	// ベクトルのなす角を取得する
+	static float BetweenAngle(const DirectX::SimpleMath::Vector3& vec1, const DirectX::SimpleMath::Vector3& vec2) {
+		float length = vec1.Length()*vec2.Length();
+		if (length > Math::Epsilon) {
+			return std::acosf(vec1.Dot(vec2) / length);
+		}
+		else {
+			return 0.0f;
+		}
+	}
+
 	// あるベクトルに垂直なベクトルを生成する
 	static DirectX::SimpleMath::Vector3 CreateNormalVector3(const DirectX::SimpleMath::Vector3& vec) {
 		if (Math::Equal0(vec.Length())) {

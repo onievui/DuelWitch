@@ -40,7 +40,7 @@ public:
 	// エレメントの当たり判定を取得する
 	const Collider* GetCollider() const override                  { return &m_sphereCollider; }
 	// エレメントの座標を取得する
-	const DirectX::SimpleMath::Vector3& GetPos() const            { return m_transform.GetPosition(); }
+	const DirectX::SimpleMath::Vector3& GetPos() const            { return m_transform.GetLocalPosition(); }
 	// エレメントのIDを取得する
 	ElementID GetID() const                                       { return m_id; }
 	// エレメントを使用しているかどうか取得する

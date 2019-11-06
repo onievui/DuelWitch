@@ -48,146 +48,75 @@ void AIMoveCommand::Initialize(Player& player) {
 /// <param name="player">プレイヤー</param>
 /// <param name="timer">タイマー</param>
 void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
-	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
 
 	const float move_speed    = parameter.moveSpeed;
 	const float move_speed_xy = parameter.moveSpeedXY;
 	const float rot_z_limit   = parameter.rotZLimit;
 	const float rot_x_limit   = parameter.rotXLimit;
-	const float rot_y_limit   = parameter.rotYLimit;
 	const float lerp_speed    = parameter.lerpSpeed;
 
 	Transform& ref_transform = GetTransform(player);
-	Player::MoveDirection& ref_direction = GetMoveDirection(player);
-	const DirectX::SimpleMath::Vector3& other_pos = GetTransform(*GetOtherPlayers(player)[0]).GetLocalPosition();
+	PlayerStatus& ref_status = GetStatus(player);
 
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
-	DirectX::SimpleMath::Vector3 move(0, 0, 0);
 
 	// AIの処理を行う
 	ExecuteAI(player);
 	
-	if (ref_direction == Player::MoveDirection::Forward && pos.z > 79.0f) {
-		ref_direction = Player::MoveDirection::Backward;
+	// 回転の変化量
+	DirectX::SimpleMath::Vector3 change_euler;
+	// 回転量
+	float rot_speed = (ref_status.isBoosting ? parameter.boostRotSpeed : parameter.rotSpeed);
+	
+	// 左右移動
+	if (m_moveInfo.xVec < 0.0f) {
+		change_euler.z = Math::Lerp(m_euler.z, -rot_z_limit, lerp_speed) - m_euler.z;
+		change_euler.y = rot_speed * elapsed_time;
 	}
-	else if (ref_direction == Player::MoveDirection::Backward && pos.z < -79.0f) {
-		ref_direction = Player::MoveDirection::Forward;
+	else if (m_moveInfo.xVec > 0.0f) {
+		change_euler.z = Math::Lerp(m_euler.z, rot_z_limit, lerp_speed) - m_euler.z;
+		change_euler.y = -rot_speed * elapsed_time;
 	}
-
-	// 移動
-	const float& nearDistance = parameter.nearDistance;
-	bool is_forward = ref_direction == Player::MoveDirection::Forward;
-	DirectX::SimpleMath::Vector3 distance = other_pos - pos;
-	// すれ違い後の場合
-	if (distance.z < 0 == is_forward) {
-		// 中心に近づく
-		if (fabsf(pos.x) > 0.3f) {
-			// 進みたい方向の判定
-			if (pos.x > 0 == is_forward) {
-				m_euler.z = Math::Lerp(m_euler.z, -rot_z_limit, lerp_speed);
-				if (is_forward) {
-					m_euler.y = Math::Lerp(m_euler.y, -rot_y_limit, lerp_speed);
-				}
-				else {
-					m_euler.y = Math::Lerp(m_euler.y, Math::PI - rot_y_limit, lerp_speed);
-				}
-			}
-			else {
-				m_euler.z = Math::Lerp(m_euler.z, rot_z_limit, lerp_speed);
-				if (is_forward) {
-					m_euler.y = Math::Lerp(m_euler.y, rot_y_limit, lerp_speed);
-				}
-				else {
-					m_euler.y = Math::Lerp(m_euler.y, Math::PI + rot_y_limit, lerp_speed);
-				}
-			}
-			move.x = (pos.x > 0 ? -1.0f : 1.0f);
-		}
-		else {
-			m_euler.z = Math::Lerp(m_euler.z, 0.0f, lerp_speed);
-			if (is_forward) {
-				m_euler.y = Math::Lerp(m_euler.y, 0.0f, lerp_speed);
-			}
-			else {
-				m_euler.y = Math::Lerp(m_euler.y, Math::PI, lerp_speed);
-			}
-		}
-
-		if (fabsf(pos.y) > 0.5f) {
-			if (pos.y > 0) {
-				m_euler.x = Math::Lerp(m_euler.x, rot_x_limit, lerp_speed);
-				move.y = -1.0f;
-			}
-			else {
-				m_euler.x = Math::Lerp(m_euler.x, -rot_x_limit, lerp_speed);
-				move.y = 1.0f;
-			}
-		}
-		else {
-			m_euler.x = Math::Lerp(m_euler.x, 0.0f, lerp_speed);
-		}
-	}
-	// すれ違い前の場合
+	//押していないときは戻す
 	else {
-		if (fabsf(distance.x) < nearDistance) {
-			if (distance.x < 0 == is_forward) {
-				m_euler.z = Math::Lerp(m_euler.z, -rot_z_limit, lerp_speed);
-				if (is_forward) {
-					m_euler.y = Math::Lerp(m_euler.y, rot_y_limit, lerp_speed);
-					move.x = 1.0f;
-				}
-				else {
-					m_euler.y = Math::Lerp(m_euler.y, Math::PI + rot_y_limit, lerp_speed);
-					move.x = -1.0f;
-				}
-			}
-			else {
-				m_euler.z = Math::Lerp(m_euler.z, rot_z_limit, lerp_speed);
-				if (is_forward) {
-					m_euler.y = Math::Lerp(m_euler.y, -rot_y_limit, lerp_speed);
-					move.x = -1.0f;
-				}
-				else {
-					m_euler.y = Math::Lerp(m_euler.y, Math::PI - rot_y_limit, lerp_speed);
-					move.x = 1.0f;
-				}
-			}
-		}
-		else {
-			m_euler.z = Math::Lerp(m_euler.z, 0.0f, lerp_speed);
-			if (is_forward) {
-				m_euler.y = Math::Lerp(m_euler.y, 0.0f, lerp_speed);
-			}
-			else {
-				m_euler.y = Math::Lerp(m_euler.y, Math::PI, lerp_speed);
-			}
-		}
-
-		if (fabsf(distance.y) < nearDistance) {
-			if (distance.y > 0) {
-				m_euler.x = Math::Lerp(m_euler.x, rot_x_limit, lerp_speed);
-				move.y = -1.0f;
-			}
-			else {
-				m_euler.x = Math::Lerp(m_euler.x, -rot_x_limit, lerp_speed);
-				move.y = 1.0f;
-			}
-		}
-		else {
-			m_euler.x = Math::Lerp(m_euler.x, 0.0f, lerp_speed);
-		}
+		change_euler.z = Math::Lerp(m_euler.z, 0.0f, lerp_speed) - m_euler.z;
 	}
 
-	move.Normalize();
-	move *= move_speed_xy;
-	if (is_forward) {
-		move.z = 1.0f;
+	// 上下移動
+	if (m_moveInfo.yVec > 0.0f) {
+		change_euler.x = -rot_speed * elapsed_time;
 	}
+	else if (m_moveInfo.yVec < 0.0f) {
+		change_euler.x = rot_speed * elapsed_time;
+	}
+
+	// 斜め移動の場合
+	if (!Math::Equal0(change_euler.x) && !Math::Equal0(change_euler.y)) {
+		change_euler /= std::sqrtf(2);
+	}
+
+	// 回転を計算する
+	m_euler += change_euler;
+	m_euler.x = Math::Clamp(m_euler.x, -rot_x_limit, rot_x_limit);
+	DirectX::SimpleMath::Quaternion rotation = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z);
+
+	// 移動方向を計算する
+	DirectX::SimpleMath::Vector3 move = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, rotation);
+
+	// ブーストを使用しようとしていて、残りSPが10％以上ならブースト移動
+	if (m_moveInfo.useBoost && ref_status.sp / ref_status.maxSp >= 0.1f) {
+		pos += move * move_speed*elapsed_time*ref_status.boostSpeedRate;
+		// SPを減らす
+		ref_status.sp -= ref_status.boostSpCost*elapsed_time;
+		ref_status.isBoosting = true;
+	}
+	// 通常移動
 	else {
-		move.z = -1.0f;
+		pos += move * move_speed*elapsed_time;
+		ref_status.isBoosting = false;
 	}
-	pos += move * move_speed*elapsedTime;
 
 	ref_transform.SetPosition(pos);
 	ref_transform.SetRotation(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z));
@@ -217,7 +146,11 @@ void AIMoveCommand::ExecuteAI(Player& player) {
 	// 所持しているエレメントの数
 	int has_element_num = GetHaveElements(player).size();
 	// 最も近いエレメントとの距離
-	float element_distance = GetNearestElementDistance(pos);
+	float element_distance = 10000000.0f;
+	const Element* nearest_element = GetNearestElement(pos);
+	if (nearest_element) {
+		element_distance = DirectX::SimpleMath::Vector3::Distance(pos, nearest_element->GetPos());
+	}
 
 	// ファジーによるAIの計算
 	AIMoveFuzzy fuzzy;
@@ -287,15 +220,16 @@ bool AIMoveCommand::IsLookingOther(const Transform& transform, const DirectX::Si
 }
 
 /// <summary>
-/// 最も近いエレメントとの距離を取得する
+/// 最も近いエレメントを取得する
 /// </summary>
 /// <param name="pos">自プレイヤーの座標</param>
 /// <returns>
-/// 最も近いエレメントとの距離
+/// 最も近いエレメントへのポインタ
 /// </returns>
-float AIMoveCommand::GetNearestElementDistance(const DirectX::SimpleMath::Vector3& pos) {
+const Element* AIMoveCommand::GetNearestElement(const DirectX::SimpleMath::Vector3& pos) {
 	float min_distance_square = 10000000.0f;
 	const FieldData* field_data = ServiceLocater<FieldData>::Get();
+	const Element* nearest_element = nullptr;
 	for (std::vector<Element*>::const_iterator itr = LamdaUtils::FindIf(*field_data->pElements, LamdaUtils::NotNull());
 		itr != field_data->pElements->cend();
 		LamdaUtils::FindIfNext(itr,field_data->pElements->cend(), LamdaUtils::NotNull())) {
@@ -303,10 +237,68 @@ float AIMoveCommand::GetNearestElementDistance(const DirectX::SimpleMath::Vector
 		// 他のエレメントより近いなら、距離を更新してポインタを記憶する
 		if (distance_square < min_distance_square) {
 			min_distance_square = distance_square;
+			nearest_element = (*itr);
 		}
 	}
 
-	return std::sqrtf(min_distance_square);
+	return nearest_element;
+}
+
+/// <summary>
+/// ベクトルの左右判定をする
+/// </summary>
+/// <param name="dir">基準となるベクトル</param>
+/// <param name="otherDir">判定するベクトル</param>
+/// <returns>
+/// - : 左方向
+/// 0 : 正面方向
+/// + : 右方向
+/// </returns>
+float AIMoveCommand::CheckVecX(DirectX::SimpleMath::Vector3 dir, DirectX::SimpleMath::Vector3 otherDir) {
+	// XZ方向のベクトルを取得する
+	dir.y = 0.0f;
+	otherDir.y = 0.0f;
+
+	// 角度が小さい場合は無視する
+	constexpr float min_angle = Math::PI / 90;
+	if (Math::BetweenAngle(dir, otherDir) < min_angle) {
+		return 0.0f;
+	}
+
+	// 基準のベクトルに合わせて回転する
+	DirectX::SimpleMath::Quaternion rot = Math::CreateQuaternionFromVector3(dir, -DirectX::SimpleMath::Vector3::UnitZ);
+	DirectX::SimpleMath::Vector3 rotated_dir = DirectX::SimpleMath::Vector3::Transform(otherDir, rot);
+	
+	// 回転後のベクトルの向きで判定する
+	return rotated_dir.x;
+}
+
+/// <summary>
+/// ベクトルの上下判定をする
+/// </summary>
+/// <param name="dir">基準となるベクトル</param>
+/// <param name="otherDir">判定するベクトル</param>
+/// <returns>
+/// - : 下方向
+/// 0 : 正面方向
+/// + : 上方向
+/// </returns>
+float AIMoveCommand::CheckVecY(DirectX::SimpleMath::Vector3 dir, DirectX::SimpleMath::Vector3 otherDir) {
+	// XY方向のベクトルを取得する
+	dir.Normalize();
+	dir.x = std::sqrtf(1.0f - dir.y*dir.y);
+	dir.z = 0.0f;
+	otherDir.Normalize();
+	otherDir.x = std::sqrtf(1.0f - otherDir.y*otherDir.y);
+	otherDir.z = 0.0f;
+
+	// 角度が小さい場合は無視する
+	constexpr float min_angle = Math::PI / 90;
+	if (Math::BetweenAngle(dir, otherDir) < min_angle) {
+		return 0.0f;
+	}
+
+	return otherDir.y - dir.y;
 }
 
 /// <summary>
@@ -314,7 +306,30 @@ float AIMoveCommand::GetNearestElementDistance(const DirectX::SimpleMath::Vector
 /// </summary>
 /// <param name="player">プレイヤー</param>
 void AIMoveCommand::ExecuteCollectElement(Player& player) {
-	player;
+	const PlayerStatus& status = GetStatus(player);
+	const Transform& transform = GetTransform(player);
+	const DirectX::SimpleMath::Vector3& pos = transform.GetPosition();
+	// 最も近いエレメント
+	const Element* nearest_element = GetNearestElement(pos);
+
+	// フィールドにエレメントが存在しない場合はエラー
+	if (!nearest_element) {
+		ErrorMessage(L"敵AIの処理で収集するエレメントが存在しません");
+		return;
+	}
+
+	// プレイヤーの方向ベクトル
+	DirectX::SimpleMath::Vector3 dir = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
+	// エレメントへのベクトル
+	DirectX::SimpleMath::Vector3 element_dir = nearest_element->GetPos() - pos;
+
+	// X方向の回転を調べる
+	m_moveInfo.xVec = CheckVecX(dir, element_dir);
+	// Y方向の回転を調べる
+	m_moveInfo.yVec = CheckVecY(dir, element_dir);
+	// SPに余裕があるならブーストを行う
+	m_moveInfo.useBoost = (status.sp >= 80.0f);
+
 }
 
 /// <summary>
@@ -322,7 +337,26 @@ void AIMoveCommand::ExecuteCollectElement(Player& player) {
 /// </summary>
 /// <param name="player">プレイヤー</param>
 void AIMoveCommand::ExecuteChase(Player& player) {
-	player;
+	const PlayerStatus& status = GetStatus(player);
+	const Transform& transform = GetTransform(player);
+	const DirectX::SimpleMath::Vector3& pos = transform.GetPosition();
+	// 最も近い敵プレイヤーを取得する
+	const Player* other_player = GetNearestPlayer(pos, GetOtherPlayers(player), nullptr);
+
+	// プレイヤーの方向ベクトル
+	DirectX::SimpleMath::Vector3 dir = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
+	// 敵プレイヤーの座標を取得する
+	DirectX::SimpleMath::Vector3 other_pos = GetTransform(*other_player).GetPosition();
+	// 敵プレイヤーへのベクトル
+	DirectX::SimpleMath::Vector3 other_dir = other_pos - pos;
+
+	// X方向の回転を調べる
+	m_moveInfo.xVec = CheckVecX(dir, other_dir);
+	// Y方向の回転を調べる
+	m_moveInfo.yVec = CheckVecY(dir, other_dir);
+	// 距離が離れており、SPに余裕があるならブーストを行う
+	m_moveInfo.useBoost = (status.sp >= 50.0f && DirectX::SimpleMath::Vector3::Distance(pos, other_pos) > 40.0f);
+
 }
 
 /// <summary>
@@ -330,6 +364,57 @@ void AIMoveCommand::ExecuteChase(Player& player) {
 /// </summary>
 /// <param name="player">プレイヤー</param>
 void AIMoveCommand::ExecuteEvade(Player& player) {
-	player;
+	const PlayerStatus& status = GetStatus(player);
+	const Transform& transform = GetTransform(player);
+	const DirectX::SimpleMath::Vector3& pos = transform.GetPosition();
+	const FieldData* field_data = ServiceLocater<FieldData>::Get();
+	// 最も近い敵プレイヤーを取得する
+	const Player* other_player = GetNearestPlayer(pos, GetOtherPlayers(player), nullptr);
+	// フィールドの中心座標を取得する
+	const DirectX::SimpleMath::Vector3& field_pos = field_data->fieldCenter;
+
+	// プレイヤーの方向ベクトル
+	DirectX::SimpleMath::Vector3 dir = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
+	// 敵プレイヤーの座標を取得する
+	DirectX::SimpleMath::Vector3 other_pos = GetTransform(*other_player).GetPosition();
+	// 敵プレイヤーへのベクトル
+	//DirectX::SimpleMath::Vector3 other_dir = other_pos - pos;
+	// 敵プレイヤーとの距離
+	float distance = DirectX::SimpleMath::Vector3::Distance(pos, other_pos);
+	// フィールドの中心から逃避先へのベクトル
+	DirectX::SimpleMath::Vector3 field_target_dir; 
+	//{
+		DirectX::SimpleMath::Vector3 field_dir = pos - field_pos;
+		//field_dir.y = 0.0f;
+		field_dir.Normalize();
+		DirectX::SimpleMath::Vector3 field_other_dir = other_pos - field_pos;
+		//field_other_dir.y = 0.0f;
+		field_other_dir.Normalize();
+		field_target_dir = -(field_dir + field_other_dir);
+		field_target_dir.Normalize();
+	//}
+	// 逃避先の座標
+	DirectX::SimpleMath::Vector3 target_pos = field_pos + field_target_dir * (field_data->fieldRadius - 5.0f);
+	// 逃避先へのベクトル
+	DirectX::SimpleMath::Vector3 target_dir = target_pos - pos;
+
+	// X方向の回転を調べる
+	m_moveInfo.xVec = CheckVecX(dir, target_dir);
+	// Y方向の回転を調べる
+	m_moveInfo.yVec = CheckVecY(dir, target_dir);
+
+	// 距離がかなり近い場合
+	if (distance < 10.0f) {
+		m_moveInfo.useBoost = (status.sp >= 20.0f);
+	}
+	// 距離が近い場合
+	else if (distance < 30.0f) {
+		m_moveInfo.useBoost = (status.sp >= 40.0f);
+	}
+	// 距離がある場合
+	else {
+		m_moveInfo.useBoost = false;
+	}
+
 }
 

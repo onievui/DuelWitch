@@ -25,6 +25,15 @@ public:
 public:
 	// マーカーを更新する
 	void Update(const DX::StepTimer& timer) override { timer; }
+
+public:
+	// オブザーバの機能を有効にするかを設定する
+	void SetEnableObserver(bool enable) { m_enableObserver = enable; }
+
+private:
+	// オブザーバの機能が有効かどうかのフラグ
+	bool m_enableObserver;
+
 };
 
 

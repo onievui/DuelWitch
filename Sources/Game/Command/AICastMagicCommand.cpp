@@ -30,8 +30,7 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	const float shotable_angle = parameter.shotableAngle;
 	DirectX::SimpleMath::Vector3 direction = target_pos - pos;
 	DirectX::SimpleMath::Vector3 forward = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, rot);
-	float angle = std::acosf(forward.Dot(direction) / (forward.Length()*direction.Length()));
-	if (angle > shotable_angle) {
+	if (Math::BetweenAngle(forward, direction) > shotable_angle) {
 		return;
 	}
 

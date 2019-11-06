@@ -171,8 +171,7 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	// 移動と回転を反映してワールド行列を求めておく
 	ref_transform.SetPosition(pos);
 	ref_transform.SetRotation(rotation);
-	DirectX::SimpleMath::Matrix world = ref_transform.GetMatrix();
-	GetWorld(player) = world;
+	GetWorld(player) = ref_transform.GetMatrix();
 
 	// カメラの追従先を更新する
 	m_cameraTarget.GetTransformRef().SetPosition(pos);

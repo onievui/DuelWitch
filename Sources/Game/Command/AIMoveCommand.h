@@ -7,7 +7,9 @@
 #include <Utils\LoadDataHolder.h>
 
 
+class Element;
 class PlayerTrailEffectEmitter;
+
 
 /// <summary>
 /// AI移動コマンドクラス
@@ -30,8 +32,12 @@ private:
 	const Player* GetNearestPlayer(const DirectX::SimpleMath::Vector3& pos, const std::vector<Player*>& otherPlayers, float* distance);
 	// 敵プレイヤーの方を向いているか調べる
 	bool IsLookingOther(const Transform& transform, const DirectX::SimpleMath::Vector3& otherPos);
-	// 最も近いエレメントとの距離を取得する
-	float GetNearestElementDistance(const DirectX::SimpleMath::Vector3& pos);
+	// 最も近いエレメントを取得する
+	const Element* GetNearestElement(const DirectX::SimpleMath::Vector3& pos);
+	// ベクトルの左右判定をする
+	float CheckVecX(DirectX::SimpleMath::Vector3 dir, DirectX::SimpleMath::Vector3 otherDir);
+	// ベクトルの上下判定をする
+	float CheckVecY(DirectX::SimpleMath::Vector3 dir, DirectX::SimpleMath::Vector3 otherDir);
 	// エレメント収集の処理を行う
 	void ExecuteCollectElement(Player& player);
 	// 敵プレイヤーの追跡の処理を行う

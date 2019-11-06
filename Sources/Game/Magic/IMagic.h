@@ -18,7 +18,7 @@ enum class PlayerID;
 class IMagic : public IObject {
 public:
 	virtual ~IMagic() = default;
-
+	
 public:
 	// ñÇñ@Çê∂ê¨Ç∑ÇÈ
 	virtual void Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) = 0;

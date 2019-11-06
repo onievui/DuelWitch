@@ -76,9 +76,14 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pMagics = m_magicManager->GetMagics();
 	
 	// プレイヤーを生成する
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player1, DirectX::SimpleMath::Vector3(0, 0, -75), Player::MoveDirection::Forward));
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, DirectX::SimpleMath::Vector3(10, 0, 75), Player::MoveDirection::Backward));
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player3, DirectX::SimpleMath::Vector3(-10, 0, 75), Player::MoveDirection::Backward));
+	DirectX::SimpleMath::Vector3 player_pos(0, 0, -75);
+	DirectX::SimpleMath::Quaternion player_pos_rot =
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, Math::PI2 / 3);
+	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player1, player_pos, Player::MoveDirection::Forward));
+	player_pos = DirectX::SimpleMath::Vector3::Transform(player_pos, player_pos_rot);
+	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, player_pos, Player::MoveDirection::Backward));
+	player_pos = DirectX::SimpleMath::Vector3::Transform(player_pos, player_pos_rot);
+	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player3, player_pos, Player::MoveDirection::Backward));
 
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());

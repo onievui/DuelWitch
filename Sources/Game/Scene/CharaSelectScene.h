@@ -21,10 +21,12 @@ class CharaSelectScene : public IScene {
 private:
 	// キャラセレクトシーンステート
 	enum class CharaSelectState {
-		SelectPlayer1,
-		SelectPlayer2,
+		SelectPlayer,
 		Ready,
 	};
+
+	// 選択するプレイヤーの数
+	static constexpr int PLAYER_COUNT = 3;
 
 public:
 	// コンストラクタ
@@ -44,10 +46,14 @@ public:
 private:
 	// UIを初期化する
 	void InitializeUI();
-	// プレイヤー1のキャラクターを選択する
-	void UpdateSelectPlayer1(const DX::StepTimer& timer);
-	// プレイヤー2のキャラクターを選択する
-	void UpdateSelectPlayer2(const DX::StepTimer& timer);
+	// キャラクターを選択する
+	void UpdateSelectPlayer(const DX::StepTimer& timer);
+	//// プレイヤー1のキャラクターを選択する
+	//void UpdateSelectPlayer1(const DX::StepTimer& timer);
+	//// プレイヤー2のキャラクターを選択する
+	//void UpdateSelectPlayer2(const DX::StepTimer& timer);
+	//// プレイヤー3のキャラクターを選択する
+	//void UpdateSelectPlayer3(const DX::StepTimer& timer);
 	// 決定待ち状態
 	void UpdateReady(const DX::StepTimer& timer);
 	// キャラを選択する
@@ -65,6 +71,8 @@ private:
 	float                                            m_time;
 	// ステート
 	CharaSelectState                                 m_state;
+	// 選択中のプレイヤーID
+	int                                              m_currentPlayer;
 	// UIオブザーバ
 	std::unique_ptr<UIObserver>                      m_uiObserver;
 	// キャラアイコンUI

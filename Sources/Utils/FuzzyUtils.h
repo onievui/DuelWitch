@@ -22,26 +22,14 @@ public:
 	}
 	// 三角形メンバーシップ関数
 	static constexpr float Triangle(float value, float x0, float x1, float x2) {
-		if (value <= x0 || value >= x2) {
-			return 0;
-		}
-		if (value < x1) {
-			return (value - x0) / (x1 - x0);
-		}
-		return (x2 - value) / (x2 - x1);
+		return (value <= x0 || value >= x2) ? 0.0f :
+			(value < x1) ? (value - x0) / (x1 - x0) : (x2 - value) / (x2 - x1);
 	}
 	// 台形メンバーシップ関数
 	static constexpr float Trapezoid(float value, float x0, float x1, float x2, float x3) {
-		if (value <= x0 || value >= x3) {
-			return 0;
-		}
-		if (value >= x1 && value <= x2) {
-			return 1;
-		}
-		if (value < x1) {
-			return (value - x0) / (x1 - x0);
-		}
-		return (x3 - value) / (x3 - x2);
+		return (value <= x0 || value >= x3) ? 0.0f :
+			(value >= x1 && value <= x2) ? 1.0f :
+			(value < x1) ? (value - x0) / (x1 - x0) : (x3 - value) / (x3 - x2);
 	}
 
 	// 2乗ヘッジ関数
@@ -49,7 +37,7 @@ public:
 		return value * value;
 	}
 	// 0.5乗ヘッジ関数
-	static constexpr float NotVery(float value) {
+	static float NotVery(float value) {
 		return std::powf(value, 0.5f);
 	}
 

@@ -10,7 +10,8 @@
 /// <param name="pTexture">テクスチャへのポインタ</param>
 /// <param name="textureIndex">テクスチャのインデックス</param>
 CharaSelectMarker::CharaSelectMarker(int layer, const DirectX::SimpleMath::Vector2& pos, const TextureResource* pTexture, int textureIndex)
-	: UISubject(UIEventID::Null, layer, pos, DirectX::SimpleMath::Vector2(100, 100), pTexture, textureIndex) {
+	: UISubject(UIEventID::Null, layer, pos, DirectX::SimpleMath::Vector2(100, 100), pTexture, textureIndex)
+	, m_enableObserver(true) {
 
 }
 
@@ -19,6 +20,11 @@ CharaSelectMarker::CharaSelectMarker(int layer, const DirectX::SimpleMath::Vecto
 /// </summary>
 /// <param name="subject">サブジェクト</param>
 void CharaSelectMarker::Update(ISubject* subject) {
+	// オブザーバの機能が無効なら処理しない
+	if (!m_enableObserver) {
+		return;
+	}
+
 	// UIサブジェクトかどうか確認
 	UISubject* ui_subject = dynamic_cast<UISubject*>(subject);
 	if (!ui_subject) {
