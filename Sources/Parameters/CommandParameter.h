@@ -33,12 +33,24 @@ public:
 		float rollAngle;
 		float rollMoveLength;
 
-		float cameraRotXLimit;
-		float cameraRotYLimit;
-		float zoomFov;
-		float zoomTime;
+		struct user_param {
+			float cameraRotXLimit;
+			float cameraRotYLimit;
+			float zoomFov;
+			float zoomTime;
+		};
+		user_param userParam;
 
-		float nearDistance;
+		struct ai_param {
+			float collectElementBoostSp;
+			float chaseBoostSp;
+			float chaseBoostDistance;
+			float evadeNearBoostSp;
+			float evadeNearBoostDistance;
+			float evadeFarBoostSp;
+			float evadeFarBoostDistance;
+		};
+		ai_param aiParam;
 	};
 	move_param moveParam;
 

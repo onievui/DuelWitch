@@ -1,26 +1,31 @@
 #include "AIMoveFuzzy.h"
 #include <Utils\FuzzyUtils.h>
+#include <Utils\ServiceLocater.h>
+#include <Parameters\FuzzyParameter.h>
+#include <Game\Load\PlayParameterLoader.h>
 
 
 /// <summary>
 /// 入力から出力を計算する
 /// </summary>
 void AIMoveFuzzy::Execute() {
+	const FuzzyParameter::ai_move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetFuzzyParameter()->aiMoveParam;
+
 	// ファジー化
 	// 最も近い敵プレイヤーとのHPの差
-	float hpGap = Fuzzy::Grade(m_inputData.hpGap, -30.0f, 30.0f);
+	float hpGap = Fuzzy::Grade(m_inputData.hpGap, parameter.hpGapMin, parameter.hpGapMax);
 	//// SP
 	//float sp = Fuzzy::Grade(m_inputData.sp, 0.0f, 100.0f);
 	// 最も近い敵プレイヤーとの距離
-	float distance = Fuzzy::Grade(m_inputData.distance, 3.0f, 60.0f);
+	float distance = Fuzzy::Grade(m_inputData.distance, parameter.distanceMin, parameter.distanceMax);
 	// 最も近い敵プレイヤーの方を向いているかどうか
 	float lookingOther = Fuzzy::Bool(m_inputData.lookingOther, true);
 	// 所持しているエレメントの数
-	float hasElementNum = Fuzzy::Grade(static_cast<float>(m_inputData.hasElementNum), 0.0f, 5.0f);
+	float hasElementNum = Fuzzy::Grade(static_cast<float>(m_inputData.hasElementNum), parameter.hasElementNumMin, parameter.hasElementNumMax);
 	// 最も近いエレメントとの距離
-	float elementDistance = Fuzzy::Grade(m_inputData.elementDistance, 3.0f, 60.0f);
+	float elementDistance = Fuzzy::Grade(m_inputData.elementDistance, parameter.elementDistanceMin, parameter.elementDistanceMax);
 	// エレメントがフィールドに存在するかどうか
-	float existElements = Fuzzy::Not(Fuzzy::Bool(m_inputData.elementDistance, 300.0f));
+	float existElements = Fuzzy::Not(Fuzzy::Bool(m_inputData.elementDistance, 1000.0f));
 
 	// 非ファジー化
 	float collect_element_state = Fuzzy::And(Fuzzy::Not(hasElementNum), Fuzzy::Or(distance, Fuzzy::Not(elementDistance)));

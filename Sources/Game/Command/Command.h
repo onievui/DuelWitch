@@ -31,8 +31,6 @@ protected:
 	PlayerStatus&                GetStatus(Player& player)                   { return player.m_status; }
 	// プレイヤーのステータスを取得する
 	const PlayerStatus&          GetStatus(const Player& player) const       { return player.m_status; }
-	// プレイヤーの進行方向を取得する
-	Player::MoveDirection&       GetMoveDirection(Player& player)            { return player.m_direction; }
 	// プレイヤーの所持エレメントを取得する
 	std::list<ElementID>&        GetHaveElements(Player& player)             { return player.m_haveElements; }
 	// プレイヤーの所持エレメントを取得する

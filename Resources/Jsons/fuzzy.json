@@ -1,0 +1,12 @@
+{
+  "AIMove": {
+    "HpGapMin": -30.0,
+    "HpGapMax": 30.0,
+    "DistanceMin": 3.0,
+    "DistanceMax": 60.0,
+    "HasElementNumMin": 0,
+    "HasElementNumMax": 5,
+    "ElementDistanceMin": 3.0,
+    "ElementDistanceMax": 60.0
+  }
+}

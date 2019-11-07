@@ -6,18 +6,19 @@
 #include <Utils\MouseWrapper.h>
 #include <Parameters\CharaStatusParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
-#include <Game\Command/Command.h>
-#include <Game\Command/MoveCommand.h>
-#include <Game\Command/AIMoveCommand.h>
-#include <Game\Command/CastMagicCommand.h>
-#include <Game\Command/AICastMagicCommand.h>
-#include <Game\Command/UserRenderCommand.h>
-#include <Game\Command/AIRenderCommand.h>
+#include <Game\Command\Command.h>
+#include <Game\Command\MoveCommand.h>
+#include <Game\Command\AIMoveCommand.h>
+#include <Game\Command\CastMagicCommand.h>
+#include <Game\Command\AICastMagicCommand.h>
+#include <Game\Command\UserRenderCommand.h>
+#include <Game\Command\AIRenderCommand.h>
 #include <Game\Element\ElementFactory.h>
 #include <Game\Magic\MagicID.h>
 #include <Game\Magic\IMagic.h>
 #include <Game\Magic\MagicManager.h>
-#include <Game\Camera/Camera.h>
+#include <Game\Camera\Camera.h>
+#include <Game\Field\FieldData.h>
 #include "PlayerID.h"
 
 
@@ -27,12 +28,11 @@
 /// <param name="id">プレイヤーID</param>
 /// <param name="pos">初期座標</param>
 /// <param name="direction">進行方向</param>
-Player::Player(PlayerID id, const DirectX::SimpleMath::Vector3& pos, MoveDirection direction)
+Player::Player(PlayerID id, const DirectX::SimpleMath::Vector3& pos)
 	: m_id(id)
 	, m_status()
-	, m_direction(direction)
 	, m_haveElements()
-	, m_transform(pos, DirectX::SimpleMath::Vector3(0, (m_direction == MoveDirection::Forward ? 0 : Math::PI), 0))
+	, m_transform(pos)
 	, m_sphereCollider(&m_transform, 0.75f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
 	, m_pMagicManager()
 	, m_pCamera() {
@@ -87,6 +87,13 @@ void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vecto
 			m_pOtherPlayers.push_back((*itr).get());
 		}
 	}
+
+	// ステージの中心へ向ける
+	DirectX::SimpleMath::Vector3 field_pos = ServiceLocater<FieldData>::Get()->fieldCenter;
+	DirectX::SimpleMath::Vector3 field_dir = field_pos - m_transform.GetPosition();
+	DirectX::SimpleMath::Quaternion rot = Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::UnitZ, field_dir);
+	rot.Inverse(rot);
+	m_transform.SetRotation(rot);
 
 	// ステータスを初期化する
 	InitializeStatus();

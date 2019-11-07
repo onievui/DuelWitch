@@ -16,6 +16,10 @@ public:
 	void Execute(Player& player, const DX::StepTimer& timer) override;
 
 private:
+	// Å‚à‹ß‚¢“GƒvƒŒƒCƒ„[‚ğæ“¾‚·‚é
+	const Player* GetNearestPlayer(const DirectX::SimpleMath::Vector3& pos, const std::vector<Player*>& otherPlayers, float* distance);
+
+private:
 	// Ÿ‚ÌUŒ‚‚Ü‚Å‚Ì‘Ò‚¿ŠÔ
 	float m_waitTime;
 

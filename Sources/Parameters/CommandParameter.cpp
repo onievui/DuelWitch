@@ -31,12 +31,24 @@ bool CommandParameter::Load() {
 		moveParam.rollAngle       = Math::Deg2Rad(move_command["RollAngle_Deg"].GetNumF());
 		moveParam.rollMoveLength  = move_command["RollMoveLength"].GetNumF();
 
-		moveParam.cameraRotXLimit = Math::Deg2Rad(move_command["CameraRotXLimit_Deg"].GetNumF());
-		moveParam.cameraRotYLimit = Math::Deg2Rad(move_command["CameraRotYLimit_Deg"].GetNumF());
-		moveParam.zoomFov         = Math::Deg2Rad(move_command["ZoomFov_Deg"].GetNumF());
-		moveParam.zoomTime        = move_command["ZoomTime"].GetNumF();
+		{
+			JsonWrapper::value user(move_command["User"]);
+			moveParam.userParam.cameraRotXLimit = Math::Deg2Rad(user["CameraRotXLimit_Deg"].GetNumF());
+			moveParam.userParam.cameraRotYLimit = Math::Deg2Rad(user["CameraRotYLimit_Deg"].GetNumF());
+			moveParam.userParam.zoomFov         = Math::Deg2Rad(user["ZoomFov_Deg"].GetNumF());
+			moveParam.userParam.zoomTime        = user["ZoomTime"].GetNumF();
+		}
 
-		moveParam.nearDistance    = move_command["NearDistance"].GetNumF();
+		{
+			JsonWrapper::value ai(move_command["AI"]);
+			moveParam.aiParam.collectElementBoostSp  = ai["CollectElementBoostSp"].GetNumF();
+			moveParam.aiParam.chaseBoostSp           = ai["ChaseBoostSp"].GetNumF();
+			moveParam.aiParam.chaseBoostDistance     = ai["ChaseBoostDistance"].GetNumF();
+			moveParam.aiParam.evadeNearBoostSp       = ai["EvadeNearBoostSp"].GetNumF();
+			moveParam.aiParam.evadeNearBoostDistance = ai["EvadeNearBoostDistance"].GetNumF();
+			moveParam.aiParam.evadeFarBoostSp        = ai["EvadeFarBoostSp"].GetNumF();
+			moveParam.aiParam.evadeFarBoostDistance  = ai["EvadeFarBoostDistance"].GetNumF();
+		}
 	}
 	{
 		JsonWrapper::value ai_cast_command(root["AICastCommand"]);

@@ -12,6 +12,7 @@ class FieldParameter;
 class ElementParameter;
 class MagicParameter;
 class EffectParameter;
+class FuzzyParameter;
 
 
 /// <summary>
@@ -40,6 +41,7 @@ public:
 	const ElementParameter*     GetElementParameter();
 	const MagicParameter*       GetMagicParameter();
 	const EffectParameter*      GetEffectParameter();
+	const FuzzyParameter*       GetFuzzyParameter();
 
 private:
 	// ヘッダファイルでのインクルードを減らすためのクラス

@@ -29,6 +29,10 @@ AIMoveCommand::AIMoveCommand()
 /// </summary>
 /// <param name="player">プレイヤー</param>
 void AIMoveCommand::Initialize(Player& player) {
+	// 向きを初期化する
+	DirectX::SimpleMath::Matrix rot_matrix = DirectX::SimpleMath::Matrix::CreateFromQuaternion(GetTransform(player).GetRotation());
+	m_euler.y = std::atan2f(-rot_matrix._31, rot_matrix._33);
+
 	// プレイヤーの軌跡エフェクトを生成する
 	const EffectParameter::player_trail_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerTrailParam;
 	m_effectTransform.SetParent(&GetTransform(player));
@@ -306,6 +310,7 @@ float AIMoveCommand::CheckVecY(DirectX::SimpleMath::Vector3 dir, DirectX::Simple
 /// </summary>
 /// <param name="player">プレイヤー</param>
 void AIMoveCommand::ExecuteCollectElement(Player& player) {
+	const CommandParameter::move_param::ai_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam.aiParam;
 	const PlayerStatus& status = GetStatus(player);
 	const Transform& transform = GetTransform(player);
 	const DirectX::SimpleMath::Vector3& pos = transform.GetPosition();
@@ -328,7 +333,7 @@ void AIMoveCommand::ExecuteCollectElement(Player& player) {
 	// Y方向の回転を調べる
 	m_moveInfo.yVec = CheckVecY(dir, element_dir);
 	// SPに余裕があるならブーストを行う
-	m_moveInfo.useBoost = (status.sp >= 80.0f);
+	m_moveInfo.useBoost = (status.sp >= parameter.collectElementBoostSp);
 
 }
 
@@ -337,6 +342,7 @@ void AIMoveCommand::ExecuteCollectElement(Player& player) {
 /// </summary>
 /// <param name="player">プレイヤー</param>
 void AIMoveCommand::ExecuteChase(Player& player) {
+	const CommandParameter::move_param::ai_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam.aiParam;
 	const PlayerStatus& status = GetStatus(player);
 	const Transform& transform = GetTransform(player);
 	const DirectX::SimpleMath::Vector3& pos = transform.GetPosition();
@@ -355,7 +361,8 @@ void AIMoveCommand::ExecuteChase(Player& player) {
 	// Y方向の回転を調べる
 	m_moveInfo.yVec = CheckVecY(dir, other_dir);
 	// 距離が離れており、SPに余裕があるならブーストを行う
-	m_moveInfo.useBoost = (status.sp >= 50.0f && DirectX::SimpleMath::Vector3::Distance(pos, other_pos) > 40.0f);
+	m_moveInfo.useBoost = (status.sp >= parameter.chaseBoostSp &&
+		DirectX::SimpleMath::Vector3::Distance(pos, other_pos) > parameter.chaseBoostDistance);
 
 }
 
@@ -364,6 +371,7 @@ void AIMoveCommand::ExecuteChase(Player& player) {
 /// </summary>
 /// <param name="player">プレイヤー</param>
 void AIMoveCommand::ExecuteEvade(Player& player) {
+	const CommandParameter::move_param::ai_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam.aiParam;
 	const PlayerStatus& status = GetStatus(player);
 	const Transform& transform = GetTransform(player);
 	const DirectX::SimpleMath::Vector3& pos = transform.GetPosition();
@@ -377,22 +385,18 @@ void AIMoveCommand::ExecuteEvade(Player& player) {
 	DirectX::SimpleMath::Vector3 dir = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
 	// 敵プレイヤーの座標を取得する
 	DirectX::SimpleMath::Vector3 other_pos = GetTransform(*other_player).GetPosition();
-	// 敵プレイヤーへのベクトル
-	//DirectX::SimpleMath::Vector3 other_dir = other_pos - pos;
 	// 敵プレイヤーとの距離
 	float distance = DirectX::SimpleMath::Vector3::Distance(pos, other_pos);
 	// フィールドの中心から逃避先へのベクトル
 	DirectX::SimpleMath::Vector3 field_target_dir; 
-	//{
+	{
 		DirectX::SimpleMath::Vector3 field_dir = pos - field_pos;
-		//field_dir.y = 0.0f;
 		field_dir.Normalize();
 		DirectX::SimpleMath::Vector3 field_other_dir = other_pos - field_pos;
-		//field_other_dir.y = 0.0f;
 		field_other_dir.Normalize();
 		field_target_dir = -(field_dir + field_other_dir);
 		field_target_dir.Normalize();
-	//}
+	}
 	// 逃避先の座標
 	DirectX::SimpleMath::Vector3 target_pos = field_pos + field_target_dir * (field_data->fieldRadius - 5.0f);
 	// 逃避先へのベクトル
@@ -404,12 +408,12 @@ void AIMoveCommand::ExecuteEvade(Player& player) {
 	m_moveInfo.yVec = CheckVecY(dir, target_dir);
 
 	// 距離がかなり近い場合
-	if (distance < 10.0f) {
-		m_moveInfo.useBoost = (status.sp >= 20.0f);
+	if (distance < parameter.evadeNearBoostDistance) {
+		m_moveInfo.useBoost = (status.sp >= parameter.evadeNearBoostSp);
 	}
 	// 距離が近い場合
-	else if (distance < 30.0f) {
-		m_moveInfo.useBoost = (status.sp >= 40.0f);
+	else if (distance < parameter.evadeFarBoostDistance) {
+		m_moveInfo.useBoost = (status.sp >= parameter.evadeFarBoostSp);
 	}
 	// 距離がある場合
 	else {

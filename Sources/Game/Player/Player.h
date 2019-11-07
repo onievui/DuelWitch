@@ -26,15 +26,8 @@ class Player : public IObject {
 	friend class Command;
 
 public:
-	// 進行方向
-	enum class MoveDirection {
-		Forward,
-		Backward
-	};
-
-public:
 	// コンストラクタ
-	Player(PlayerID id, const DirectX::SimpleMath::Vector3& pos, MoveDirection direction);
+	Player(PlayerID id, const DirectX::SimpleMath::Vector3& pos);
 	// デストラクタ
 	~Player();
 
@@ -73,65 +66,11 @@ private:
 	// ステータスを更新する
 	void UpdateStatus(const DX::StepTimer& timer);
 
-public:
-	///// <summary>
-	///// プレイヤーステータス
-	///// </summary>
-	//struct Status {
-	//	// 外部データ
-	//	// 最大HP
-	//	float                             maxHp;
-	//	// HP
-	//	float                             hp;
-	//	// 前フレームのHP
-	//	float                             preHp;
-	//	// 最大SP
-	//	float                             maxSp;
-	//	// SP
-	//	float                             sp;
-	//	// 前フレームのSP
-	//	float                             preSp;
-	//	// SP回復速度
-	//	float                             spRecoverySpeed;
-	//	// 通常魔法の消費SP
-	//	float                             normalMagicSpCost;
-	//	// ブースト速度倍率
-	//	float                             boostSpeedRate;
-	//	// ブースト消費SP
-	//	float                             boostSpCost;
-	//	// ロール回避消費SP
-	//	float                             rollSpCost;
-	//	// 1段階目のチャージタイム
-	//	float                             firstChargeTime;
-	//	// 2段階目のチャージタイム
-	//	float                             secoundChargeTime;
-	//	// 炎魔法のダメージ倍率
-	//	float                             fireMagicPowerRate;
-	//	// 氷魔法のダメージ倍率
-	//	float                             freezeMagicPowerRate;
-	//	// 雷魔法のダメージ倍率
-	//	float                             thunderMagicPowerRate;
-
-	//	// 内部データ
-	//	// ダメージ後無敵時間タイマー
-	//	float                             damageTimer;
-	//	// SP消費直後タイマー
-	//	float                             spDecreaseTimer;
-	//	// ブースト中かどうか
-	//	bool                              isBoosting;
-	//	// チャージ段階
-	//	int                               chargeLevel;
-	//	// 詠唱可能かどうか
-	//	bool                              canCast;
-	//};
-
 private:
 	// プレイヤーID
 	PlayerID                               m_id;
 	// ステータス
 	PlayerStatus                           m_status;
-	// 進行方向
-	MoveDirection                          m_direction;
 	// 所持エレメント
 	std::list<ElementID>                   m_haveElements;
 	// 姿勢

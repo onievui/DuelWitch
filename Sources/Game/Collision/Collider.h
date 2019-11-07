@@ -15,8 +15,8 @@ class Collider {
 public:
 	// 当たり判定の種類
 	enum class Type : unsigned int {
-		Box = 1 << 0,
-		Sphere = 1 << 1,
+		Box     = 1 << 0,
+		Sphere  = 1 << 1,
 		Capsule = 1 << 2,
 		Segment = 1 << 3,
 	};
@@ -46,7 +46,7 @@ public:
 
 protected:
 	// 当たり判定の種類
-	Type                         m_type;
+	const Type                   m_type;
 	// 姿勢へのポインタ
 	const Transform*             m_pTransform;
 	// 座標のオフセット

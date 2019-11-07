@@ -8,6 +8,7 @@
 #include <Parameters\ElementParameter.h>
 #include <Parameters\MagicParameter.h>
 #include <Parameters\EffectParameter.h>
+#include <Parameters\FuzzyParameter.h>
 
 
 /// <summary>
@@ -28,6 +29,7 @@ public:
 	LoadDataHolder<ElementParameter,     LoadDataID::PlayScene> elementParameter;
 	LoadDataHolder<MagicParameter,       LoadDataID::PlayScene> magicParameter;
 	LoadDataHolder<EffectParameter,      LoadDataID::PlayScene> effectParameter;
+	LoadDataHolder<FuzzyParameter,       LoadDataID::PlayScene> fuzzyParameter;
 
 };
 
@@ -42,6 +44,7 @@ PlayParameterLoader::Impl::Impl() {
 	manager->Register(&elementParameter);
 	manager->Register(&magicParameter); 
 	manager->Register(&effectParameter);
+	manager->Register(&fuzzyParameter);
 }
 
 /// <summary>
@@ -54,6 +57,7 @@ PlayParameterLoader::Impl::~Impl(){
 	manager->Unregister(&fieldParameter);
 	manager->Unregister(&elementParameter);
 	manager->Unregister(&effectParameter);
+	manager->Unregister(&fuzzyParameter);
 }
 
 
@@ -149,7 +153,17 @@ const MagicParameter* PlayParameterLoader::GetMagicParameter() {
 /// <returns>
 /// パラメータへのポインタ
 /// </returns>
-const EffectParameter * PlayParameterLoader::GetEffectParameter() {
+const EffectParameter* PlayParameterLoader::GetEffectParameter() {
 	return m_impl->effectParameter.Get();
+}
+
+/// <summary>
+/// パラメータを取得する
+/// </summary>
+/// <returns>
+/// パラメータへのポインタ
+/// </returns>
+const FuzzyParameter* PlayParameterLoader::GetFuzzyParameter() {
+	return m_impl->fuzzyParameter.Get();
 }
 

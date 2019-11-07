@@ -135,9 +135,6 @@
     <ClCompile Include="Sources\Parameters\CommandParameter.cpp">
       <Filter>Game\Parameters</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Parameters\AICommandParameter.cpp">
-      <Filter>Game\Parameters</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Parameters\ElementParameter.cpp">
       <Filter>Game\Parameters</Filter>
     </ClCompile>
@@ -345,6 +342,9 @@
     <ClCompile Include="Sources\Game\Object\EmptyObject.cpp">
       <Filter>Game\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Parameters\FuzzyParameter.cpp">
+      <Filter>Game\Parameters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -415,9 +415,6 @@
     </ClInclude>
     <ClInclude Include="Sources\Utils\ILoadData.h">
       <Filter>Utils\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Parameters\AICommandParameter.h">
-      <Filter>Game\Parameters</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Parameters\ElementParameter.h">
       <Filter>Game\Parameters</Filter>
@@ -707,6 +704,9 @@
     <ClInclude Include="Sources\Game\Object\Transform.h">
       <Filter>Game\Object</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Parameters\FuzzyParameter.h">
+      <Filter>Game\Parameters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
@@ -720,9 +720,6 @@
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Jsons\ai_command.json">
-      <Filter>Assets\Jsons</Filter>
-    </None>
     <None Include="Resources\Jsons\player_command.json">
       <Filter>Assets\Jsons</Filter>
     </None>
@@ -744,6 +741,10 @@
     <None Include="Resources\Jsons\field.json">
       <Filter>Assets\Jsons</Filter>
     </None>
+    <None Include="Resources\Jsons\fuzzy.json">
+      <Filter>Assets\Jsons</Filter>
+    </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\DefaultVS.hlsl">

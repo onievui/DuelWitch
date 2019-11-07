@@ -93,12 +93,13 @@ public:
 		const DirectX::SimpleMath::Vector3& vec1,
 		const DirectX::SimpleMath::Vector3& vec2) {
 		DirectX::SimpleMath::Vector3 axis = vec1.Cross(vec2);
+		// 平行かどうか調べる
 		if (Math::Equal0(axis.Length())) {
-			// 同じベクトルの場合
-			if (Math::Equal0(vec1.Dot(vec2))) {
+			// 同じ向きの場合
+			if (vec1.Dot(vec2) > 0.0f) {
 				return DirectX::SimpleMath::Quaternion::Identity;
 			}
-			// 逆ベクトルの場合
+			// 逆向きの場合
 			return DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(CreateNormalVector3(vec1), Math::PI);
 		}
 		axis.Normalize();

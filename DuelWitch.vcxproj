@@ -235,7 +235,7 @@
     <ClCompile Include="Sources\Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Sources\Game\UI\CharaIcon.cpp" />
     <ClCompile Include="Sources\Game\UI\CharaSelectMarker.cpp" />
-    <ClCompile Include="Sources\Parameters\AICommandParameter.cpp" />
+    <ClCompile Include="Sources\Parameters\FuzzyParameter.cpp" />
     <ClCompile Include="Sources\Parameters\CharaStatusParameter.cpp" />
     <ClCompile Include="Sources\Parameters\CommandParameter.cpp" />
     <ClCompile Include="Sources\Parameters\EffectParameter.cpp" />
@@ -340,7 +340,7 @@
     <ClInclude Include="Sources\Game\MyGame.h" />
     <ClInclude Include="Sources\Game\UI\CharaIcon.h" />
     <ClInclude Include="Sources\Game\UI\CharaSelectMarker.h" />
-    <ClInclude Include="Sources\Parameters\AICommandParameter.h" />
+    <ClInclude Include="Sources\Parameters\FuzzyParameter.h" />
     <ClInclude Include="Sources\Parameters\CharaStatusParameter.h" />
     <ClInclude Include="Sources\Parameters\CommandParameter.h" />
     <ClInclude Include="Sources\Parameters\EffectParameter.h" />
@@ -406,7 +406,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\Default.hlsli" />
-    <None Include="Resources\Jsons\ai_command.json" />
+    <None Include="ClassDiagram.cd" />
+    <None Include="Resources\Jsons\fuzzy.json" />
     <None Include="Resources\Jsons\chara_status.json" />
     <None Include="Resources\Jsons\effect.json" />
     <None Include="Resources\Jsons\element.json" />

@@ -13,12 +13,22 @@
     "RollAngle_Deg": 360.0,
     "RollMoveLength": 10.0,
 
-    "CameraRotXLimit_Deg": 30.0,
-    "CameraRotYLimit_Deg": 30.0,
-    "ZoomFov_Deg": 10.0,
-    "ZoomTime": 0.5,
+    "User": {
+      "CameraRotXLimit_Deg": 30.0,
+      "CameraRotYLimit_Deg": 30.0,
+      "ZoomFov_Deg": 10.0,
+      "ZoomTime": 0.5
+    },
 
-    "NearDistance": 1.8
+    "AI": {
+      "CollectElementBoostSp": 80.0,
+      "ChaseBoostSp": 50.0,
+      "ChaseBoostDistance": 40.0,
+      "EvadeNearBoostSp": 20.0,
+      "EvadeNearBoostDistance": 10.0,
+      "EvadeFarBoostSp": 40.0,
+      "EvadeFarBoostDistance": 30.0
+    }
   },
 
   "AICastCommand": {

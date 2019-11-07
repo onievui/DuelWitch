@@ -41,6 +41,10 @@ void MoveCommand::Initialize(Player& player) {
 	// 初期の画角を記憶する
 	m_defaultFov = ref_camera.GetFov();
 
+	// 向きを初期化する
+	DirectX::SimpleMath::Matrix rot_matrix = DirectX::SimpleMath::Matrix::CreateFromQuaternion(GetTransform(player).GetRotation());
+	m_euler.y = std::atan2f(-rot_matrix._31, rot_matrix._33);
+
 	// ロールに関する情報を初期化する
 	m_rollInfo.leftGraceTime = 0.0f;
 	m_rollInfo.rightGraceTime = 0.0f;
@@ -319,7 +323,7 @@ void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 /// <param name="isBoosting">ブーストしているかどうか</param>
 void MoveCommand::Zoom(Camera& camera, const DX::StepTimer& timer, bool isBoosting) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
-	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
+	const CommandParameter::move_param::user_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam.userParam;
 
 	const float zoom_fov = parameter.zoomFov;
 	const float zoom_time = parameter.zoomTime;
@@ -350,7 +354,7 @@ void MoveCommand::Zoom(Camera& camera, const DX::StepTimer& timer, bool isBoosti
 /// </summary>
 /// <param name="targetCamera">ターゲットカメラ</param>
 void MoveCommand::AdjustCamera(TargetCamera* targetCamera) {
-	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
+	const CommandParameter::move_param::user_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam.userParam;
 	MouseWrapper* mouse = ServiceLocater<MouseWrapper>::Get();
 	int width = ServiceLocater<DirectX11>::Get()->GetWidth();
 	int height = ServiceLocater<DirectX11>::Get()->GetHeight();
