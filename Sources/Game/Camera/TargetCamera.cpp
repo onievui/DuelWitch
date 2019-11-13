@@ -41,7 +41,7 @@ void TargetCamera::Update() {
 	m_targetMatrix = DirectX::SimpleMath::Matrix::Lerp(m_targetMatrix, m_pTargetObject->GetMatrix(), m_lerpSpeed);
 	m_eye = DirectX::SimpleMath::Vector3::Transform(m_relativeEye, m_matrix*m_targetMatrix);
 	m_target = DirectX::SimpleMath::Vector3::Transform(m_relativeTarget, m_matrix*m_targetMatrix);
-	//DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::TransformNormal(DirectX::SimpleMath::Vector3::UnitY, m_targetMatrix);
+	//DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitY, m_targetMatrix);
 	DirectX::SimpleMath::Vector3 up = DirectX::SimpleMath::Vector3::UnitY;
 	m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, up);
 }

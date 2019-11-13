@@ -36,11 +36,14 @@ int Window::Initialize(int width, int height) {
 	rect.right = static_cast<LONG>(width);
 	rect.bottom = static_cast<LONG>(height);
 
+	// ウインドウスタイルの設定をする
+	DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+
 	// クライアント領域のサイズによりウィンドウサイズを変更する
-	AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
+	AdjustWindowRect(&rect, dwStyle, FALSE);
 
 	// ウィンドウを生成する
-	m_hWnd = CreateWindowEx(0, CLASS_NAME, WINDOW_NAME, WS_OVERLAPPEDWINDOW,
+	m_hWnd = CreateWindowEx(0, CLASS_NAME, WINDOW_NAME, dwStyle,
 		CW_USEDEFAULT, CW_USEDEFAULT, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
 
 	if (!m_hWnd) {
