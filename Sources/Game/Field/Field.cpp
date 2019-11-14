@@ -120,18 +120,19 @@ void Field::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simpl
 /// <summary>
 /// プレイヤーとフィールドの当たり判定を行う
 /// </summary>
-/// <param name="player">プレイヤー</param>
-void Field::CollisionCheckPlayer(Player& player) {
-	const Collider* collider = player.GetCollider();
-	DirectX::SimpleMath::Vector3 center_pos = m_transform.GetLocalPosition();
+/// <param name="player">プレイヤーへのポインタ</param>
+void Field::CollisionCheckPlayer(Player* player) {
+	const Collider* collider = player->GetCollider();
+	DirectX::SimpleMath::Vector3 center_pos = m_transform.GetPosition();
+	// プレイヤーがフィールド外にいるか判定する
 	if (DirectX::SimpleMath::Vector3::Distance(collider->GetPos(), center_pos) > m_radius) {
 		DirectX::SimpleMath::Vector3 direction = collider->GetPos() - center_pos;
 		direction.Normalize();
 		DirectX::SimpleMath::Vector3 hit_pos = direction * m_radius + center_pos;
 		// 衝突点をプレイヤーに渡して処理をさせる
-		player.HitField(hit_pos);
+		player->HitField(hit_pos);
 		// 衝突エフェクトを発生させる
-		CreateEffect(&player, hit_pos);
+		CreateEffect(player, hit_pos);
 	}
 }
 

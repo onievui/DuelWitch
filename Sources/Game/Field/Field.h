@@ -33,7 +33,7 @@ public:
 	// フィールドの半径を取得する
 	float GetRadius() const { return m_radius; }
 	// プレイヤーとフィールドの当たり判定を行う
-	void CollisionCheckPlayer(Player& player);
+	void CollisionCheckPlayer(Player* player);
 
 private:
 	// フィールド衝突エフェクトを生成する

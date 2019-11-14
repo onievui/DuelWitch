@@ -183,6 +183,7 @@
     <ClCompile Include="Sources\Game\Collision\CapsuleCollider.cpp" />
     <ClCompile Include="Sources\Game\Collision\Collider.cpp" />
     <ClCompile Include="Sources\Game\Collision\Collision.cpp" />
+    <ClCompile Include="Sources\Game\Collision\CollisionManager.cpp" />
     <ClCompile Include="Sources\Game\Collision\SphereCollider.cpp" />
     <ClCompile Include="Sources\Game\Command\AICastMagicCommand.cpp" />
     <ClCompile Include="Sources\Game\Command\AIMoveCommand.cpp" />
@@ -270,6 +271,7 @@
     <ClInclude Include="Sources\Game\Collision\CapsuleCollider.h" />
     <ClInclude Include="Sources\Game\Collision\Collider.h" />
     <ClInclude Include="Sources\Game\Collision\Collision.h" />
+    <ClInclude Include="Sources\Game\Collision\CollisionManager.h" />
     <ClInclude Include="Sources\Game\Collision\SphereCollider.h" />
     <ClInclude Include="Sources\Game\Command\AICastMagicCommand.h" />
     <ClInclude Include="Sources\Game\Command\AIMoveCommand.h" />

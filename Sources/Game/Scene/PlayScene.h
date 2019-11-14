@@ -19,6 +19,7 @@ class MagicManager;
 class EffectManager;
 class TargetCamera;
 class Field;
+class CollisionManager;
 
 
 /// <summary>
@@ -39,6 +40,10 @@ public:
 	void Render(DirectX::SpriteBatch* spriteBatch) override;
 	// プレイシーンを終了する
 	void Finalize() override;
+
+private:
+	// 当たり判定を行う
+	void DetectCollision();
 
 private:
 	// リクエストシーンインタフェース
@@ -65,10 +70,11 @@ private:
 	std::unique_ptr<ElementManager>          m_elementManager;
 	// 魔法マネージャ
 	std::unique_ptr<MagicManager>            m_magicManager;
-	// 魔法
-	std::vector<IMagic*>*                    m_pMagics;
 	// エフェクトマネージャ
 	std::unique_ptr<EffectManager>           m_effectManager;
+
+	// 当たり判定処理クラス
+	std::unique_ptr<CollisionManager>        m_collisionManager;
 	
 };
 

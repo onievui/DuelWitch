@@ -345,6 +345,9 @@
     <ClCompile Include="Sources\Parameters\FuzzyParameter.cpp">
       <Filter>Game\Parameters</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Collision\CollisionManager.cpp">
+      <Filter>Game\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -706,6 +709,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Parameters\FuzzyParameter.h">
       <Filter>Game\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Collision\CollisionManager.h">
+      <Filter>Game\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

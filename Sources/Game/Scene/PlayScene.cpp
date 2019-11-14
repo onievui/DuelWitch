@@ -18,7 +18,7 @@
 #include <Game\Effect\EffectManager.h>
 #include <Game\Field\Field.h>
 #include <Game\Field\GridFloor.h>
-#include <Game\Collision\Collision.h>
+#include <Game\Collision\CollisionManager.h>
 
 
 /// <summary>
@@ -73,8 +73,14 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	// 魔法マネージャを生成する
 	m_magicManager = std::make_unique<MagicManager>();
 	m_magicManager->Initialize();
-	m_pMagics = m_magicManager->GetMagics();
 	
+	//デバッグカメラを生成する
+	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());
+	//ターゲットカメラを生成する
+	m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
+		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
+		PerspectiveFovInfo(Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 5000.0f));
+
 	// プレイヤーを生成する
 	DirectX::SimpleMath::Vector3 player_pos(0, 0, -75);
 	DirectX::SimpleMath::Quaternion player_pos_rot =
@@ -85,18 +91,14 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, player_pos));
 	player_pos = DirectX::SimpleMath::Vector3::Transform(player_pos, player_pos_rot);
 	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player3, player_pos));
-
-	//デバッグカメラを生成する
-	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());
-	//ターゲットカメラを生成する
-	m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
-		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
-		PerspectiveFovInfo(Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 5000.0f));
-
+	
 	// プレイヤーを初期化する
 	m_players[0]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players);
 	m_players[1]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players);
 	m_players[2]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players);
+
+	// 当たり判定処理クラスを生成する
+	m_collisionManager = std::make_unique<CollisionManager>();
 
 	//グリッド床を生成する
 	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 200.0f, 100);
@@ -131,77 +133,8 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	// エフェクトマネージャを更新する
 	m_effectManager->Update(timer, m_targetCamera.get());
 
-	// プレイヤーとフィールドの当たり判定
-	for (std::vector<std::unique_ptr<Player>>::iterator itr = m_players.begin(); itr != m_players.end(); ++itr) {
-		m_field->CollisionCheckPlayer(*(*itr));
-	}
-
-	// 未使用なら飛ばす処理を生成
-	auto live_pred = LamdaUtils::NotNull();
-	
-	// 当たり判定
-	// プレイヤーとエレメントの当たり判定
-	for (std::vector<Element*>::iterator element_itr = LamdaUtils::FindIf(*m_elementManager->GetElements(), live_pred),
-		element_end = m_elementManager->GetElements()->end();
-		element_itr != element_end;
-		LamdaUtils::FindIfNext(element_itr, element_end, live_pred)) {
-		const Collider* element_collider = (*element_itr)->GetCollider();
-		for (std::vector<std::unique_ptr<Player>>::iterator player_itr = m_players.begin(); player_itr != m_players.end(); ++player_itr) {
-			if (Collision::HitCheck(element_collider, (*player_itr)->GetCollider())) {
-				(*player_itr)->GetElement((*element_itr)->GetID());
-				(*element_itr)->SetUsed(false);
-			}
-		}
-	}
-	
-
-	// 魔法同士の当たり判定
-	for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*m_magicManager->GetMagics(), live_pred),
-		end = m_magicManager->GetMagics()->end();
-		itr != end;) {
-		const Collider* collider = (*itr)->GetCollider();
-		std::vector<IMagic*>::iterator next = std::find_if(itr + 1, end, live_pred);
-		for (std::vector<IMagic*>::iterator itr2 = next; itr2 != end; itr2 = std::find_if(itr2 + 1, end, live_pred)) {
-			// 同一プレイヤーの魔法なら判定しない
-			if ((*itr)->GetPlayerID() == (*itr2)->GetPlayerID()) {
-				continue;
-			}
-			if (Collision::HitCheck(collider, (*itr2)->GetCollider())) {
-				(*itr)->HitMagic(*itr2);
-				(*itr2)->HitMagic(*itr);
-			}
-		}
-		itr = next;
-	}
-
-	// プレイヤ―と魔法の当たり判定
-	for (std::vector<IMagic*>::iterator magic_itr = LamdaUtils::FindIf(*m_magicManager->GetMagics(), live_pred),
-		magic_end = m_magicManager->GetMagics()->end();
-		magic_itr != magic_end;
-		LamdaUtils::FindIfNext(magic_itr, magic_end, live_pred)) {
-		const Collider* magic_collider = (*magic_itr)->GetCollider();
-		for (std::vector<std::unique_ptr<Player>>::iterator player_itr = m_players.begin(); player_itr != m_players.end(); ++player_itr) {
-			// 自身の魔法とは判定しない
-			if ((*player_itr)->GetPlayerID() == (*magic_itr)->GetPlayerID()) {
-				continue;
-			}
-			if (Collision::HitCheck(magic_collider, (*player_itr)->GetCollider())) {
-				(*magic_itr)->HitPlayer((*player_itr)->GetCollider());
-				(*player_itr)->HitMagic(*magic_itr);
-			}
-		}
-	}
-
-	// プレイヤー同士の当たり判定
-	for (std::vector<std::unique_ptr<Player>>::iterator itr1 = m_players.begin(); itr1 != m_players.end() - 1; ++itr1) {
-		const Collider* collider1 = (*itr1)->GetCollider();
-		for (std::vector<std::unique_ptr<Player>>::iterator itr2 = itr1 + 1; itr2 != m_players.end(); ++itr2) {
-			if (Collision::HitCheck(collider1, (*itr2)->GetCollider())) {
-				(*itr1)->HitPlayer(**itr2);
-				(*itr2)->HitPlayer(**itr1);
-			}
-		}
-	}
+	// 当たり判定を行う
+	DetectCollision();
 
 	// フィールドの更新
 	m_field->Update(timer);
@@ -259,5 +192,42 @@ void PlayScene::Finalize() {
 	ServiceLocater<PlayParameterLoader>::Unregister();
 	// エフェクトマネージャをサービスロケータから解除する
 	ServiceLocater<EffectManager>::Unregister();
+}
+
+/// <summary>
+/// 当たり判定を行う
+/// </summary>
+void PlayScene::DetectCollision() {
+	// プレイヤーとフィールドの当たり判定を行う
+	m_collisionManager->CollisionPlayerField(&m_players, m_field.get());
+	
+	// プレイヤーとエレメントの当たり判定を行う
+	m_collisionManager->CollisionPlayerElement(&m_players, m_elementManager->GetElements());
+
+	// 魔法同士の当たり判定を行う
+	m_collisionManager->CollisionMagic(m_magicManager->GetMagics());
+
+	// プレイヤーと魔法の当たり判定を行う
+	m_collisionManager->CollisionPlayerMagic(&m_players, m_magicManager->GetMagics());
+
+	// プレイヤー同士の当たり判定を行う
+	m_collisionManager->CollisionPlayer(&m_players);
+
+	// 未使用なら飛ばす処理を生成
+	//auto live_pred = LamdaUtils::NotNull();
+
+	// 当たり判定
+	// プレイヤーとエレメントの当たり判定
+	
+
+
+	// 魔法同士の当たり判定
+	
+
+	// プレイヤ―と魔法の当たり判定
+	
+
+	// プレイヤー同士の当たり判定
+	
 }
 
