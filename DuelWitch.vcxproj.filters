@@ -713,6 +713,9 @@
     <ClInclude Include="Sources\Game\Collision\CollisionManager.h">
       <Filter>Game\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\SceneID.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">

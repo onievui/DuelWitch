@@ -56,7 +56,7 @@ void LogoScene::Update(const DX::StepTimer& timer) {
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space) ||
 		ServiceLocater<MouseWrapper>::Get()->GetTracker()->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED ||
 		m_time > 5.0f) {
-		m_pSceneRequest->RequestScene("Title");
+		m_pSceneRequest->RequestScene(SceneID::Title);
 	}
 }
 

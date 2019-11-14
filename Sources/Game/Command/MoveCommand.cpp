@@ -51,12 +51,15 @@ void MoveCommand::Initialize(Player& player) {
 	m_rollInfo.rollingTime = 0.0f;
 	m_rollInfo.isRollingLeft = true;
 
-	// プレイヤーの軌跡エフェクトを生成する
+
 	const EffectParameter::player_trail_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerTrailParam;
+	// エフェクト用の姿勢クラスの親オブジェクトにプレイヤーを登録する
 	m_effectTransform.SetParent(&GetTransform(player));
 	m_effectTransform.SetPosition(parameter.appearPosOffset);
+	// プレイヤーの軌跡エフェクトを生成する
 	IEffectEmitter* effect = ServiceLocater<EffectManager>::Get()->CreateEffect(
 		EffectID::PlayerTrail, m_effectTransform.GetPosition(), -DirectX::SimpleMath::Vector3::UnitZ);
+	// エフェクトの親オブジェクトにエフェクト用の姿勢クラスを登録する
 	effect->SetParent(&m_effectTransform);
 	m_pEffect = dynamic_cast<PlayerTrailEffectEmitter*>(effect);
 	if (!m_pEffect) {
@@ -112,7 +115,7 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	Transform& ref_transform = GetTransform(player);
 	PlayerStatus& ref_status = GetStatus(player);
 
-	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
+	DirectX::SimpleMath::Vector3 pos = ref_transform.GetPosition();
 
 	// 回転の変化量
 	DirectX::SimpleMath::Vector3 change_euler;
@@ -206,9 +209,12 @@ void MoveCommand::ExcuteRoll(Player& player, const DX::StepTimer& timer) {
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
 
 	m_rollInfo.rollingTime += elapsed_time;
+	// 移動量
 	DirectX::SimpleMath::Vector3 roll_move(0, 0, 0);
 
+	// 移動後の進行度
 	float t = m_rollInfo.rollingTime / rolling_time;
+	// 移動前の進行度
 	float t2 = (m_rollInfo.rollingTime - elapsed_time) / rolling_time;
 	t = t * (2 - t);
 	t2 = t2 * (2 - t2);

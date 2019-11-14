@@ -112,7 +112,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 void PlayScene::Update(const DX::StepTimer& timer) {
 	// エスケープキーでポーズ画面を呼び出す
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
-		m_pSceneRequest->RequestScene("Pause", RequestSceneType::StackScene);
+		m_pSceneRequest->RequestScene(SceneID::Pause, RequestSceneType::StackScene);
 	}
 
 	// F2キーでパラメータを再読み込みする
@@ -212,22 +212,6 @@ void PlayScene::DetectCollision() {
 
 	// プレイヤー同士の当たり判定を行う
 	m_collisionManager->CollisionPlayer(&m_players);
-
-	// 未使用なら飛ばす処理を生成
-	//auto live_pred = LamdaUtils::NotNull();
-
-	// 当たり判定
-	// プレイヤーとエレメントの当たり判定
-	
-
-
-	// 魔法同士の当たり判定
-	
-
-	// プレイヤ―と魔法の当たり判定
-	
-
-	// プレイヤー同士の当たり判定
 	
 }
 

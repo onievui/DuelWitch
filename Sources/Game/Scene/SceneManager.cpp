@@ -13,10 +13,10 @@
 /// <summary>
 /// シーンの変更を要求する
 /// </summary>
-/// <param name="sceneName">シーン名</param>
+/// <param name="sceneId">シーンID</param>
 /// <param name="type">リクエストシーンタイプ</param>
-void SceneManager::RequestScene(const std::string& sceneName, RequestSceneType type) {
-	m_requestQueue.push(std::make_pair(sceneName, type));
+void SceneManager::RequestScene(SceneID sceneId, RequestSceneType type) {
+	m_requestQueue.push(std::make_pair(sceneId, type));
 }
 
 /// <summary>
@@ -40,13 +40,13 @@ void SceneManager::PopScene(int num) {
 /// </summary>
 void SceneManager::Initialize() {
 	m_sceneCreateFunc.clear();
-	m_sceneCreateFunc.emplace("Logo",        MakeSceneCreateFunc<LogoScene>());
-	m_sceneCreateFunc.emplace("Title",       MakeSceneCreateFunc<TitleScene>());
-	m_sceneCreateFunc.emplace("CharaSelect", MakeSceneCreateFunc<CharaSelectScene>());
-	m_sceneCreateFunc.emplace("Play",        MakeSceneCreateFunc<PlayScene>());
-	m_sceneCreateFunc.emplace("Pause",       MakeSceneCreateFunc<PauseScene>());
-	m_sceneCreateFunc.emplace("Result",      MakeSceneCreateFunc<ResultScene>());
-	std::queue<std::pair<std::string, RequestSceneType>>().swap(m_requestQueue);
+	m_sceneCreateFunc.emplace(SceneID::Logo,        MakeSceneCreateFunc<LogoScene>());
+	m_sceneCreateFunc.emplace(SceneID::Title,       MakeSceneCreateFunc<TitleScene>());
+	m_sceneCreateFunc.emplace(SceneID::CharaSelect, MakeSceneCreateFunc<CharaSelectScene>());
+	m_sceneCreateFunc.emplace(SceneID::Play,        MakeSceneCreateFunc<PlayScene>());
+	m_sceneCreateFunc.emplace(SceneID::Pause,       MakeSceneCreateFunc<PauseScene>());
+	m_sceneCreateFunc.emplace(SceneID::Result,      MakeSceneCreateFunc<ResultScene>());
+	std::queue<std::pair<SceneID, RequestSceneType>>().swap(m_requestQueue);
 }
 
 /// <summary>
@@ -66,7 +66,7 @@ void SceneManager::Update(const DX::StepTimer& timer) {
 /// <summary>
 /// シーンを描画する
 /// </summary>
-/// <param name="spriteBatch"></param>
+/// <param name="spriteBatch">スプライトバッチ</param>
 void SceneManager::Render(DirectX::SpriteBatch* spriteBatch) {
 	// 有効なシーンを古いものから描画する
 	for (std::list<std::unique_ptr<IScene>>::iterator itr = m_activeScene.begin(); itr != m_activeScene.end(); ++itr) {
@@ -78,7 +78,7 @@ void SceneManager::Render(DirectX::SpriteBatch* spriteBatch) {
 /// シーンを変更する
 /// </summary>
 void SceneManager::ChangeScene() {
-	std::pair<std::string, RequestSceneType>& requestData = m_requestQueue.front();
+	std::pair<SceneID, RequestSceneType>& requestData = m_requestQueue.front();
 	if (!m_sceneCreateFunc.count(requestData.first)) {
 		ErrorMessage(L"不正なシーン名を読み込もうとしました");
 		m_requestQueue.pop();

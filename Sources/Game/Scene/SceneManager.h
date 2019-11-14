@@ -7,7 +7,6 @@
 #include <queue>
 
 #include <Framework\StepTimer.h>
-
 #include "IScene.h"
 #include "ISceneRequest.h"
 
@@ -18,7 +17,7 @@
 class SceneManager : public ISceneRequest {
 public:
 	// シーンの変更を要求する
-	void RequestScene(const std::string& sceneName, RequestSceneType type = RequestSceneType::ClearStack) override;
+	void RequestScene(SceneID sceneId, RequestSceneType type = RequestSceneType::ClearStack) override;
 	// シーンをポップする
 	void PopScene(int num = 1) override;
 
@@ -51,11 +50,11 @@ private:
 
 private:
 	// シーン生成関数
-	std::unordered_map<std::string, SceneCreateFunc>     m_sceneCreateFunc;
+	std::unordered_map<SceneID, SceneCreateFunc>     m_sceneCreateFunc;
 	// 有効なシーンのリスト
-	std::list<std::unique_ptr<IScene>>                   m_activeScene;
+	std::list<std::unique_ptr<IScene>>               m_activeScene;
 	// シーン変更要求のキュー
-	std::queue<std::pair<std::string, RequestSceneType>> m_requestQueue;
+	std::queue<std::pair<SceneID, RequestSceneType>> m_requestQueue;
 
 };
 

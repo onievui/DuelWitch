@@ -81,7 +81,7 @@ void TitleScene::Update(const DX::StepTimer& timer) {
 			break;
 		case UIEventID::Play:
 		// キャラセレクトシーンに進む
-			m_pSceneRequest->RequestScene("CharaSelect");
+			m_pSceneRequest->RequestScene(SceneID::CharaSelect);
 			break;
 		case UIEventID::Option:
 			ErrorMessage(L"未実装");

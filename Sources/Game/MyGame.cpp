@@ -55,7 +55,7 @@ void MyGame::Initialize(int width, int height) {
 	m_sceneManager->Initialize();
 
 	// プレイシーンを呼び出す
-	m_sceneManager->RequestScene("Logo");
+	m_sceneManager->RequestScene(SceneID::Logo);
 }
 
 /// <summary>

@@ -102,7 +102,7 @@ void CharaSelectScene::UpdateSelectPlayer(const DX::StepTimer& timer) {
 		case UIEventID::Back:
 			// タイトルに戻る
 			if (m_currentPlayer == 0) {
-				m_pSceneRequest->RequestScene("Title");
+				m_pSceneRequest->RequestScene(SceneID::Title);
 			}
 			// 前のキャラクターの選択に戻る
 			else {
@@ -151,147 +151,6 @@ void CharaSelectScene::UpdateSelectPlayer(const DX::StepTimer& timer) {
 	}
 }
 
-
-///// <summary>
-///// プレイヤー1のキャラクターを選択する
-///// </summary>
-///// <param name="timer">ステップタイマー</param>
-//void CharaSelectScene::UpdateSelectPlayer1(const DX::StepTimer& timer) {
-//	timer;
-//	// ランダム用変数
-//	int rand;
-//	// イベントを取得しているかどうか確認する
-//	if (m_uiObserver->HasNewEvent()) {
-//		UIEvent ui_event = m_uiObserver->GetEvent();
-//		switch (ui_event.eventID) {
-//			// タイトルに戻る
-//		case UIEventID::Back:
-//			m_pSceneRequest->RequestScene("Title");
-//			break;
-//			// ランダムでキャラを決める
-//		case UIEventID::Next:
-//			rand = RandMt::GetRand(static_cast<int>(m_charaIcons.size()));
-//			SelectChara(m_charaIcons[rand].get(), m_backCharas[0].get(), m_markerUIs[0].get());
-//			m_state = CharaSelectState::SelectPlayer2;
-//			break;
-//			// キャラクターを選択する
-//		case UIEventID::CharaIcon:
-//			SelectChara(ui_event.address, m_backCharas[0].get(), m_markerUIs[0].get());
-//			m_state = CharaSelectState::SelectPlayer2;
-//			break;
-//		default:
-//			break;
-//		}
-//	}
-//
-//	// 次に進む場合
-//	if (m_state == CharaSelectState::SelectPlayer2) {
-//		// キャラアイコンにアタッチするマーカーを変更する
-//		for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
-//			(*itr)->Detach(m_markerUIs[0].get());
-//			(*itr)->Attach(m_markerUIs[1].get());
-//		}
-//	}
-//}
-//
-///// <summary>
-///// プレイヤー2のキャラクターを選択する
-///// </summary>
-///// <param name="timer">ステップタイマー</param>
-//void CharaSelectScene::UpdateSelectPlayer2(const DX::StepTimer& timer) {
-//	timer;
-//	// ランダム用変数
-//	int rand;
-//	// イベントを取得しているかどうか確認する
-//	if (m_uiObserver->HasNewEvent()) {
-//		UIEvent ui_event = m_uiObserver->GetEvent();
-//		switch (ui_event.eventID) {
-//		// プレイヤー1のキャラ選択に戻る
-//		case UIEventID::Back:
-//			m_backCharas[0]->SetTexture(nullptr);
-//			m_state = CharaSelectState::SelectPlayer1;
-//			break;
-//		// ランダムでキャラを決める
-//		case UIEventID::Next:
-//			rand = RandMt::GetRand(static_cast<int>(m_charaIcons.size()));
-//			SelectChara(m_charaIcons[rand].get(), m_backCharas[1].get(), m_markerUIs[1].get());
-//			m_state = CharaSelectState::SelectPlayer3;
-//			break;
-//		// キャラクターを選択する
-//		case UIEventID::CharaIcon:
-//			SelectChara(ui_event.address, m_backCharas[1].get(), m_markerUIs[1].get());
-//			m_state = CharaSelectState::SelectPlayer3;
-//			break;
-//		default:
-//			break;
-//		}
-//	}
-//
-//	// 前に戻る場合
-//	if (m_state == CharaSelectState::SelectPlayer1) {
-//		// キャラアイコンにアタッチするマーカーを変更する
-//		for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
-//			(*itr)->Detach(m_markerUIs[1].get());
-//			(*itr)->Attach(m_markerUIs[0].get());
-//		}
-//	}
-//	// 次に進む場合
-//	if (m_state == CharaSelectState::SelectPlayer3) {
-//		// キャラアイコンにアタッチするマーカーを変更する
-//		for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
-//			(*itr)->Detach(m_markerUIs[1].get());
-//			(*itr)->Attach(m_markerUIs[2].get());
-//		}
-//	}
-//}
-//
-//void CharaSelectScene::UpdateSelectPlayer3(const DX::StepTimer& timer) {
-//	timer;
-//	// ランダム用変数
-//	int rand;
-//	// イベントを取得しているかどうか確認する
-//	if (m_uiObserver->HasNewEvent()) {
-//		UIEvent ui_event = m_uiObserver->GetEvent();
-//		switch (ui_event.eventID) {
-//			// プレイヤー2のキャラ選択に戻る
-//		case UIEventID::Back:
-//			m_backCharas[1]->SetTexture(nullptr);
-//			m_state = CharaSelectState::SelectPlayer1;
-//			break;
-//			// ランダムでキャラを決める
-//		case UIEventID::Next:
-//			rand = RandMt::GetRand(static_cast<int>(m_charaIcons.size()));
-//			SelectChara(m_charaIcons[rand].get(), m_backCharas[2].get(), m_markerUIs[2].get());
-//			m_state = CharaSelectState::Ready;
-//			break;
-//			// キャラクターを選択する
-//		case UIEventID::CharaIcon:
-//			SelectChara(ui_event.address, m_backCharas[2].get(), m_markerUIs[2].get());
-//			m_state = CharaSelectState::Ready;
-//			break;
-//		default:
-//			break;
-//		}
-//	}
-//
-//	// 前に戻る場合
-//	if (m_state == CharaSelectState::SelectPlayer1) {
-//		// キャラアイコンにアタッチするマーカーを変更する
-//		for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
-//			(*itr)->Detach(m_markerUIs[2].get());
-//			(*itr)->Attach(m_markerUIs[1].get());
-//		}
-//	}
-//	// 次に進む場合
-//	if (m_state == CharaSelectState::Ready) {
-//		// キャラアイコンにアタッチするマーカーを変更する
-//		for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
-//			(*itr)->Detach(m_markerUIs[2].get());
-//		}
-//		m_menuUIs[1]->SetText(L"Fight!");
-//	}
-//}
-
 /// <summary>
 /// 決定待ち状態
 /// </summary>
@@ -310,7 +169,7 @@ void CharaSelectScene::UpdateReady(const DX::StepTimer& timer) {
 			break;
 			// キャラを確定する
 		case UIEventID::Next:
-			m_pSceneRequest->RequestScene("Play");
+			m_pSceneRequest->RequestScene(SceneID::Play);
 			break;
 		default:
 			break;
@@ -440,18 +299,6 @@ void CharaSelectScene::InitializeUI() {
 				UIEventID::Null, 0, DirectX::SimpleMath::Vector2(screen_size.x*(0.2f+0.3f*i), screen_size.y*0.4f));
 			m_backCharas.emplace_back(std::move(chara));
 		}
-		//// プレイヤー1キャラクター
-		//std::unique_ptr<UISubject> chara1 = std::make_unique<UISubject>(
-		//	UIEventID::Null, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.2f, screen_size.y*0.4f));
-		//m_backCharas.emplace_back(std::move(chara1));
-		//// プレイヤー2キャラクター
-		//std::unique_ptr<UISubject> chara2 = std::make_unique<UISubject>(
-		//	UIEventID::Null, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.4f));
-		//m_backCharas.emplace_back(std::move(chara2));
-		//// プレイヤー3キャラクター
-		//std::unique_ptr<UISubject> chara3 = std::make_unique<UISubject>(
-		//	UIEventID::Null, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.8f, screen_size.y*0.4f));
-		//m_backCharas.emplace_back(std::move(chara3));
 	}
 	// 選択マーカー
 	{
@@ -477,26 +324,6 @@ void CharaSelectScene::InitializeUI() {
 				(*itr)->Attach(m_markerUIs[i].get());
 			}
 		}
-		//// プレイヤー1選択マーカー
-		//std::unique_ptr<CharaSelectMarker> marker1 = std::make_unique<CharaSelectMarker>(
-		//	0, m_charaIcons.front()->GetPos(), texture, 0);
-		//marker1->SetScale(DirectX::SimpleMath::Vector2::One*scale);
-		//m_markerUIs.emplace_back(std::move(marker1));
-		//// プレイヤー2選択マーカー
-		//std::unique_ptr<CharaSelectMarker> marker2 = std::make_unique<CharaSelectMarker>(
-		//	0, m_charaIcons.back()->GetPos(), texture, 1);
-		//marker2->SetScale(DirectX::SimpleMath::Vector2::One*scale);
-		//m_markerUIs.emplace_back(std::move(marker2));
-		//// プレイヤー3選択マーカー
-		//std::unique_ptr<CharaSelectMarker> marker3 = std::make_unique<CharaSelectMarker>(
-		//	0, m_charaIcons.back()->GetPos(), texture, 2);
-		//marker3->SetScale(DirectX::SimpleMath::Vector2::One*scale);
-		//m_markerUIs.emplace_back(std::move(marker3));
-
-		//// キャラアイコンにマーカーをアタッチする
-		//for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
-		//	(*itr)->Attach(m_markerUIs[0].get());
-		//}
 	}
 
 }

@@ -337,6 +337,7 @@
     <ClInclude Include="Sources\Game\Scene\PauseScene.h" />
     <ClInclude Include="Sources\Game\Scene\PlayScene.h" />
     <ClInclude Include="Sources\Game\Scene\ResultScene.h" />
+    <ClInclude Include="Sources\Game\Scene\SceneID.h" />
     <ClInclude Include="Sources\Game\Scene\SceneManager.h" />
     <ClInclude Include="Sources\Game\Scene\TitleScene.h" />
     <ClInclude Include="Sources\Game\MyGame.h" />

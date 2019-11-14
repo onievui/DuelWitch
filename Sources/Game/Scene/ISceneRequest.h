@@ -3,6 +3,9 @@
 #define ISECENE_REQUEST_DEFINED
 
 
+#include "SceneID.h"
+
+
 /// <summary>
 /// リクエストシーンタイプ
 /// </summary>
@@ -18,7 +21,7 @@ enum class RequestSceneType {
 class ISceneRequest {
 public:
 	// シーンの変更を要求する
-	virtual void RequestScene(const std::string& sceneName, RequestSceneType type = RequestSceneType::ClearStack) = 0;
+	virtual void RequestScene(SceneID sceneId, RequestSceneType type = RequestSceneType::ClearStack) = 0;
 	// シーンをポップする
 	virtual void PopScene(int num = 1) = 0;
 };

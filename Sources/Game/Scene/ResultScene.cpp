@@ -41,7 +41,7 @@ void ResultScene::Update(const DX::StepTimer& timer) {
 	timer;
 
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space)) {
-		m_pSceneRequest->RequestScene("CharaSelect");
+		m_pSceneRequest->RequestScene(SceneID::CharaSelect);
 	}
 }
 

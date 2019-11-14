@@ -80,6 +80,7 @@ void FieldShieldEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::M
 	for (std::vector<std::unique_ptr<FieldShieldEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
+		// 未使用のエフェクトは飛ばす
 		if (!(*itr)->IsUsed()) {
 			continue;
 		}

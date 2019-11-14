@@ -77,11 +77,11 @@ void PauseScene::Update(const DX::StepTimer& timer) {
 			return;
 		// キャラセレクトに戻る
 		case UIEventID::CharaSelect:
-			m_pSceneRequest->RequestScene("CharaSelect");
+			m_pSceneRequest->RequestScene(SceneID::CharaSelect);
 			break;
 		// タイトルに戻る
 		case UIEventID::Title:
-			m_pSceneRequest->RequestScene("Title");
+			m_pSceneRequest->RequestScene(SceneID::Title);
 			break;
 		default:
 			ErrorMessage(L"不正なUIイベントを取得しました");
