@@ -19,9 +19,10 @@ void PlayerTrailEffect::Initialize(float lifeTime, const DirectX::SimpleMath::Ve
 	const DirectX::SimpleMath::Vector3& vel, const DirectX::SimpleMath::Vector3& accel) {
 	Effect::Initialize(lifeTime, pos, vel, accel);
 	const EffectParameter::player_trail_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerTrailParam;
+	// 指定された範囲の色相からRGBカラーに変換する
 	HSVColor color(0, parameter.sColor, parameter.vColor);
-	color.setH(RandMt::GetRange(parameter.minHColor, parameter.maxHColor));
-	m_color = DirectX::SimpleMath::Color(color.getR()*1.0f, color.getG()*1.0f, color.getB()*1.0f, 255.0f) / 255.0f;
+	color.SetH(RandMt::GetRange(parameter.minHColor, parameter.maxHColor));
+	m_color = DirectX::SimpleMath::Color(color.GetR()*1.0f, color.GetG()*1.0f, color.GetB()*1.0f, 255.0f) / 255.0f;
 	m_defaultSize = RandMt::GetRange(parameter.minScale, parameter.maxScale);
 }
 

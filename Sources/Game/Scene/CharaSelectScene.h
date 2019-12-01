@@ -48,12 +48,6 @@ private:
 	void InitializeUI();
 	// キャラクターを選択する
 	void UpdateSelectPlayer(const DX::StepTimer& timer);
-	//// プレイヤー1のキャラクターを選択する
-	//void UpdateSelectPlayer1(const DX::StepTimer& timer);
-	//// プレイヤー2のキャラクターを選択する
-	//void UpdateSelectPlayer2(const DX::StepTimer& timer);
-	//// プレイヤー3のキャラクターを選択する
-	//void UpdateSelectPlayer3(const DX::StepTimer& timer);
 	// 決定待ち状態
 	void UpdateReady(const DX::StepTimer& timer);
 	// キャラを選択する

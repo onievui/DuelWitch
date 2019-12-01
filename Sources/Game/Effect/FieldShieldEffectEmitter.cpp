@@ -103,7 +103,7 @@ void FieldShieldEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::M
 	const DirectX::SimpleMath::Vector3& eye_pos = m_pParent->GetLocalPosition();
 	cbuff.eye = DirectX::SimpleMath::Vector4(eye_pos.x, eye_pos.y, eye_pos.z, 0);
 	cbuff.lookAt = true;
-	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
+	cbuff.diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
 
 	//定数バッファの内容更新
 	context->UpdateSubresource(m_cBuffer.Get(), 0, NULL, &cbuff, 0, 0);

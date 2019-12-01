@@ -1,6 +1,6 @@
 #pragma once
-#ifndef COLOR_DEFINED
-#define COLOR_DEFINED
+#ifndef COLORDEFINED
+#define COLORDEFINED
 
 
 class RGBColor;
@@ -11,38 +11,38 @@ class HSVColor;
 /// カラークラス
 /// </summary>
 class Color {
-
 public:
 	Color() = default;
 	virtual ~Color() = default;
 
-	virtual void setRGBColor(const int _r, const int _g, const int _b) = 0;
-	virtual void setHSVColor(const int _h, const int _s, const int _v) = 0;
-	virtual unsigned int getColor() const = 0;
-	virtual RGBColor getRGBColor() const = 0;
-	virtual HSVColor getHSVColor() const = 0;
+public:
+	virtual void SetRGBColor(const int r, const int g, const int b) = 0;
+	virtual void SetHSVColor(const int h, const int s, const int v) = 0;
+	virtual unsigned int GetColor() const = 0;
+	virtual RGBColor GetRGBColor() const = 0;
+	virtual HSVColor GetHSVColor() const = 0;
 
-	virtual int getR() const = 0;
-	virtual int getG() const = 0;
-	virtual int getB() const = 0;
-	virtual int getH() const = 0;
-	virtual int getS() const = 0;
-	virtual int getV() const = 0;
+	virtual int GetR() const = 0;
+	virtual int GetG() const = 0;
+	virtual int GetB() const = 0;
+	virtual int GetH() const = 0;
+	virtual int GetS() const = 0;
+	virtual int GetV() const = 0;
 
-	virtual void setR(const int _r) = 0;
-	virtual void setG(const int _g) = 0;
-	virtual void setB(const int _b) = 0;
-	virtual void setH(const int _h) = 0;
-	virtual void setS(const int _s) = 0;
-	virtual void setV(const int _v) = 0;
-	virtual void setColor(unsigned int _color_code) = 0;
+	virtual void SetR(const int r) = 0;
+	virtual void SetG(const int g) = 0;
+	virtual void SetB(const int b) = 0;
+	virtual void SetH(const int h) = 0;
+	virtual void SetS(const int s) = 0;
+	virtual void SetV(const int v) = 0;
+	virtual void SetColor(unsigned int colorcode) = 0;
 
-	virtual void shiftR(const int _value) = 0;
-	virtual void shiftG(const int _value) = 0;
-	virtual void shiftB(const int _value) = 0;
-	virtual void shiftH(const int _value) = 0;
-	virtual void shiftS(const int _value) = 0;
-	virtual void shiftV(const int _value) = 0;
+	virtual void ShiftR(const int value) = 0;
+	virtual void ShiftG(const int value) = 0;
+	virtual void ShiftB(const int value) = 0;
+	virtual void ShiftH(const int value) = 0;
+	virtual void ShiftS(const int value) = 0;
+	virtual void ShiftV(const int value) = 0;
 
 };
 
@@ -51,44 +51,45 @@ public:
 /// RGBカラークラス
 /// </summary>
 class RGBColor : public Color {
-
-private:
-	int r;
-	int g;
-	int b;
-
 public:
-	RGBColor(const int _r, const int _g, const int _b);
-	RGBColor(const unsigned int _color_code);
+	RGBColor(const int r, const int g, const int b);
+	RGBColor(const unsigned int colorcode);
 	~RGBColor() = default;
 
-	void setRGBColor(const int _r, const int _g, const int _b);
-	void setHSVColor(const int _h, const int _s, const int _v);
-	unsigned int getColor() const;
-	RGBColor getRGBColor() const;
-	HSVColor getHSVColor() const;
+public:
+	void SetRGBColor(const int r, const int g, const int b);
+	void SetHSVColor(const int h, const int s, const int v);
+	unsigned int GetColor() const;
+	RGBColor GetRGBColor() const;
+	HSVColor GetHSVColor() const;
 
-	int getR() const;
-	int getG() const;
-	int getB() const;
-	int getH() const;
-	int getS() const;
-	int getV() const;
+	int GetR() const;
+	int GetG() const;
+	int GetB() const;
+	int GetH() const;
+	int GetS() const;
+	int GetV() const;
 
-	void setR(const int _r);
-	void setG(const int _g);
-	void setB(const int _b);
-	void setH(const int _h);
-	void setS(const int _s);
-	void setV(const int _v);
-	void setColor(unsigned int _color_code);
+	void SetR(const int r);
+	void SetG(const int g);
+	void SetB(const int b);
+	void SetH(const int h);
+	void SetS(const int s);
+	void SetV(const int v);
+	void SetColor(unsigned int colorcode);
 
-	void shiftR(const int _value);
-	void shiftG(const int _value);
-	void shiftB(const int _value);
-	void shiftH(const int _value);
-	void shiftS(const int _value);
-	void shiftV(const int _value);
+	void ShiftR(const int value);
+	void ShiftG(const int value);
+	void ShiftB(const int value);
+	void ShiftH(const int value);
+	void ShiftS(const int value);
+	void ShiftV(const int value);
+
+
+private:
+	int m_r;
+	int m_g;
+	int m_b;
 
 };
 
@@ -97,45 +98,46 @@ public:
 /// HSVカラークラス
 /// </summary>
 class HSVColor : public Color {
-
-private:
-	int h;
-	int s;
-	int v;
-
 public:
-	HSVColor(const int _h, const int _s, const int _v);
-	HSVColor(const unsigned int _color_code);
+	HSVColor(const int h, const int s, const int v);
+	HSVColor(const unsigned int colorcode);
 	~HSVColor() = default;
 
-	void setRGBColor(const int _r, const int _g, const int _b);
-	void setHSVColor(const int _h, const int _s, const int _v);
-	unsigned int getColor() const;
-	RGBColor getRGBColor() const;
-	HSVColor getHSVColor() const;
+public:
+	void SetRGBColor(const int r, const int g, const int b);
+	void SetHSVColor(const int h, const int s, const int v);
+	unsigned int GetColor() const;
+	RGBColor GetRGBColor() const;
+	HSVColor GetHSVColor() const;
 
-	int getR() const;
-	int getG() const;
-	int getB() const;
-	int getH() const;
-	int getS() const;
-	int getV() const;
+	int GetR() const;
+	int GetG() const;
+	int GetB() const;
+	int GetH() const;
+	int GetS() const;
+	int GetV() const;
 
-	void setR(const int _r);
-	void setG(const int _g);
-	void setB(const int _b);
-	void setH(const int _h);
-	void setS(const int _s);
-	void setV(const int _v);
-	void setColor(unsigned int _color_code);
+	void SetR(const int r);
+	void SetG(const int g);
+	void SetB(const int b);
+	void SetH(const int h);
+	void SetS(const int s);
+	void SetV(const int v);
+	void SetColor(unsigned int colorcode);
 
-	void shiftR(const int _value);
-	void shiftG(const int _value);
-	void shiftB(const int _value);
-	void shiftH(const int _value);
-	void shiftS(const int _value);
-	void shiftV(const int _value);
+	void ShiftR(const int value);
+	void ShiftG(const int value);
+	void ShiftB(const int value);
+	void ShiftH(const int value);
+	void ShiftS(const int value);
+	void ShiftV(const int value);
+
+private:
+	int m_h;
+	int m_s;
+	int m_v;
+
 };
 
 
-#endif // !COLOR_DEFINED
+#endif // !COLORDEFINED

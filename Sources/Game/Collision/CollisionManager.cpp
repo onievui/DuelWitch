@@ -14,6 +14,7 @@
 /// <param name="field">フィールド</param>
 void CollisionManager::CollisionPlayerField(PlayersData* players, FieldData* field) {
 	for (PlayersData::iterator itr = players->begin(); itr != players->end(); ++itr) {
+		// フィールドクラス内で内外判定を行う
 		field->CollisionCheckPlayer(itr->get());
 	}
 }

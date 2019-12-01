@@ -6,6 +6,7 @@ extern "C" {
 	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 }
 
+
 /// <summary>
 /// デバイスを生成する
 /// </summary>

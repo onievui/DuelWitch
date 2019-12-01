@@ -202,6 +202,8 @@
     <ClCompile Include="Sources\Game\Effect\NormalMagicEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\Effect\PlayerTrailEffect.cpp" />
     <ClCompile Include="Sources\Game\Effect\PlayerTrailEffectEmitter.cpp" />
+    <ClCompile Include="Sources\Game\Effect\ThunderStrikeEffect.cpp" />
+    <ClCompile Include="Sources\Game\Effect\ThunderStrikeEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\Element\Element.cpp" />
     <ClCompile Include="Sources\Game\Element\ElementFactory.cpp" />
     <ClCompile Include="Sources\Game\Element\ElementManager.cpp" />
@@ -296,6 +298,8 @@
     <ClInclude Include="Sources\Game\Effect\NormalMagicEffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\PlayerTrailEffect.h" />
     <ClInclude Include="Sources\Game\Effect\PlayerTrailEffectEmitter.h" />
+    <ClInclude Include="Sources\Game\Effect\ThunderStrikeEffect.h" />
+    <ClInclude Include="Sources\Game\Effect\ThunderStrikeEffectEmitter.h" />
     <ClInclude Include="Sources\Game\Element\Element.h" />
     <ClInclude Include="Sources\Game\Element\ElementFactory.h" />
     <ClInclude Include="Sources\Game\Element\ElementManager.h" />
@@ -339,6 +343,7 @@
     <ClInclude Include="Sources\Game\Scene\ResultScene.h" />
     <ClInclude Include="Sources\Game\Scene\SceneID.h" />
     <ClInclude Include="Sources\Game\Scene\SceneManager.h" />
+    <ClInclude Include="Sources\Game\Scene\ShareData\ShareData.h" />
     <ClInclude Include="Sources\Game\Scene\TitleScene.h" />
     <ClInclude Include="Sources\Game\MyGame.h" />
     <ClInclude Include="Sources\Game\UI\CharaIcon.h" />
@@ -408,7 +413,7 @@
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\Default.hlsli" />
+    <None Include="Assets\Shaders\Default.hlsli" />
     <None Include="ClassDiagram.cd" />
     <None Include="Resources\Jsons\fuzzy.json" />
     <None Include="Resources\Jsons\chara_status.json" />
@@ -419,27 +424,25 @@
     <None Include="Resources\Jsons\player_command.json" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\BillboardGS.hlsl">
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+    <FxCompile Include="Assets\Shaders\BillboardGS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources/Shaders/%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\DefaultPS.hlsl">
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
+    <FxCompile Include="Assets\Shaders\DefaultPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\DefaultVS.hlsl">
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Shaders\%(Filename).cso</ObjectFileOutput>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\DefaultVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\ThunderStrikePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources/Shaders/%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

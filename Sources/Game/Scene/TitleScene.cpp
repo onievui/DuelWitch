@@ -120,12 +120,14 @@ void TitleScene::Render(DirectX::SpriteBatch* spriteBatch) {
 		nullptr, DirectX::SimpleMath::Vector4(1, 1, 1, alpha), 0,
 		texture->GetCenter(), DirectX::SimpleMath::Vector2(1.0f, 1.0f));
 
+
 	// UI‚ð•`‰æ‚·‚é
 	if (m_time > 2.5f) {
 		for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Render(spriteBatch);
 		}
 	}
+
 
 	spriteBatch->End();
 }

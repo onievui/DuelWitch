@@ -119,7 +119,7 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 
 	// 回転の変化量
 	DirectX::SimpleMath::Vector3 change_euler;
-	// 回転量
+	// ブーストしているかによって回転速度が変わる
 	float rot_speed = (ref_status.isBoosting ? parameter.boostRotSpeed : parameter.rotSpeed);
 
 	// 左右移動
@@ -144,7 +144,7 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 		change_euler.x = rot_speed * elapsed_time;
 	}
 
-	// 斜め移動の場合
+	// 斜め移動の場合は回転量を調整する
 	if (!Math::Equal0(change_euler.x) && !Math::Equal0(change_euler.y)) {
 		change_euler /= std::sqrtf(2);
 	}

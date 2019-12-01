@@ -12,21 +12,21 @@
 /// </returns>
 int Window::Initialize(int width, int height) {
 	// クラスを登録する
-	WNDCLASSEX wndClassEx;
-	wndClassEx.cbSize = sizeof(WNDCLASSEX);
-	wndClassEx.style = CS_HREDRAW | CS_VREDRAW;
-	wndClassEx.lpfnWndProc = WndowProc;
-	wndClassEx.cbClsExtra = 0;
-	wndClassEx.cbWndExtra = 0;
-	wndClassEx.hInstance = m_hInstance;
-	wndClassEx.hIcon = LoadIcon(m_hInstance, L"IDI_ICON");
-	wndClassEx.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	wndClassEx.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-	wndClassEx.lpszMenuName = nullptr;
-	wndClassEx.lpszClassName = CLASS_NAME;
-	wndClassEx.hIconSm = LoadIcon(wndClassEx.hInstance, L"IDI_ICON");
+	WNDCLASSEX wnd_class_ex;
+	wnd_class_ex.cbSize = sizeof(WNDCLASSEX);
+	wnd_class_ex.style = CS_HREDRAW | CS_VREDRAW;
+	wnd_class_ex.lpfnWndProc = WndowProc;
+	wnd_class_ex.cbClsExtra = 0;
+	wnd_class_ex.cbWndExtra = 0;
+	wnd_class_ex.hInstance = m_hInstance;
+	wnd_class_ex.hIcon = LoadIcon(m_hInstance, L"IDI_ICON");
+	wnd_class_ex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wnd_class_ex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wnd_class_ex.lpszMenuName = nullptr;
+	wnd_class_ex.lpszClassName = CLASS_NAME;
+	wnd_class_ex.hIconSm = LoadIcon(wnd_class_ex.hInstance, L"IDI_ICON");
 	// クラスを登録する
-	if (!RegisterClassEx(&wndClassEx)) {
+	if (!RegisterClassEx(&wnd_class_ex)) {
 		return EXIT_FAILURE;
 	}
 	// ウィンドウを生成する
@@ -37,13 +37,13 @@ int Window::Initialize(int width, int height) {
 	rect.bottom = static_cast<LONG>(height);
 
 	// ウインドウスタイルの設定をする
-	DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+	DWORD dw_style = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
 
 	// クライアント領域のサイズによりウィンドウサイズを変更する
-	AdjustWindowRect(&rect, dwStyle, FALSE);
+	AdjustWindowRect(&rect, dw_style, FALSE);
 
 	// ウィンドウを生成する
-	m_hWnd = CreateWindowEx(0, CLASS_NAME, WINDOW_NAME, dwStyle,
+	m_hWnd = CreateWindowEx(0, CLASS_NAME, WINDOW_NAME, dw_style,
 		CW_USEDEFAULT, CW_USEDEFAULT, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, m_hInstance, nullptr);
 
 	if (!m_hWnd) {

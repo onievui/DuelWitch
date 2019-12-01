@@ -89,6 +89,9 @@
     <Filter Include="Game\Object">
       <UniqueIdentifier>{4bb48832-8494-452a-a067-e3b794838c8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Scene\ShareData">
+      <UniqueIdentifier>{156c1b32-911c-4610-9f5f-8a9f3e1910db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -347,6 +350,12 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\Collision\CollisionManager.cpp">
       <Filter>Game\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\ThunderStrikeEffectEmitter.cpp">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\ThunderStrikeEffect.cpp">
+      <Filter>Game\Effect\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -716,6 +725,15 @@
     <ClInclude Include="Sources\Game\Scene\SceneID.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\ThunderStrikeEffectEmitter.h">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\ThunderStrikeEffect.h">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\ShareData\ShareData.h">
+      <Filter>Game\Scene\ShareData</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
@@ -741,9 +759,6 @@
     <None Include="Resources\Jsons\effect.json">
       <Filter>Assets\Jsons</Filter>
     </None>
-    <None Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\Default.hlsli">
-      <Filter>Assets\Shader</Filter>
-    </None>
     <None Include="Resources\Jsons\chara_status.json">
       <Filter>Assets\Jsons</Filter>
     </None>
@@ -754,15 +769,21 @@
       <Filter>Assets\Jsons</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="Assets\Shaders\Default.hlsli">
+      <Filter>Assets\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\DefaultVS.hlsl">
+    <FxCompile Include="Assets\Shaders\ThunderStrikePS.hlsl">
       <Filter>Assets\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\BillboardGS.hlsl">
+    <FxCompile Include="Assets\Shaders\DefaultPS.hlsl">
       <Filter>Assets\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\..\3Dエフェクト\第24講\TestProject%28Manager%29\Test\DefaultPS.hlsl">
+    <FxCompile Include="Assets\Shaders\DefaultVS.hlsl">
+      <Filter>Assets\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\BillboardGS.hlsl">
       <Filter>Assets\Shader</Filter>
     </FxCompile>
   </ItemGroup>

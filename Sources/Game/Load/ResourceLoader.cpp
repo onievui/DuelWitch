@@ -10,7 +10,6 @@
 /// </summary>
 /// <param name="id">ÉäÉ\Å[ÉXì«Ç›çûÇ›ID</param>
 void ResourceLoader::Load(ResourceLoaderID id) {
-	//ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 	ResourceManager<TextureResource>* textureResourceManager = ServiceLocater<ResourceManager<TextureResource>>::Get();
 	//ResourceManager<GeometricPrimitiveResource>* geometricPrimitiveResourceManager = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get();
 	ResourceManager<ModelResource>* modelResourceManager = ServiceLocater<ResourceManager<ModelResource>>::Get();

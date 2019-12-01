@@ -106,7 +106,7 @@ void FireMagicEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Mat
 	cbuff.matWorld = m_pParent->GetMatrix().Transpose();
 	cbuff.eye = DirectX::SimpleMath::Vector4(m_eyeVec.x, m_eyeVec.y, m_eyeVec.z, 0);
 	cbuff.lookAt = false;
-	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
+	cbuff.diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
 
 	//定数バッファの内容更新
 	context->UpdateSubresource(m_cBuffer.Get(), 0, NULL, &cbuff, 0, 0);

@@ -10,6 +10,7 @@
 #include <Game\Load\ResourceLoader.h>
 #include <Game\UI\CharaIcon.h>
 #include <Game\UI\CharaSelectMarker.h>
+//#include <Game\Scene\ShareData\ShareData.h>
 
 
 /// <summary>
@@ -277,14 +278,14 @@ void CharaSelectScene::InitializeUI() {
 
 	// キャラアイコンの生成
 	{
-		// キャラアイコンの数
-		constexpr int chara_icon_count = 3;
+		// キャラクターの数
+		constexpr int chara_count = 3;
 		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaIcon);
 		float scale = 0.6f;
 		float texture_width = texture->GetSize().x*scale;
-		for (int i = 0; i < chara_icon_count; ++i) {
+		for (int i = 0; i < chara_count; ++i) {
 			// キャラアイコンを並べるためのオフセット
-			float x = (i - (chara_icon_count - 1)*0.5f)*texture_width;
+			float x = (i - (chara_count - 1)*0.5f)*texture_width;
 			std::unique_ptr<CharaIcon> chara_icon = std::make_unique<CharaIcon>(
 				0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f+x, screen_size.y*0.75f), texture, i);
 			chara_icon->SetScale(DirectX::SimpleMath::Vector2::One*scale);

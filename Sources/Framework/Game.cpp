@@ -118,15 +118,19 @@ void Game::Render(const DX::StepTimer& timer) {
 
 // バックバッファをクリアする
 void Game::Clear() {
+	ID3D11DeviceContext* context = m_directX->GetContext().Get();
+	ID3D11RenderTargetView* render_target_view = m_directX->GetRenderTargetView().Get();
+	ID3D11DepthStencilView* depth_stencil_view = m_directX->GetDepthStencilView().Get();
+
 	// レンダーターゲットビューをクリアする
-	m_directX->GetContext()->ClearRenderTargetView(m_directX->GetRenderTargetView().Get(), m_backGroundColor);
+	context->ClearRenderTargetView(render_target_view, m_backGroundColor);
 	// デプスステンシルビューをクリアする
-	m_directX->GetContext()->ClearDepthStencilView(m_directX->GetDepthStencilView().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	context->ClearDepthStencilView(depth_stencil_view, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	// レンダータッゲートを設定する
-	m_directX->GetContext()->OMSetRenderTargets(1, m_directX->GetRenderTargetView().GetAddressOf(), m_directX->GetDepthStencilView().Get());
+	context->OMSetRenderTargets(1, &render_target_view, depth_stencil_view);
     // ビューポートを設定する
     CD3D11_VIEWPORT viewport(0.0f, 0.0f, static_cast<float>(m_width), static_cast<float>(m_height));
-	m_directX->GetContext()->RSSetViewports(1, &viewport);
+	context->RSSetViewports(1, &viewport);
 }
 
 // バックバッファをスクリーンに送る 

@@ -2,66 +2,65 @@
 #include "MathUtils.h"
 
 
-RGBColor::RGBColor(const int _r, const int _g, const int _b) {
-	setRGBColor(_r, _g, _b);
+RGBColor::RGBColor(const int r, const int g, const int b) {
+	SetRGBColor(r, g, b);
 }
 
-RGBColor::RGBColor(const unsigned int _color_code) {
-	setColor(_color_code);
+RGBColor::RGBColor(const unsigned int colorcode) {
+	SetColor(colorcode);
 }
 
-void RGBColor::setRGBColor(const int _r, const int _g, const int _b) {
-	r = Math::Clamp(_r, 0, 255);
-	g = Math::Clamp(_g, 0, 255);
-	b = Math::Clamp(_b, 0, 255);
+void RGBColor::SetRGBColor(const int r, const int g, const int b) {
+	m_r = Math::Clamp(r, 0, 255);
+	m_g = Math::Clamp(g, 0, 255);
+	m_b = Math::Clamp(b, 0, 255);
 }
 
-void RGBColor::setHSVColor(const int _h, const int _s, const int _v) {
-	HSVColor hsv(_h, _s, _v);
-	*this = hsv.getRGBColor();
+void RGBColor::SetHSVColor(const int h, const int s, const int v) {
+	HSVColor hsv(h, s, v);
+	*this = hsv.GetRGBColor();
 
 }
 
-unsigned int RGBColor::getColor() const {
-	//return GetColor(r, g, b);
-	return 0;
+unsigned int RGBColor::GetColor() const {
+	return (m_r << 16) + (m_g << 8) + (m_b << 0);
 }
 
-RGBColor RGBColor::getRGBColor() const {
+RGBColor RGBColor::GetRGBColor() const {
 	return *this;
 }
 
-HSVColor RGBColor::getHSVColor() const {
+HSVColor RGBColor::GetHSVColor() const {
 	int h, s, v, max, min;
 
 	//最大値・最小値の設定
-	if (r > g) {
-		max = r;
-		min = g;
+	if (m_r > m_g) {
+		max = m_r;
+		min = m_g;
 	}
 	else {
-		max = g;
-		min = r;
+		max = m_g;
+		min = m_r;
 	}
-	if (b > max) {
-		max = b;
+	if (m_b > max) {
+		max = m_b;
 	}
-	else if (b < min) {
-		min = b;
+	else if (m_b < min) {
+		min = m_b;
 	}
 
 	//色相の計算
 	if (max == min) {
 		h = 0;
 	}
-	else if (max == r) {
-		h = (int)(60 * ((g - b) / (float)(max - min)));
+	else if (max == m_r) {
+		h = (int)(60 * ((m_g - m_b) / (float)(max - min)));
 	}
-	else if (max == g) {
-		h = (int)(60 * ((b - r) / (float)(max - min)) + 120);
+	else if (max == m_g) {
+		h = (int)(60 * ((m_b - m_r) / (float)(max - min)) + 120);
 	}
 	else {
-		h = (int)(60 * ((r - g) / (float)(max - min)) + 240);
+		h = (int)(60 * ((m_r - m_g) / (float)(max - min)) + 240);
 	}
 
 	if (h < 0) {
@@ -77,267 +76,267 @@ HSVColor RGBColor::getHSVColor() const {
 	return HSVColor(h, s, v);
 }
 
-int RGBColor::getR() const {
-	return r;
+int RGBColor::GetR() const {
+	return m_r;
 }
 
-int RGBColor::getG() const {
-	return g;
+int RGBColor::GetG() const {
+	return m_g;
 }
 
-int RGBColor::getB() const {
-	return b;
+int RGBColor::GetB() const {
+	return m_b;
 }
 
-int RGBColor::getH() const {
-	return getHSVColor().getH();
+int RGBColor::GetH() const {
+	return GetHSVColor().GetH();
 }
 
-int RGBColor::getS() const {
-	return getHSVColor().getS();
+int RGBColor::GetS() const {
+	return GetHSVColor().GetS();
 }
 
-int RGBColor::getV() const {
-	return getHSVColor().getV();
+int RGBColor::GetV() const {
+	return GetHSVColor().GetV();
 }
 
-void RGBColor::setR(const int _r) {
-	r = Math::Clamp(_r, 0, 255);
+void RGBColor::SetR(const int r) {
+	m_r = Math::Clamp(r, 0, 255);
 }
 
-void RGBColor::setG(const int _g) {
-	g = Math::Clamp(_g, 0, 255);
+void RGBColor::SetG(const int g) {
+	m_g = Math::Clamp(g, 0, 255);
 }
 
-void RGBColor::setB(const int _b) {
-	b = Math::Clamp(_b, 0, 255);
+void RGBColor::SetB(const int b) {
+	m_b = Math::Clamp(b, 0, 255);
 }
 
-void RGBColor::setH(const int _h) {
-	HSVColor hsv = getHSVColor();
-	hsv.setH(_h);
-	*this = hsv.getRGBColor();
+void RGBColor::SetH(const int h) {
+	HSVColor hsv = GetHSVColor();
+	hsv.SetH(h);
+	*this = hsv.GetRGBColor();
 }
 
-void RGBColor::setS(const int _s) {
-	HSVColor hsv = getHSVColor();
-	hsv.setS(_s);
-	*this = hsv.getRGBColor();
+void RGBColor::SetS(const int s) {
+	HSVColor hsv = GetHSVColor();
+	hsv.SetS(s);
+	*this = hsv.GetRGBColor();
 }
 
-void RGBColor::setV(const int _v) {
-	HSVColor hsv = getHSVColor();
-	hsv.setV(_v);
-	*this = hsv.getRGBColor();
+void RGBColor::SetV(const int v) {
+	HSVColor hsv = GetHSVColor();
+	hsv.SetV(v);
+	*this = hsv.GetRGBColor();
 }
 
-void RGBColor::setColor(unsigned int _color_code) {
-	int r, g, b;
-	r = (_color_code >> 16) & 0xFF;
-	g = (_color_code >>  8) & 0xFF;
-	b = (_color_code >>  0) & 0xFF;
-	setRGBColor(r, g, b);
+void RGBColor::SetColor(unsigned int colorcode) {
+	int rr, gg, bb;
+	rr = (colorcode >> 16) & 0xFF;
+	gg = (colorcode >>  8) & 0xFF;
+	bb = (colorcode >>  0) & 0xFF;
+	SetRGBColor(rr, gg, bb);
 }
 
-void RGBColor::shiftR(const int _value) {
-	r = Math::Clamp(r + _value, 0, 255);
+void RGBColor::ShiftR(const int value) {
+	m_r = Math::Clamp(m_r + value, 0, 255);
 }
 
-void RGBColor::shiftG(const int _value) {
-	g = Math::Clamp(g + _value, 0, 255);
+void RGBColor::ShiftG(const int value) {
+	m_g = Math::Clamp(m_g + value, 0, 255);
 }
 
-void RGBColor::shiftB(const int _value) {
-	b = Math::Clamp(b + _value, 0, 255);
+void RGBColor::ShiftB(const int value) {
+	m_b = Math::Clamp(m_b + value, 0, 255);
 }
 
-void RGBColor::shiftH(const int _value) {
-	HSVColor hsv = getHSVColor();
-	hsv.shiftH(_value);
-	*this = hsv.getRGBColor();
+void RGBColor::ShiftH(const int value) {
+	HSVColor hsv = GetHSVColor();
+	hsv.ShiftH(value);
+	*this = hsv.GetRGBColor();
 }
 
-void RGBColor::shiftS(const int _value) {
-	HSVColor hsv = getHSVColor();
-	hsv.shiftS(_value);
-	*this = hsv.getRGBColor();
+void RGBColor::ShiftS(const int value) {
+	HSVColor hsv = GetHSVColor();
+	hsv.ShiftS(value);
+	*this = hsv.GetRGBColor();
 }
 
-void RGBColor::shiftV(const int _value) {
-	HSVColor hsv = getHSVColor();
-	hsv.shiftV(_value);
-	*this = hsv.getRGBColor();
+void RGBColor::ShiftV(const int value) {
+	HSVColor hsv = GetHSVColor();
+	hsv.ShiftV(value);
+	*this = hsv.GetRGBColor();
 }
 
 
-HSVColor::HSVColor(const int _h, const int _s, const int _v) {
-	setHSVColor(_h, _s, _v);
+HSVColor::HSVColor(const int h, const int s, const int v) {
+	SetHSVColor(h, s, v);
 }
 
-HSVColor::HSVColor(const unsigned int _color_code) {
-	setColor(_color_code);
+HSVColor::HSVColor(const unsigned int colorcode) {
+	SetColor(colorcode);
 }
 
-void HSVColor::setRGBColor(const int _r, const int _g, const int _b) {
-	RGBColor rgb(_r, _g, _b);
-	*this = rgb.getHSVColor();
+void HSVColor::SetRGBColor(const int r, const int g, const int b) {
+	RGBColor rgb(r, g, b);
+	*this = rgb.GetHSVColor();
 }
 
-void HSVColor::setHSVColor(const int _h, const int _s, const int _v) {
-	h = _h;
-	s = Math::Clamp(_s, 0, 255);
-	v = Math::Clamp(_v, 0, 255);
+void HSVColor::SetHSVColor(const int h, const int s, const int v) {
+	m_h = h;
+	m_s = Math::Clamp(s, 0, 255);
+	m_v = Math::Clamp(v, 0, 255);
 
-	while (h < 0) {
-		h += 360;
+	while (m_h < 0) {
+		m_h += 360;
 	}
-	h %= 360;
+	m_h %= 360;
 }
 
-unsigned int HSVColor::getColor() const{
-	return getRGBColor().getColor();
+unsigned int HSVColor::GetColor() const{
+	return GetRGBColor().GetColor();
 }
 
-RGBColor HSVColor::getRGBColor() const {
+RGBColor HSVColor::GetRGBColor() const {
 	int r, g, b, max, min;
 
 	//最大値・最小値の計算
-	max = v;
-	min = (int)(max - ((s / 255.f) * max));
+	max = m_v;
+	min = (int)(max - ((m_s / 255.f) * max));
 
 	//RGBカラーの計算
-	if (h <= 60) {
+	if (m_h <= 60) {
 		r = max;
-		g = (int)((h / 60.f) * (max - min) + min);
+		g = (int)((m_h / 60.f) * (max - min) + min);
 		b = min;
 	}
-	else if (h <= 120) {
-		r = (int)(((120 - h) / 60.f) * (max - min) + min);
+	else if (m_h <= 120) {
+		r = (int)(((120 - m_h) / 60.f) * (max - min) + min);
 		g = max;
 		b = min;
 	}
-	else if (h <= 180) {
+	else if (m_h <= 180) {
 		r = min;
 		g = max;
-		b = (int)(((h - 120) / 60.f) * (max - min) + min);
+		b = (int)(((m_h - 120) / 60.f) * (max - min) + min);
 	}
-	else if (h <= 240) {
+	else if (m_h <= 240) {
 		r = min;
-		g = (int)(((240 - h) / 60.f) * (max - min) + min);
+		g = (int)(((240 - m_h) / 60.f) * (max - min) + min);
 		b = max;
 	}
-	else if (h <= 300) {
-		r = (int)(((h - 240) / 60.f) * (max - min) + min);
+	else if (m_h <= 300) {
+		r = (int)(((m_h - 240) / 60.f) * (max - min) + min);
 		g = min;
 		b = max;
 	}
 	else {
 		r = max;
 		g = min;
-		b = (int)(((360 - h) / 60.f) * (max - min) + min);
+		b = (int)(((360 - m_h) / 60.f) * (max - min) + min);
 	}
 
 	return RGBColor(r, g, b);
 }
 
-HSVColor HSVColor::getHSVColor() const {
+HSVColor HSVColor::GetHSVColor() const {
 	return *this;
 }
 
-int HSVColor::getR() const {
-	return getRGBColor().getR();
+int HSVColor::GetR() const {
+	return GetRGBColor().GetR();
 }
 
-int HSVColor::getG() const {
-	return getRGBColor().getG();
+int HSVColor::GetG() const {
+	return GetRGBColor().GetG();
 }
 
-int HSVColor::getB() const {
-	return getRGBColor().getB();
+int HSVColor::GetB() const {
+	return GetRGBColor().GetB();
 }
 
-int HSVColor::getH() const {
-	return h;
+int HSVColor::GetH() const {
+	return m_h;
 }
 
-int HSVColor::getS() const {
-	return s;
+int HSVColor::GetS() const {
+	return m_s;
 }
 
-int HSVColor::getV() const {
-	return v;
+int HSVColor::GetV() const {
+	return m_v;
 }
 
-void HSVColor::setR(const int _r) {
-	RGBColor rgb = getRGBColor();
-	rgb.setR(_r);
-	*this = rgb.getHSVColor();
+void HSVColor::SetR(const int r) {
+	RGBColor rgb = GetRGBColor();
+	rgb.SetR(r);
+	*this = rgb.GetHSVColor();
 }
 
-void HSVColor::setG(const int _g) {
-	RGBColor rgb = getRGBColor();
-	rgb.setG(_g);
-	*this = rgb.getHSVColor();
+void HSVColor::SetG(const int g) {
+	RGBColor rgb = GetRGBColor();
+	rgb.SetG(g);
+	*this = rgb.GetHSVColor();
 }
 
-void HSVColor::setB(const int _b) {
-	RGBColor rgb = getRGBColor();
-	rgb.setB(_b);
-	*this = rgb.getHSVColor();
+void HSVColor::SetB(const int b) {
+	RGBColor rgb = GetRGBColor();
+	rgb.SetB(b);
+	*this = rgb.GetHSVColor();
 }
 
-void HSVColor::setH(const int _h) {
-	h = _h;
-	while (h < 0) {
-		h += 360;
+void HSVColor::SetH(const int h) {
+	m_h = h;
+	while (m_h < 0) {
+		m_h += 360;
 	}
-	h %= 360;
+	m_h %= 360;
 }
 
-void HSVColor::setS(const int _s) {
-	s = Math::Clamp(_s, 0, 255);
+void HSVColor::SetS(const int s) {
+	m_s = Math::Clamp(s, 0, 255);
 }
 
-void HSVColor::setV(const int _v) {
-	v = Math::Clamp(_v, 0, 255);
+void HSVColor::SetV(const int v) {
+	m_v = Math::Clamp(v, 0, 255);
 }
 
-void HSVColor::setColor(unsigned int _color_code) {
+void HSVColor::SetColor(unsigned int colorcode) {
 	RGBColor rgb(0, 0, 0);
-	rgb.setColor(_color_code);
-	*this = rgb.getHSVColor();
+	rgb.SetColor(colorcode);
+	*this = rgb.GetHSVColor();
 }
 
-void HSVColor::shiftR(const int _value) {
-	RGBColor rgb = getRGBColor();
-	rgb.shiftR(_value);
-	*this = rgb.getHSVColor();
+void HSVColor::ShiftR(const int value) {
+	RGBColor rgb = GetRGBColor();
+	rgb.ShiftR(value);
+	*this = rgb.GetHSVColor();
 }
 
-void HSVColor::shiftG(const int _value) {
-	RGBColor rgb = getRGBColor();
-	rgb.shiftG(_value);
-	*this = rgb.getHSVColor();
+void HSVColor::ShiftG(const int value) {
+	RGBColor rgb = GetRGBColor();
+	rgb.ShiftG(value);
+	*this = rgb.GetHSVColor();
 }
 
-void HSVColor::shiftB(const int _value) {
-	RGBColor rgb = getRGBColor();
-	rgb.shiftB(_value);
-	*this = rgb.getHSVColor();
+void HSVColor::ShiftB(const int value) {
+	RGBColor rgb = GetRGBColor();
+	rgb.ShiftB(value);
+	*this = rgb.GetHSVColor();
 }
 
-void HSVColor::shiftH(const int _value) {
-	h += _value;
-	while (h < 0) {
-		h += 360;
+void HSVColor::ShiftH(const int value) {
+	m_h += value;
+	while (m_h < 0) {
+		m_h += 360;
 	}
-	h %= 360;
+	m_h %= 360;
 }
 
-void HSVColor::shiftS(const int _value) {
-	s = Math::Clamp(s + _value, 0, 255);
+void HSVColor::ShiftS(const int value) {
+	m_s = Math::Clamp(m_s + value, 0, 255);
 }
 
-void HSVColor::shiftV(const int _value) {
-	v = Math::Clamp(v + _value, 0, 255);
+void HSVColor::ShiftV(const int value) {
+	m_v = Math::Clamp(m_v + value, 0, 255);
 }

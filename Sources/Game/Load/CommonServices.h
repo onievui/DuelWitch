@@ -6,22 +6,24 @@
 #include <Utils\ServiceLocater.h>
 
 
-class MouseWrapper;
 template <class T>
 class ResourceManager;
-class TextureResource;
-class GeometricPrimitiveResource;
-class ModelResource;
-class FontResource;
-class VertexShaderResource;
-class GeometryShaderResource;
-class PixelShaderResource;
 
 
 /// <summary>
 /// 基本的なサービスをまとめたクラス
 /// </summary>
 class CommonServices {
+public:
+	// コンストラクタ
+	CommonServices();
+	// デストラクタ
+	~CommonServices();
+	// ムーブコンストラクタ
+	CommonServices(CommonServices&& from);
+	// ムーブ代入演算子のオーバーロード
+	CommonServices& operator=(CommonServices&& from);
+
 public:
 	// コモンサービスを初期化する
 	void Initialize();
@@ -31,34 +33,17 @@ public:
 private:
 	template<class T, class... Args>
 	// サービスを生成してサービスロケータに登録する
-	void RegisterService(std::unique_ptr<T>& service, Args&&... args) {
-		service = std::make_unique<T>(args...);
-		ServiceLocater<T>::Register(service.get());
-	}
+	void RegisterService(std::unique_ptr<T>& service, Args&&... args);
 
 	template<class T>
 	// リソースマネージャを生成してサービスロケータに登録する
-	void RegisterResourceManager(std::unique_ptr<ResourceManager<T>>& manager, const std::wstring& kind) {
-		manager = std::make_unique<ResourceManager<T>>(kind);
-		ServiceLocater<ResourceManager<T>>::Register(manager.get());
-	};
+	void RegisterResourceManager(std::unique_ptr<ResourceManager<T>>& manager, const std::wstring& kind);
 
 private:
-	// コモンステート
-	std::unique_ptr<DirectX::CommonStates>                         m_commonStates;
-	// キートラッカー
-	std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker>       m_keyboardStateTracker;
-	// マウスラッパ―
-	std::unique_ptr<MouseWrapper>                                  m_mouseWrapper;
+	// サービス保持クラス
+	class Services;
+	std::unique_ptr<Services> m_services;
 
-	// リソースマネージャ
-	std::unique_ptr<ResourceManager<TextureResource>>              m_textureResourceManager;
-	std::unique_ptr<ResourceManager<GeometricPrimitiveResource>>   m_geometricPrimitiveResourceManager;
-	std::unique_ptr<ResourceManager<ModelResource>>                m_modelResourceManager;
-	std::unique_ptr<ResourceManager<FontResource>>                 m_fontResourceManager;
-	std::unique_ptr<ResourceManager<VertexShaderResource>>         m_vertexShaderResourceManager;
-	std::unique_ptr<ResourceManager<GeometryShaderResource>>       m_geometryShaderResourceManager;
-	std::unique_ptr<ResourceManager<PixelShaderResource>>          m_pixelShaderResourceManager;
 };
 
 

@@ -45,6 +45,7 @@ void MyGame::Initialize(int width, int height) {
 	m_commonServices->Initialize();
 
 	// マウスの感度を設定する
+	// TODO: マウス感度を外部から読み込む
 	ServiceLocater<MouseWrapper>::Get()->SetSensivity(4.0f);
 
 	// フォントを読み込む
