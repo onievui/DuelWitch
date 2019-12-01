@@ -103,15 +103,6 @@ void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vecto
 	m_castCommand->Initialize(*this);
 	m_renderCommand->Initialize(*this);
 
-	//ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::PlayerTrail, m_transform.GetPosition(), -DirectX::SimpleMath::Vector3::UnitZ)
-	//	->SetParent(&m_transform);
-	//if (m_id == PlayerID::Player1) {
-	//	static Transform tra;
-	//	tra.SetPosition(DirectX::SimpleMath::Vector3(0, 3, 40));
-	//	ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::FireMagic, m_transform.GetPosition(), DirectX::SimpleMath::Vector3::UnitX)
-	//		->SetParent(&tra);
-	//}
-
 }
 
 
@@ -303,6 +294,7 @@ void Player::UpdateStatus(const DX::StepTimer& timer) {
 	else {
 		m_status.spDecreaseTimer -= elapsed_time;
 	}
+	// ÅŒã‚ÉSP‚ğÁ”ï‚µ‚Ä‚©‚çˆê’èŠÔŒo‰ßŒã‚É‰ñ•œ‚µn‚ß‚é
 	if (m_status.spDecreaseTimer <= 0) {
 		m_status.sp = std::min(m_status.sp + m_status.spRecoverySpeed*elapsed_time, m_status.maxSp);
 	}

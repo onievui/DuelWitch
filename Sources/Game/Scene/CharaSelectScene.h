@@ -25,7 +25,7 @@ private:
 		Ready,
 	};
 
-	// 選択するプレイヤーの数
+	// 選択するキャラの数
 	static constexpr int PLAYER_COUNT = 3;
 
 public:
@@ -56,17 +56,15 @@ private:
 private:
 	// リクエストシーンインタフェース
 	ISceneRequest*                                   m_pSceneRequest;
-	// エフェクトファクトリインタフェース
-	std::unique_ptr<DirectX::IEffectFactory>         m_effectFactory;
-	// コモンステート
-	std::unique_ptr <DirectX::CommonStates>          m_commonStates;
 
 	// タイマー
 	float                                            m_time;
 	// ステート
 	CharaSelectState                                 m_state;
-	// 選択中のプレイヤーID
+	// 選択中のキャラのID
 	int                                              m_currentPlayer;
+	// 選択したキャラのID
+	std::vector<int>                                 m_selectCharaId;
 	// UIオブザーバ
 	std::unique_ptr<UIObserver>                      m_uiObserver;
 	// キャラアイコンUI

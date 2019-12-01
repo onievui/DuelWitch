@@ -12,6 +12,7 @@ class PlayParameterLoader;
 class DebugCamera;
 class GridFloor;
 class Player;
+class PlayerManager;
 class Element;
 class ElementManager;
 class IMagic;
@@ -48,10 +49,6 @@ private:
 private:
 	// リクエストシーンインタフェース
 	ISceneRequest*                           m_pSceneRequest;
-	// エフェクトファクトリインタフェース
-	std::unique_ptr<DirectX::IEffectFactory> m_effectFactory;
-	// コモンステート
-	std::unique_ptr <DirectX::CommonStates>  m_commonStates;
 
 	// パラメータ読み込みクラス
 	std::unique_ptr<PlayParameterLoader>     m_parameterLoader;
@@ -64,8 +61,8 @@ private:
 	std::unique_ptr<GridFloor>               m_gridFloor;
 	// フィールド
 	std::unique_ptr<Field>                   m_field;
-	// プレイヤー
-	std::vector<std::unique_ptr<Player>>     m_players;
+	// プレイヤーマネージャ
+	std::unique_ptr<PlayerManager>           m_playerManager;
 	// エレメントマネージャ
 	std::unique_ptr<ElementManager>          m_elementManager;
 	// 魔法マネージャ

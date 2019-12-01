@@ -43,8 +43,7 @@ CommonServices::CommonServices() {
 /// <summary>
 /// デストラクタ
 /// </summary>
-CommonServices::~CommonServices()
-{
+CommonServices::~CommonServices() {
 
 }
 

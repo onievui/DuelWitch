@@ -229,6 +229,7 @@
     <ClCompile Include="Sources\Game\Object\EmptyObject.cpp" />
     <ClCompile Include="Sources\Game\Object\Transform.cpp" />
     <ClCompile Include="Sources\Game\Player\Player.cpp" />
+    <ClCompile Include="Sources\Game\Player\PlayerManager.cpp" />
     <ClCompile Include="Sources\Game\Scene\CharaSelectScene.cpp" />
     <ClCompile Include="Sources\Game\Scene\LogoScene.cpp" />
     <ClCompile Include="Sources\Game\Scene\PauseScene.cpp" />
@@ -333,6 +334,7 @@
     <ClInclude Include="Sources\Game\Object\Transform.h" />
     <ClInclude Include="Sources\Game\Player\Player.h" />
     <ClInclude Include="Sources\Game\Player\PlayerID.h" />
+    <ClInclude Include="Sources\Game\Player\PlayerManager.h" />
     <ClInclude Include="Sources\Game\Player\PlayerStatus.h" />
     <ClInclude Include="Sources\Game\Scene\CharaSelectScene.h" />
     <ClInclude Include="Sources\Game\Scene\IScene.h" />

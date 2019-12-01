@@ -10,7 +10,7 @@
 #include <Game\Load\ResourceLoader.h>
 #include <Game\UI\CharaIcon.h>
 #include <Game\UI\CharaSelectMarker.h>
-//#include <Game\Scene\ShareData\ShareData.h>
+#include <Game\Scene\ShareData\ShareData.h>
 
 
 /// <summary>
@@ -33,11 +33,6 @@ CharaSelectScene::~CharaSelectScene() {
 /// <param name="pSceneRequest"></param>
 void CharaSelectScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pSceneRequest = pSceneRequest;
-	DirectX11* directX = ServiceLocater<DirectX11>::Get();
-	// コモンステートを生成する
-	m_commonStates = std::make_unique<DirectX::CommonStates>(directX->GetDevice().Get());
-	// エフェクトファクトリを生成する
-	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX->GetDevice().Get());
 
 	// リソースのロード
 	ResourceLoader::Load(ResourceLoaderID::CharaSelectScene);
@@ -45,6 +40,7 @@ void CharaSelectScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_time = 0.0f;
 	m_state = CharaSelectState::SelectPlayer;
 	m_currentPlayer = 0;
+	m_selectCharaId.resize(PLAYER_COUNT);
 	// UIを初期化する
 	InitializeUI();
 }
@@ -170,6 +166,8 @@ void CharaSelectScene::UpdateReady(const DX::StepTimer& timer) {
 			break;
 			// キャラを確定する
 		case UIEventID::Next:
+			// 選択したキャラのIDを保持する
+			ServiceLocater<ShareData>::Get()->SetSelectCharaID(m_selectCharaId);
 			m_pSceneRequest->RequestScene(SceneID::Play);
 			break;
 		default:
@@ -191,6 +189,8 @@ void CharaSelectScene::SelectChara(const UISubject* charaIcon, UISubject* backCh
 	backChara->FitTextureSize();
 	// ランダムで選択した場合のために、マーカーを動かす
 	marker->SetPos(charaIcon->GetPos());
+	// 選択したキャラのIDを保存する
+	m_selectCharaId[m_currentPlayer] = charaIcon->GetTextureIndex();
 }
 
 
@@ -199,7 +199,7 @@ void CharaSelectScene::SelectChara(const UISubject* charaIcon, UISubject* backCh
 /// </summary>
 /// <param name="spriteBatch"></param>
 void CharaSelectScene::Render(DirectX::SpriteBatch* spriteBatch) {
-	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, m_commonStates->NonPremultiplied());
+	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, ServiceLocater<DirectX::CommonStates>::Get()->NonPremultiplied());
 
 	const DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaSelectBackGround);

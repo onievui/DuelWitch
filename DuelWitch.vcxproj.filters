@@ -357,6 +357,9 @@
     <ClCompile Include="Sources\Game\Effect\ThunderStrikeEffect.cpp">
       <Filter>Game\Effect\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Player\PlayerManager.cpp">
+      <Filter>Game\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -733,6 +736,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\Scene\ShareData\ShareData.h">
       <Filter>Game\Scene\ShareData</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Player\PlayerManager.h">
+      <Filter>Game\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

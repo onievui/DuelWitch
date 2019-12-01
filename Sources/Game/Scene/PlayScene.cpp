@@ -11,6 +11,7 @@
 #include <Game\Camera\TargetCamera.h>
 #include <Game\Player\Player.h>
 #include <Game\Player\PlayerID.h>
+#include <Game\Player\PlayerManager.h>
 #include <Game\Element\Element.h>
 #include <Game\Element\ElementManager.h>
 #include <Game\Magic\IMagic.h>
@@ -40,10 +41,6 @@ PlayScene::~PlayScene() {
 void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pSceneRequest = pSceneRequest;
 	DirectX11* directX = ServiceLocater<DirectX11>::Get();
-	// コモンステートを生成する
-	m_commonStates = std::make_unique<DirectX::CommonStates>(directX->GetDevice().Get());
-	// エフェクトファクトリを生成する
-	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX->GetDevice().Get());
 
 	// マウスを相対モードに変更する
 	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
@@ -82,26 +79,14 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 		PerspectiveFovInfo(Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 5000.0f));
 
 	// プレイヤーを生成する
-	DirectX::SimpleMath::Vector3 player_pos(0, 0, -75);
-	DirectX::SimpleMath::Quaternion player_pos_rot =
-		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, Math::PI2 / 3);
-	player_pos = DirectX::SimpleMath::Vector3::Transform(player_pos, player_pos_rot);
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player1, player_pos));
-	player_pos = DirectX::SimpleMath::Vector3::Transform(player_pos, player_pos_rot);
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, player_pos));
-	player_pos = DirectX::SimpleMath::Vector3::Transform(player_pos, player_pos_rot);
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player3, player_pos));
-	
-	// プレイヤーを初期化する
-	m_players[0]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players);
-	m_players[1]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players);
-	m_players[2]->Initialize(m_magicManager.get(), m_targetCamera.get(), m_players);
+	m_playerManager = std::make_unique<PlayerManager>();
+	m_playerManager->Initialize(m_magicManager.get(), m_targetCamera.get());
 
 	// 当たり判定処理クラスを生成する
 	m_collisionManager = std::make_unique<CollisionManager>();
 
 	//グリッド床を生成する
-	m_gridFloor = std::make_unique<GridFloor>(m_commonStates.get(), 200.0f, 100);
+	m_gridFloor = std::make_unique<GridFloor>(ServiceLocater<DirectX::CommonStates>::Get(), 200.0f, 100);
 	
 }
 
@@ -120,10 +105,8 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		m_parameterLoader->Reload();
 	}
 
-	// プレイヤーを更新する
-	for (std::vector<std::unique_ptr<Player>>::iterator itr = m_players.begin(); itr != m_players.end(); ++itr) {
-		(*itr)->Update(timer);
-	}
+	// プレイヤーマネージャを更新する
+	m_playerManager->Update(timer);
 
 	// エレメントマネージャを更新する
 	m_elementManager->SetRadius(m_field->GetRadius());
@@ -151,7 +134,7 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 /// </summary>
 /// <param name="spriteBatch"></param>
 void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
-	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, m_commonStates->NonPremultiplied());
+	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, ServiceLocater<DirectX::CommonStates>::Get()->NonPremultiplied());
 
 	//ビュー行列を取得する
 	DirectX::SimpleMath::Matrix view = m_targetCamera->GetViewMatrix();
@@ -169,9 +152,7 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	m_magicManager->Render(view, projection);
 	
 	// プレイヤーを描画する
-	for (std::vector<std::unique_ptr<Player>>::const_iterator itr = m_players.cbegin(); itr != m_players.cend(); ++itr) {
-		(*itr)->Render(view, projection, spriteBatch);
-	}
+	m_playerManager->Render(view, projection, spriteBatch);
 
 	// エフェクトを描画する
 	m_effectManager->Render(view, projection);
@@ -199,19 +180,19 @@ void PlayScene::Finalize() {
 /// </summary>
 void PlayScene::DetectCollision() {
 	// プレイヤーとフィールドの当たり判定を行う
-	m_collisionManager->CollisionPlayerField(&m_players, m_field.get());
+	m_collisionManager->CollisionPlayerField(m_playerManager->GetPlayers(), m_field.get());
 	
 	// プレイヤーとエレメントの当たり判定を行う
-	m_collisionManager->CollisionPlayerElement(&m_players, m_elementManager->GetElements());
+	m_collisionManager->CollisionPlayerElement(m_playerManager->GetPlayers(), m_elementManager->GetElements());
 
 	// 魔法同士の当たり判定を行う
 	m_collisionManager->CollisionMagic(m_magicManager->GetMagics());
 
 	// プレイヤーと魔法の当たり判定を行う
-	m_collisionManager->CollisionPlayerMagic(&m_players, m_magicManager->GetMagics());
+	m_collisionManager->CollisionPlayerMagic(m_playerManager->GetPlayers(), m_magicManager->GetMagics());
 
 	// プレイヤー同士の当たり判定を行う
-	m_collisionManager->CollisionPlayer(&m_players);
+	m_collisionManager->CollisionPlayer(m_playerManager->GetPlayers());
 	
 }
 
