@@ -106,10 +106,10 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	}
 
 	// Ÿ”s‚ð”»’è‚·‚é
-	if (m_playerManager->Player1Win()) {
-
+	if (m_playerManager->Player1Win() || ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F3)) {
+		m_pSceneRequest->RequestScene(SceneID::WinResult, RequestSceneType::StackScene);
 	}
-	else if (m_playerManager->Player1Lose() || ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F3)) {
+	else if (m_playerManager->Player1Lose() || ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F4)) {
 		m_pSceneRequest->RequestScene(SceneID::LoseResult, RequestSceneType::StackScene);
 	}
 

@@ -32,6 +32,7 @@ enum class TextureID {
 	SpBar,
 	Fade,
 	YouLose,
+	Player1Win,
 
 	Particle,
 	FieldShield,

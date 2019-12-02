@@ -12,6 +12,7 @@ enum class SceneID {
 	CharaSelect,
 	Play,
 	Pause,
+	WinResult,
 	LoseResult,
 };
 

@@ -1,4 +1,4 @@
-#include "LoseResultScene.h"
+#include "WinResultScene.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
@@ -12,21 +12,21 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-LoseResultScene::LoseResultScene() {
+WinResultScene::WinResultScene() {
 
 }
 
 /// <summary>
 /// デストラクタ
 /// </summary>
-LoseResultScene::~LoseResultScene() {
+WinResultScene::~WinResultScene() {
 }
 
 /// <summary>
-///	敗北リザルトシーンを初期化する
+///	勝利リザルトシーンを初期化する
 /// </summary>
 /// <param name="pSceneRequest"></param>
-void LoseResultScene::Initialize(ISceneRequest* pSceneRequest) {
+void WinResultScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pSceneRequest = pSceneRequest;
 
 	m_time = 0.0f;
@@ -39,10 +39,10 @@ void LoseResultScene::Initialize(ISceneRequest* pSceneRequest) {
 }
 
 /// <summary>
-/// 敗北リザルトシーンを更新する
+/// 勝利リザルトシーンを更新する
 /// </summary>
 /// <param name="timer"></param>
-void LoseResultScene::Update(const DX::StepTimer& timer) {
+void WinResultScene::Update(const DX::StepTimer& timer) {
 	float elapesd_time = static_cast<float>(timer.GetElapsedSeconds());
 
 	m_time += elapesd_time;
@@ -75,28 +75,28 @@ void LoseResultScene::Update(const DX::StepTimer& timer) {
 }
 
 /// <summary>
-/// 敗北リザルトシーンを描画する
+/// 勝利リザルトシーンを描画する
 /// </summary>
 /// <param name="spriteBatch"></param>
-void LoseResultScene::Render(DirectX::SpriteBatch* spriteBatch) {
+void WinResultScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, ServiceLocater<DirectX::CommonStates>::Get()->NonPremultiplied());
 
 	// 時間経過でフェードアウトを行う
 	float alpha;
 	if (m_time <= 3.0f) {
-		alpha = m_time / 3.0f*0.8f;
+		alpha = m_time / 3.0f*0.7f;
 	}
 	else {
-		alpha = 0.8f;
+		alpha = 0.7f;
 	}
 
 	// プレイ画面に黒を重ねて暗くする
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Fade);
-	spriteBatch->Draw(texture->GetResource().Get(), DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Color(0, 0, 0, alpha));
+	spriteBatch->Draw(texture->GetResource().Get(), DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Color(1, 1, 1, alpha));
 
-	// 敗北テクスチャを描画する
-	if (m_time >= 3.0f) {		
-		texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::YouLose);
+	// 勝利テクスチャを描画する
+	if (m_time >= 3.0f) {
+		texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Player1Win);
 		// 時間経過でフェードインを行う
 		alpha = std::min((m_time - 3.0f) / 4.0f, 1.0f);
 		DirectX::SimpleMath::Vector2 pos(ServiceLocater<DirectX11>::Get()->GetWidth()*0.5f, 100.0f);
@@ -116,16 +116,16 @@ void LoseResultScene::Render(DirectX::SpriteBatch* spriteBatch) {
 }
 
 /// <summary>
-/// 敗北リザルトシーンを終了する
+/// 勝利リザルトシーンを終了する
 /// </summary>
-void LoseResultScene::Finalize() {
+void WinResultScene::Finalize() {
 
 }
 
 /// <summary>
 /// UIを初期化する
 /// </summary>
-void LoseResultScene::InitializeUI() {
+void WinResultScene::InitializeUI() {
 	// オブザーバを生成する
 	m_uiObserver = std::make_unique<UIObserver>();
 

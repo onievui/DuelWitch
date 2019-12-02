@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LOSE_RESULT_SCENE_DEFINED
-#define LOSE_RESULT_SCENE_DEFINED
+#ifndef WIN_RESULT_SCENE_DEFINED
+#define WIN_RESULT_SCENE_DEFINED
 
 
 #include "IScene.h"
@@ -13,23 +13,23 @@ class ScaleUpUI;
 
 
 /// <summary>
-/// 敗北リザルトシーンクラス
+/// 勝利リザルトシーンクラス
 /// </summary>
-class LoseResultScene : public IScene {
+class WinResultScene : public IScene {
 public:
 	// コンストラクタ
-	LoseResultScene();
+	WinResultScene();
 	// デストラクタ
-	~LoseResultScene();
+	~WinResultScene();
 
 public:
-	// 敗北リザルトシーンを初期化する
+	// 勝利リザルトシーンを初期化する
 	void Initialize(ISceneRequest* pSceneRequest) override;
-	// 敗北リザルトシーンを更新する
+	// 勝利リザルトシーンを更新する
 	void Update(const DX::StepTimer& timer) override;
-	// 敗北リザルトシーンを描画する
+	// 勝利リザルトシーンを描画する
 	void Render(DirectX::SpriteBatch* spriteBatch) override;
-	// 敗北リザルトシーンを終了する
+	// 勝利リザルトシーンを終了する
 	void Finalize() override;
 
 private:
@@ -50,4 +50,4 @@ private:
 };
 
 
-#endif // !LOSE_RESULT_SCENE_DEFINED
+#endif // !WIN_RESULT_SCENE_DEFINED

@@ -360,6 +360,9 @@
     <ClCompile Include="Sources\Game\Scene\LoseResultScene.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Scene\WinResultScene.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -738,6 +741,9 @@
       <Filter>Game\Player</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\Scene\LoseResultScene.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\WinResultScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
