@@ -19,6 +19,7 @@ MoveCommand::MoveCommand()
 	: m_state(MoveState::Move)
 	, m_rollInfo()
 	, m_cameraTarget()
+	, m_pTargetCamera(nullptr)
 	, m_boostTime()
 	, m_euler()
 	, m_pEffect()
@@ -26,20 +27,32 @@ MoveCommand::MoveCommand()
 }
 
 /// <summary>
+/// デストラクタ
+/// </summary>
+MoveCommand::~MoveCommand() {
+	// カメラの追従を解除する
+	m_pTargetCamera->SetTargetObject(nullptr);
+
+	// エフェクトを消す
+	m_pEffect->SetUsed(false);
+}
+
+/// <summary>
 /// 移動コマンドを初期化する
 /// </summary>
 /// <param name="player">プレイヤー</param>
 void MoveCommand::Initialize(Player& player) {
+	// カメラを取得する
 	Camera& ref_camera = GetCamera(player);
-
-	// カメラの追従先を設定する
 	TargetCamera* target_camera = dynamic_cast<TargetCamera*>(&ref_camera);
 	if (target_camera) {
+		m_pTargetCamera = target_camera;
+		// カメラの追従先を設定する
 		target_camera->SetTargetObject(&m_cameraTarget);
-	}
+	}	
 
 	// 初期の画角を記憶する
-	m_defaultFov = ref_camera.GetFov();
+	m_defaultFov = m_pTargetCamera->GetFov();
 
 	// 向きを初期化する
 	DirectX::SimpleMath::Matrix rot_matrix = DirectX::SimpleMath::Matrix::CreateFromQuaternion(GetTransform(player).GetRotation());
@@ -92,6 +105,7 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	TargetCamera* target_camera = dynamic_cast<TargetCamera*>(&GetCamera(player));
 	if (target_camera) {
 		AdjustCamera(target_camera);
+		m_pTargetCamera = target_camera;
 	}
 
 }

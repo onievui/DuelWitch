@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SHARD_DATA_DEFINED
-#define SHARD_DATA_DEFINED
+#ifndef SHARE_DATA_DEFINED
+#define SHARE_DATA_DEFINED
 
 
 /// <summary>
@@ -25,5 +25,4 @@ private:
 };
 
 
-#endif // !SHARD_DATA_DEFINED
-
+#endif // !SHARE_DATA_DEFINED

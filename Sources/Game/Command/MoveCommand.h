@@ -19,6 +19,8 @@ class MoveCommand : public Command {
 public:
 	// コンストラクタ
 	MoveCommand();
+	// デストラクタ
+	~MoveCommand();
 
 public:
 	// 移動コマンドを初期化する
@@ -64,6 +66,8 @@ private:
 	MoveState                               m_state;
 	// ロールに関する情報
 	RollInfo                                m_rollInfo;
+	// カメラへのポインタ
+	TargetCamera*                           m_pTargetCamera;
 	// カメラターゲット
 	EmptyObject                             m_cameraTarget;
 	// 継続ブースト時間

@@ -213,9 +213,6 @@
     <ClCompile Include="Sources\Game\Scene\PlayScene.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\Scene\ResultScene.cpp">
-      <Filter>Game\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Game\Scene\TitleScene.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
@@ -359,6 +356,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\Player\PlayerManager.cpp">
       <Filter>Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Scene\LoseResultScene.cpp">
+      <Filter>Game\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -540,9 +540,6 @@
       <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\Scene\PlayScene.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Game\Scene\ResultScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\Scene\TitleScene.h">
@@ -739,6 +736,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\Player\PlayerManager.h">
       <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\LoseResultScene.h">
+      <Filter>Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

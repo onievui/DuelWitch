@@ -27,12 +27,8 @@ LogoScene::~LogoScene() {
 /// <param name="pSceneRequest">リクエストシーンインタフェース</param>
 void LogoScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pSceneRequest = pSceneRequest;
-	DirectX11* directX = ServiceLocater<DirectX11>::Get();
-	// コモンステートを生成する
-	m_commonStates = std::make_unique<DirectX::CommonStates>(directX->GetDevice().Get());
-	// エフェクトファクトリを生成する
-	m_effectFactory = std::make_unique<DirectX::EffectFactory>(directX->GetDevice().Get());
 
+	// リソースをロードする
 	ResourceLoader::Load(ResourceLoaderID::LogoScene);
 	m_time = 0.0f;
 
@@ -65,7 +61,7 @@ void LogoScene::Update(const DX::StepTimer& timer) {
 /// </summary>
 /// <param name="spriteBatch">スプライトバッチ</param>
 void LogoScene::Render(DirectX::SpriteBatch* spriteBatch) {
-	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, m_commonStates->NonPremultiplied());
+	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, ServiceLocater<DirectX::CommonStates>::Get()->NonPremultiplied());
 
 	const DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Logo);

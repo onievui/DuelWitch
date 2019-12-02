@@ -41,10 +41,6 @@ private:
 private:
 	// リクエストシーンインタフェース
 	ISceneRequest*                                           m_pSceneRequest;
-	// エフェクトファクトリインタフェース
-	std::unique_ptr<DirectX::IEffectFactory>                 m_effectFactory;
-	// コモンステート
-	std::unique_ptr <DirectX::CommonStates>                  m_commonStates;
 
 	// UIオブザーバ
 	std::unique_ptr<UIObserver>                              m_uiObserver;

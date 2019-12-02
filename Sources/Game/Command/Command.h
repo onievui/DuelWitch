@@ -15,6 +15,10 @@
 /// </summary>
 class Command {
 public:
+	// デストラクタ
+	virtual ~Command() = default;
+
+public:
 	// コマンドを初期化する
 	virtual void Initialize(Player& player) { player; }
 	// コマンドを処理する

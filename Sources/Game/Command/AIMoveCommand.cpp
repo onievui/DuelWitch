@@ -25,6 +25,14 @@ AIMoveCommand::AIMoveCommand()
 }
 
 /// <summary>
+/// デストラクタ
+/// </summary>
+AIMoveCommand::~AIMoveCommand() {
+	// エフェクトを消す
+	m_pEffect->SetUsed(false);
+}
+
+/// <summary>
 /// AI移動コマンドを初期化する
 /// </summary>
 /// <param name="player">プレイヤー</param>

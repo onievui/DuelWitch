@@ -61,7 +61,7 @@ Player::~Player() {
 /// </summary>
 /// <param name="pMagicManager">魔法マネージャへのポインタ</param>
 /// <param name="pCamera">カメラへのポインタ</param>
-/// <param name="pOtherPlayers">敵プレイヤーへのポインタの配列</param>
+/// <param name="pOtherPlayers">他のプレイヤーへのポインタの配列</param>
 void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vector<std::unique_ptr<Player>>& pOtherPlayers) {
 	// エフェクトを設定する
 	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::Bloom);
@@ -81,12 +81,7 @@ void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vecto
 	// ポインタを受け取る
 	m_pMagicManager = pMagicManager;
 	m_pCamera = pCamera;
-	for (std::vector<std::unique_ptr<Player>>::iterator itr = pOtherPlayers.begin(); itr != pOtherPlayers.end(); itr++) {
-		// 自身のポインタは判定しない
-		if ((*itr).get() != this) {
-			m_pOtherPlayers.push_back((*itr).get());
-		}
-	}
+	SetOtherPlayers(pOtherPlayers);
 
 	// ステージの中心へ向ける
 	DirectX::SimpleMath::Vector3 field_pos = ServiceLocater<FieldData>::Get()->fieldCenter;
@@ -177,6 +172,32 @@ const Collider* Player::GetCollider() const {
 /// </returns>
 PlayerID Player::GetPlayerID() const {
 	return m_id;
+}
+
+/// <summary>
+/// 他のプレイヤーを設定する
+/// </summary>
+/// <param name="pOtherPlayers"></param>
+void Player::SetOtherPlayers(std::vector<std::unique_ptr<Player>>& pOtherPlayers) {
+	// データをリセットする
+	m_pOtherPlayers.clear();
+	for (std::vector<std::unique_ptr<Player>>::iterator itr = pOtherPlayers.begin(); itr != pOtherPlayers.end(); itr++) {
+		// 自身のポインタは判定しない
+		if ((*itr).get() != this) {
+			m_pOtherPlayers.push_back((*itr).get());
+		}
+	}
+}
+
+/// <summary>
+/// プレイヤーのHPが0以下か取得する
+/// </summary>
+/// <returns>
+/// true : 死んでいる
+/// false : 生存している
+/// </returns>
+bool Player::IsDead() const {
+	return m_status.hp <= 0;
 }
 
 /// <summary>

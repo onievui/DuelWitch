@@ -234,7 +234,7 @@
     <ClCompile Include="Sources\Game\Scene\LogoScene.cpp" />
     <ClCompile Include="Sources\Game\Scene\PauseScene.cpp" />
     <ClCompile Include="Sources\Game\Scene\PlayScene.cpp" />
-    <ClCompile Include="Sources\Game\Scene\ResultScene.cpp" />
+    <ClCompile Include="Sources\Game\Scene\LoseResultScene.cpp" />
     <ClCompile Include="Sources\Game\Scene\SceneManager.cpp" />
     <ClCompile Include="Sources\Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Sources\Game\UI\CharaIcon.cpp" />
@@ -342,7 +342,7 @@
     <ClInclude Include="Sources\Game\Scene\LogoScene.h" />
     <ClInclude Include="Sources\Game\Scene\PauseScene.h" />
     <ClInclude Include="Sources\Game\Scene\PlayScene.h" />
-    <ClInclude Include="Sources\Game\Scene\ResultScene.h" />
+    <ClInclude Include="Sources\Game\Scene\LoseResultScene.h" />
     <ClInclude Include="Sources\Game\Scene\SceneID.h" />
     <ClInclude Include="Sources\Game\Scene\SceneManager.h" />
     <ClInclude Include="Sources\Game\Scene\ShareData\ShareData.h" />

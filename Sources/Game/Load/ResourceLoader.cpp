@@ -65,8 +65,10 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::FireMagicEffect, TextureResource(L"Protected/fire_magic_effect_a.jpg"));
 		textureResourceManager->AddResource(TextureID::FireMagicEffect,     L"Protected/fire_magic_effect_b.png");
 		// ポーズシーンで使うテクスチャも読みこんでおく
-		textureResourceManager->AddResource(TextureID::BlackBack, TextureResource(L"Protected/black_back1280.png"));
-		textureResourceManager->AddResource(TextureID::UIFrame,   TextureResource(L"Protected/title_ui_frame.png"));
+		textureResourceManager->AddResource(TextureID::Fade,    TextureResource(L"Protected/fade_texture1280.png"));
+		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
+		// 敗北リザルトシーンで使うテクスチャも読みこんでおく
+		textureResourceManager->AddResource(TextureID::YouLose, TextureResource(L"Protected/you_lose.png"));
 		// シェーダの読み込み
 		vertexShaderResourceManager->AddResource(VertexShaderID::Default,       VertexShaderResource(L"DefaultVS.cso", VertexShaderID::Default));
 		geometryShaderResourceManager->AddResource(GeometryShaderID::Billboard, GeometryShaderResource(L"BillboardGS.cso"));

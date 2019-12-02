@@ -32,10 +32,6 @@ public:
 private:
 	// リクエストシーンインタフェース
 	ISceneRequest*                                           m_pSceneRequest;
-	// エフェクトファクトリインタフェース
-	std::unique_ptr<DirectX::IEffectFactory>                 m_effectFactory;
-	// コモンステート
-	std::unique_ptr <DirectX::CommonStates>                  m_commonStates;
 
 	// タイマー
 	float                                                    m_time;

@@ -105,6 +105,14 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 		m_parameterLoader->Reload();
 	}
 
+	// 勝敗を判定する
+	if (m_playerManager->Player1Win()) {
+
+	}
+	else if (m_playerManager->Player1Lose() || ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F3)) {
+		m_pSceneRequest->RequestScene(SceneID::LoseResult, RequestSceneType::StackScene);
+	}
+
 	// プレイヤーマネージャを更新する
 	m_playerManager->Update(timer);
 

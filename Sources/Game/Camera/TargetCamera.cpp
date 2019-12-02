@@ -38,6 +38,11 @@ TargetCamera::TargetCamera(const IObject* targetObject, DirectX::SimpleMath::Vec
 /// ターゲットカメラを更新する
 /// </summary>
 void TargetCamera::Update() {
+	// 追従するオブジェクトが存在しないなら処理しない
+	if (!m_pTargetObject) {
+		return;
+	}
+
 	m_targetMatrix = DirectX::SimpleMath::Matrix::Lerp(m_targetMatrix, m_pTargetObject->GetMatrix(), m_lerpSpeed);
 	m_eye = DirectX::SimpleMath::Vector3::Transform(m_relativeEye, m_matrix*m_targetMatrix);
 	m_target = DirectX::SimpleMath::Vector3::Transform(m_relativeTarget, m_matrix*m_targetMatrix);

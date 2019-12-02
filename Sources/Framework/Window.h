@@ -1,6 +1,6 @@
 #pragma once
-#ifndef  WINDOW_DEFINED
-#define  WINDOW_DEFINED
+#ifndef WINDOW_DEFINED
+#define WINDOW_DEFINED
 
 
 #include "Game.h"
@@ -41,4 +41,4 @@ private:
 };
 
 
-#endif	// WINDOW_DEFINED
+#endif //!WINDOW_DEFINED

@@ -49,8 +49,14 @@ public:
 	const Collider* GetCollider() const override;
 	// プレイヤーIDを取得する
 	PlayerID GetPlayerID() const;
+	// 他のプレイヤーを設定する
+	void SetOtherPlayers(std::vector<std::unique_ptr<Player>>& pOtherPlayers);
+	// プレイヤーのHPが0以下か取得する
+	bool IsDead() const;
 	// 魔法のダメージ倍率を取得する
 	float GetMagicPowerRate(ElementID elementId) const;
+
+public:
 	// エレメントの取得処理を行う
 	void GetElement(ElementID elementId);
 	// プレイヤー同士の衝突処理を行う

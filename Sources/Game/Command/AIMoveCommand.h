@@ -18,6 +18,8 @@ class AIMoveCommand : public Command {
 public:
 	// コンストラクタ
 	AIMoveCommand();
+	// デストラクタ
+	~AIMoveCommand();
 
 public:
 	// AI移動コマンドを初期化する

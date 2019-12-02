@@ -11,6 +11,9 @@
 /// </summary>
 class RenderCommand : public Command {
 public:
+	virtual ~RenderCommand() = default;
+
+public:
 	// ƒvƒŒƒCƒ„[‚ğ•`‰æ‚·‚é
 	virtual void Render(const Player& player, const DirectX::SimpleMath::Matrix& view,
 		const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const = 0;

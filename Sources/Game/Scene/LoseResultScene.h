@@ -1,6 +1,6 @@
 #pragma once
-#ifndef TITLE_SCENE_DEFINED
-#define TITLE_SCENE_DEFINED
+#ifndef LOSE_RESULT_SCENE_DEFINED
+#define LOSE_RESULT_SCENE_DEFINED
 
 
 #include "IScene.h"
@@ -13,23 +13,23 @@ class ScaleUpUI;
 
 
 /// <summary>
-/// タイトルシーンクラス
+/// 敗北リザルトシーンクラス
 /// </summary>
-class TitleScene : public IScene {
+class LoseResultScene : public IScene {
 public:
 	// コンストラクタ
-	TitleScene();
+	LoseResultScene();
 	// デストラクタ
-	~TitleScene();
+	~LoseResultScene();
 
 public:
-	// タイトルシーンを初期化する
+	// 敗北リザルトシーンを初期化する
 	void Initialize(ISceneRequest* pSceneRequest) override;
-	// タイトルシーンを更新する
+	// 敗北リザルトシーンを更新する
 	void Update(const DX::StepTimer& timer) override;
-	// タイトルシーンを描画する
+	// 敗北リザルトシーンを描画する
 	void Render(DirectX::SpriteBatch* spriteBatch) override;
-	// タイトルシーンを終了する
+	// リザルトシーンを終了する
 	void Finalize() override;
 
 private:
@@ -50,6 +50,4 @@ private:
 };
 
 
-#endif // !TITLE_SCENE_DEFINED
-
-
+#endif // !LOSE_RESULT_SCENE_DEFINED

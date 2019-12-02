@@ -1,35 +1,35 @@
-#include "PauseScene.h"
+#include "LoseResultScene.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
-#include <Utils\MouseWrapper.h>
 #include <Utils\MathUtils.h>
 #include <Utils\UIObserver.h>
 #include <Utils\ScaleUpUI.h>
-#include <Utils\LoadDataManager.h>
+#include <Utils\MouseWrapper.h>
 #include "ISceneRequest.h"
-#include <Game\Load\ResourceLoader.h>
 
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
-PauseScene::PauseScene() {
+LoseResultScene::LoseResultScene() {
 
 }
 
 /// <summary>
 /// デストラクタ
 /// </summary>
-PauseScene::~PauseScene() {
+LoseResultScene::~LoseResultScene() {
 }
 
 /// <summary>
-///	ポーズシーンを初期化する
+///	敗北リザルトシーンを初期化する
 /// </summary>
-/// <param name="pSceneRequest">リクエストシーンインタフェース</param>
-void PauseScene::Initialize(ISceneRequest* pSceneRequest) {
+/// <param name="pSceneRequest"></param>
+void LoseResultScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pSceneRequest = pSceneRequest;
+
+	m_time = 0.0f;
 
 	// UIを初期化する
 	InitializeUI();
@@ -39,26 +39,19 @@ void PauseScene::Initialize(ISceneRequest* pSceneRequest) {
 }
 
 /// <summary>
-/// ポーズシーンを更新する
+/// 敗北リザルトシーンを更新する
 /// </summary>
-/// <param name="timer">ステップタイマー</param>
-void PauseScene::Update(const DX::StepTimer& timer) {
-	timer;
+/// <param name="timer"></param>
+void LoseResultScene::Update(const DX::StepTimer& timer) {
+	float elapesd_time = static_cast<float>(timer.GetElapsedSeconds());
 
-	// F2キーでパラメータを再読み込みする
-	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F2)) {
-		LoadDataManager::GetIns()->Reload(LoadDataID::PlayScene);
-	}
-
-	// エスケープキーを押して、プレイシーンを再開する
-	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
-		Resume();
-		return;
-	}
+	m_time += elapesd_time;
 
 	// UIを更新する
-	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
-		(*itr)->Update(timer);
+	if (m_time >= 3.0f) {
+		for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+			(*itr)->Update(timer);
+		}
 	}
 
 	// イベントを取得しているかどうか確認する
@@ -66,15 +59,11 @@ void PauseScene::Update(const DX::StepTimer& timer) {
 		UIEventID event_id = m_uiObserver->GetEventID();
 		// イベントに応じてシーンを切り替える
 		switch (event_id) {
-		// 再開する
-		case UIEventID::Resume:
-			Resume();
-			return;
-		// キャラセレクトに戻る
+			// キャラセレクトに戻る
 		case UIEventID::CharaSelect:
 			m_pSceneRequest->RequestScene(SceneID::CharaSelect);
 			break;
-		// タイトルに戻る
+			// タイトルに戻る
 		case UIEventID::Title:
 			m_pSceneRequest->RequestScene(SceneID::Title);
 			break;
@@ -83,71 +72,82 @@ void PauseScene::Update(const DX::StepTimer& timer) {
 			break;
 		}
 	}
-
 }
 
 /// <summary>
-/// ポーズシーンを描画する
+/// 敗北リザルトシーンを描画する
 /// </summary>
-/// <param name="spriteBatch">スプライトバッチ</param>
-void PauseScene::Render(DirectX::SpriteBatch* spriteBatch) {
+/// <param name="spriteBatch"></param>
+void LoseResultScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, ServiceLocater<DirectX::CommonStates>::Get()->NonPremultiplied());
+
+	// 時間経過でフェードアウトを行う
+	float alpha;
+	if (m_time <= 3.0f) {
+		alpha = m_time / 3.0f*0.8f;
+	}
+	else {
+		alpha = 0.8f;
+	}
 
 	// プレイ画面に黒を重ねて暗くする
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Fade);
-	spriteBatch->Draw(texture->GetResource().Get(), DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Color(0, 0, 0, 0.8f));
+	spriteBatch->Draw(texture->GetResource().Get(), DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Color(0, 0, 0, alpha));
+
+	// 敗北テクスチャを描画する
+	if (m_time >= 3.0f) {		
+		texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::YouLose);
+		// 時間経過でフェードインを行う
+		alpha = std::min((m_time - 3.0f) / 4.0f, 1.0f);
+		DirectX::SimpleMath::Vector2 pos(ServiceLocater<DirectX11>::Get()->GetWidth()*0.5f, 100.0f);
+		spriteBatch->Draw(texture->GetResource().Get(), pos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, alpha), 0,
+			texture->GetCenter(), DirectX::SimpleMath::Vector2::One);
+	}
 
 	// UIを描画する
-	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
-		(*itr)->Render(spriteBatch);
+	if (m_time >= 4.0f) {
+		for (std::vector<std::unique_ptr<ScaleUpUI>>::const_iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+			(*itr)->Render(spriteBatch);
+		}
 	}
-	
+
 
 	spriteBatch->End();
 }
 
 /// <summary>
-/// ポーズシーンを終了する
+/// リザルトシーンを終了する
 /// </summary>
-void PauseScene::Finalize() {
-	// UIからオブザーバをデタッチする
-	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
-		(*itr)->Detach(m_uiObserver.get());
-	}
+void LoseResultScene::Finalize() {
+
 }
 
 /// <summary>
 /// UIを初期化する
 /// </summary>
-void PauseScene::InitializeUI() {
+void LoseResultScene::InitializeUI() {
+	// オブザーバを生成する
 	m_uiObserver = std::make_unique<UIObserver>();
 
 	const DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	DirectX::SimpleMath::Vector2 screen_size(static_cast<float>(directX->GetWidth()), static_cast<float>(directX->GetHeight()));
 
 	// UIの生成
-	// 再開
-	{
-		std::unique_ptr<ScaleUpUI> resume = std::make_unique<ScaleUpUI>(
-			UIEventID::Resume, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.25f));
-		resume->SetText(L"Resume");
-		m_menuUIs.emplace_back(std::move(resume));
-	}
 	// キャラセレクト
 	{
 		std::unique_ptr<ScaleUpUI> charaselect = std::make_unique<ScaleUpUI>(
-			UIEventID::CharaSelect, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.5f));
+			UIEventID::CharaSelect, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.3f, screen_size.y*0.8f));
 		charaselect->SetText(L"CharaSelect");
 		m_menuUIs.emplace_back(std::move(charaselect));
 	}
 	// タイトル 
 	{
 		std::unique_ptr<ScaleUpUI> title = std::make_unique<ScaleUpUI>(
-			UIEventID::Title, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.75f));
+			UIEventID::Title, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.7f, screen_size.y*0.8f));
 		title->SetText(L"Title");
 		m_menuUIs.emplace_back(std::move(title));
 	}
-	
+
 	// 共通の処理
 	const FontResource* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default);
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::UIFrame);
@@ -159,14 +159,5 @@ void PauseScene::InitializeUI() {
 		// UIにオブザーバをアタッチする
 		(*itr)->Attach(m_uiObserver.get());
 	}
-}
-
-/// <summary>
-/// ポーズを解除する
-/// </summary>
-void PauseScene::Resume() {
-	m_pSceneRequest->PopScene();
-	// マウスカーソルを非表示に戻す
-	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
 }
 

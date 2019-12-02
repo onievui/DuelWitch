@@ -30,8 +30,13 @@ public:
 public:
 	// プレイヤーを取得する
 	std::vector<std::unique_ptr<Player>>* GetPlayers();
+	// プレイヤー1が勝利しているか判定する
+	bool Player1Win();
+	// プレイヤー1が敗北しているか判定する
+	bool Player1Lose();
 
 private:
+	// プレイヤー
 	std::vector<std::unique_ptr<Player>> m_players;
-
+	//
 };

@@ -77,5 +77,3 @@ private:
 
 
 #endif // !PLAY_SCENE_DEFINED
-
-

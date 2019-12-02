@@ -30,7 +30,8 @@ enum class TextureID {
 	MagicAiming,
 	HpBar,
 	SpBar,
-	BlackBack,
+	Fade,
+	YouLose,
 
 	Particle,
 	FieldShield,

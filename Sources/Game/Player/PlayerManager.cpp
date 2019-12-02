@@ -47,10 +47,15 @@ void PlayerManager::Initialize(MagicManager* pMagicManager, Camera* camera) {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void PlayerManager::Update(const DX::StepTimer& timer) {
+	// 生存していないプレイヤーを削除する
+	m_players.erase(std::remove_if(m_players.begin(), m_players.end(), std::mem_fn(&Player::IsDead)), m_players.end());
+
 	// プレイヤーを更新する
 	for (std::vector<std::unique_ptr<Player>>::iterator itr = m_players.begin(); itr != m_players.end(); ++itr) {
+		(*itr)->SetOtherPlayers(m_players);
 		(*itr)->Update(timer);
 	}
+
 }
 
 /// <summary>
@@ -76,4 +81,41 @@ void PlayerManager::Render(const DirectX::SimpleMath::Matrix& view, const Direct
 /// </returns>
 std::vector<std::unique_ptr<Player>>* PlayerManager::GetPlayers() {
 	return &m_players;
+}
+
+/// <summary>
+/// プレイヤー1が勝利しているか判定する
+/// </summary>
+/// <returns>
+/// true : 勝利している
+/// false : 勝利していない
+/// </returns>
+bool PlayerManager::Player1Win() {
+	// 生存しているプレイヤーがいないなら（同時に倒れた場合）勝利扱いにする
+	if (m_players.size() == 0) {
+		return true;
+	}
+	// 生存しているプレイヤーが1人で、プレイヤー1なら勝利
+	return m_players[0]->GetPlayerID() == PlayerID::Player1 && m_players.size() == 1;
+}
+
+/// <summary>
+/// プレイヤー1が敗北しているか判定する
+/// </summary>
+/// <returns>
+/// true : 敗北している
+/// false : 敗北していない
+/// </returns>
+bool PlayerManager::Player1Lose() {
+	// 生存しているプレイヤーがいないなら（同時に倒れた場合）勝利扱いにする
+	if (m_players.size() > 0) {
+		return false;
+	}
+	// プレイヤー1が生存していないなら敗北
+	for (std::vector<std::unique_ptr<Player>>::const_iterator itr = m_players.cbegin(); itr != m_players.cend(); ++itr) {
+		if ((*itr)->GetPlayerID() == PlayerID::Player1) {
+			return false;
+		}
+	}
+	return true;
 }

@@ -6,7 +6,7 @@
 #include "CharaSelectScene.h"
 #include "PlayScene.h"
 #include "PauseScene.h"
-#include "ResultScene.h"
+#include "LoseResultScene.h"
 
 
 
@@ -45,7 +45,7 @@ void SceneManager::Initialize() {
 	m_sceneCreateFunc.emplace(SceneID::CharaSelect, MakeSceneCreateFunc<CharaSelectScene>());
 	m_sceneCreateFunc.emplace(SceneID::Play,        MakeSceneCreateFunc<PlayScene>());
 	m_sceneCreateFunc.emplace(SceneID::Pause,       MakeSceneCreateFunc<PauseScene>());
-	m_sceneCreateFunc.emplace(SceneID::Result,      MakeSceneCreateFunc<ResultScene>());
+	m_sceneCreateFunc.emplace(SceneID::LoseResult,  MakeSceneCreateFunc<LoseResultScene>());
 	std::queue<std::pair<SceneID, RequestSceneType>>().swap(m_requestQueue);
 }
 
