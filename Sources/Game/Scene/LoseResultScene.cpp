@@ -111,7 +111,6 @@ void LoseResultScene::Render(DirectX::SpriteBatch* spriteBatch) {
 		}
 	}
 
-
 	spriteBatch->End();
 }
 

@@ -1,6 +1,6 @@
 {
-  "MaxNum": [ 3, 1, 30, 30 ],
-  "_MaxNum_Size": 4,
+  "MaxNum": [ 3, 1, 30, 30, 10 ],
+  "_MaxNum_Size": 5,
 
   "PlayerTrail": {
     "ParticleNum": 40,
@@ -38,14 +38,15 @@
     "Color": [ 217, 80, 13, 255 ]
   },
 
-  "Freeze": {
+  "FreezeMagic": {
 
   },
-  "Thunder": {
+  "ThunderMagic": {
 
   },
-  "ThunderStrike": {
-
+  "ThunderStrikeMagic": {
+    "ParticleNum": 1,
+    "Scale": 70.0
   }
 
 }

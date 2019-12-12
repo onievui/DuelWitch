@@ -37,6 +37,7 @@ enum class TextureID {
 	Particle,
 	FieldShield,
 	FireMagicEffect,
+	ThunderStrikeMagicEffect,
 
 	Num
 };
@@ -109,6 +110,7 @@ enum class GeometryShaderID {
 /// </summary>
 enum class PixelShaderID {
 	Default,
+	ThunderStrikeMagic,
 	Num
 };
 

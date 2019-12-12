@@ -97,7 +97,7 @@ bool MagicParameter::LoadData() {
 	}
 	{
 		JsonWrapper::value fire(root["Fire"]);
-		fireParam.power    = fire["Power"].GetNumF();
+		fireParam.power     = fire["Power"].GetNumF();
 		fireParam.wayAngle  = Math::Deg2Rad(fire["WayAngle_Deg"].GetNumF());
 		fireParam.radius    = fire["Radius"].GetNumF();
 		fireParam.height    = fire["Height"].GetNumF();
@@ -106,9 +106,11 @@ bool MagicParameter::LoadData() {
 	}
 	{
 		JsonWrapper::value freeze(root["Freeze"]);
-		freezeParam.power   = freeze["Power"].GetNumF();
-		freezeParam.radius   = freeze["Radius"].GetNumF();
-		freezeParam.lifeTime = freeze["LifeTime"].GetNumF();
+		freezeParam.power        = freeze["Power"].GetNumF();
+		freezeParam.radius       = freeze["Radius"].GetNumF();
+		freezeParam.lifeTime     = freeze["LifeTime"].GetNumF();
+		freezeParam.rotateSpeed  = Math::Deg2Rad(freeze["RotateSpeed_Deg"].GetNumF());
+		freezeParam.rotateRadius = freeze["RotateRadius"].GetNumF();
 	}
 	{
 		JsonWrapper::value thunder(root["Thunder"]);

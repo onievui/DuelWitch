@@ -12,15 +12,14 @@ PlayerManager::PlayerManager() {
 	DirectX::SimpleMath::Vector3 player_pos(0, 0, -75);
 	// プレイヤーの初期座標をずらすための回転を生成する
 	DirectX::SimpleMath::Quaternion player_pos_rot =
-		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, Math::PI2 / 3);
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, Math::PI2 / static_cast<int>(PlayerID::Num));
 
 	// プレイヤーを生成する
-	player_pos = DirectX::SimpleMath::Vector3::Transform(player_pos, player_pos_rot);
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player1, player_pos));
-	player_pos = DirectX::SimpleMath::Vector3::Transform(player_pos, player_pos_rot);
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player2, player_pos));
-	player_pos = DirectX::SimpleMath::Vector3::Transform(player_pos, player_pos_rot);
-	m_players.emplace_back(std::make_unique<Player>(PlayerID::Player3, player_pos));
+	for (int i = 0; i < static_cast<int>(PlayerID::Num); ++i) {
+		// 少しづつ回転させる
+		player_pos = DirectX::SimpleMath::Vector3::Transform(player_pos, player_pos_rot);
+		m_players.emplace_back(std::make_unique<Player>(static_cast<PlayerID>(i), player_pos));
+	}
 }
 
 /// <summary>
@@ -95,8 +94,9 @@ bool PlayerManager::Player1Win() {
 	if (m_players.size() == 0) {
 		return true;
 	}
-	// 生存しているプレイヤーが1人で、プレイヤー1なら勝利
-	return m_players[0]->GetPlayerID() == PlayerID::Player1 && m_players.size() == 1;
+	// プレイヤー1だけが生存しているなら勝利
+	return std::all_of(m_players.cbegin(), m_players.cend(),
+		[](const std::unique_ptr<Player>& player) { return player->GetPlayerID() == PlayerID::Player1; });
 }
 
 /// <summary>
@@ -108,14 +108,11 @@ bool PlayerManager::Player1Win() {
 /// </returns>
 bool PlayerManager::Player1Lose() {
 	// 生存しているプレイヤーがいないなら（同時に倒れた場合）勝利扱いにする
-	if (m_players.size() > 0) {
+	if (m_players.size() == 0) {
 		return false;
 	}
+
 	// プレイヤー1が生存していないなら敗北
-	for (std::vector<std::unique_ptr<Player>>::const_iterator itr = m_players.cbegin(); itr != m_players.cend(); ++itr) {
-		if ((*itr)->GetPlayerID() == PlayerID::Player1) {
-			return false;
-		}
-	}
-	return true;
+	return std::all_of(m_players.cbegin(), m_players.cend(),
+		[](const std::unique_ptr<Player>& player) { return player->GetPlayerID() != PlayerID::Player1; });
 }

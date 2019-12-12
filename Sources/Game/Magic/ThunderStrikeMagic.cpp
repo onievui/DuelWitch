@@ -5,8 +5,10 @@
 #include <Utils\MathUtils.h>
 #include <Parameters\MagicParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
-#include "MagicID.h"
 #include <Game\Collision\CapsuleCollider.h>
+#include "MagicID.h"
+#include <Game\Effect\EffectManager.h>
+#include <Game\Effect\IEffectEmitter.h>
 
 
 /// <summary>
@@ -44,6 +46,10 @@ void ThunderStrikeMagic::Create(const MagicInfo& magicInfo, const DirectX::Simpl
 	m_color = DirectX::Colors::Yellow;
 	m_vel = dir * parameter.moveSpeed;
 	m_lifeTime = parameter.lifeTime;
+
+	// 魔法のエフェクトを生成する
+	m_pEffect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::ThunderStrikeMagic, pos, dir);
+	m_pEffect->SetParent(&m_transform);
 }
 
 /// <summary>
@@ -76,10 +82,19 @@ void ThunderStrikeMagic::Lost() {
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void ThunderStrikeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
-	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
-		->GetResource(GeometricPrimitiveID::ThunderStrikeMagic);
-	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
+	//const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
+	//	->GetResource(GeometricPrimitiveID::ThunderStrikeMagic);
+	//resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
 	//m_sphereCollider.Render(view, proj);
+	view, proj;
+}
+
+/// <summary>
+/// 落雷魔法の終了処理を行う
+/// </summary>
+void ThunderStrikeMagic::Finalize() {
+	// エフェクトを消す
+	m_pEffect->SetUsed(false);
 }
 
 /// <summary>

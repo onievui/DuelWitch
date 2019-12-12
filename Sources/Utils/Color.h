@@ -1,6 +1,6 @@
 #pragma once
-#ifndef COLORDEFINED
-#define COLORDEFINED
+#ifndef COLOR_DEFINED
+#define COLOR_DEFINED
 
 
 class RGBColor;
@@ -140,4 +140,4 @@ private:
 };
 
 
-#endif // !COLORDEFINED
+#endif // !COLOR_DEFINED

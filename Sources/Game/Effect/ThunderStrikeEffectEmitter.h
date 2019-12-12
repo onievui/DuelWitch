@@ -13,10 +13,10 @@ struct BlurParam;
 /// <summary>
 /// 通常魔法エフェクトエミッタークラス
 /// </summary>
-class ThuderStrikeEffectEmitter : public EffectEmitter {
+class ThunderStrikeEffectEmitter : public EffectEmitter {
 public:
 	// コンストラクタ
-	ThuderStrikeEffectEmitter();
+	ThunderStrikeEffectEmitter();
 
 public:
 	// エフェクトエミッターを生成する
@@ -36,13 +36,15 @@ private:
 	// エフェクト
 	std::vector<std::unique_ptr<ThunderStrikeEffect>> m_effects;
 	// 視線ベクトル
-	DirectX::SimpleMath::Vector3 m_eyeVec;
+	DirectX::SimpleMath::Vector3                      m_eyeVec;
 	// ピクセルシェーダ用定数バッファ
-	Microsoft::WRL::ComPtr<ID3D11Buffer>      m_cBufferPixel;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>              m_cBufferPixel;
+	// アニメーション用カウンタ
+	int m_textureIndex;
 	// タイムデータ
-	DirectX::SimpleMath::Vector4 m_time;
+	DirectX::SimpleMath::Vector4                      m_time;
 	// ブラーの方向
-	DirectX::SimpleMath::Vector2 m_blurDirection;
+	DirectX::SimpleMath::Vector2                      m_blurDirection;
 };
 
 

@@ -54,23 +54,19 @@ void ElementManager::Update(const DX::StepTimer& timer) {
 		itr != m_elements.end();
 		LamdaUtils::FindIfNext(itr, m_elements.end(), LamdaUtils::NotNull())) {
 		(*itr)->Update(timer);
+		// フィールドの範囲内に収めるようにする
 		(*itr)->FitField(fied_data->fieldCenter, fied_data->fieldRadius);
+		// 未使用のエレメントをnullにする
 		if (!(*itr)->IsUsed()) {
 			*itr = nullptr;
 		}
 	}
 
 	// エレメントを生成する
-	m_creationTimer = m_creationTimer;
 	const float creation_interval = ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->creationInterval;
+	// インターバルを超えたら生成する
 	if (m_creationTimer >= creation_interval) {
-		//DirectX::SimpleMath::Vector3 area_offset(0, 0, -60);
-		//DirectX::SimpleMath::Vector3 area_start = DirectX::SimpleMath::Vector3(-3, -3, -2);
-		//DirectX::SimpleMath::Vector3 area_end = DirectX::SimpleMath::Vector3(3, 3, 2);
-		//CreateElement(area_start + area_offset, area_end + area_offset, 3);
-		//area_offset.z = 60.0f;
-		//CreateElement(area_start + area_offset, area_end + area_offset, 3);
-		
+		// 2方向に3つずつ生成する
 		CreateElement(m_radius, 2, 3);
 		m_creationTimer -= creation_interval;
 	}

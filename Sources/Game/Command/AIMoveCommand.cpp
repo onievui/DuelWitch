@@ -147,6 +147,10 @@ void AIMoveCommand::ExecuteAI(Player& player) {
 	float distance = 0;
 	// 最も近い敵プレイヤーを取得する
 	const Player* other_player = GetNearestPlayer(pos, GetOtherPlayers(player), &distance);
+	// 他のプレイヤーがいない場合は処理しない
+	if (!other_player) {
+		return;
+	}
 	const PlayerStatus& other_status = GetStatus(*other_player);
 
 	// 最も近い敵プレイヤーとのHPの差

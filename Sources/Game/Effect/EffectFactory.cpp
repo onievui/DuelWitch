@@ -10,6 +10,7 @@
 #include "FieldShieldEffectEmitter.h"
 #include "NormalMagicEffectEmitter.h"
 #include "FireMagicEffectEmitter.h"
+#include "ThunderStrikeEffectEmitter.h"
 
 
 /// <summary>
@@ -52,6 +53,7 @@ void EffectFactory::Initialize(EffectManager* effectManager) {
 	InitializeEffect<FieldShieldEffectEmitter>(EffectID::FieldShield);
 	InitializeEffect<NormalMagicEffectEmitter>(EffectID::NormalMagic);
 	InitializeEffect<FireMagicEffectEmitter>(EffectID::FireMagic);
+	InitializeEffect<ThunderStrikeEffectEmitter>(EffectID::ThunderStrikeMagic);
 
 }
 
@@ -94,3 +96,16 @@ int EffectFactory::GetEffectMaxNum() {
 	}
 	return total;
 }
+
+template<class T, class... Args>
+/// <summary>
+/// 各エフェクトを初期化する
+/// </summary>
+/// <param name="id">エフェクトのID</param>
+inline void EffectFactory::InitializeEffect(EffectID id, Args&&... args) {
+	for (std::vector<std::unique_ptr<IEffectEmitter>>::iterator itr = m_effects.begin() + m_beginIndex[static_cast<int>(id)],
+		end = itr + m_maxNum[static_cast<int>(id)]; itr != end; ++itr) {
+		*itr = std::make_unique<T>(args...);
+	}
+}
+

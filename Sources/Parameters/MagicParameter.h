@@ -47,6 +47,8 @@ public:
 		float power;
 		float radius;
 		float lifeTime;
+		float rotateSpeed;
+		float rotateRadius;
 	};
 	freeze_param freezeParam;
 

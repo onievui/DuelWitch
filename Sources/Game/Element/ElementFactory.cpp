@@ -52,22 +52,18 @@ Element* ElementFactory::Create(ElementID id, const DirectX::SimpleMath::Vector3
 	switch (id) {
 	case ElementID::Fire:
 		color = DirectX::Colors::Red;
-		color.w *= alpha_rate;
-		(*itr)->Create(id, position, color);
 		break;
 	case ElementID::Thunder:
 		color = DirectX::Colors::Yellow;
-		color.w *= alpha_rate;
-		(*itr)->Create(id, position, color);
 		break;
 	case ElementID::Freeze:
 		color = DirectX::Colors::SkyBlue;
-		color.w *= alpha_rate;
-		(*itr)->Create(id, position, color);
 		break;
 	default:
 		return nullptr;
 	}
+	color.w *= alpha_rate;
+	(*itr)->Create(id, position, color);
 
 	(*itr)->SetUsed(true);
 

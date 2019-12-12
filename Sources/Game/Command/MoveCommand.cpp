@@ -173,8 +173,9 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	
 	MouseWrapper* mouse = ServiceLocater<MouseWrapper>::Get();
 	// 右クリックしていて、残りSPが10％以上ならブースト移動
-	if (mouse->GetTracker()->rightButton == DirectX::Mouse::ButtonStateTracker::ButtonState::HELD &&
-		ref_status.sp / ref_status.maxSp >= 0.1f) {
+	const bool use_boost = mouse->GetTracker()->rightButton == DirectX::Mouse::ButtonStateTracker::ButtonState::HELD;
+	const bool can_boost = ref_status.sp / ref_status.maxSp >= 0.1f;
+	if (use_boost && can_boost) {
 		pos += move * move_speed*elapsed_time*ref_status.boostSpeedRate;
 		// SPを減らす
 		ref_status.sp -= ref_status.boostSpCost*elapsed_time;
@@ -228,9 +229,9 @@ void MoveCommand::ExcuteRoll(Player& player, const DX::StepTimer& timer) {
 
 	// 移動後の進行度
 	float t = m_rollInfo.rollingTime / rolling_time;
+	t = t * (2 - t);
 	// 移動前の進行度
 	float t2 = (m_rollInfo.rollingTime - elapsed_time) / rolling_time;
-	t = t * (2 - t);
 	t2 = t2 * (2 - t2);
 	// 左にロールする場合
 	if (m_rollInfo.isRollingLeft) {

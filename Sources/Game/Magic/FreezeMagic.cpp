@@ -2,6 +2,7 @@
 #include <Framework/DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\MathUtils.h>
 #include <Parameters\MagicParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
 #include "MagicID.h"
@@ -13,7 +14,9 @@
 /// </summary>
 FreezeMagic::FreezeMagic()
 	: Magic()
-	, m_pPlayerPos() {
+	, m_pPlayerPos()
+	, m_time()
+	, m_rotateRadius() {
 	const MagicParameter::freeze_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->freezeParam;
 	m_collider = std::make_unique<SphereCollider>(&m_transform, parameter.radius);
 }
@@ -37,8 +40,13 @@ void FreezeMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::
 	m_transform.SetPosition(pos);
 	static_cast<SphereCollider*>(m_collider.get())->SetRadius(parameter.radius);
 	m_pPlayerPos = &pos;
-	m_color = DirectX::Colors::SkyBlue + DirectX::SimpleMath::Color(0, 0, 0, -0.8f);
+	m_time = 0.0f;
+	m_rotateRadius = 0.0f;
+	m_color = DirectX::Colors::SkyBlue + DirectX::SimpleMath::Color(0, 0, 0, 0.8f);
+	// 向きをXZ方向に変換する
 	m_vel = dir;
+	m_vel.y = 0.0f;
+
 	m_lifeTime = parameter.lifeTime;
 }
 
@@ -48,13 +56,27 @@ void FreezeMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::
 /// <param name="timer">ステップタイマー</param>
 void FreezeMagic::Update(const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	const MagicParameter::freeze_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->freezeParam;
+
+	// 生存時間が無くなったら消滅する
 	m_lifeTime -= elapsed_time;
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
-	DirectX::SimpleMath::Vector3 pos = *m_pPlayerPos;
-	//pos += m_vel;
-	m_transform.SetPosition(pos);
+
+	// タイマーを進める
+	m_time += elapsed_time;
+
+	// プレイヤーの位置を中心とする
+	DirectX::SimpleMath::Vector3 center_pos = *m_pPlayerPos;
+	// 回転したときの位置を求める
+	m_rotateRadius = Math::Lerp(m_rotateRadius, parameter.rotateRadius, 0.2f);
+	DirectX::SimpleMath::Vector3 add_pos = DirectX::SimpleMath::Vector3::Transform(
+		m_vel*m_rotateRadius,
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, m_time*parameter.rotateSpeed));
+	
+	// プレイヤーの位置に回転した位置を足す
+	m_transform.SetPosition(center_pos + add_pos);
 
 	m_world = m_transform.GetMatrix();
 }

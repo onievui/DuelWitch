@@ -38,7 +38,10 @@ public:
 private:
 	// プレイヤーの座標
 	const DirectX::SimpleMath::Vector3*          m_pPlayerPos;
-
+	// 回転用タイマー
+	float                                        m_time;
+	// 回転半径
+	float                                        m_rotateRadius;
 };
 
 

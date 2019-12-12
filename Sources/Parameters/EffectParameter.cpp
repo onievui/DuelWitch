@@ -60,6 +60,11 @@ bool EffectParameter::Load() {
 		fireMagicParam.minLifeTime      = fire_magic["MinLifeTime"].GetNumF();
 		fireMagicParam.color            = fire_magic["Color"].GetVector4();
 	}
+	{
+		JsonWrapper::value thunder_strike_magic(root["ThunderStrikeMagic"]);
+		thunderStrikeMagicParam.particleNum = thunder_strike_magic["ParticleNum"].GetNumI();
+		thunderStrikeMagicParam.scale = thunder_strike_magic["Scale"].GetNumF();
+	}
 
 	return true;
 }

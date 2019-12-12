@@ -7,11 +7,12 @@
 /// エフェクトのID
 /// </summary>
 enum class EffectID {
-	PlayerTrail, // プレイヤーの軌道エフェクト
-	FieldShield, // フィールドとの衝突エフェクト
-	NormalMagic, // 通常魔法エフェクト
-	FireMagic,	 // 炎魔法エフェクト
-	
+	PlayerTrail,        // プレイヤーの軌道エフェクト
+	FieldShield,        // フィールドとの衝突エフェクト
+	NormalMagic,        // 通常魔法エフェクト
+	FireMagic,	        // 炎魔法エフェクト
+	ThunderStrikeMagic, // 落雷魔法エフェクト
+
 	Num,
 };
 

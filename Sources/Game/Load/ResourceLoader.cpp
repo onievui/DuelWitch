@@ -60,10 +60,14 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::SpBar,           TextureResource(L"Protected/sp_bar_blue.png"));
 		textureResourceManager->AddResource(TextureID::SpBar,               L"Protected/sp_bar_black.png");
 		// エフェクトで使うテクスチャの読み込み
-		textureResourceManager->AddResource(TextureID::Particle,        TextureResource(L"Protected/particle.png"));
-		textureResourceManager->AddResource(TextureID::FieldShield,     TextureResource(L"Protected/field_shield_effect.png"));
-		textureResourceManager->AddResource(TextureID::FireMagicEffect, TextureResource(L"Protected/fire_magic_effect_a.jpg"));
-		textureResourceManager->AddResource(TextureID::FireMagicEffect,     L"Protected/fire_magic_effect_b.png");
+		textureResourceManager->AddResource(TextureID::Particle,                 TextureResource(L"Protected/particle.png"));
+		textureResourceManager->AddResource(TextureID::FieldShield,              TextureResource(L"Protected/field_shield_effect.png"));
+		textureResourceManager->AddResource(TextureID::FireMagicEffect,          TextureResource(L"Protected/fire_magic_effect_a.jpg"));
+		textureResourceManager->AddResource(TextureID::FireMagicEffect,				L"Protected/fire_magic_effect_b.png");
+		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect, TextureResource(L"Protected/thunder_strike11.png"));
+		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike12.png");
+		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike13.png");
+		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike14.png");
 		// ポーズシーンで使うテクスチャも読みこんでおく
 		textureResourceManager->AddResource(TextureID::Fade,    TextureResource(L"Protected/fade_texture1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
@@ -71,9 +75,10 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::Player1Win, TextureResource(L"Protected/player1_win.png"));
 		textureResourceManager->AddResource(TextureID::YouLose,    TextureResource(L"Protected/you_lose.png"));
 		// シェーダの読み込み
-		vertexShaderResourceManager->AddResource(VertexShaderID::Default,       VertexShaderResource(L"DefaultVS.cso", VertexShaderID::Default));
-		geometryShaderResourceManager->AddResource(GeometryShaderID::Billboard, GeometryShaderResource(L"BillboardGS.cso"));
-		pixelShaderResourceManager->AddResource(PixelShaderID::Default,         PixelShaderResource(L"DefaultPS.cso"));
+		vertexShaderResourceManager->AddResource(VertexShaderID::Default,          VertexShaderResource(L"DefaultVS.cso", VertexShaderID::Default));
+		geometryShaderResourceManager->AddResource(GeometryShaderID::Billboard,    GeometryShaderResource(L"BillboardGS.cso"));
+		pixelShaderResourceManager->AddResource(PixelShaderID::Default,            PixelShaderResource(L"DefaultPS.cso"));
+		pixelShaderResourceManager->AddResource(PixelShaderID::ThunderStrikeMagic, PixelShaderResource(L"ThunderStrikePS.cso"));
 		// モデルの読み込み
 		modelResourceManager->AddResource(ModelID::Bloom,   ModelResource(L"bloom.cmo", L"Protected"));
 		modelResourceManager->AddResource(ModelID::Skydome, ModelResource(L"skydome.cmo", L"Protected"));

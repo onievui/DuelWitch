@@ -18,8 +18,10 @@
   },
   "Freeze": {
     "Power": 10.0,
-    "Radius": 1.25,
-    "LifeTime": 6.0
+    "Radius": 1.0,
+    "LifeTime": 6.0,
+    "RotateSpeed_Deg": 360.0,
+    "RotateRadius": 3.0
   },
   "Thunder": {
     "Power": 0.0,
@@ -35,9 +37,9 @@
   "ThunderStrike": {
     "Power": 10.0,
     "Radius": 2.5,
-    "Height": 75.0,
+    "Height": 70.0,
     "AppearPosY": 150.0,
     "MoveSpeed": 300.0,
-    "LifeTime": 3.0
+    "LifeTime": 5.0
   }
 }

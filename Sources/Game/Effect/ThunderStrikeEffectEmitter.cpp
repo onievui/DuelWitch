@@ -12,9 +12,9 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-ThuderStrikeEffectEmitter::ThuderStrikeEffectEmitter() {
+ThunderStrikeEffectEmitter::ThunderStrikeEffectEmitter() {
 	// メモリを確保しておく
-	m_effects.resize(ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->normalMagicParam.particleNum);
+	m_effects.resize(ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->thunderStrikeMagicParam.particleNum);
 	for (std::vector<std::unique_ptr<ThunderStrikeEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
@@ -32,12 +32,12 @@ ThuderStrikeEffectEmitter::ThuderStrikeEffectEmitter() {
 	ServiceLocater<DirectX11>::Get()->GetDevice().Get()->CreateBuffer(&bd, nullptr, m_cBuffer.GetAddressOf());
 
 	bd.ByteWidth = sizeof(ThunderStrikeBuffer);
-
+	
 	ServiceLocater<DirectX11>::Get()->GetDevice().Get()->CreateBuffer(&bd, nullptr, m_cBufferPixel.GetAddressOf());
 }
 
 
-void ThuderStrikeEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+void ThunderStrikeEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
 	dir;
 	m_transform.SetPosition(pos);
 
@@ -47,11 +47,15 @@ void ThuderStrikeEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, 
 		++itr) {
 		(*itr)->Initialize();
 	}
+
+	m_textureIndex = 0;
 }
 
-void ThuderStrikeEffectEmitter::Update(const DX::StepTimer& timer, const Camera* camera) {
+void ThunderStrikeEffectEmitter::Update(const DX::StepTimer& timer, const Camera* camera) {
 	// Y軸回転のみにするため、Y座標をそろえて向きを取得する
-	m_eyeVec = camera->GetEyePosition() - m_pParent->GetPosition();
+	//m_eyeVec = camera->GetEyePosition() - m_pParent->GetPosition();
+	m_eyeVec = camera->GetEyeVector();
+	m_eyeVec.y = 0.0f;
 	m_eyeVec.Normalize();
 
 	// タイムデータを取得する x:経過時間(トータル秒) y:1Fの経過時間(秒) z:サインカーブ w:未使用
@@ -69,9 +73,17 @@ void ThuderStrikeEffectEmitter::Update(const DX::StepTimer& timer, const Camera*
 		(*itr)->Update(timer);
 	}
 
+	// アニメーション用の画像インデックスを更新する
+	m_textureIndex = static_cast<int>(std::floor(m_time.x * 16)) % 4;
 }
 
-void ThuderStrikeEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
+/// <summary>
+///	エフェクトエミッターを描画する
+/// </summary>
+/// <param name="batch">プリミティブバッチ</param>
+/// <param name="view">ビュー行列</param>
+/// <param name="proj">プロジェクション行列</param>
+void ThunderStrikeEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
 	DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	ID3D11DeviceContext* context = directX->GetContext().Get();
 	DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();
@@ -93,7 +105,7 @@ void ThuderStrikeEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::
 
 	//定数バッファの内容更新
 	context->UpdateSubresource(m_cBuffer.Get(), 0, NULL, &cbuff, 0, 0);
-	context->UpdateSubresource(m_cBufferPixel.Get(), 1, NULL, &cbuff2, 0, 0);
+	context->UpdateSubresource(m_cBufferPixel.Get(), 0, NULL, &cbuff2, 0, 0);
 
 	ID3D11BlendState* blendstate = states->NonPremultiplied();
 	// 透明判定処理
@@ -117,21 +129,21 @@ void ThuderStrikeEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::
 	const GeometryShaderResource* geometry_shader = ServiceLocater<ResourceManager<GeometryShaderResource>>::Get()
 		->GetResource(GeometryShaderID::Billboard);
 	const PixelShaderResource* pixel_shader = ServiceLocater<ResourceManager<PixelShaderResource>>::Get()
-		->GetResource(PixelShaderID::Default);
+		->GetResource(PixelShaderID::ThunderStrikeMagic);
 	context->VSSetShader(vertex_shader->GetResource().Get(), nullptr, 0);
 	context->GSSetShader(geometry_shader->GetResource().Get(), nullptr, 0);
 	context->PSSetShader(pixel_shader->GetResource().Get(), nullptr, 0);
 
 	// テクスチャを割り当てる
-	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Particle);
-	context->PSSetShaderResources(0, 1, texture->GetResource().GetAddressOf());
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::ThunderStrikeMagicEffect);
+	context->PSSetShaderResources(0, 1, texture->GetResource(m_textureIndex).GetAddressOf());
 
 	// 入力レイアウトを割り当てる
 	context->IASetInputLayout(vertex_shader->GetInputLayout());
 
 	// 頂点情報を作成する
 	std::vector<DirectX::VertexPositionColorTexture> vertex;
-	const float partice_scale = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->normalMagicParam.scale;
+	const float partice_scale = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->thunderStrikeMagicParam.scale;
 	for (std::vector<std::unique_ptr<ThunderStrikeEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
@@ -155,7 +167,7 @@ void ThuderStrikeEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::
 /// <returns>
 /// 重み
 /// </returns>
-float ThuderStrikeEffectEmitter::GaussianDistribution(const DirectX::SimpleMath::Vector2& pos, float rho) {
+float ThunderStrikeEffectEmitter::GaussianDistribution(const DirectX::SimpleMath::Vector2& pos, float rho) {
 	return exp(-(pos.x * pos.x + pos.y * pos.y) / (2.0f * rho * rho));
 }
 
@@ -170,7 +182,7 @@ float ThuderStrikeEffectEmitter::GaussianDistribution(const DirectX::SimpleMath:
 /// <returns>
 /// ガウスパラメータ
 /// </returns>
-BlurParam ThuderStrikeEffectEmitter::CalcBlurParam(int width, int height, const DirectX::SimpleMath::Vector2& dir, float deviation, float multiply) {
+BlurParam ThunderStrikeEffectEmitter::CalcBlurParam(int width, int height, const DirectX::SimpleMath::Vector2& dir, float deviation, float multiply) {
 	BlurParam result;
 	result.sampleCount = 16;
 	auto tu = 1.0f / float(width);

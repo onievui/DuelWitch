@@ -69,17 +69,18 @@ public:
 	struct freeze_param {
 
 	};
-	freeze_param freezeParam;
+	freeze_param freezeMagicParam;
 
 	struct thunder_param {
 
 	};
-	thunder_param thunderParam;
+	thunder_param thunderMagicParam;
 
 	struct thunder_strike_param {
-
+		int particleNum;
+		float scale;
 	};
-	thunder_strike_param thunderStrikeParam;
+	thunder_strike_param thunderStrikeMagicParam;
 };
 
 #endif // !EFFECT_PARAMETER_DEFINED
