@@ -28,6 +28,17 @@ struct BlurParam {
 
 
 /// <summary>
+/// 氷魔法用定数バッファ
+/// </summary>
+struct IceBuffer {
+	DirectX::SimpleMath::Matrix		matWorld;
+	DirectX::SimpleMath::Matrix		matView;
+	DirectX::SimpleMath::Matrix		matProj;
+	DirectX::SimpleMath::Vector4	eye;
+};
+
+
+/// <summary>
 /// 落雷魔法用定数バッファ
 /// </summary>
 struct ThunderStrikeBuffer {

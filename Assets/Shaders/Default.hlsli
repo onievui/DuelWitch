@@ -6,9 +6,24 @@ struct VS_INPUT
 	float2 Tex : TEXCOORD;
 };
 
+struct VS_INPUT_NORMAL
+{
+	float3 Pos : POSITION;
+	float3 Normal : NORMAL;
+	float2 Tex : TEXCOORD;
+};
+
 struct PS_INPUT
 {
 	float4 Pos : SV_POSITION;
+	float4 Color : COLOR;
+	float2 Tex : TEXCOORD;
+};
+
+struct PS_INPUT_NORMAL
+{
+	float4 Pos : SV_POSITION;
+
 	float4 Color : COLOR;
 	float2 Tex : TEXCOORD;
 };

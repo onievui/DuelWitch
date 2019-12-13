@@ -8,6 +8,8 @@
 #include "MagicID.h"
 #include <Game\Collision\SphereCollider.h>
 
+#include <Utils\ConstBuffer.h>
+#include <Game\Camera\TargetCamera.h>
 
 /// <summary>
 /// コンストラクタ
@@ -19,6 +21,16 @@ FreezeMagic::FreezeMagic()
 	, m_rotateRadius() {
 	const MagicParameter::freeze_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->freezeParam;
 	m_collider = std::make_unique<SphereCollider>(&m_transform, parameter.radius);
+
+	// 定数バッファの作成
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(bd));
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof(IceBuffer);
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bd.CPUAccessFlags = 0;
+
+	ServiceLocater<DirectX11>::Get()->GetDevice().Get()->CreateBuffer(&bd, nullptr, m_cBuffer.GetAddressOf());
 }
 
 /// <summary>
@@ -69,14 +81,19 @@ void FreezeMagic::Update(const DX::StepTimer& timer) {
 
 	// プレイヤーの位置を中心とする
 	DirectX::SimpleMath::Vector3 center_pos = *m_pPlayerPos;
-	// 回転したときの位置を求める
+	// 回転半径を徐々に特定の値に近づける
 	m_rotateRadius = Math::Lerp(m_rotateRadius, parameter.rotateRadius, 0.2f);
-	DirectX::SimpleMath::Vector3 add_pos = DirectX::SimpleMath::Vector3::Transform(
-		m_vel*m_rotateRadius,
-		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, m_time*parameter.rotateSpeed));
+	// 時間に応じて回転させる
+	DirectX::SimpleMath::Quaternion rot =
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, m_time*parameter.rotateSpeed);
+	// 回転後の位置を求める
+	DirectX::SimpleMath::Vector3 add_pos = DirectX::SimpleMath::Vector3::Transform(m_vel*m_rotateRadius, rot);
 	
 	// プレイヤーの位置に回転した位置を足す
 	m_transform.SetPosition(center_pos + add_pos);
+
+	// オブジェクト自身も回転させる
+	m_transform.SetRotation(rot);
 
 	m_world = m_transform.GetMatrix();
 }
@@ -96,8 +113,56 @@ void FreezeMagic::Lost() {
 void FreezeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::FreezeMagic);
-	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
-	//m_sphereCollider.Render(view, proj);
+
+	DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();
+	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
+
+	// 定数バッファの作成
+	IceBuffer cbuff;
+	cbuff.matView = view.Transpose();
+	cbuff.matProj = proj.Transpose();
+	cbuff.matWorld = m_world.Transpose();
+	DirectX::SimpleMath::Vector3 eye = ServiceLocater<TargetCamera>::Get()->GetEyeVector();
+	cbuff.eye = DirectX::SimpleMath::Vector4(eye.x, eye.y, eye.z, 0);
+
+	//定数バッファの内容更新
+	context->UpdateSubresource(m_cBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+
+	// シェーダに定数バッファを割り当てる
+	ID3D11Buffer* cb[1] = { m_cBuffer.Get() };
+	context->VSSetConstantBuffers(2, 1, cb);
+
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Ice);
+
+	resource->GetResource()->Draw(m_world, view, proj, m_color, texture->GetResource().Get(), false,[=]() {
+		ID3D11BlendState* blendstate = states->NonPremultiplied();
+		// 透明判定処理
+		context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
+		// 深度バッファに参照する
+		context->OMSetDepthStencilState(states->DepthDefault(), 0);
+		// 時計回りカリング
+		context->RSSetState(states->CullClockwise());
+
+		// ピクセルシェーダにサンプラーを割り当てる
+		ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
+		context->PSSetSamplers(0, 1, sampler);
+		// 各シェーダを割り当てる
+		VertexShaderResource* vertex_shader = ServiceLocater<ResourceManager<VertexShaderResource>>::Get()
+			->GetRawResource(VertexShaderID::Ice);
+		const PixelShaderResource* pixel_shader = ServiceLocater<ResourceManager<PixelShaderResource>>::Get()
+			->GetResource(PixelShaderID::Default);
+
+		// 入力レイアウトを割り当てる
+		context->IASetInputLayout(vertex_shader->GetInputLayout());
+
+		context->VSSetShader(vertex_shader->GetResource().Get(), nullptr, 0);
+		context->PSSetShader(pixel_shader->GetResource().Get(), nullptr, 0);
+	});
+	//m_collider->Render(view, proj);
+
+	context->VSSetShader(nullptr, nullptr, 0);
+	context->PSSetShader(nullptr, nullptr, 0);
+
 }
 
 /// <summary>

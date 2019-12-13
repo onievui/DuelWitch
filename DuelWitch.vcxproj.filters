@@ -798,5 +798,8 @@
     <FxCompile Include="Assets\Shaders\BillboardGS.hlsl">
       <Filter>Assets\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Assets\Shaders\IceVS.hlsl">
+      <Filter>Assets\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

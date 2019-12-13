@@ -23,9 +23,16 @@ public:
 			return std::vector<D3D11_INPUT_ELEMENT_DESC> 
 			{
 				{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0,                           D3D11_INPUT_PER_VERTEX_DATA, 0 },
-				//{ "NORMAL",   	0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0,                           D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{ "COLOR",		0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, vector3_size,                D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,       0, vector3_size + vector4_size, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			};
+			break;
+		case VertexShaderID::Ice:
+			return std::vector<D3D11_INPUT_ELEMENT_DESC>
+			{
+				{ "POSITION",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0,                           D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "NORMAL",   	0, DXGI_FORMAT_R32G32B32_FLOAT,    0, vector3_size,                D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,       0, vector3_size*2,              D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			};
 			break;
 		default:

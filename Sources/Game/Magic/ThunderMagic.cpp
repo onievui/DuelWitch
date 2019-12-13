@@ -90,7 +90,7 @@ void ThunderMagic::Lost() {
 void ThunderMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::ThunderMagic);
-	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, true);
+	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, false);
 	//m_sphereCollider.Render(view, proj);
 }
 

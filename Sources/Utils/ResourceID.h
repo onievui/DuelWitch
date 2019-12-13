@@ -37,6 +37,7 @@ enum class TextureID {
 	Particle,
 	FieldShield,
 	FireMagicEffect,
+	Ice,
 	ThunderStrikeMagicEffect,
 
 	Num
@@ -94,6 +95,7 @@ enum class FontID {
 /// </summary>
 enum class VertexShaderID {
 	Default,
+	Ice,
 	Num
 };
 

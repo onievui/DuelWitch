@@ -78,6 +78,8 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
 		PerspectiveFovInfo(Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 5000.0f));
 
+	ServiceLocater<TargetCamera>::Register(m_targetCamera.get());
+
 	// ƒvƒŒƒCƒ„[‚ğ¶¬‚·‚é
 	m_playerManager = std::make_unique<PlayerManager>();
 	m_playerManager->Initialize(m_magicManager.get(), m_targetCamera.get());

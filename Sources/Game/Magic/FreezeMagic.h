@@ -42,6 +42,8 @@ private:
 	float                                        m_time;
 	// 回転半径
 	float                                        m_rotateRadius;
+	//  定数バッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer>      m_cBuffer;
 };
 
 

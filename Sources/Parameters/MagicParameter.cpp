@@ -22,7 +22,7 @@ bool MagicParameter::Load() {
 		resource_manager->AddResource(GeometricPrimitiveID::FireMagic, GeometricPrimitiveResource(
 			DirectX::GeometricPrimitive::CreateCone(context, fireParam.radius*2.0f, fireParam.height)));
 		resource_manager->AddResource(GeometricPrimitiveID::FreezeMagic, GeometricPrimitiveResource(
-			DirectX::GeometricPrimitive::CreateSphere(context, freezeParam.radius*2.0f)));
+			DirectX::GeometricPrimitive::CreateDodecahedron(context, freezeParam.radius)));
 		resource_manager->AddResource(GeometricPrimitiveID::ThunderMagic, GeometricPrimitiveResource(
 			DirectX::GeometricPrimitive::CreateSphere(context, thunderParam.radius*2.0f)));
 		resource_manager->AddResource(GeometricPrimitiveID::ThunderStrikeMagic, GeometricPrimitiveResource(
