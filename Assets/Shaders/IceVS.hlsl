@@ -21,7 +21,9 @@ PS_INPUT main(VS_INPUT_NORMAL input)
 	float4 color = float4(1, 1, 1, 1);
 	float alpha = 1 - (abs(dot(eye.xyz, input.Normal)));
 	//color.a = alpha * 1.5f;
-	color.a = max(alpha * 1.5f, 0.2f);
+	//color.a = saturate(alpha*1.5f)*0.8f + 0.2f;
+	color.a = alpha*0.8f + 0.2f;
+	//color.a = alpha*0.8f+0.2f;
 	output.Color = color;
 
 

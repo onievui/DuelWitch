@@ -135,14 +135,12 @@ void FreezeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Ice);
 
 	resource->GetResource()->Draw(m_world, view, proj, m_color, texture->GetResource().Get(), false,[=]() {
-		ID3D11BlendState* blendstate = states->NonPremultiplied();
 		// 透明判定処理
-		context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
-		// 深度バッファに参照する
-		context->OMSetDepthStencilState(states->DepthDefault(), 0);
-		// 時計回りカリング
-		context->RSSetState(states->CullClockwise());
-
+		context->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFFFFFFF);
+		// 裏側のポリゴンも半透明で描画するために、深度バッファに書き込まない
+		context->OMSetDepthStencilState(states->DepthRead(), 0);
+		// 裏側のポリゴンも半透明で描画するために、カリングしない
+		context->RSSetState(states->CullNone());
 		// ピクセルシェーダにサンプラーを割り当てる
 		ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
 		context->PSSetSamplers(0, 1, sampler);
@@ -155,13 +153,17 @@ void FreezeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 		// 入力レイアウトを割り当てる
 		context->IASetInputLayout(vertex_shader->GetInputLayout());
 
+		// シェーダをセットする
 		context->VSSetShader(vertex_shader->GetResource().Get(), nullptr, 0);
 		context->PSSetShader(pixel_shader->GetResource().Get(), nullptr, 0);
 	});
-	//m_collider->Render(view, proj);
 
-	context->VSSetShader(nullptr, nullptr, 0);
-	context->PSSetShader(nullptr, nullptr, 0);
+	// 描画せずに深度バッファのみ書き込む
+	resource->GetResource()->Draw(m_world, view, proj, DirectX::Colors::Transparent, texture->GetResource().Get(), false, [=]() {
+		context->OMSetDepthStencilState(states->DepthDefault(), 0);
+	});
+
+	//m_collider->Render(view, proj);
 
 }
 
