@@ -25,4 +25,11 @@ void FreezeMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::Simpl
 		(*itr) = m_pMagicFactory->Create(magicInfo, pos, dir);
 	}
 	
+	// チャージレベル1なら2つ出す（ハイスピード）
+	if (magicInfo.level >= 1) {
+		LamdaUtils::FindIfNext(itr, m_pMagics->end(), LamdaUtils::IsNull());
+		if (itr != m_pMagics->end()) {
+			(*itr) = m_pMagicFactory->Create(magicInfo, pos, -dir);
+		}
+	}
 }

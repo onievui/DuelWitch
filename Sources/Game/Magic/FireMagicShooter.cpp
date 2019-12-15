@@ -30,7 +30,6 @@ void FireMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::SimpleM
 	DirectX::SimpleMath::Vector3 axis = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitY,
 		Math::CreateQuaternionFromVector3(xz_dir, dir));
 
-	//DirectX::SimpleMath::Vector3 axis = DirectX::SimpleMath::Vector3::UnitY;
 	DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, -angle);
 	DirectX::SimpleMath::Vector3 direction = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
 	quaternion.Inverse(quaternion);
@@ -44,5 +43,17 @@ void FireMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::SimpleM
 		// 発射するたびに向きをずらす
 		direction = DirectX::SimpleMath::Vector3::Transform(direction, quaternion);
 	}
-	
+
+	// チャージレベル1なら上下にも発射する
+	if (magicInfo.level >= 1) {
+		axis = axis.Cross(dir);
+		axis.Normalize();
+		for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*m_pMagics, LamdaUtils::IsNull());
+			itr != m_pMagics->end() && count < 5;
+			LamdaUtils::FindIfNext(itr, m_pMagics->end(), LamdaUtils::IsNull()), ++count) {
+			quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, (count == 3 ? -angle : angle));
+			direction = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
+			(*itr) = m_pMagicFactory->Create(magicInfo, pos, direction);
+		}
+	}
 }

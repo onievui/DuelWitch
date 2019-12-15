@@ -77,7 +77,8 @@ void FreezeMagic::Update(const DX::StepTimer& timer) {
 	}
 
 	// タイマーを進める
-	m_time += elapsed_time;
+	// チャージレベル1ならスピードアップ
+	m_time += elapsed_time*(m_info.level == 0 ? 1.0f : 1.5f);
 
 	// プレイヤーの位置を中心とする
 	DirectX::SimpleMath::Vector3 center_pos = *m_pPlayerPos;
