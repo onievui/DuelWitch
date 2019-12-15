@@ -7,6 +7,7 @@
 #include "EffectEmitter.h"
 #include "EffectID.h"
 #include "PlayerTrailEffectEmitter.h"
+#include "PlayerChargeEffectEmitter.h"
 #include "FieldShieldEffectEmitter.h"
 #include "NormalMagicEffectEmitter.h"
 #include "FireMagicEffectEmitter.h"
@@ -50,6 +51,7 @@ void EffectFactory::Initialize(EffectManager* effectManager) {
 
 	// エフェクトを初期化する
 	InitializeEffect<PlayerTrailEffectEmitter>(EffectID::PlayerTrail);
+	InitializeEffect<PlayerChargeEffectEmitter>(EffectID::PlayerCharge);
 	InitializeEffect<FieldShieldEffectEmitter>(EffectID::FieldShield);
 	InitializeEffect<NormalMagicEffectEmitter>(EffectID::NormalMagic);
 	InitializeEffect<FireMagicEffectEmitter>(EffectID::FireMagic);

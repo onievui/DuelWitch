@@ -190,6 +190,7 @@
     <ClCompile Include="Sources\Game\Command\AIRenderCommand.cpp" />
     <ClCompile Include="Sources\Game\Command\CastMagicCommand.cpp" />
     <ClCompile Include="Sources\Game\Command\MoveCommand.cpp" />
+    <ClCompile Include="Sources\Game\Command\RenderCommand.cpp" />
     <ClCompile Include="Sources\Game\Command\UserRenderCommand.cpp" />
     <ClCompile Include="Sources\Game\Effect\Effect.cpp" />
     <ClCompile Include="Sources\Game\Effect\EffectFactory.cpp" />
@@ -200,6 +201,8 @@
     <ClCompile Include="Sources\Game\Effect\FireMagicEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\Effect\NormalMagicEffect.cpp" />
     <ClCompile Include="Sources\Game\Effect\NormalMagicEffectEmitter.cpp" />
+    <ClCompile Include="Sources\Game\Effect\PlayerChargeEffect.cpp" />
+    <ClCompile Include="Sources\Game\Effect\PlayerChargeEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\Effect\PlayerTrailEffect.cpp" />
     <ClCompile Include="Sources\Game\Effect\PlayerTrailEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\Effect\ThunderStrikeEffect.cpp" />
@@ -298,6 +301,8 @@
     <ClInclude Include="Sources\Game\Effect\IEffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\NormalMagicEffect.h" />
     <ClInclude Include="Sources\Game\Effect\NormalMagicEffectEmitter.h" />
+    <ClInclude Include="Sources\Game\Effect\PlayerChargeEffect.h" />
+    <ClInclude Include="Sources\Game\Effect\PlayerChargeEffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\PlayerTrailEffect.h" />
     <ClInclude Include="Sources\Game\Effect\PlayerTrailEffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\ThunderStrikeEffect.h" />

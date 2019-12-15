@@ -19,9 +19,9 @@ public:
 	bool Save() override;
 
 public:
+	// 移動コマンド用パラメータ
 	struct move_param {
 		float moveSpeed;
-		float moveSpeedXY;
 		float rotSpeed;
 		float boostRotSpeed;
 		float rotZLimit;

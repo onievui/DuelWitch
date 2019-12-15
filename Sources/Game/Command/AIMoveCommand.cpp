@@ -64,7 +64,6 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
 
 	const float move_speed    = parameter.moveSpeed;
-	const float move_speed_xy = parameter.moveSpeedXY;
 	const float rot_z_limit   = parameter.rotZLimit;
 	const float rot_x_limit   = parameter.rotXLimit;
 	const float lerp_speed    = parameter.lerpSpeed;

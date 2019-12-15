@@ -56,6 +56,7 @@ void CastMagicCommand::ExecuteIdle(Player& player, const DX::StepTimer& timer) {
 		// チャージショット可能ならチャージ状態へ遷移する
 		m_chargeAllowedLevel = ChargeAllowedLevel(GetHaveElements(player));
 		if (m_chargeAllowedLevel > 0) {
+			GetStatus(player).isCharging = true;
 			m_state = ChargeState::Charging;
 			return;
 		}
@@ -74,9 +75,9 @@ void CastMagicCommand::ExecuteIdle(Player& player, const DX::StepTimer& timer) {
 			// エレメントがないなら通常魔法を発射する
 			if (ref_have_elements.empty()) {
 				// SPが足りているか確認する
-				PlayerStatus& status = GetStatus(player);
-				if (status.sp >= status.normalMagicSpCost) {
-					status.sp -= status.normalMagicSpCost;
+				PlayerStatus& ref_status = GetStatus(player);
+				if (ref_status.sp >= ref_status.normalMagicSpCost) {
+					ref_status.sp -= ref_status.normalMagicSpCost;
 					GetMagicManager(player).CreateMagic(MagicInfo(MagicID::Normal, player.GetPlayerID(), 0, 1.0f), player_pos, direction);
 				}
 			}
@@ -138,6 +139,7 @@ void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& time
 			// 魔法を生成する
 			GetMagicManager(player).CreateMagic(element_id, MagicInfo(MagicID::Num,
 				player.GetPlayerID(), ref_status.chargeLevel, player.GetMagicPowerRate(element_id)), player_pos, direction);
+			ref_status.isCharging = false;
 			ref_status.chargeLevel = 0;
 			m_chargingTime = 0.0f;
 			m_state = ChargeState::Idle;

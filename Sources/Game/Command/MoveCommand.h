@@ -9,6 +9,7 @@
 
 
 class PlayerTrailEffectEmitter;
+class PlayerChargeEffectEmitter;
 class TargetCamera;
 
 
@@ -77,7 +78,9 @@ private:
 	// オイラー角
 	DirectX::SimpleMath::Vector3            m_euler;
 	//　プレイヤーの軌跡エフェクトへのポインタ
-	PlayerTrailEffectEmitter*               m_pEffect;
+	PlayerTrailEffectEmitter*               m_pTrailEffect;
+	// プレイヤーのチャージエフェクトへのポインタ
+	PlayerChargeEffectEmitter*              m_pChargeEffect;
 	// エフェクト用の姿勢クラス
 	ChildTransform                          m_effectTransform;
 };

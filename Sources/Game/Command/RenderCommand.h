@@ -16,7 +16,13 @@ public:
 public:
 	// プレイヤーを描画する
 	virtual void Render(const Player& player, const DirectX::SimpleMath::Matrix& view,
-		const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const = 0;
+		const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const {
+		player, view, proj, spriteBatch;
+	};
+
+public:
+	// プレイヤーのモデルを描画する
+	void RenderPlayerModel(const Player& player, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const;
 
 };
 

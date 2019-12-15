@@ -19,19 +19,20 @@ public:
 	bool Save() override;
 
 public:
+	// キャラクター1のパラメータ
 	struct chara1_param {
-		float maxHp;
-		float maxSp;
-		float spRecoverySpeed;
-		float normalMagicSpCost;
-		float boostSpeedRate;
-		float boostSpCost;
-		float rollSpCost;
-		float firstChargeTime;
-		float secoundChargeTime;
-		float fireMagicPowerRate;
-		float freezeMagicPowerRate;
-		float thunderMagicPowerRate;
+		float maxHp;                    // 最大HP
+		float maxSp;                    // 最大SP
+		float spRecoverySpeed;          // SP回復速度
+		float normalMagicSpCost;	    // 通常魔法の消費SP
+		float boostSpeedRate;	        // ブースト移動時の速度倍率
+		float boostSpCost;              // ブースト移動の消費SP(秒)
+		float rollSpCost;               // ロール回避の消費SP
+		float firstChargeTime;          // 1段階チャージまでの時間
+		float secoundChargeTime;        // 2段階チャージまでの時間
+		float fireMagicPowerRate;       // 炎魔法の攻撃倍率
+		float freezeMagicPowerRate;     // 氷魔法の攻撃倍率
+		float thunderMagicPowerRate;	// 雷魔法の攻撃倍率
 	};
 	chara1_param chara1Param;
 

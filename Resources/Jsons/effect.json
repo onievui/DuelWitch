@@ -1,6 +1,6 @@
 {
-  "MaxNum": [ 3, 1, 30, 30, 10 ],
-  "_MaxNum_Size": 5,
+  "MaxNum": [ 3, 3, 1, 30, 30, 10 ],
+  "_MaxNum_Size": 6,
 
   "PlayerTrail": {
     "ParticleNum": 40,
@@ -15,6 +15,16 @@
     "MinHColor": 110,
     "SColor": 250,
     "VColor": 225
+  },
+  "PlayerCharge": {
+    "ParticleNum": 3,
+    "AppearPosOffset": [ 0, 0, 0 ],
+    "LifeTime": 1.5,
+    "MaxScale": 2.0,
+    "MinScale": 0.0,
+    "ColorCharge0": [ 255, 255, 255, 200 ],
+    "ColorCharge1": [ 255, 160, 0,   200 ],
+    "ColorCharge2": [ 255, 50,  0,   200 ]
   },
   "FieldShield": {
     "ParticleNum": 20,

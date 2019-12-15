@@ -1,7 +1,6 @@
 {
   "MoveCommand": {
     "MoveSpeed": 16.0,
-    "MoveSpeedXY": 0.3,
     "RotSpeed_Deg": 80.0,
     "BoostRotSpeed_Deg": 40.0,
     "RotZLimit_Deg": 22.5,

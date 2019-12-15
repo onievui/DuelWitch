@@ -89,6 +89,6 @@ IEffectEmitter* EffectManager::CreateEffect(EffectID id, const DirectX::SimpleMa
 		return *itr;
 	}
 	
-	ErrorMessage(L"エフェクトの空きがなく、生成に出来ませんでした");
+	ErrorMessage(L"エフェクトの空きがなく、生成出来ませんでした");
 	return nullptr;
 }

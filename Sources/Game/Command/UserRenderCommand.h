@@ -56,6 +56,7 @@ private:
 	DirectX::SimpleMath::Vector2                   m_aimingPos;
 	// 照準のアニメーション用カウンタ
 	float                                          m_aimigRotation;
+
 };
 
 

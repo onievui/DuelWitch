@@ -70,7 +70,6 @@ float FireMagicEffect::GetScale() const {
 /// エフェクトの色
 /// </returns>
 DirectX::SimpleMath::Color FireMagicEffect::GetColor() const {
-	//return DirectX::SimpleMath::Color(1, static_cast<float>(0x58) / 0xff, static_cast<float>(0x1a) / 0xff, 1);
 	DirectX::SimpleMath::Color color = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->fireMagicParam.color;
 	return color / 255.0f;
 }

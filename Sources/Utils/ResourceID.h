@@ -35,6 +35,7 @@ enum class TextureID {
 	Player1Win,
 
 	Particle,
+	PlayerCharge,
 	FieldShield,
 	FireMagicEffect,
 	Ice,

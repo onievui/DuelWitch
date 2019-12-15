@@ -49,6 +49,8 @@ struct PlayerStatus {
 	float                             spDecreaseTimer;
 	// ブースト中かどうか
 	bool                              isBoosting;
+	// チャージ中かどうか
+	bool                              isCharging;
 	// チャージ段階
 	int                               chargeLevel;
 	// 詠唱可能かどうか

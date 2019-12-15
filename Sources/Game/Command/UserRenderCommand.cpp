@@ -38,21 +38,9 @@ void UserRenderCommand::Execute(Player& player, const DX::StepTimer& timer) {
 /// <param name="spriteBatch">スプライトバッチ</param>
 void UserRenderCommand::Render(const Player& player, const DirectX::SimpleMath::Matrix& view,
 	const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const {
-	// ダメージ後はプレイヤーを点滅させる
-	const PlayerStatus& ref_status = GetStatus(player);
 
-	if (ref_status.damageTimer <= 0.0f || sin(ref_status.damageTimer*Math::PI2 * 2) > 0) {
-		const std::unique_ptr<DirectX::Model>& model = ServiceLocater<ResourceManager<ModelResource>>::Get()->
-			GetResource(ModelID::Bloom)->GetResource();
-		ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
-		const DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();
-		// モデルを描画する
-		const PixelShaderResource* pixel_shader = ServiceLocater<ResourceManager<PixelShaderResource>>::Get()
-			->GetResource(PixelShaderID::Default);
-		model->Draw(context, *states, GetTransform(player).GetMatrix(), view, proj);
-		// 当たり判定を描画する
-		GetCollider(player).Render(view, proj, DirectX::SimpleMath::Color(1, 1, 1, 0.3f), true);
-	}
+	// プレイヤーのモデルを描画する
+	RenderPlayerModel(player, view, proj);
 
 	// 相手プレイヤーのアイコンを表示する
 	RenderEnemeyIcon(player, spriteBatch);
@@ -79,13 +67,20 @@ void UserRenderCommand::UpdateIcon(Player& player) {
 	// 相手プレイヤーが画面外にいる場合、方向を表示するためのUIの座標を計算する
 	const Camera& camera = GetCamera(player);
 	const TargetCamera* target_camera = dynamic_cast<const TargetCamera*>(&camera);
+
+	// アイコンの表示フラグをリセットする
+	for (std::vector<UserRenderCommand::TargetIconInfo>::iterator itr = m_targetIconInfo.begin(); itr != m_targetIconInfo.end(); ++itr) {
+		itr->enable = false;
+	}
+
 	// 画角を取得して、画面外かどうかの範囲を決める
 	float area_angle;
 	if (target_camera) {
 		area_angle = target_camera->GetFov();
 	}
 	else {
-		area_angle = Math::HarfPI;
+		// カメラがない場合、画角45°と仮定する
+		area_angle = Math::QuarterPI;
 	}
 	const DirectX::SimpleMath::Vector3& camera_pos = camera.GetEyePosition();
 	DirectX::SimpleMath::Vector3 camera_dir = camera.GetEyeVector();
@@ -95,11 +90,9 @@ void UserRenderCommand::UpdateIcon(Player& player) {
 		const DirectX::SimpleMath::Vector3& other_player_pos = GetTransform(*other_players[i]).GetLocalPosition();
 		DirectX::SimpleMath::Vector3 other_dir = other_player_pos - camera_pos;
 		float angle = std::acosf(camera_dir.Dot(other_dir) / (camera_dir.Length()*other_dir.Length()));
-		// カメラの向きと敵の方向が一定の角度以内であれば処理しない
+		// カメラの向きと敵の方向が一定の角度以内であれば描画しない
 		if (angle < area_angle) {
-			// アイコンの描画を無効にする
-			m_targetIconInfo[i].enable = false;
-			return;
+			break;
 		}
 		// 敵プレイヤーへのベクトル
 		DirectX::SimpleMath::Vector3 vec;

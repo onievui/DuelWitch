@@ -37,6 +37,17 @@ bool EffectParameter::Load() {
 		playerTrailParam.vColor          = player_trail["VColor"].GetNumI();
 	}
 	{
+		JsonWrapper::value player_charge(root["PlayerCharge"]);
+		playerChargeParam.particleNum     = player_charge["ParticleNum"].GetNumI();
+		playerChargeParam.appearPosOffset = player_charge["AppearPosOffset"].GetVector3();
+		playerChargeParam.lifeTime        = player_charge["LifeTime"].GetNumF();
+		playerChargeParam.maxScale        = player_charge["MaxScale"].GetNumF();
+		playerChargeParam.minScale        = player_charge["MinScale"].GetNumF();
+		playerChargeParam.colorCharge0    = player_charge["ColorCharge0"].GetVector4();
+		playerChargeParam.colorCharge1    = player_charge["ColorCharge1"].GetVector4();
+		playerChargeParam.colorCharge2    = player_charge["ColorCharge2"].GetVector4();
+	}
+	{
 		JsonWrapper::value field_shield(root["FieldShield"]);
 		fieldShieldParam.particleNum = field_shield["ParticleNum"].GetNumI();
 		fieldShieldParam.lifeTime    = field_shield["LifeTime"].GetNumF();

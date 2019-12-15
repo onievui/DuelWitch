@@ -10,6 +10,7 @@
 #include <Game\Effect\EffectManager.h>
 #include <Game\Effect\EffectID.h>
 #include <Game\Effect\PlayerTrailEffectEmitter.h>
+#include <Game\Effect\PlayerChargeEffectEmitter.h>
 
 
 /// <summary>
@@ -22,7 +23,8 @@ MoveCommand::MoveCommand()
 	, m_pTargetCamera(nullptr)
 	, m_boostTime()
 	, m_euler()
-	, m_pEffect()
+	, m_pTrailEffect()
+	,m_pChargeEffect()
 	, m_effectTransform(nullptr) {
 }
 
@@ -34,7 +36,8 @@ MoveCommand::~MoveCommand() {
 	m_pTargetCamera->SetTargetObject(nullptr);
 
 	// エフェクトを消す
-	m_pEffect->SetUsed(false);
+	m_pTrailEffect->SetUsed(false);
+	m_pChargeEffect->SetUsed(false);
 }
 
 /// <summary>
@@ -65,18 +68,30 @@ void MoveCommand::Initialize(Player& player) {
 	m_rollInfo.isRollingLeft = true;
 
 
-	const EffectParameter::player_trail_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerTrailParam;
+	const EffectParameter::player_trail_param& parameter_t = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerTrailParam;
+	Transform& transform = GetTransform(player);
 	// エフェクト用の姿勢クラスの親オブジェクトにプレイヤーを登録する
-	m_effectTransform.SetParent(&GetTransform(player));
-	m_effectTransform.SetPosition(parameter.appearPosOffset);
+	m_effectTransform.SetParent(&transform);
+	m_effectTransform.SetPosition(parameter_t.appearPosOffset);
+
 	// プレイヤーの軌跡エフェクトを生成する
 	IEffectEmitter* effect = ServiceLocater<EffectManager>::Get()->CreateEffect(
 		EffectID::PlayerTrail, m_effectTransform.GetPosition(), -DirectX::SimpleMath::Vector3::UnitZ);
 	// エフェクトの親オブジェクトにエフェクト用の姿勢クラスを登録する
 	effect->SetParent(&m_effectTransform);
-	m_pEffect = dynamic_cast<PlayerTrailEffectEmitter*>(effect);
-	if (!m_pEffect) {
+	m_pTrailEffect = dynamic_cast<PlayerTrailEffectEmitter*>(effect);
+	if (!m_pTrailEffect) {
 		ErrorMessage(L"プレイヤーの軌跡エフェクトの生成に失敗しました");
+	}
+
+	// プレイヤーのチャージエフェクトを生成する
+	const EffectParameter::player_charge_param& parameter_c = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->playerChargeParam;
+	effect = ServiceLocater<EffectManager>::Get()->CreateEffect(
+		EffectID::PlayerCharge, parameter_c.appearPosOffset, -DirectX::SimpleMath::Vector3::UnitZ);
+	effect->SetParent(&transform);
+	m_pChargeEffect = dynamic_cast<PlayerChargeEffectEmitter*>(effect);
+	if (!m_pChargeEffect) {
+		ErrorMessage(L"プレイヤーのチャージエフェクトの生成に失敗しました");
 	}
 }
 
@@ -100,6 +115,18 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		ErrorMessage(L"移動コマンドの状態が不正です");
 		break;
 	}
+
+	// チャージエフェクトの状態を更新する
+	const PlayerStatus& status = GetStatus(player);
+	// チャージ中なら段階に応じて色を変える
+	if (status.isCharging) {
+		m_pChargeEffect->SetChargeState(static_cast<PlayerChargeEffectEmitter::State>(status.chargeLevel));
+	}
+	// チャージしていない場合は描画しない
+	else {
+		m_pChargeEffect->SetChargeState(PlayerChargeEffectEmitter::State::None);
+	}
+
 
 	// 照準のある方へカメラを少し向ける
 	TargetCamera* target_camera = dynamic_cast<TargetCamera*>(&GetCamera(player));

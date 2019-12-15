@@ -293,6 +293,7 @@ void Player::InitializeStatus() {
 	m_status.damageTimer     = 0.0f;
 	m_status.spDecreaseTimer = 0.0f;
 	m_status.isBoosting      = false;
+	m_status.isCharging      = false;
 	m_status.chargeLevel     = 0;
 	m_status.canCast         = true;
 }

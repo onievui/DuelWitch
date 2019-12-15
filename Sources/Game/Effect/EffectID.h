@@ -8,6 +8,7 @@
 /// </summary>
 enum class EffectID {
 	PlayerTrail,        // プレイヤーの軌道エフェクト
+	PlayerCharge,		// プレイヤーのチャージエフェクト
 	FieldShield,        // フィールドとの衝突エフェクト
 	NormalMagic,        // 通常魔法エフェクト
 	FireMagic,	        // 炎魔法エフェクト
