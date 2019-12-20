@@ -47,6 +47,8 @@ private:
 		DirectX::SimpleMath::Vector2 pos;
 		// •`‰æ‚·‚é‚©‚Ç‚¤‚©
 		bool                         enable;
+		// ƒLƒƒƒ‰ID
+		int                          charaId;
 	};
 
 private:

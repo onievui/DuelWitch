@@ -43,6 +43,8 @@ struct PlayerStatus {
 	float                             thunderMagicPowerRate;
 
 	// 内部データ
+	// キャラクターID
+	int                               charaId;
 	// ダメージ後無敵時間タイマー
 	float                             damageTimer;
 	// SP消費直後タイマー

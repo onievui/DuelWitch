@@ -6,6 +6,7 @@
 #include <Utils\MouseWrapper.h>
 #include <Parameters\CharaStatusParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
+#include <Game\Scene\ShareData\ShareData.h>
 #include <Game\Command\Command.h>
 #include <Game\Command\MoveCommand.h>
 #include <Game\Command\AIMoveCommand.h>
@@ -282,6 +283,9 @@ void Player::HitField(const DirectX::SimpleMath::Vector3& hitPos) {
 /// ステータスを初期化する
 /// </summary>
 void Player::InitializeStatus() {
+	const std::vector<int>& chara_id = ServiceLocater<ShareData>::Get()->GetSelectCharaID();
+	m_status.charaId = chara_id[static_cast<int>(m_id)];
+
 	const CharaStatusParameter::chara1_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCharaStatusParameter()->chara1Param;
 
 	m_status.maxHp = m_status.hp = m_status.preHp = parameter.maxHp;

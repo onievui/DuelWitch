@@ -111,8 +111,6 @@ public:
 		float cos_half = std::sqrtf((1 + c)*0.5f);
 		float sin_half = std::sqrtf((1 - c)*0.5f);
 		return DirectX::SimpleMath::Quaternion(axis.x*sin_half, axis.y*sin_half, axis.z*sin_half, cos_half);
-
-		
 	}
 };
 

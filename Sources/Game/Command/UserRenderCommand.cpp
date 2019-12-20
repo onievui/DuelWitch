@@ -118,6 +118,8 @@ void UserRenderCommand::UpdateIcon(Player& player) {
 		m_targetIconInfo[i].pos = CalculateIconPos(vec, screen_size, DirectX::SimpleMath::Vector2(screen_offset, screen_offset));
 		// アイコンの描画を有効にする
 		m_targetIconInfo[i].enable = true;
+		// アイコンのキャラID情報を設定する
+		m_targetIconInfo[i].charaId = GetStatus(*other_players[i]).charaId;
 	}
 }
 
@@ -206,7 +208,7 @@ void UserRenderCommand::RenderEnemeyIcon(const Player& player, DirectX::SpriteBa
 	for (unsigned int i = 0; i < m_targetIconInfo.size(); ++i) {
 		// 有効なアイコンのみ描画する
 		if (m_targetIconInfo[i].enable) {
-			spriteBatch->Draw(texture->GetResource(1).Get(),
+			spriteBatch->Draw(texture->GetResource(m_targetIconInfo[i].charaId).Get(),
 				m_targetIconInfo[i].pos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, 0.8f), 0,
 				texture->GetCenter(), DirectX::SimpleMath::Vector2(0.4f, 0.4f));
 		}

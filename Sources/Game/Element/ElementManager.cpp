@@ -1,4 +1,5 @@
 #include "ElementManager.h"
+#include <unordered_map>
 #include <Utils\ServiceLocater.h>
 #include <Utils\RandMt.h>
 #include <Utils\MathUtils.h>
@@ -78,37 +79,31 @@ void ElementManager::Update(const DX::StepTimer& timer) {
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void ElementManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
-	for (std::vector<Element*>::const_iterator itr = m_elements.cbegin(); itr != m_elements.cend(); ++itr) {
+
+	// 有効なエレメントの配列を生成する
+	std::list<Element*> valid_elements;
+	// ポインタと深度値のマップを生成する
+	std::unordered_map<Element*, float> sort_keys;
+	for (std::vector<Element*>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
 		if (*itr) {
-			(*itr)->Render(view, proj);
+			const DirectX::SimpleMath::Vector3& pos = (*itr)->GetPos();
+			// 比較用深度値を計算する
+			float key = view._13*pos.x + view._23*pos.y + view._33*pos.z;
+			// 深度値とポインタを紐づける
+			sort_keys.emplace((*itr), key);
+			// 有効なエレメントの配列に追加する
+			valid_elements.push_back((*itr));
 		}
 	}
-}
 
-///// <summary>
-///// エレメントを生成する
-///// </summary>
-///// <param name="areaStart">生成範囲の始点</param>
-///// <param name="areaEnd">生成範囲の終点</param>
-///// <param name="num">生成個数</param>
-//void ElementManager::CreateElement(const DirectX::SimpleMath::Vector3& areaStart, const DirectX::SimpleMath::Vector3& areaEnd, const int num) {
-//	int rand = RandMt::GetRand(3);
-//	for (int i = 0; i < num; ++i) {
-//		DirectX::SimpleMath::Vector3 pos = DirectX::SimpleMath::Vector3(
-//			Math::Lerp(areaStart.x, areaEnd.x, RandMt::GetRand(1.0f)),
-//			Math::Lerp(areaStart.y, areaEnd.y, RandMt::GetRand(1.0f)),
-//			Math::Lerp(areaStart.z, areaEnd.z, RandMt::GetRand(1.0f))
-//		);
-//		Element* created_element = m_elementFactory->Create(ElementID(rand), pos);
-//		// 未使用のオブジェクトを探す
-//		std::vector<Element*>::iterator itr = LamdaUtils::FindIf(m_elements, LamdaUtils::IsNull());
-//		if (itr != m_elements.end()) {
-//			*itr = created_element;
-//		}
-//
-//		rand = (rand + 1) % 3;
-//	}
-//}
+	// Zソートを行う
+	valid_elements.sort([&](Element* left, Element* right) { return sort_keys[left] < sort_keys[right]; });
+
+	// 有効なエレメントを描画する
+	for (std::list<Element*>::const_iterator itr = valid_elements.cbegin(); itr != valid_elements.cend(); ++itr) {
+		(*itr)->Render(view, proj);
+	}
+}
 
 /// <summary>
 /// エレメントを生成する
