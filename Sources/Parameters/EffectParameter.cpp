@@ -55,6 +55,12 @@ bool EffectParameter::Load() {
 		fieldShieldParam.scaleSpeed  = field_shield["ScaleSpeed"].GetNumF();
 	}
 	{
+		JsonWrapper::value hit(root["Hit"]);
+		hitParam.particleNum = hit["ParticleNum"].GetNumI();
+		hitParam.lifeTime    = hit["LifeTime"].GetNumF();
+		hitParam.scale       = hit["Scale"].GetNumF();
+	}
+	{
 		JsonWrapper::value normal_magic(root["NormalMagic"]);
 		normalMagicParam.particleNum = normal_magic["ParticleNum"].GetNumI();
 		normalMagicParam.scale       = normal_magic["Scale"].GetNumF();

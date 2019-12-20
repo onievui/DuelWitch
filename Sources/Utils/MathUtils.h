@@ -103,8 +103,16 @@ public:
 			return DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(CreateNormalVector3(vec1), Math::PI);
 		}
 		axis.Normalize();
-		float angle = std::acosf(vec1.Dot(vec2) / (vec1.Length()*vec2.Length()));
-		return DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, angle);
+
+		//float angle = BetweenAngle(vec1, vec2);
+		//return DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, angle);
+
+		float c = vec1.Dot(vec2) / (vec1.Length()*vec2.Length());
+		float cos_half = std::sqrtf((1 + c)*0.5f);
+		float sin_half = std::sqrtf((1 - c)*0.5f);
+		return DirectX::SimpleMath::Quaternion(axis.x*sin_half, axis.y*sin_half, axis.z*sin_half, cos_half);
+
+		
 	}
 };
 

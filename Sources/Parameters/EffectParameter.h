@@ -61,6 +61,14 @@ public:
 	};
 	field_shield_param fieldShieldParam;
 
+	// 魔法のヒットエフェクト
+	struct hit_param {
+		int particleNum;	// パーティクル数
+		float lifeTime;		// パーティクルが消えるまでの時間
+		float scale;		// パーティクルのサイズ
+	};
+	hit_param hitParam;
+
 	// 通常魔法エフェクト
 	struct normal_magic_param {
 		int particleNum;	// パーティクル数

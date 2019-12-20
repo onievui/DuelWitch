@@ -38,8 +38,8 @@
     "Power": 10.0,
     "Radius": 2.5,
     "Height": 70.0,
-    "AppearPosY": 150.0,
-    "MoveSpeed": 300.0,
+    "AppearPosY": 100.0,
+    "MoveSpeed": 40.0,
     "LifeTime": 5.0
   }
 }

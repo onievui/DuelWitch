@@ -199,6 +199,8 @@
     <ClCompile Include="Sources\Game\Effect\FieldShieldEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\Effect\FireMagicEffect.cpp" />
     <ClCompile Include="Sources\Game\Effect\FireMagicEffectEmitter.cpp" />
+    <ClCompile Include="Sources\Game\Effect\HitEffect.cpp" />
+    <ClCompile Include="Sources\Game\Effect\HitEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\Effect\NormalMagicEffect.cpp" />
     <ClCompile Include="Sources\Game\Effect\NormalMagicEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\Effect\PlayerChargeEffect.cpp" />
@@ -297,6 +299,8 @@
     <ClInclude Include="Sources\Game\Effect\FieldShieldEffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\FireMagicEffect.h" />
     <ClInclude Include="Sources\Game\Effect\FireMagicEffectEmitter.h" />
+    <ClInclude Include="Sources\Game\Effect\HitEffect.h" />
+    <ClInclude Include="Sources\Game\Effect\HitEffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\IEffect.h" />
     <ClInclude Include="Sources\Game\Effect\IEffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\NormalMagicEffect.h" />

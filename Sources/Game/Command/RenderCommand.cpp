@@ -19,8 +19,6 @@ void RenderCommand::RenderPlayerModel(const Player& player, const DirectX::Simpl
 		const DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();
 
 		// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é
-		const PixelShaderResource* pixel_shader = ServiceLocater<ResourceManager<PixelShaderResource>>::Get()->
-			GetResource(PixelShaderID::Default);
 		model->Draw(context, *states, GetTransform(player).GetMatrix(), view, proj);
 
 		// “–‚½‚è”»’è‚ð•`‰æ‚·‚é

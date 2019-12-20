@@ -36,7 +36,11 @@ enum class TextureID {
 
 	Particle,
 	PlayerCharge,
+
 	FieldShield,
+
+	Hit,
+
 	FireMagicEffect,
 	Ice,
 	ThunderStrikeMagicEffect,

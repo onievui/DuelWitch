@@ -17,6 +17,7 @@
 #include <Game\Magic\MagicID.h>
 #include <Game\Magic\IMagic.h>
 #include <Game\Magic\MagicManager.h>
+#include <Game\Effect\EffectManager.h>
 #include <Game\Camera\Camera.h>
 #include <Game\Field\FieldData.h>
 #include "PlayerID.h"
@@ -116,6 +117,10 @@ void Player::Update(const DX::StepTimer& timer) {
 	// ステータスを更新する
 	UpdateStatus(timer);
 	
+	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Z)) {
+		ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::Hit, DirectX::SimpleMath::Vector3::Zero, -DirectX::SimpleMath::Vector3::UnitZ);
+	}
+
 }
 
 /// <summary>
@@ -259,6 +264,9 @@ void Player::HitMagic(const IMagic* magic) {
 		m_status.hp -= magic->GetPower();
 		m_status.damageTimer = 3.0f;
 	}
+
+	// ヒットエフェクトを出現させる
+	ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::Hit, m_transform.GetPosition(), -DirectX::SimpleMath::Vector3::UnitZ);
 }
 
 /// <summary>

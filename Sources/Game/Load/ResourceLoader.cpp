@@ -63,6 +63,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::Particle,                 TextureResource(L"Protected/particle.png"));
 		textureResourceManager->AddResource(TextureID::PlayerCharge,             TextureResource(L"Protected/player_charge.png"));
 		textureResourceManager->AddResource(TextureID::FieldShield,              TextureResource(L"Protected/field_shield_effect.png"));
+		textureResourceManager->AddResource(TextureID::Hit,						 TextureResource(L"Protected/hit_effect3.png"));
 		textureResourceManager->AddResource(TextureID::FireMagicEffect,          TextureResource(L"Protected/fire_magic_effect_a.jpg"));
 		textureResourceManager->AddResource(TextureID::FireMagicEffect,				L"Protected/fire_magic_effect_b.png");
 		textureResourceManager->AddResource(TextureID::Ice,                      TextureResource(L"Protected/ice_pattern3.jpg"));

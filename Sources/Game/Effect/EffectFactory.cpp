@@ -9,6 +9,7 @@
 #include "PlayerTrailEffectEmitter.h"
 #include "PlayerChargeEffectEmitter.h"
 #include "FieldShieldEffectEmitter.h"
+#include "HitEffectEmitter.h"
 #include "NormalMagicEffectEmitter.h"
 #include "FireMagicEffectEmitter.h"
 #include "ThunderStrikeEffectEmitter.h"
@@ -53,6 +54,7 @@ void EffectFactory::Initialize(EffectManager* effectManager) {
 	InitializeEffect<PlayerTrailEffectEmitter>(EffectID::PlayerTrail);
 	InitializeEffect<PlayerChargeEffectEmitter>(EffectID::PlayerCharge);
 	InitializeEffect<FieldShieldEffectEmitter>(EffectID::FieldShield);
+	InitializeEffect<HitEffectEmitter>(EffectID::Hit);
 	InitializeEffect<NormalMagicEffectEmitter>(EffectID::NormalMagic);
 	InitializeEffect<FireMagicEffectEmitter>(EffectID::FireMagic);
 	InitializeEffect<ThunderStrikeEffectEmitter>(EffectID::ThunderStrikeMagic);

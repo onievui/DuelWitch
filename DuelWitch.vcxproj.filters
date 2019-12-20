@@ -372,6 +372,12 @@
     <ClCompile Include="Sources\Game\Effect\PlayerChargeEffect.cpp">
       <Filter>Game\Effect\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\HitEffectEmitter.cpp">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\HitEffect.cpp">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -759,6 +765,12 @@
       <Filter>Game\Effect\Emmiter</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Game\Effect\PlayerChargeEffect.h">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\HitEffectEmitter.h">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\HitEffect.h">
       <Filter>Game\Effect\Effect</Filter>
     </ClInclude>
   </ItemGroup>
