@@ -1,6 +1,7 @@
 #include "FireMagicShooter.h"
 #include <Utils\MathUtils.h>
 #include <Utils\LamdaUtils.h>
+#include <Utils\IfIterator.h>
 #include <Utils\ServiceLocater.h>
 #include <Parameters\MagicParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
@@ -36,9 +37,7 @@ void FireMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::SimpleM
 
 	int count = 0;
 	// 3•ûŒü‚É”­ŽË‚·‚é
-	for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*m_pMagics, LamdaUtils::IsNull());
-		itr != m_pMagics->end() && count < 3;
-		LamdaUtils::FindIfNext(itr, m_pMagics->end(), LamdaUtils::IsNull()), ++count) {
+	for (IfIterator<std::vector<IMagic*>> itr(*m_pMagics, LamdaUtils::IsNull()); itr != m_pMagics->end() && count < 3; ++itr, ++count) {
 		(*itr) = m_pMagicFactory->Create(magicInfo, pos, direction);
 		// ”­ŽË‚·‚é‚½‚Ñ‚ÉŒü‚«‚ð‚¸‚ç‚·
 		direction = DirectX::SimpleMath::Vector3::Transform(direction, quaternion);
@@ -48,9 +47,7 @@ void FireMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::SimpleM
 	if (magicInfo.level >= 1) {
 		axis = axis.Cross(dir);
 		axis.Normalize();
-		for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*m_pMagics, LamdaUtils::IsNull());
-			itr != m_pMagics->end() && count < 5;
-			LamdaUtils::FindIfNext(itr, m_pMagics->end(), LamdaUtils::IsNull()), ++count) {
+		for (IfIterator<std::vector<IMagic*>> itr(*m_pMagics, LamdaUtils::IsNull()); itr != m_pMagics->end() && count < 5; ++itr, ++count) {
 			quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, (count == 3 ? -angle : angle));
 			direction = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
 			(*itr) = m_pMagicFactory->Create(magicInfo, pos, direction);

@@ -1,5 +1,6 @@
 #include "ThunderMagicShooter.h"
 #include <Utils\LamdaUtils.h>
+#include <Utils\IfIterator.h>
 #include <Utils\MathUtils.h>
 #include "MagicFactory.h"
 
@@ -36,9 +37,7 @@ void ThunderMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::Simp
 		DirectX::SimpleMath::Vector3 axis = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitY,
 			Math::CreateQuaternionFromVector3(xz_dir, dir));
 
-		for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*m_pMagics, LamdaUtils::IsNull());
-			itr != m_pMagics->end() && count < 2;
-			LamdaUtils::FindIfNext(itr, m_pMagics->end(), LamdaUtils::IsNull()), ++count) {
+		for (IfIterator<std::vector<IMagic*>> itr(*m_pMagics, LamdaUtils::IsNull()); itr != m_pMagics->end() && count < 2; ++itr, ++count) {
 			DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, (count == 0 ? -angle : angle));
 			DirectX::SimpleMath::Vector3 direction = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
 			(*itr) = m_pMagicFactory->Create(magicInfo, pos, direction);

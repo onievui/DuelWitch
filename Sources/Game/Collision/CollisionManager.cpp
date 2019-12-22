@@ -1,5 +1,6 @@
 #include "CollisionManager.h"
 #include <Utils\LamdaUtils.h>
+#include <Utils\IfIterator.h>
 #include <Game\Collision\Collision.h>
 #include <Game\Player\Player.h>
 #include <Game\Field\Field.h>
@@ -28,10 +29,7 @@ void CollisionManager::CollisionPlayerElement(PlayersData* players, ElementsData
 	// 未使用のオブジェクトは飛ばすようにする
 	auto live_check = LamdaUtils::NotNull();
 
-	for (ElementsData::iterator element_itr = LamdaUtils::FindIf(*elements, live_check),
-		element_end = elements->end();
-		element_itr != element_end;
-		LamdaUtils::FindIfNext(element_itr, element_end, live_check)) {
+	for (IfIterator<ElementsData> element_itr(*elements, live_check); element_itr != elements->end(); ++element_itr) {
 		const Collider* element_collider = (*element_itr)->GetCollider();
 		for (PlayersData::iterator player_itr = players->begin(); player_itr != players->end(); ++player_itr) {
 			if (Collision::HitCheck(element_collider, (*player_itr)->GetCollider())) {
@@ -53,12 +51,11 @@ void CollisionManager::CollisionMagic(MagicsData* magics) {
 	// 未使用のオブジェクトは飛ばすようにする
 	auto live_check = LamdaUtils::NotNull();
 
-	for (MagicsData::iterator itr = LamdaUtils::FindIf(*magics, live_check),
-		end = magics->end();
-		itr != end;) {
+	for (IfIterator<MagicsData> itr(*magics, live_check);itr != magics->end();) {
 		const Collider* collider = (*itr)->GetCollider();
-		MagicsData::iterator next = std::find_if(itr + 1, end, live_check);
-		for (MagicsData::iterator itr2 = next; itr2 != end; itr2 = std::find_if(itr2 + 1, end, live_check)) {
+		// 次のループのカウンターの処理として使いまわせるように記憶する
+		IfIterator<MagicsData> next = itr + 1;
+		for (IfIterator<MagicsData> itr2 = next; itr2 != magics->end(); ++itr2) {
 			// 同一プレイヤーの魔法なら判定しない
 			if ((*itr)->GetPlayerID() == (*itr2)->GetPlayerID()) {
 				continue;
@@ -82,10 +79,7 @@ void CollisionManager::CollisionPlayerMagic(PlayersData* players, MagicsData* ma
 	// 未使用のオブジェクトは飛ばすようにする
 	auto live_check = LamdaUtils::NotNull();
 
-	for (MagicsData::iterator magic_itr = LamdaUtils::FindIf(*magics, live_check),
-		magic_end = magics->end();
-		magic_itr != magic_end;
-		LamdaUtils::FindIfNext(magic_itr, magic_end, live_check)) {
+	for (IfIterator<MagicsData> magic_itr(*magics, live_check); magic_itr != magics->end(); ++magic_itr) {
 		const Collider* magic_collider = (*magic_itr)->GetCollider();
 		for (PlayersData::iterator player_itr = players->begin(); player_itr != players->end(); ++player_itr) {
 			// 自身の魔法とは判定しない

@@ -1,4 +1,5 @@
 #include <Utils\LamdaUtils.h>
+#include <Utils\IfIterator.h>
 #include "FreezeMagicShooter.h"
 #include "MagicFactory.h"
 
@@ -20,14 +21,14 @@ FreezeMagicShooter::FreezeMagicShooter(std::vector<IMagic*>* pMagics, MagicFacto
 /// <param name="pos">座標</param>
 /// <param name="dir">向き</param>
 void FreezeMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*m_pMagics, LamdaUtils::IsNull());
+	IfIterator<std::vector<IMagic*>> itr(*m_pMagics, LamdaUtils::IsNull());
 	if (itr != m_pMagics->end()) {
 		(*itr) = m_pMagicFactory->Create(magicInfo, pos, dir);
 	}
 	
 	// チャージレベル1なら2つ出す（ハイスピード）
 	if (magicInfo.level >= 1) {
-		LamdaUtils::FindIfNext(itr, m_pMagics->end(), LamdaUtils::IsNull());
+		++itr;
 		if (itr != m_pMagics->end()) {
 			(*itr) = m_pMagicFactory->Create(magicInfo, pos, -dir);
 		}

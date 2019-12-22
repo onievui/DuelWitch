@@ -4,6 +4,7 @@
 #include <Utils\RandMt.h>
 #include <Utils\MathUtils.h>
 #include <Utils\LamdaUtils.h>
+#include <Utils\IfIterator.h>
 #include <Parameters\ElementParameter.h>
 #include "Element.h"
 #include "ElementFactory.h"
@@ -51,9 +52,7 @@ void ElementManager::Update(const DX::StepTimer& timer) {
 	const FieldData* fied_data = ServiceLocater<FieldData>::Get();
 
 	// エレメントを更新する
-	for (std::vector<Element*>::iterator itr = LamdaUtils::FindIf(m_elements, LamdaUtils::NotNull());
-		itr != m_elements.end();
-		LamdaUtils::FindIfNext(itr, m_elements.end(), LamdaUtils::NotNull())) {
+	for (IfIterator<std::vector<Element*>> itr(m_elements, LamdaUtils::NotNull()); itr != m_elements.end(); ++itr) {
 		(*itr)->Update(timer);
 		// フィールドの範囲内に収めるようにする
 		(*itr)->FitField(fied_data->fieldCenter, fied_data->fieldRadius);

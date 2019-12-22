@@ -773,6 +773,9 @@
     <ClInclude Include="Sources\Game\Effect\HitEffect.h">
       <Filter>Game\Effect\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Utils\IfIterator.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">

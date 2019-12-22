@@ -43,6 +43,7 @@
 #include <DirectXColors.h>
 
 #include <algorithm>
+#include <functional>
 #include <exception>
 #include <memory>
 #include <stdexcept>

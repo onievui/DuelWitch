@@ -1,5 +1,6 @@
 #include "MagicManager.h"
 #include <Utils\LamdaUtils.h>
+#include <Utils\IfIterator.h>
 #include <Game\Element\ElementFactory.h>
 #include "MagicFactory.h"
 #include "MagicID.h"
@@ -57,9 +58,7 @@ void MagicManager::Initialize() {
 /// </summary>
 /// <param name="timer">タイマー</param>
 void MagicManager::Update(const DX::StepTimer& timer) {
-	for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(m_magics, LamdaUtils::NotNull());
-		itr != m_magics.end();
-		LamdaUtils::FindIfNext(itr, m_magics.end(), LamdaUtils::NotNull())) {
+	for (IfIterator<std::vector<IMagic*>> itr(m_magics, LamdaUtils::NotNull()); itr != m_magics.end(); ++itr) {
 		(*itr)->Update(timer);
 		// 使われなくなったら終了処理を行う
 		if (!(*itr)->IsUsed()) {
@@ -76,9 +75,7 @@ void MagicManager::Update(const DX::StepTimer& timer) {
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void MagicManager::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
-	for (std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(m_magics, LamdaUtils::NotNull());
-		itr != m_magics.end();
-		LamdaUtils::FindIfNext(itr, m_magics.end(), LamdaUtils::NotNull())) {
+	for (IfIterator<std::vector<IMagic*>> itr(m_magics, LamdaUtils::NotNull()); itr != m_magics.end(); ++itr) {
 		(*itr)->Render(view, proj);
 	}
 }

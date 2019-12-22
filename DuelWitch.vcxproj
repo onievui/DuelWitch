@@ -375,6 +375,7 @@
     <ClInclude Include="Sources\Utils\ErrorMessage.h" />
     <ClInclude Include="Sources\Utils\FuzzyObject.h" />
     <ClInclude Include="Sources\Utils\FuzzyUtils.h" />
+    <ClInclude Include="Sources\Utils\IfIterator.h" />
     <ClInclude Include="Sources\Utils\ILoadData.h" />
     <ClInclude Include="Sources\Utils\ILoadDataHolder.h" />
     <ClInclude Include="Sources\Utils\InputLayoutData.h" />

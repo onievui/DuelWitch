@@ -1,6 +1,7 @@
 #include "AIMoveCommand.h"
 #include <Utils\MathUtils.h>
 #include <Utils\LamdaUtils.h>
+#include <Utils\IfIterator.h>
 #include <Utils\ServiceLocater.h>
 #include <Parameters\CommandParameter.h>
 #include <Parameters\EffectParameter.h>
@@ -245,9 +246,8 @@ const Element* AIMoveCommand::GetNearestElement(const DirectX::SimpleMath::Vecto
 	float min_distance_square = 10000000.0f;
 	const FieldData* field_data = ServiceLocater<FieldData>::Get();
 	const Element* nearest_element = nullptr;
-	for (std::vector<Element*>::const_iterator itr = LamdaUtils::FindIf(*field_data->pElements, LamdaUtils::NotNull());
-		itr != field_data->pElements->cend();
-		LamdaUtils::FindIfNext(itr,field_data->pElements->cend(), LamdaUtils::NotNull())) {
+
+	for (IfIterator<const std::vector<Element*>> itr(*field_data->pElements, LamdaUtils::NotNull()); itr != field_data->pElements->end(); ++itr) {
 		float distance_square = DirectX::SimpleMath::Vector3::DistanceSquared(pos, (*itr)->GetPos());
 		// 他のエレメントより近いなら、距離を更新してポインタを記憶する
 		if (distance_square < min_distance_square) {
