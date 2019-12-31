@@ -7,6 +7,7 @@
 #include <Utils\ScaleUpUI.h>
 #include <Utils\MouseWrapper.h>
 #include "ISceneRequest.h"
+#include <Game\UI\Fade.h>
 
 
 /// <summary>
@@ -29,13 +30,27 @@ WinResultScene::~WinResultScene() {
 void WinResultScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pSceneRequest = pSceneRequest;
 
-	m_time = 0.0f;
-
 	// UIを初期化する
 	InitializeUI();
 
 	// マウスカーソルを表示する
 	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_ABSOLUTE);
+
+	// フェードを生成する
+	m_fadeScreen = std::make_unique<Fade>();
+	m_fadeScreen->Initialize(Fade::State::FadeOut, 1.0f, 1.0f);
+	// 後から動作を開始させる
+	m_fadeScreen->Stop();
+
+	m_fadeLogo = std::make_unique<Fade>();
+	m_fadeLogo->Initialize(Fade::State::FadeInAlpha, 1.0f, 1.0f);
+
+	m_fadeUI = std::make_unique<Fade>();
+	m_fadeUI->Initialize(Fade::State::FadeInAlpha, 1.0f, 1.0f);
+	// 後から動作を開始させる
+	m_fadeUI->Stop();
+
+	m_wasSelected = false;
 }
 
 /// <summary>
@@ -43,35 +58,57 @@ void WinResultScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer"></param>
 void WinResultScene::Update(const DX::StepTimer& timer) {
-	float elapesd_time = static_cast<float>(timer.GetElapsedSeconds());
 
-	m_time += elapesd_time;
+	// フェードを更新する
+	m_fadeScreen->Update(timer);
+	m_fadeLogo->Update(timer);
+	m_fadeUI->Update(timer);
 
-	// UIを更新する
-	if (m_time >= 3.0f) {
+	// リザルトロゴのフェードが完了したらUIのフェードを開始させる
+	if (m_fadeLogo->IsFinished() && !m_fadeUI->IsRunning()) {
+		m_fadeUI->Start();
+	}
+
+	// UIのアルファ値を更新する
+	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		(*itr)->SetAlpha(m_fadeUI->GetAlpha());
+	}
+
+	// 未選択でフェードが完了していたらUIを更新する
+	if (!m_wasSelected && m_fadeUI->IsFinished()) {
 		for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Update(timer);
 		}
-	}
 
-	// イベントを取得しているかどうか確認する
-	if (m_uiObserver->HasNewEvent()) {
-		UIEventID event_id = m_uiObserver->GetEventID();
-		// イベントに応じてシーンを切り替える
-		switch (event_id) {
-			// キャラセレクトに戻る
-		case UIEventID::CharaSelect:
-			m_pSceneRequest->RequestScene(SceneID::CharaSelect);
-			break;
-			// タイトルに戻る
-		case UIEventID::Title:
-			m_pSceneRequest->RequestScene(SceneID::Title);
-			break;
-		default:
-			ErrorMessage(L"不正なUIイベントを取得しました");
-			break;
+		// イベントを取得しているかどうか確認する
+		if (m_uiObserver->HasNewEvent()) {
+			UIEventID event_id = m_uiObserver->GetEventID();
+			// イベントに応じてシーンを切り替える
+			switch (event_id) {
+				// キャラセレクトに戻る
+			case UIEventID::CharaSelect:
+				m_nextSceneID = SceneID::CharaSelect;
+				m_fadeScreen->Start();
+				m_wasSelected = true;
+				break;
+				// タイトルに戻る
+			case UIEventID::Title:
+				m_nextSceneID = SceneID::Title;
+				m_fadeScreen->Start();
+				m_wasSelected = true;
+				break;
+			default:
+				ErrorMessage(L"不正なUIイベントを取得しました");
+				break;
+			}
 		}
 	}
+
+	// フェードアウトが完了したらシーン遷移する
+	if (m_fadeScreen->IsFinished()) {
+		m_pSceneRequest->RequestScene(m_nextSceneID);
+	}
+
 }
 
 /// <summary>
@@ -81,36 +118,20 @@ void WinResultScene::Update(const DX::StepTimer& timer) {
 void WinResultScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, ServiceLocater<DirectX::CommonStates>::Get()->NonPremultiplied());
 
-	// 時間経過でフェードアウトを行う
-	float alpha;
-	if (m_time <= 3.0f) {
-		alpha = m_time / 3.0f*0.7f;
-	}
-	else {
-		alpha = 0.7f;
-	}
-
-	// プレイ画面に黒を重ねて暗くする
-	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Fade);
-	spriteBatch->Draw(texture->GetResource().Get(), DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Color(1, 1, 1, alpha));
-
-	// 勝利テクスチャを描画する
-	if (m_time >= 3.0f) {
-		texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Player1Win);
-		// 時間経過でフェードインを行う
-		alpha = std::min((m_time - 3.0f) / 4.0f, 1.0f);
-		DirectX::SimpleMath::Vector2 pos(ServiceLocater<DirectX11>::Get()->GetWidth()*0.5f, 100.0f);
-		spriteBatch->Draw(texture->GetResource().Get(), pos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, alpha), 0,
-			texture->GetCenter(), DirectX::SimpleMath::Vector2::One);
-	}
+	// 勝利ロゴを描画する
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Player1Win);
+	DirectX::SimpleMath::Vector2 pos(ServiceLocater<DirectX11>::Get()->GetWidth()*0.5f, 100.0f);
+	spriteBatch->Draw(texture->GetResource().Get(), pos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, m_fadeLogo->GetAlpha()), 0,
+		texture->GetCenter(), DirectX::SimpleMath::Vector2::One);
 
 	// UIを描画する
-	if (m_time >= 4.0f) {
-		for (std::vector<std::unique_ptr<ScaleUpUI>>::const_iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
-			(*itr)->Render(spriteBatch);
-		}
+	for (std::vector<std::unique_ptr<ScaleUpUI>>::const_iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		(*itr)->Render(spriteBatch);
 	}
 
+
+	// 時間経過でフェードアウトを行う
+	m_fadeScreen->Render(spriteBatch);
 
 	spriteBatch->End();
 }

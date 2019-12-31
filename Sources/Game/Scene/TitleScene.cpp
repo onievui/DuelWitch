@@ -8,6 +8,7 @@
 #include <Utils\ScaleUpUI.h>
 #include "ISceneRequest.h"
 #include <Game\Load\ResourceLoader.h>
+#include <Game\UI\Fade.h>
 
 
 /// <summary>
@@ -32,10 +33,20 @@ void TitleScene::Initialize(ISceneRequest* pSceneRequest) {
 
 	// リソースをロードする
 	ResourceLoader::Load(ResourceLoaderID::TitleScene);
-	m_time = 0.0f;
+	m_wasSelected = false;
 
 	// UIを初期化する
 	InitializeUI();
+
+	// フェードを生成する
+	m_fadeScreen = std::make_unique<Fade>();
+	m_fadeScreen->Start();
+	m_fadeScreenStep = 0;
+
+	m_fadeUI = std::make_unique<Fade>();
+	// 後から動作を開始させる
+	m_fadeUI->Stop();
+	m_fadeUIStep = 0;
 }
 
 /// <summary>
@@ -43,54 +54,110 @@ void TitleScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer"></param>
 void TitleScene::Update(const DX::StepTimer& timer) {
-	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
-	m_time += elapsed_time;
-
 	// エスケープキーで終了
-	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
+	const bool press_escape = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape);
+	if (press_escape) {
 		ExitGame();
 	}
 
 	// スペースキーを押すか左クリックした場合
-	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space) ||
-		ServiceLocater<MouseWrapper>::Get()->GetTracker()->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED ) {
+	const bool press_space = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space);
+	const bool click_left = (ServiceLocater<MouseWrapper>::Get()->GetTracker()->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED);
+	if (press_space || click_left) {
 		// タイトルが表示されていなければ、タイマーを進めて表示させる
-		if (m_time < 2.0f) {
-			m_time = 2.0f;
+		if (m_fadeScreenStep < 3) {
+			m_fadeScreenStep = 2;
+			m_fadeScreen->SkipTime();
 		}
-		
 	}
 
-	// UIを更新する
-	if (m_time > 2.5f) {
+	// UIのアルファ値を更新する
+	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		(*itr)->SetAlpha(m_fadeUI->GetAlpha());
+	}
+
+	// 未選択でフェードが完了していたらUIを更新する
+	const bool ui_fade_end = (m_fadeUIStep == 2);
+	if (!m_wasSelected && ui_fade_end) {
 		for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Update(timer);
 		}
+
+		// イベントを取得しているかどうか確認する
+		if (m_uiObserver->HasNewEvent()) {
+			UIEventID event_id = m_uiObserver->GetEventID();
+			// イベントに応じてシーンを切り替える
+			switch (event_id) {
+			case UIEventID::Tutorial:
+				ErrorMessage(L"未実装");
+				break;
+			case UIEventID::Play:
+				// キャラセレクトシーンに進む
+				m_nextSceneID = SceneID::CharaSelect;
+				// フェードアウト後にシーン遷移する
+				m_fadeScreen->Start();
+				m_wasSelected = true;
+				break;
+			case UIEventID::Option:
+				ErrorMessage(L"未実装");
+				break;
+				// ゲームを終了する
+			case UIEventID::Exit:
+				ExitGame();
+				break;
+			default:
+				ErrorMessage(L"不正なUIイベントを取得しました");
+				break;
+			}
+		}
 	}
 
-	// イベントを取得しているかどうか確認する
- 	if (m_uiObserver->HasNewEvent()) {
-		UIEventID event_id = m_uiObserver->GetEventID();
-		// イベントに応じてシーンを切り替える
-		switch (event_id) {
-		case UIEventID::Tutorial:
-			ErrorMessage(L"未実装");
+	// 画面用フェードを更新する
+	m_fadeScreen->Update(timer);
+	// 画面用フェードの段階を更新する
+	if (m_fadeScreen->IsFinished() && m_fadeScreen->IsRunning()) {
+		switch (m_fadeScreenStep) {
+		// 少し待つ
+		case 0:
+			m_fadeScreen->Initialize(Fade::State::NoFade, 1.0f, 1.0f);
 			break;
-		case UIEventID::Play:
-		// キャラセレクトシーンに進む
-			m_pSceneRequest->RequestScene(SceneID::CharaSelect);
+		// フェードインする
+		case 1:
+			m_fadeScreen->Initialize(Fade::State::FadeIn, 1.0f, 0.0f);
 			break;
-		case UIEventID::Option:
-			ErrorMessage(L"未実装");
+		// フェードアウトの準備をする
+		case 2:
+			m_fadeScreen->Initialize(Fade::State::FadeOut, 1.0f, 1.0f);
+			m_fadeScreen->Stop();
+			// UIのフェードを開始する
+			m_fadeUI->Start();
 			break;
-		// ゲームを終了する
-		case UIEventID::Exit:
-			ExitGame();
+		// フェードアウトが完了したらシーン遷移する
+		case 3:
+			m_pSceneRequest->RequestScene(m_nextSceneID);
 			break;
 		default:
-			ErrorMessage(L"不正なUIイベントを取得しました");
+			m_fadeScreen->Stop();
 			break;
 		}
+		++m_fadeScreenStep;
+	}
+
+	// UI用フェードを更新する
+	m_fadeUI->Update(timer);
+	// UI用フェードの段階を更新する
+	if (m_fadeUI->IsFinished() && m_fadeUI->IsRunning()) {
+		switch (m_fadeUIStep) {
+		// UIをフェードインさせる
+		case 0:
+			m_fadeUI->Initialize(Fade::State::FadeInAlpha, 1.5f, 1.0f);
+			break;
+		case 1:
+			m_fadeUI->Stop();
+		default:
+			break;
+		}
+		++m_fadeUIStep;
 	}
 }
 
@@ -103,28 +170,22 @@ void TitleScene::Render(DirectX::SpriteBatch* spriteBatch) {
 
 	const DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Title);
-	// 時間経過でフェードインを行う
-	float alpha;
-	if (m_time <= 2.0f) {
-		alpha = std::max(m_time - 1.0f, 0.0f);
-	}
-	else {
-		alpha = 1.0f;
-	}
+	
 	// タイトルを描画する
 	spriteBatch->Draw(texture->GetResource().Get(),
 		DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.5f),
-		nullptr, DirectX::SimpleMath::Vector4(1, 1, 1, alpha), 0,
+		nullptr, DirectX::Colors::White, 0,
 		texture->GetCenter(), DirectX::SimpleMath::Vector2(1.0f, 1.0f));
 
-
 	// UIを描画する
-	if (m_time > 2.5f) {
+	if (m_fadeUI->GetAlpha() > 0.0f) {
 		for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Render(spriteBatch);
 		}
 	}
 
+	// 時間経過でフェードイン・フェードアウトをする
+	m_fadeScreen->Render(spriteBatch);
 
 	spriteBatch->End();
 }
@@ -151,12 +212,12 @@ void TitleScene::InitializeUI() {
 	
 	// UIの生成
 	// チュートリアル
-	{
-		std::unique_ptr<ScaleUpUI> tutorial = std::make_unique<ScaleUpUI>(
-			UIEventID::Tutorial, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.4f));
-		tutorial->SetText(L"Tutorial");
-		m_menuUIs.emplace_back(std::move(tutorial));
-	}
+	//{
+	//	std::unique_ptr<ScaleUpUI> tutorial = std::make_unique<ScaleUpUI>(
+	//		UIEventID::Tutorial, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.4f));
+	//	tutorial->SetText(L"Tutorial");
+	//	m_menuUIs.emplace_back(std::move(tutorial));
+	//}
 	// プレイ
 	{
 		std::unique_ptr<ScaleUpUI> play = std::make_unique<ScaleUpUI>(
@@ -165,12 +226,12 @@ void TitleScene::InitializeUI() {
 		m_menuUIs.emplace_back(std::move(play));
 	}
 	// オプション
-	{
-		std::unique_ptr<ScaleUpUI> option = std::make_unique<ScaleUpUI>(
-			UIEventID::Option, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.7f));
-		option->SetText(L"Option");
-		m_menuUIs.emplace_back(std::move(option));
-	}
+	//{
+	//	std::unique_ptr<ScaleUpUI> option = std::make_unique<ScaleUpUI>(
+	//		UIEventID::Option, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.7f));
+	//	option->SetText(L"Option");
+	//	m_menuUIs.emplace_back(std::move(option));
+	//}
 	// 終了
 	{
 		std::unique_ptr<ScaleUpUI> exit = std::make_unique<ScaleUpUI>(

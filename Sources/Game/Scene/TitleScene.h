@@ -10,7 +10,8 @@
 class ISceneRequest;
 class UIObserver;
 class ScaleUpUI;
-
+class Fade;
+enum class SceneID;
 
 /// <summary>
 /// タイトルシーンクラス
@@ -40,13 +41,24 @@ private:
 	// リクエストシーンインタフェース
 	ISceneRequest*                                           m_pSceneRequest;
 
-	// タイマー
-	float                                                    m_time;
+	// 画面用フェード
+	std::unique_ptr<Fade>                                    m_fadeScreen;
+	// 画面用フェードの段階
+	int                                                      m_fadeScreenStep;
+	// UI用フェード
+	std::unique_ptr<Fade>                                    m_fadeUI;
+	// UI用フェードの段階
+	int                                                      m_fadeUIStep;
+
 	// UIオブザーバ
 	std::unique_ptr<UIObserver>                              m_uiObserver;
 	// メニューUI
 	std::vector<std::unique_ptr<ScaleUpUI>>                  m_menuUIs;
 
+	// 選択済みかどうか
+	bool                                                     m_wasSelected;
+	// 遷移先のシーンID
+	SceneID                                                  m_nextSceneID;
 };
 
 

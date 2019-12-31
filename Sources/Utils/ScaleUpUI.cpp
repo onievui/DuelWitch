@@ -49,7 +49,7 @@ void ScaleUpUI::Render(DirectX::SpriteBatch* spriteBatch) const {
 			color = DirectX::Colors::Red;
 		}
 	}
-
+	color.w *= m_alpha;
 
 	// テクスチャがあれば描画する
 	if (m_pTexture) {
@@ -66,7 +66,10 @@ void ScaleUpUI::Render(DirectX::SpriteBatch* spriteBatch) const {
 		const DirectX::SpriteFont* font = m_pFont->GetResource().get();
 		RECT rect = font->MeasureDrawBounds(m_text.c_str(), DirectX::SimpleMath::Vector2::Zero);
 		DirectX::SimpleMath::Vector2 pos(m_pos.x - rect.right*0.5f*scale.x, m_pos.y - rect.bottom*0.5f*scale.y);
-		font->DrawString(spriteBatch, m_text.c_str(), pos, m_textColor, 0.0f,
+		color = m_textColor;
+		color.w *= m_alpha;
+
+		font->DrawString(spriteBatch, m_text.c_str(), pos, color, 0.0f,
 			DirectX::SimpleMath::Vector2::Zero, scale);
 	}
 }

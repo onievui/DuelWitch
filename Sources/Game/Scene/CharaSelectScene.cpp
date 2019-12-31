@@ -11,6 +11,7 @@
 #include <Game\UI\CharaIcon.h>
 #include <Game\UI\CharaSelectMarker.h>
 #include <Game\Scene\ShareData\ShareData.h>
+#include <Game\UI\Fade.h>
 
 
 /// <summary>
@@ -37,12 +38,14 @@ void CharaSelectScene::Initialize(ISceneRequest* pSceneRequest) {
 	// リソースのロード
 	ResourceLoader::Load(ResourceLoaderID::CharaSelectScene);
 
-	m_time = 0.0f;
 	m_state = CharaSelectState::SelectPlayer;
 	m_currentPlayer = 0;
 	m_selectCharaId.resize(PLAYER_COUNT);
 	// UIを初期化する
 	InitializeUI();
+	// フェードを生成する
+	m_fade = std::make_unique<Fade>();
+	m_fade->Initialize(Fade::State::FadeIn, 1.0f, 0.0f);
 }
 
 /// <summary>
@@ -50,12 +53,16 @@ void CharaSelectScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer"></param>
 void CharaSelectScene::Update(const DX::StepTimer& timer) {
-	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
-	m_time += elapsed_time;
-
 	// エスケープキーで終了
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
 		ExitGame();
+	}
+
+	// フェードを更新する
+	m_fade->Update(timer);
+	// フェードが完了するまで処理しない
+	if (!m_fade->IsFinished()) {
+		return;
 	}
 
 	// UIを更新する
@@ -75,6 +82,9 @@ void CharaSelectScene::Update(const DX::StepTimer& timer) {
 		break;
 	case CharaSelectScene::CharaSelectState::Ready:
 		UpdateReady(timer);
+		break;
+	case CharaSelectScene::CharaSelectState::FadeOut:
+		UpdateFadeOut(timer);
 		break;
 	default:
 		ErrorMessage(L"キャラセレクトで不正な状態が渡されました");
@@ -99,7 +109,10 @@ void CharaSelectScene::UpdateSelectPlayer(const DX::StepTimer& timer) {
 		case UIEventID::Back:
 			// タイトルに戻る
 			if (m_currentPlayer == 0) {
-				m_pSceneRequest->RequestScene(SceneID::Title);
+				// フェードアウト後にシーン遷移する
+				m_state = CharaSelectState::FadeOut;
+				m_nextSceneID = SceneID::Title;
+				m_fade->Initialize(Fade::State::FadeOut, 1.0f, 1.0f);
 			}
 			// 前のキャラクターの選択に戻る
 			else {
@@ -168,12 +181,26 @@ void CharaSelectScene::UpdateReady(const DX::StepTimer& timer) {
 		case UIEventID::Next:
 			// 選択したキャラのIDを保持する
 			ServiceLocater<ShareData>::Get()->SetSelectCharaID(m_selectCharaId);
-			m_pSceneRequest->RequestScene(SceneID::Play);
+			// フェードアウト後にシーン遷移する
+			m_state = CharaSelectState::FadeOut;
+			m_nextSceneID = SceneID::Play;
+			m_fade->Initialize(Fade::State::FadeOut, 1.0f, 1.0f);
 			break;
 		default:
 			break;
 		}
 	}
+}
+
+/// <summary>
+/// フェードアウト状態
+/// </summary>
+/// <param name="timer">ステップタイマー</param>
+void CharaSelectScene::UpdateFadeOut(const DX::StepTimer& timer) {
+	timer;
+
+	// ここに処理が到達する段階でフェードアウトが完了しているため、そのままシーン遷移する
+	m_pSceneRequest->RequestScene(m_nextSceneID);
 }
 
 /// <summary>
@@ -203,33 +230,33 @@ void CharaSelectScene::Render(DirectX::SpriteBatch* spriteBatch) {
 
 	const DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaSelectBackGround);
-	// 時間経過でフェードインを行う
-	float alpha = std::min(m_time, 1.0f);
+
 	// 背景を描画する
 	spriteBatch->Draw(texture->GetResource().Get(),
 		DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.5f),
-		nullptr, DirectX::SimpleMath::Vector4(1, 1, 1, alpha), 0,
+		nullptr, DirectX::Colors::White, 0,
 		texture->GetCenter(), DirectX::SimpleMath::Vector2(1.0f, 1.0f));
 
 	// UIを描画する
-	if (m_time > 1.0f) {
-		// 戻る・進むボタン
-		for (std::vector<std::unique_ptr<UISubject>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
-			(*itr)->Render(spriteBatch);
-		}
-		// キャラアイコン
-		for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
-			(*itr)->Render(spriteBatch);
-		}
-		// 選択済みキャラ
-		for (std::vector<std::unique_ptr<UISubject>>::iterator itr = m_backCharas.begin(); itr != m_backCharas.end(); ++itr) {
-			(*itr)->Render(spriteBatch);
-		}
-		// 選択マーカー
-		for (int i = 0; i <= m_currentPlayer; ++i) {
-			m_markerUIs[i]->Render(spriteBatch);
-		}
+	// 戻る・進むボタン
+	for (std::vector<std::unique_ptr<UISubject>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		(*itr)->Render(spriteBatch);
 	}
+	// キャラアイコン
+	for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
+		(*itr)->Render(spriteBatch);
+	}
+	// 選択済みキャラ
+	for (std::vector<std::unique_ptr<UISubject>>::iterator itr = m_backCharas.begin(); itr != m_backCharas.end(); ++itr) {
+		(*itr)->Render(spriteBatch);
+	}
+	// 選択マーカー
+	for (int i = 0; i <= m_currentPlayer; ++i) {
+		m_markerUIs[i]->Render(spriteBatch);
+	}
+
+	// 時間経過でフェードイン・フェードアウトする
+	m_fade->Render(spriteBatch);
 
 	spriteBatch->End();
 }

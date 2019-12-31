@@ -10,12 +10,17 @@
 class ISceneRequest;
 class UIObserver;
 class ScaleUpUI;
-
+class Fade;
+enum class SceneID;
 
 /// <summary>
 /// ポーズシーンクラス
 /// </summary>
 class PauseScene : public IScene {
+public:
+	// ポーズにかかる時間
+	static constexpr float PAUSE_TIME = 0.2f;
+
 public:
 	// コンストラクタ
 	PauseScene();
@@ -35,18 +40,31 @@ public:
 private:
 	// UIを初期化する
 	void InitializeUI();
+	// ポーズの解除を選択する
+	void SelectResume();
 	// ポーズを解除する
 	void Resume();
 
 private:
 	// リクエストシーンインタフェース
-	ISceneRequest*                                           m_pSceneRequest;
+	ISceneRequest*                                     m_pSceneRequest;
+
+	// 奥側画面用フェード
+	std::unique_ptr<Fade>                              m_fadeBack;
+	// 手前画面用フェード
+	std::unique_ptr<Fade>                              m_fadeFront;
+	// UI用フェード
+	std::unique_ptr<Fade>                              m_fadeUI;
 
 	// UIオブザーバ
-	std::unique_ptr<UIObserver>                              m_uiObserver;
+	std::unique_ptr<UIObserver>                        m_uiObserver;
 	// メニューUI
-	std::vector<std::unique_ptr<ScaleUpUI>>                  m_menuUIs;
+	std::vector<std::unique_ptr<ScaleUpUI>>            m_menuUIs;
 
+	// 選択済みかどうか
+	bool                                                     m_wasSelected;
+	// 遷移先のシーンID
+	SceneID                                                  m_nextSceneID;
 };
 
 

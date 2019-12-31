@@ -8,6 +8,7 @@
 
 
 class ISceneRequest;
+class Fade;
 
 
 /// <summary>
@@ -33,9 +34,11 @@ private:
 	// リクエストシーンインタフェース
 	ISceneRequest*                                           m_pSceneRequest;
 
-	// タイマー
-	float                                                    m_time;
-
+	// 画面用フェード
+	std::unique_ptr<Fade>                                    m_fade;
+	// フェードの段階
+	int                                                      m_fadeStep;
+	
 };
 
 

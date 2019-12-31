@@ -9,6 +9,7 @@
 #include <Utils\LoadDataManager.h>
 #include "ISceneRequest.h"
 #include <Game\Load\ResourceLoader.h>
+#include <Game\UI\Fade.h>
 
 
 /// <summary>
@@ -36,6 +37,20 @@ void PauseScene::Initialize(ISceneRequest* pSceneRequest) {
 
 	// マウスカーソルを表示する
 	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_ABSOLUTE);
+
+	// フェードを生成する
+	m_fadeBack = std::make_unique<Fade>();
+	m_fadeBack->Initialize(Fade::State::FadeOut, PAUSE_TIME, 0.8f);
+
+	m_fadeFront = std::make_unique<Fade>();
+	m_fadeFront->Initialize(Fade::State::FadeOut, 1.0f, 1.0f);
+	// 後から動作を開始させる
+	m_fadeFront->Stop();
+
+	m_fadeUI = std::make_unique<Fade>();
+	m_fadeUI->Initialize(Fade::State::FadeInAlpha, PAUSE_TIME, 1.0f);
+
+	m_wasSelected = false;
 }
 
 /// <summary>
@@ -43,44 +58,76 @@ void PauseScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 void PauseScene::Update(const DX::StepTimer& timer) {
-	timer;
+	
+	m_fadeBack->Update(timer);
+	m_fadeFront->Update(timer);
+	m_fadeUI->Update(timer);
+
+	// UIのアルファ値を更新する
+	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		(*itr)->SetAlpha(m_fadeUI->GetAlpha());
+	}
+
+	// フェードが完了するまで処理しない
+	if (!m_fadeBack->IsFinished()) {
+		return;
+	}
 
 	// F2キーでパラメータを再読み込みする
-	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F2)) {
+	const bool press_f2 = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F2);
+	if (press_f2) {
 		LoadDataManager::GetIns()->Reload(LoadDataID::PlayScene);
 	}
 
 	// エスケープキーを押して、プレイシーンを再開する
-	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
-		Resume();
-		return;
+	const bool press_escape = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape);
+	if (press_escape) {
+		SelectResume();
 	}
 
-	// UIを更新する
-	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
-		(*itr)->Update(timer);
+	// 未選択でフェードが完了していたらUIを更新する
+	if (!m_wasSelected && m_fadeUI->IsFinished()) {
+		// UIを更新する
+		for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+			(*itr)->Update(timer);
+		}
+
+		// イベントを取得しているかどうか確認する
+		if (m_uiObserver->HasNewEvent()) {
+			UIEventID event_id = m_uiObserver->GetEventID();
+			// イベントに応じてシーンを切り替える
+			switch (event_id) {
+				// 再開する
+			case UIEventID::Resume:
+				SelectResume();
+				return;
+				// キャラセレクトに戻る
+			case UIEventID::CharaSelect:
+				m_nextSceneID = SceneID::CharaSelect;
+				m_fadeFront->Start();
+				break;
+				// タイトルに戻る
+			case UIEventID::Title:
+				m_nextSceneID = SceneID::Title;
+				m_fadeFront->Start();
+				break;
+			default:
+				ErrorMessage(L"不正なUIイベントを取得しました");
+				break;
+			}
+			m_wasSelected = true;
+		}
 	}
 
-	// イベントを取得しているかどうか確認する
-	if (m_uiObserver->HasNewEvent()) {
-		UIEventID event_id = m_uiObserver->GetEventID();
-		// イベントに応じてシーンを切り替える
-		switch (event_id) {
-		// 再開する
-		case UIEventID::Resume:
+	// 選択してから一定時間経過したらシーンを遷移する
+	if (m_fadeFront->IsFinished()) {
+		//プレイシーンを選択していたらポーズを解除する
+		if (m_nextSceneID == SceneID::Play) {
 			Resume();
-			return;
-		// キャラセレクトに戻る
-		case UIEventID::CharaSelect:
-			m_pSceneRequest->RequestScene(SceneID::CharaSelect);
-			break;
-		// タイトルに戻る
-		case UIEventID::Title:
-			m_pSceneRequest->RequestScene(SceneID::Title);
-			break;
-		default:
-			ErrorMessage(L"不正なUIイベントを取得しました");
-			break;
+		}
+		// それ以外なら、そのシーンに遷移する
+		else {
+			m_pSceneRequest->RequestScene(m_nextSceneID);
 		}
 	}
 
@@ -94,14 +141,15 @@ void PauseScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	spriteBatch->Begin(DirectX::SpriteSortMode_Deferred, ServiceLocater<DirectX::CommonStates>::Get()->NonPremultiplied());
 
 	// プレイ画面に黒を重ねて暗くする
-	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Fade);
-	spriteBatch->Draw(texture->GetResource().Get(), DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Color(0, 0, 0, 0.8f));
+	m_fadeBack->Render(spriteBatch);
 
 	// UIを描画する
 	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->Render(spriteBatch);
 	}
 	
+	// 再開しない場合はフェードアウトする
+	m_fadeFront->Render(spriteBatch);
 
 	spriteBatch->End();
 }
@@ -159,6 +207,23 @@ void PauseScene::InitializeUI() {
 		// UIにオブザーバをアタッチする
 		(*itr)->Attach(m_uiObserver.get());
 	}
+}
+
+/// <summary>
+/// ポーズの解除を選択する
+/// </summary>
+void PauseScene::SelectResume() {
+	// アルファ値が0.8から始まるように調整する
+	m_fadeBack->Initialize(Fade::State::FadeIn, PAUSE_TIME*1.25f, 0.0f);
+	m_fadeBack->SkipTime(0.2f);
+
+	m_fadeUI->Initialize(Fade::State::FadeOutAlpha, PAUSE_TIME, 0.0f);
+
+	// 終了判定のために手前画面用フェードをタイマーとして扱う
+	m_fadeFront->Initialize(Fade::State::NoFade, PAUSE_TIME, 0.0f);
+
+	m_wasSelected = true;
+	m_nextSceneID = SceneID::Play;
 }
 
 /// <summary>

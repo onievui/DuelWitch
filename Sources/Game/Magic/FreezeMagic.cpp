@@ -55,9 +55,7 @@ void FreezeMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::
 	m_time = 0.0f;
 	m_rotateRadius = 0.0f;
 	m_color = DirectX::Colors::SkyBlue + DirectX::SimpleMath::Color(0, 0, 0, 0.8f);
-	// 向きをXZ方向に変換する
 	m_vel = dir;
-	m_vel.y = 0.0f;
 
 	m_lifeTime = parameter.lifeTime;
 }
@@ -135,13 +133,14 @@ void FreezeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Ice);
 
+	// 半透明なポリゴンを両面描画するために、先に裏側のポリゴンだけ描画しておく
 	resource->GetResource()->Draw(m_world, view, proj, m_color, texture->GetResource().Get(), false,[=]() {
 		// 透明判定処理
 		context->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFFFFFFF);
-		// 裏側のポリゴンも半透明で描画するために、深度バッファに書き込まない
+		// 深度バッファを参照する
 		context->OMSetDepthStencilState(states->DepthRead(), 0);
-		// 裏側のポリゴンも半透明で描画するために、カリングしない
-		context->RSSetState(states->CullNone());
+		// 反時計回りカリング
+		context->RSSetState(states->CullCounterClockwise());
 		// ピクセルシェーダにサンプラーを割り当てる
 		ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
 		context->PSSetSamplers(0, 1, sampler);
@@ -159,9 +158,29 @@ void FreezeMagic::Render(const DirectX::SimpleMath::Matrix& view, const DirectX:
 		context->PSSetShader(pixel_shader->GetResource().Get(), nullptr, 0);
 	});
 
-	// 描画せずに深度バッファのみ書き込む
-	resource->GetResource()->Draw(m_world, view, proj, DirectX::Colors::Transparent, texture->GetResource().Get(), false, [=]() {
+	// 表側のポリゴンを描画する
+	resource->GetResource()->Draw(m_world, view, proj, m_color, texture->GetResource().Get(), false, [=]() {
+		// 透明判定処理
+		context->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFFFFFFF);
+		// 深度バッファに書き込む
 		context->OMSetDepthStencilState(states->DepthDefault(), 0);
+		// 時計回りカリング
+		context->RSSetState(states->CullClockwise());
+		// ピクセルシェーダにサンプラーを割り当てる
+		ID3D11SamplerState* sampler[1] = { states->LinearWrap() };
+		context->PSSetSamplers(0, 1, sampler);
+		// 各シェーダを割り当てる
+		VertexShaderResource* vertex_shader = ServiceLocater<ResourceManager<VertexShaderResource>>::Get()
+			->GetRawResource(VertexShaderID::Ice);
+		const PixelShaderResource* pixel_shader = ServiceLocater<ResourceManager<PixelShaderResource>>::Get()
+			->GetResource(PixelShaderID::Default);
+
+		// 入力レイアウトを割り当てる
+		context->IASetInputLayout(vertex_shader->GetInputLayout());
+
+		// シェーダをセットする
+		context->VSSetShader(vertex_shader->GetResource().Get(), nullptr, 0);
+		context->PSSetShader(pixel_shader->GetResource().Get(), nullptr, 0);
 	});
 
 	//m_collider->Render(view, proj);

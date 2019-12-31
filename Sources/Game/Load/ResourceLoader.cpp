@@ -27,11 +27,13 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	// ロゴシーン
 	case ResourceLoaderID::LogoScene:
 		textureResourceManager->AddResource(TextureID::Logo, TextureResource(L"Protected/creator_logo.png"));
+		textureResourceManager->AddResource(TextureID::Fade, TextureResource(L"Protected/fade_texture1280.png"));
 		break;
 	// タイトルシーン
 	case ResourceLoaderID::TitleScene:
 		textureResourceManager->AddResource(TextureID::Title,   TextureResource(L"Protected/title1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
+		textureResourceManager->AddResource(TextureID::Fade,    TextureResource(L"Protected/fade_texture1280.png"));
 		break;
 	// キャラセレクトシーン
 	case ResourceLoaderID::CharaSelectScene:
@@ -43,6 +45,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::CharaSelectMarker,     TextureResource(L"Protected/chara_select_marker1.png"));
 		textureResourceManager->AddResource(TextureID::CharaSelectMarker,	      L"Protected/chara_select_marker2.png");
 		textureResourceManager->AddResource(TextureID::CharaSelectMarker,	      L"Protected/chara_select_marker3.png");
+		textureResourceManager->AddResource(TextureID::Fade,                  TextureResource(L"Protected/fade_texture1280.png"));
 		break;
 	// プレイシーン
 	case ResourceLoaderID::PlayScene:

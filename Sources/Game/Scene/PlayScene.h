@@ -21,6 +21,8 @@ class EffectManager;
 class TargetCamera;
 class Field;
 class CollisionManager;
+class Fade;
+enum class SceneID;
 
 
 /// <summary>
@@ -49,6 +51,13 @@ private:
 private:
 	// リクエストシーンインタフェース
 	ISceneRequest*                           m_pSceneRequest;
+
+	// 画面用フェード
+	std::unique_ptr<Fade>                    m_fade;
+	// 勝敗がついたかどうか
+	bool                                     m_isFinished;
+	// 遷移先のシーンID
+	SceneID                                  m_nextSceneID;
 
 	// パラメータ読み込みクラス
 	std::unique_ptr<PlayParameterLoader>     m_parameterLoader;

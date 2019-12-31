@@ -66,6 +66,8 @@ public:
 	const DirectX::SimpleMath::Color& GetTextColor() const         { return m_textColor; }
 	// テキスト色を設定する
 	void SetTextColor(const DirectX::SimpleMath::Color& textColor) { m_textColor = textColor; }
+	// アルファ値を設定する
+	void SetAlpha(float alpha)                                     { m_alpha = alpha; }
 	// フォントを取得する
 	const FontResource* GetFont()const                             { return m_pFont; }
 	// フォントを設定する
@@ -101,6 +103,8 @@ protected:
 	std::wstring                 m_text;
 	// テキスト色
 	DirectX::SimpleMath::Color   m_textColor;
+	// アルファ値
+	float                        m_alpha;
 	// フォント
 	const FontResource*          m_pFont;
 };

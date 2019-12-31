@@ -25,6 +25,7 @@ UISubject::UISubject(UIEventID eventID, int layer, const DirectX::SimpleMath::Ve
 	, m_textureIndex(textureIndex)
 	, m_text()
 	, m_textColor(DirectX::Colors::White)
+	, m_alpha(1.0f)
 	, m_pFont() {
 }
 
@@ -60,7 +61,7 @@ void UISubject::Render(DirectX::SpriteBatch* spriteBatch) const {
 	// テクスチャがあれば描画する
 	if (m_pTexture) {
 		spriteBatch->Draw(m_pTexture->GetResource(m_textureIndex).Get(),
-			m_pos, nullptr, DirectX::SimpleMath::Vector4(1, 1, 1, 1), 0,
+			m_pos, nullptr, DirectX::SimpleMath::Vector4(1, 1, 1, m_alpha), 0,
 			m_pTexture->GetCenter(m_textureIndex), m_scale);
 	}
 	// テキストがあれば描画する
@@ -73,7 +74,10 @@ void UISubject::Render(DirectX::SpriteBatch* spriteBatch) const {
 		const DirectX::SpriteFont* font = m_pFont->GetResource().get();
 		RECT rect = font->MeasureDrawBounds(m_text.c_str(), DirectX::SimpleMath::Vector2::Zero);
 		DirectX::SimpleMath::Vector2 pos(m_pos.x - rect.right*0.5f, m_pos.y - rect.bottom*0.5f);
-		font->DrawString(spriteBatch, m_text.c_str(), pos, m_textColor, 0.0f,
+		DirectX::SimpleMath::Color color = m_textColor;
+		color.w *= m_alpha;
+
+		font->DrawString(spriteBatch, m_text.c_str(), pos, color, 0.0f,
 			DirectX::SimpleMath::Vector2::Zero, m_scale);
 	}
 }

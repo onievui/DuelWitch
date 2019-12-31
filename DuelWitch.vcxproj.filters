@@ -378,6 +378,9 @@
     <ClCompile Include="Sources\Game\Effect\HitEffect.cpp">
       <Filter>Game\Effect\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\UI\Fade.cpp">
+      <Filter>Game\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -775,6 +778,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Utils\IfIterator.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\UI\Fade.h">
+      <Filter>Game\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

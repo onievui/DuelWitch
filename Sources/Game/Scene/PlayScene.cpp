@@ -4,6 +4,8 @@
 #include <Utils\MathUtils.h>
 #include <Utils\MouseWrapper.h>
 #include <Utils\LamdaUtils.h>
+#include <Utils\Resource.h>
+#include <Utils\ResourceManager.h>
 #include <Game\Load\PlayParameterLoader.h>
 #include <Game\Load\ResourceLoader.h>
 #include "ISceneRequest.h"
@@ -20,6 +22,7 @@
 #include <Game\Field\Field.h>
 #include <Game\Field\GridFloor.h>
 #include <Game\Collision\CollisionManager.h>
+#include <Game\UI\Fade.h>
 
 
 /// <summary>
@@ -46,6 +49,8 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
 	// カーソルを画面の中心に移動させる
 	ServiceLocater<MouseWrapper>::Get()->SetPos(DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.5f));
+
+	m_isFinished = false;
 
 	// リソースをロードする
 	ResourceLoader::Load(ResourceLoaderID::PlayScene);
@@ -90,6 +95,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	//グリッド床を生成する
 	m_gridFloor = std::make_unique<GridFloor>(ServiceLocater<DirectX::CommonStates>::Get(), 200.0f, 100);
 	
+	// フェードを生成する
+	m_fade = std::make_unique<Fade>();
+	m_fade->Initialize(Fade::State::FadeIn, 1.0f, 0.0f);
 }
 
 /// <summary>
@@ -97,6 +105,10 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 /// </summary>
 /// <param name="timer"></param>
 void PlayScene::Update(const DX::StepTimer& timer) {
+
+	// フェードを更新する
+	m_fade->Update(timer);
+
 	// エスケープキーでポーズ画面を呼び出す
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
 		m_pSceneRequest->RequestScene(SceneID::Pause, RequestSceneType::StackScene);
@@ -108,11 +120,23 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	}
 
 	// 勝敗を判定する
-	if (m_playerManager->Player1Win() || ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F3)) {
-		m_pSceneRequest->RequestScene(SceneID::WinResult, RequestSceneType::StackScene);
+	if (!m_isFinished) {
+		if (m_playerManager->Player1Win() || ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F3)) {
+			m_nextSceneID = SceneID::WinResult;
+			// 勝利した場合は白くフェードアウトする
+			m_fade->Initialize(Fade::State::FadeOut, 3.0f, 0.7f, static_cast<DirectX::SimpleMath::Color>(DirectX::Colors::White));
+			m_isFinished = true;
+		}
+		else if (m_playerManager->Player1Lose() || ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F4)) {
+			m_nextSceneID = SceneID::LoseResult;
+			// 敗北した場合は黒くフェードアウトする
+			m_fade->Initialize(Fade::State::FadeOut, 3.0f, 0.8f, static_cast<DirectX::SimpleMath::Color>(DirectX::Colors::Black));
+			m_isFinished = true;
+		}
 	}
-	else if (m_playerManager->Player1Lose() || ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F4)) {
-		m_pSceneRequest->RequestScene(SceneID::LoseResult, RequestSceneType::StackScene);
+	else if(m_fade->IsFinished()) {
+		// フェードアウトが完了したらシーン遷移する
+		m_pSceneRequest->RequestScene(m_nextSceneID, RequestSceneType::StackScene);
 	}
 
 	// プレイヤーマネージャを更新する
@@ -166,6 +190,10 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 
 	// エフェクトを描画する
 	m_effectManager->Render(view, projection);
+
+	// シーンの最初と終わりでフェードイン・フェードアウトする
+	m_fade->Render(spriteBatch);
+
 
 	spriteBatch->End();
 }

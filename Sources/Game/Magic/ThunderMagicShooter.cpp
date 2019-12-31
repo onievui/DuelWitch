@@ -22,13 +22,13 @@ ThunderMagicShooter::ThunderMagicShooter(std::vector<IMagic*>* pMagics, MagicFac
 /// <param name="pos">À•W</param>
 /// <param name="dir">Œü‚«</param>
 void ThunderMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	if (magicInfo.level == 0) {
+	if (magicInfo.level != 1) {
 		std::vector<IMagic*>::iterator itr = LamdaUtils::FindIf(*m_pMagics, LamdaUtils::IsNull());
 		if (itr != m_pMagics->end()) {
 			(*itr) = m_pMagicFactory->Create(magicInfo, pos, dir);
 		}
 	}
-	else if (magicInfo.level >= 1) {
+	if (magicInfo.level >= 1) {
 		// TODO: —‹2wayŠp“x’è”‚É‚·‚é
 		const float angle = Math::PI / 20;
 		int count = 0;
