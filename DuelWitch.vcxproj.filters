@@ -381,6 +381,9 @@
     <ClCompile Include="Sources\Game\UI\Fade.cpp">
       <Filter>Game\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Utils\AudioManager.cpp">
+      <Filter>Utils\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -782,6 +785,9 @@
     <ClInclude Include="Sources\Game\UI\Fade.h">
       <Filter>Game\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Utils\AudioManager.h">
+      <Filter>Utils\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
@@ -791,6 +797,15 @@
       <Filter>Assets</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\Models\Protected\skydome_space.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\unity-chan-test.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\unity-chan-test2.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\unity-chan.FBX">
       <Filter>Assets</Filter>
     </MeshContentTask>
   </ItemGroup>

@@ -3,6 +3,7 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\Resource.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
 #include <Game\Scene\ShareData\ShareData.h>
 
@@ -26,10 +27,15 @@ public:
 	std::unique_ptr<ResourceManager<TextureResource>>              textureResourceManager;
 	std::unique_ptr<ResourceManager<GeometricPrimitiveResource>>   geometricPrimitiveResourceManager;
 	std::unique_ptr<ResourceManager<ModelResource>>                modelResourceManager;
+	std::unique_ptr<ResourceManager<SoundResource>>                soundResourceManager;
+	std::unique_ptr<ResourceManager<BgmResource>>                  bgmResourceManager;
 	std::unique_ptr<ResourceManager<FontResource>>                 fontResourceManager;
 	std::unique_ptr<ResourceManager<VertexShaderResource>>         vertexShaderResourceManager;
 	std::unique_ptr<ResourceManager<GeometryShaderResource>>       geometryShaderResourceManager;
 	std::unique_ptr<ResourceManager<PixelShaderResource>>          pixelShaderResourceManager;
+
+	// オーディオマネージャ
+	std::unique_ptr<AudioManager>                                  audioManager;
 };
 
 
@@ -71,11 +77,14 @@ void CommonServices::Initialize() {
 	RegisterService(m_services->keyboardStateTracker);
 	RegisterService(m_services->mouseWrapper, ServiceLocater<DirectX11>::Get()->GetHWnd());
 	RegisterService(m_services->shareData);
+	RegisterService(m_services->audioManager);
 
 	// リソースマネージャを生成してサービスロケータに登録する
 	RegisterResourceManager(m_services->textureResourceManager, L"テクスチャ");
 	RegisterResourceManager(m_services->geometricPrimitiveResourceManager, L"ジオメトリックプリミティブ");
 	RegisterResourceManager(m_services->modelResourceManager, L"モデル");
+	RegisterResourceManager(m_services->soundResourceManager, L"サウンド");
+	RegisterResourceManager(m_services->bgmResourceManager, L"BGM");
 	RegisterResourceManager(m_services->fontResourceManager, L"フォント");
 	RegisterResourceManager(m_services->vertexShaderResourceManager, L"頂点シェーダ");
 	RegisterResourceManager(m_services->geometryShaderResourceManager, L"ジオメトリシェーダ");
@@ -91,10 +100,16 @@ void CommonServices::Finalize() {
 	ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Unregister();
 	ServiceLocater<MouseWrapper>::Unregister();
 	ServiceLocater<ShareData>::Unregister();
+	ServiceLocater<AudioManager>::Unregister();
 	ServiceLocater<ResourceManager<TextureResource>>::Unregister();
 	ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Unregister();
 	ServiceLocater<ResourceManager<ModelResource>>::Unregister();
+	ServiceLocater<ResourceManager<SoundResource>>::Unregister();
+	ServiceLocater<ResourceManager<BgmResource>>::Unregister();
 	ServiceLocater<ResourceManager<FontResource>>::Unregister();
+	ServiceLocater<ResourceManager<VertexShaderResource>>::Unregister();
+	ServiceLocater<ResourceManager<GeometryShaderResource>>::Unregister();
+	ServiceLocater<ResourceManager<PixelShaderResource>>::Unregister();
 }
 
 template<class T, class... Args>

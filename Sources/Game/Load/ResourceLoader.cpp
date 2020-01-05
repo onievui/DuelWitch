@@ -2,6 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\AudioManager.h>
 #include <Utils\ErrorMessage.h>
 
 
@@ -13,11 +14,14 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	ResourceManager<TextureResource>* textureResourceManager = ServiceLocater<ResourceManager<TextureResource>>::Get();
 	//ResourceManager<GeometricPrimitiveResource>* geometricPrimitiveResourceManager = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get();
 	ResourceManager<ModelResource>* modelResourceManager = ServiceLocater<ResourceManager<ModelResource>>::Get();
+	ResourceManager<SoundResource>* soundResourceManager = ServiceLocater<ResourceManager<SoundResource>>::Get();
+	ResourceManager<BgmResource>* bgmResourceManager = ServiceLocater<ResourceManager<BgmResource>>::Get();
 	ResourceManager<FontResource>* fontResourceManager = ServiceLocater<ResourceManager<FontResource>>::Get();
 	ResourceManager<VertexShaderResource>* vertexShaderResourceManager = ServiceLocater<ResourceManager<VertexShaderResource>>::Get();
 	ResourceManager<GeometryShaderResource>* geometryShaderResourceManager = ServiceLocater<ResourceManager<GeometryShaderResource>>::Get();
 	ResourceManager<PixelShaderResource>* pixelShaderResourceManager = ServiceLocater<ResourceManager<PixelShaderResource>>::Get();
-	
+
+	DirectX::AudioEngine* audioEngine = ServiceLocater<AudioManager>::Get()->GetAudioEngine();
 
 	switch (id) {
 	// 共通のリソース
@@ -87,8 +91,11 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		pixelShaderResourceManager->AddResource(PixelShaderID::Default,            PixelShaderResource(L"DefaultPS.cso"));
 		pixelShaderResourceManager->AddResource(PixelShaderID::ThunderStrikeMagic, PixelShaderResource(L"ThunderStrikePS.cso"));
 		// モデルの読み込み
+		modelResourceManager->AddResource(ModelID::Chara,   ModelResource(L"unity-chan.cmo", L"Protected"));
 		modelResourceManager->AddResource(ModelID::Bloom,   ModelResource(L"bloom.cmo", L"Protected"));
 		modelResourceManager->AddResource(ModelID::Skydome, ModelResource(L"skydome.cmo", L"Protected"));
+		// サウンドの読み込み
+		soundResourceManager->AddResource(SoundID::Test, SoundResource(L"Protected/se_test.wav", audioEngine));
 		break;
 	default:
 		ErrorMessage(L"リソースのロードで不正なIDが渡されました");
@@ -107,17 +114,25 @@ void ResourceLoader::Release(ResourceLoaderID id) {
 		break;
 	case ResourceLoaderID::LogoScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
+		ServiceLocater<ResourceManager<SoundResource>>::Get()->Release();
+		ServiceLocater<ResourceManager<BgmResource>>::Get()->Release();
 		break;
 	case ResourceLoaderID::TitleScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
+		ServiceLocater<ResourceManager<SoundResource>>::Get()->Release();
+		ServiceLocater<ResourceManager<BgmResource>>::Get()->Release();
 		break;
 	case ResourceLoaderID::CharaSelectScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
+		ServiceLocater<ResourceManager<SoundResource>>::Get()->Release();
+		ServiceLocater<ResourceManager<BgmResource>>::Get()->Release();
 		break;
 	case ResourceLoaderID::PlayScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
 		ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()->Release();
 		ServiceLocater<ResourceManager<ModelResource>>::Get()->Release();
+		ServiceLocater<ResourceManager<SoundResource>>::Get()->Release();
+		ServiceLocater<ResourceManager<BgmResource>>::Get()->Release();
 		break;
 	default:
 		ErrorMessage(L"リソースの解放で不正なIDが渡されました");

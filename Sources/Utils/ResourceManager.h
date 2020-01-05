@@ -89,6 +89,12 @@ public:
 		return m_resources[index].get();
 	}
 
+	// 全てのリソースを取得する
+	const std::vector<std::unique_ptr<T>>& GetAllResources() { return m_resources; }
+
+	// 非constの全てのリソースを取得する
+	std::vector<std::unique_ptr<T>>& GetRawAllResources() { return m_resources; }
+
 	// リソースを置き換える
 	void Replace(IDType id, ResourceType&& resource, int index2 = 0) {
 		int index = m_index[static_cast<int>(id)];

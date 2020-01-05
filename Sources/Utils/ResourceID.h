@@ -3,6 +3,9 @@
 #define RESOURCE_ID_DEFINED
 
 
+#define ID_RANGE_CHECK(IDType, id) ((id >= static_cast<IDType>(0) && id < IDType::Num))
+
+
 /*
 /// <summary>
 /// サンプルID
@@ -65,6 +68,7 @@ enum class GeometricPrimitiveID {
 /// モデルID
 /// </summary>
 enum class ModelID {
+	Chara,
 	Bloom,
 	Skydome,
 
@@ -75,7 +79,7 @@ enum class ModelID {
 /// サウンドID
 /// </summary>
 enum class SoundID {
-	NullData,
+	Test,
 	Num
 };
 

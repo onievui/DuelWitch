@@ -5,6 +5,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
 #include <Game\Load\CommonServices.h>
 #include <Game\Load\ResourceLoader.h>
@@ -74,6 +75,8 @@ void MyGame::Update(const DX::StepTimer& timer) {
 	ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->Update(m_keyboard->GetState());
 	// マウストラッカーを更新する
 	ServiceLocater<MouseWrapper>::Get()->Update(m_width, m_height);
+	// オーディオマネージャを更新する
+	ServiceLocater<AudioManager>::Get()->Update();
 
 	// シーンを更新する
 	m_sceneManager->Update(timer);

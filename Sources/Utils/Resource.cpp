@@ -8,6 +8,8 @@
 
 const std::wstring TextureResource::TEXTURE_DIR                = L"Resources/Textures/";
 const std::wstring ModelResource::MODEL_DIR                    = L"Resources/Models/";
+const std::wstring SoundResource::SOUND_DIR                    = L"Resources/Audio/SE/";
+const std::wstring BgmResource::BGM_DIR                        = L"Resources/Audio/BGM/";
 const std::wstring FontResource::FONT_DIR                      = L"Resources/Fonts/";
 const std::wstring VertexShaderResource::VERTEX_SHADER_DIR     = L"Resources/Shaders/";
 const std::wstring GeometryShaderResource::GEOMETRY_SHADER_DIR = L"Resources/Shaders/";
@@ -16,6 +18,8 @@ const std::wstring PixelShaderResource::PIXEL_SHADER_DIR       = L"Resources/Sha
 TextureResource::Type Resource<TextureResource::Type, TextureResource::IDType>::m_defaultResource = nullptr;
 GeometricPrimitiveResource::Type Resource<GeometricPrimitiveResource::Type, GeometricPrimitiveResource::IDType>::m_defaultResource = nullptr;
 ModelResource::Type Resource<ModelResource::Type, ModelResource::IDType>::m_defaultResource = nullptr;
+SoundResource::Type Resource<SoundResource::Type, SoundResource::IDType>::m_defaultResource = nullptr;
+BgmResource::Type Resource<BgmResource::Type, BgmResource::IDType>::m_defaultResource = nullptr;
 FontResource::Type Resource<FontResource::Type, FontResource::IDType>::m_defaultResource = nullptr;
 VertexShaderResource::Type Resource<VertexShaderResource::Type, VertexShaderResource::IDType>::m_defaultResource = nullptr;
 GeometryShaderResource::Type Resource<GeometryShaderResource::Type, GeometryShaderResource::IDType>::m_defaultResource = nullptr;
@@ -114,9 +118,74 @@ ModelResource::ModelResource(const std::wstring& fileName, const std::wstring& d
 	// CMOを読み込んでモデルを作成する
 	m_resources.emplace_back(DirectX::Model::CreateFromCMO(device, (MODEL_DIR + directory + L"/" + fileName).c_str(), *fxFactory));
 	if (m_resources.back().get() == m_defaultResource.get()) {
-		ErrorMessage(L"モデルのに読み込み失敗しました");
+		ErrorMessage(L"モデルのに読み込みに失敗しました");
 	}
 }
+
+
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="fileName">ファイル名</param>
+/// <param name="audioEngine">オーディオエンジン</param>
+SoundResource::SoundResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine) {
+	// リソースを追加する
+	AddResource(fileName, audioEngine);
+}
+
+/// <summary>
+/// リソースを追加する
+/// </summary>
+/// <param name="fileName">ファイル名</param>
+/// <param name="audioEngine">オーディオエンジン</param>
+void SoundResource::AddResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine) {
+	m_resources.emplace_back(
+		std::make_unique<DirectX::SoundEffect>(audioEngine, (SOUND_DIR + fileName).c_str())
+	);
+	if (m_resources.back().get() == m_defaultResource.get()) {
+		ErrorMessage(L"サウンドの読み込みに失敗しました");
+		// 仮データの作成
+		m_instances.emplace_back(nullptr);
+		return;
+	}
+	// サウンドエフェクトインスタンスの生成
+	m_instances.emplace_back(
+		m_resources.back()->CreateInstance()
+	);
+}
+
+
+/// /// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="fileName">ファイル名</param>
+/// <param name="audioEngine">オーディオエンジン</param>
+BgmResource::BgmResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine) {
+	// リソースを追加する
+	AddResource(fileName, audioEngine);
+}
+
+/// <summary>
+/// リソースを追加する
+/// </summary>
+/// <param name="fileName">ファイル名</param>
+/// <param name="audioEngine">オーディオエンジン</param>
+void BgmResource::AddResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine) {
+	m_resources.emplace_back(
+		std::make_unique<DirectX::SoundEffect>(audioEngine, (BGM_DIR + fileName).c_str())
+	);
+	if (m_resources.back().get() == m_defaultResource.get()) {
+		ErrorMessage(L"サウンドの読み込みに失敗しました");
+		// 仮データの作成
+		m_instances.emplace_back(nullptr);
+		return;
+	}
+	// サウンドエフェクトインスタンスの生成
+	m_instances.emplace_back(
+		m_resources.back()->CreateInstance()
+	);
+}
+
 
 /// <summary>
 /// コンストラクタ
@@ -203,3 +272,4 @@ PixelShaderResource::PixelShaderResource(const std::wstring& fileName) {
 		ErrorMessage(L"ピクセルシェーダの作成に失敗しました");
 	}
 }
+

@@ -3,6 +3,7 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
 #include <Parameters\CharaStatusParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
@@ -35,7 +36,7 @@ Player::Player(PlayerID id, const DirectX::SimpleMath::Vector3& pos)
 	, m_status()
 	, m_haveElements()
 	, m_transform(pos)
-	, m_sphereCollider(&m_transform, 0.75f, DirectX::SimpleMath::Vector3(0,0.5f,0)) 
+	, m_sphereCollider(&m_transform, 0.75f, DirectX::SimpleMath::Vector3(0,0.65f,0)) 
 	, m_pMagicManager()
 	, m_pCamera() {
 
@@ -68,6 +69,19 @@ void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vecto
 	// エフェクトを設定する
 	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::Bloom);
 	modelResource->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
+		DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
+		if (lights) {
+			lights->SetLightingEnabled(true);
+			lights->SetPerPixelLighting(true);
+			lights->SetLightEnabled(0, true);
+			lights->SetLightDiffuseColor(0, DirectX::Colors::AntiqueWhite);
+			lights->SetAmbientLightColor(DirectX::Colors::AntiqueWhite*0.3f);
+			lights->SetLightEnabled(1, false);
+			lights->SetLightEnabled(2, false);
+		}
+	});
+	const ModelResource* modelResource2 = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::Chara);
+	modelResource2->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
 		DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
 		if (lights) {
 			lights->SetLightingEnabled(true);
@@ -120,6 +134,7 @@ void Player::Update(const DX::StepTimer& timer) {
 	
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Z)) {
 		ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::Hit, DirectX::SimpleMath::Vector3::Zero, -DirectX::SimpleMath::Vector3::UnitZ);
+		ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Test);
 	}
 
 }

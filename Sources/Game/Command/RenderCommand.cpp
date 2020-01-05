@@ -14,14 +14,23 @@ void RenderCommand::RenderPlayerModel(const Player& player, const DirectX::Simpl
 	if (not_damaged || time_sin_positive) {
 		const std::unique_ptr<DirectX::Model>& model = ServiceLocater<ResourceManager<ModelResource>>::Get()->
 			GetResource(ModelID::Bloom)->GetResource();
+		const std::unique_ptr<DirectX::Model>& model2 = ServiceLocater<ResourceManager<ModelResource>>::Get()->
+			GetResource(ModelID::Chara)->GetResource();
 
 		ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 		const DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();
 
+		// キャラモデルのオフセット
+		DirectX::SimpleMath::Matrix mat = DirectX::SimpleMath::Matrix::CreateRotationX(-Math::HarfPI);
+		mat *= DirectX::SimpleMath::Matrix::CreateScale(0.5f);
+		mat *= DirectX::SimpleMath::Matrix::CreateTranslation(0, 0.625f, -0.2f);
+		mat *= GetTransform(player).GetMatrix();
+
 		// モデルを描画する
 		model->Draw(context, *states, GetTransform(player).GetMatrix(), view, proj);
+		model2->Draw(context, *states, mat, view, proj);
 
 		// 当たり判定を描画する
-		GetCollider(player).Render(view, proj, DirectX::SimpleMath::Color(1, 1, 1, 0.3f), true);
+		//GetCollider(player).Render(view, proj, DirectX::SimpleMath::Color(1, 1, 1, 0.3f), true);
 	}
 }

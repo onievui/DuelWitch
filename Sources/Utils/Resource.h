@@ -29,6 +29,9 @@ public:
 		return static_cast<int>(m_resources.size()) > index ? m_resources[index] : m_defaultResource;
 	}
 
+	// 全てのリソースを取得する
+	const std::vector<T>& GetAllResources() const { return m_resources; }
+
 	//リソースを置き換える
 	void Replace(T&& resource, int index = 0) {
 		m_resources[index] = std::forward<T>(resource);
@@ -125,6 +128,92 @@ public:
 public:
 	// リソースが有効かどうか確認する
 	bool IsValid(int index = 0) const { return m_resources[index].get() != m_defaultResource.get(); }
+
+};
+
+
+/// <summary>
+/// サウンドリソース
+/// </summary>
+class SoundResource : public Resource<std::unique_ptr<DirectX::SoundEffect>, SoundID> {
+public:
+	// サウンドリソースがあるディレクトリ名
+	static const std::wstring SOUND_DIR;
+
+public:
+	// コンストラクタ
+	SoundResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine);
+
+	// ムーブコンストラクタ
+	SoundResource(SoundResource&& from) {
+		for (std::vector<std::unique_ptr<DirectX::SoundEffect>>::iterator itr = from.m_resources.begin();
+			itr != from.m_resources.end(); ++itr) {
+			m_resources.emplace_back(std::move(*itr));
+		}
+		for (std::vector<std::unique_ptr<DirectX::SoundEffectInstance>>::iterator itr = from.m_instances.begin();
+			itr != from.m_instances.end(); ++itr) {
+			m_instances.emplace_back(std::move(*itr));
+		}
+	}
+	// デストラクタ
+	~SoundResource() = default;
+
+public:
+	// リソースを追加する
+	void AddResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine);
+	// リソースが有効かどうか確認する
+	bool IsValid(int index = 0) const { return m_resources[index].get() != m_defaultResource.get(); }
+
+public:
+	// サウンドエフェクトインスタンスを取得する
+	DirectX::SoundEffectInstance* GetInstance(int index = 0) { return m_instances[index].get(); }
+
+protected:
+	// サウンドエフェクトインスタンス
+	std::vector<std::unique_ptr<DirectX::SoundEffectInstance>> m_instances;
+
+};
+
+
+/// <summary>
+/// BGMリソース
+/// </summary>
+class BgmResource : public Resource<std::unique_ptr<DirectX::SoundEffect>, BgmID> {
+public:
+	// BGMリソースがあるディレクトリ名
+	static const std::wstring BGM_DIR;
+
+public:
+	// コンストラクタ
+	BgmResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine);
+
+	// ムーブコンストラクタ
+	BgmResource(BgmResource&& from) {
+		for (std::vector<std::unique_ptr<DirectX::SoundEffect>>::iterator itr = from.m_resources.begin();
+			itr != from.m_resources.end(); ++itr) {
+			m_resources.emplace_back(std::move(*itr));
+		}
+		for (std::vector<std::unique_ptr<DirectX::SoundEffectInstance>>::iterator itr = from.m_instances.begin();
+			itr != from.m_instances.end(); ++itr) {
+			m_instances.emplace_back(std::move(*itr));
+		}
+	}
+	// デストラクタ
+	~BgmResource() = default;
+
+public:
+	// リソースを追加する
+	void AddResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine);
+	// リソースが有効かどうか確認する
+	bool IsValid(int index = 0) const { return m_resources[index].get() != m_defaultResource.get(); }
+
+public:
+	// サウンドエフェクトインスタンスを取得する
+	DirectX::SoundEffectInstance* GetInstance(int index = 0) { return m_instances[index].get(); }
+
+protected:
+	// サウンドエフェクトインスタンス
+	std::vector<std::unique_ptr<DirectX::SoundEffectInstance>> m_instances;
 
 };
 

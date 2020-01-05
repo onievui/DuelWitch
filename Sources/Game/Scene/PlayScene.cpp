@@ -79,7 +79,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	//デバッグカメラを生成する
 	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());
 	//ターゲットカメラを生成する
+	//DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f)
 	m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
+	//m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(1.0f, -1.0f, 0.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
 		PerspectiveFovInfo(Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 5000.0f));
 
