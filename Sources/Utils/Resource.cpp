@@ -134,6 +134,18 @@ SoundResource::SoundResource(const std::wstring& fileName, DirectX::AudioEngine*
 }
 
 /// <summary>
+/// デストラクタ
+/// </summary>
+SoundResource::~SoundResource() {
+	// 先にSoundEffectInstanceを開放する
+	for (std::vector<std::unique_ptr<DirectX::SoundEffectInstance>>::iterator itr = m_instances.begin(); itr != m_instances.end(); ++itr) {
+		if (*itr) {
+			itr->reset();
+		}
+	}
+}
+
+/// <summary>
 /// リソースを追加する
 /// </summary>
 /// <param name="fileName">ファイル名</param>
@@ -163,6 +175,18 @@ void SoundResource::AddResource(const std::wstring& fileName, DirectX::AudioEngi
 BgmResource::BgmResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine) {
 	// リソースを追加する
 	AddResource(fileName, audioEngine);
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+BgmResource::~BgmResource() {
+	// 先にSoundEffectInstanceを開放する
+	for (std::vector<std::unique_ptr<DirectX::SoundEffectInstance>>::iterator itr = m_instances.begin(); itr != m_instances.end(); ++itr) {
+		if (*itr) {
+			itr->reset();
+		}
+	}
 }
 
 /// <summary>

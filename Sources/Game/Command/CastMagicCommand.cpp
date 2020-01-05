@@ -1,5 +1,6 @@
 #include "CastMagicCommand.h"
 #include <Utils\ServiceLocater.h>
+#include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
 #include <Game\Magic\MagicID.h>
 
@@ -10,7 +11,8 @@
 CastMagicCommand::CastMagicCommand() 
 	: m_state(ChargeState::Idle)
 	, m_chargingTime() 
-	, m_chargeAllowedLevel() {
+	, m_chargeAllowedLevel()
+	, m_chargingSoundTime() {
 
 }
 
@@ -103,9 +105,11 @@ void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& time
 	DirectX::Mouse::ButtonStateTracker* mouse_tracker = ServiceLocater<MouseWrapper>::Get()->GetTracker();
 	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
 
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+
 	// クリックし続けることでチャージする
 	if (mouse_tracker->leftButton == DirectX::Mouse::ButtonStateTracker::HELD) {
-		m_chargingTime += static_cast<float>(timer.GetElapsedSeconds());
+		m_chargingTime += elapsed_time;
 		// 一定時間チャージすることでチャージ段階が大きくなる
 		if (ref_status.chargeLevel < m_chargeAllowedLevel) {
 			if (ref_status.chargeLevel == 0 && m_chargingTime >= ref_status.firstChargeTime) {
@@ -116,6 +120,12 @@ void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& time
 				++ref_status.chargeLevel;
 				m_chargingTime = 0.0f;
 			}
+		}
+		m_chargingSoundTime -= elapsed_time;
+		// 一定時間枚に効果音を鳴らす
+		if (m_chargingSoundTime <= 0.0f) {
+			ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Charge);
+			m_chargingSoundTime += CHARGING_SOUND_DELAY_TIME;
 		}
 	}
 	// クリックを離して魔法を発射する
@@ -142,6 +152,7 @@ void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& time
 			ref_status.isCharging = false;
 			ref_status.chargeLevel = 0;
 			m_chargingTime = 0.0f;
+			m_chargingSoundTime = 0.0f;
 			m_state = ChargeState::Idle;
 		}
 	}

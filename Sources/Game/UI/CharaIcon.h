@@ -18,8 +18,13 @@ public:
 		int textureIndex = 0);
 
 public:
+	// マウス侵入時処理
+	void OnMouseEnter() override;
 	// マウスオーバー時処理
 	void OnMouseOver() override;
+	// クリック時処理
+	void OnClick() override;
+
 };
 
 

@@ -13,6 +13,8 @@ class AudioManager {
 public:
 	// コンストラクタ
 	AudioManager();
+	// デストラクタ
+	~AudioManager();
 
 public:
 	// オーディオエンジンを取得する
@@ -33,11 +35,18 @@ public:
 	void ResumeBgm(BgmID id, int index = 0);
 	// 全ての音声を止める
 	void StopAll();
+	// 破棄予定のSoundEffectを管理させる
+	void RegisterUsingSoundEffect(std::unique_ptr<DirectX::SoundEffect> soundEffect);
+	// 全ての効果音を破棄する
+	void DestroyAllSounds();
 
 private:
 	// オーディオエンジン
 	std::unique_ptr<DirectX::AudioEngine>              m_audioEngine;
-
+	// 再生中の効果音リスト
+	std::vector<std::unique_ptr<DirectX::SoundEffectInstance>> m_playingSounds;
+	// 破棄予定のSoundEffect
+	std::vector<std::unique_ptr<DirectX::SoundEffect>> m_usingSoundEffects;
 };
 
 

@@ -2,6 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\MathUtils.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
 #include <Parameters\CommandParameter.h>
 #include <Parameters\EffectParameter.h>
@@ -127,7 +128,6 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		m_pChargeEffect->SetChargeState(PlayerChargeEffectEmitter::State::None);
 	}
 
-
 	// 照準のある方へカメラを少し向ける
 	TargetCamera* target_camera = dynamic_cast<TargetCamera*>(&GetCamera(player));
 	if (target_camera) {
@@ -206,6 +206,10 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 		pos += move * move_speed*elapsed_time*ref_status.boostSpeedRate;
 		// SPを減らす
 		ref_status.sp -= ref_status.boostSpCost*elapsed_time;
+		// ブースト開始直後なら効果音を鳴らす
+		if (!ref_status.isBoosting) {
+			ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Boost);
+		}
 		ref_status.isBoosting = true;
 	}
 	// 通常移動
@@ -343,6 +347,8 @@ void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 			m_rollInfo.preRotZ = m_euler.z;
 			// SPを消費する
 			ref_status.sp -= ref_status.rollSpCost;
+			// 効果音を鳴らす
+			ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Rolling);
 		}
 		m_rollInfo.leftGraceTime = grace_time;
 	}
@@ -357,6 +363,8 @@ void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 			m_rollInfo.preRotZ = m_euler.z;
 			// SPを消費する
 			ref_status.sp -= ref_status.rollSpCost;
+			// 効果音を鳴らす
+			ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Rolling);
 		}
 		m_rollInfo.rightGraceTime = grace_time;
 	}

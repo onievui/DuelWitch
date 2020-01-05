@@ -28,13 +28,8 @@ public:
 protected:
 	// クリック時処理
 	void OnClick() override;
-	// マウスオーバー時処理
-	void OnMouseOver() override;
-	// 待機時処理
-	void OnIdle() override;
 
 protected:
-	bool  m_onMouseOver;
 	float m_clickWaitTime;
 };
 

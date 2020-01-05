@@ -1,6 +1,8 @@
 #include <Utils\LamdaUtils.h>
 #include <Utils\IfIterator.h>
 #include <Utils\MathUtils.h>
+#include <Utils\ServiceLocater.h>
+#include <Utils\AudioManager.h>
 #include "FreezeMagicShooter.h"
 #include "MagicFactory.h"
 
@@ -67,4 +69,7 @@ void FreezeMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::Simpl
 			direction *= -1;
 		}
 	}
+
+	// Œø‰Ê‰¹‚ð–Â‚ç‚·
+	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::FreezeMagic);
 }

@@ -1,5 +1,7 @@
 #include "CharaIcon.h"
 #include <Utils\Resource.h>
+#include <Utils\ServiceLocater.h>
+#include <Utils\AudioManager.h>
 
 
 /// <summary>
@@ -18,6 +20,14 @@ CharaIcon::CharaIcon(int layer, const DirectX::SimpleMath::Vector2& pos, const T
 }
 
 /// <summary>
+/// マウス侵入時処理
+/// </summary>
+void CharaIcon::OnMouseEnter() {
+	// 効果音を鳴らす
+	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Cursor);
+}
+
+/// <summary>
 /// マウスオーバー時処理
 /// </summary>
 void CharaIcon::OnMouseOver() {
@@ -26,4 +36,13 @@ void CharaIcon::OnMouseOver() {
 	m_eventID = UIEventID::MouseOver;
 	Notify();
 	m_eventID = tmpID;
+}
+
+/// <summary>
+/// クリック時処理
+/// </summary>
+void CharaIcon::OnClick() {
+	UISubject::OnClick();
+	// 効果音を鳴らす
+	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Decision);
 }

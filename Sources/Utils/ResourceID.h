@@ -79,7 +79,21 @@ enum class ModelID {
 /// ƒTƒEƒ“ƒhID
 /// </summary>
 enum class SoundID {
-	Test,
+	Cursor,
+	Decision,
+	Ready,
+	Pause,
+	NormalMagic,
+	FireMagic,
+	FreezeMagic,
+	ThunderMagic,
+	ThunderStrikeMagic,
+	Charge,
+	Damage,
+	Boost,
+	Rolling,
+	GetElement,
+
 	Num
 };
 

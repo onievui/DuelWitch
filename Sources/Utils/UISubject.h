@@ -79,6 +79,8 @@ public:
 protected:
 	// クリック時処理
 	virtual void OnClick();
+	// マウス侵入時処理
+	virtual void OnMouseEnter() {}
 	// マウスオーバー時処理
 	virtual void OnMouseOver() {}
 	// 待機時処理
@@ -107,6 +109,9 @@ protected:
 	float                        m_alpha;
 	// フォント
 	const FontResource*          m_pFont;
+	
+	// マウスオーバーしているかどうか
+	bool                         m_onMouseOver;
 };
 
 #endif // !UI_SUBJECT_DEFINED

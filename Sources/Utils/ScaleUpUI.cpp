@@ -15,7 +15,6 @@
 ScaleUpUI::ScaleUpUI(UIEventID eventID, int layer, const DirectX::SimpleMath::Vector2& pos,
 	const DirectX::SimpleMath::Vector2& size, const TextureResource* pTexture, int textureIndex)
 	: UISubject(eventID,layer,pos,size,pTexture,textureIndex)
-	, m_onMouseOver(false)
 	, m_clickWaitTime() {
 }
 
@@ -78,24 +77,9 @@ void ScaleUpUI::Render(DirectX::SpriteBatch* spriteBatch) const {
 /// クリック時処理
 /// </summary>
 void ScaleUpUI::OnClick() {
-	m_onMouseOver = true;
 	// 直前にクリックしていなければ処理する
 	if (m_clickWaitTime <= 0.0f) {
 		Notify();
-		m_clickWaitTime = 0.5f;
+		m_clickWaitTime = 0.1f;
 	}
-}
-
-/// <summary>
-/// マウスオーバー時処理
-/// </summary>
-void ScaleUpUI::OnMouseOver() {
-	m_onMouseOver = true;
-}
-
-/// <summary>
-/// 待機時処理
-/// </summary>
-void ScaleUpUI::OnIdle() {
-	m_onMouseOver = false;
 }

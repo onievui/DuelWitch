@@ -11,6 +11,7 @@
 #include <Game\UI\CharaIcon.h>
 #include <Game\UI\CharaSelectMarker.h>
 #include <Game\Scene\ShareData\ShareData.h>
+#include <Game\UI\SoundScaleUpUI.h>
 #include <Game\UI\Fade.h>
 
 
@@ -66,13 +67,15 @@ void CharaSelectScene::Update(const DX::StepTimer& timer) {
 	}
 
 	// UIを更新する
-	// 戻る・進むボタン
-	for (std::vector<std::unique_ptr<UISubject>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
-		(*itr)->Update(timer);
-	}
-	// キャラアイコン
-	for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
-		(*itr)->Update(timer);
+	if (m_state != CharaSelectScene::CharaSelectState::FadeOut) {
+		// 戻る・進むボタン
+		for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+			(*itr)->Update(timer);
+		}
+		// キャラアイコン
+		for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
+			(*itr)->Update(timer);
+		}
 	}
 
 	// ステートに応じた更新処理を行う
@@ -135,8 +138,6 @@ void CharaSelectScene::UpdateSelectPlayer(const DX::StepTimer& timer) {
 			SelectChara(ui_event.address, m_backCharas[m_currentPlayer].get(), m_markerUIs[m_currentPlayer].get());
 			select_next = true;
 			break;
-		default:
-			break;
 		}
 	}
 
@@ -155,6 +156,8 @@ void CharaSelectScene::UpdateSelectPlayer(const DX::StepTimer& timer) {
 			m_markerUIs[m_currentPlayer]->SetEnableObserver(false);
 			// 次に進むボタンのテキストを変更する
 			m_menuUIs[1]->SetText(L"Fight!");
+			// UIの効果音を変更する
+			m_menuUIs[1]->SetOnClickSound(SoundID::Ready);
 			// 決定待ち状態に進む
 			m_state = CharaSelectState::Ready;
 		}
@@ -175,6 +178,9 @@ void CharaSelectScene::UpdateReady(const DX::StepTimer& timer) {
 		case UIEventID::Back:
 			m_backCharas[2]->SetTexture(nullptr);
 			m_markerUIs[m_currentPlayer]->SetEnableObserver(true);
+			// 次に進むボタンを元に戻す
+			m_menuUIs[1]->SetText(L"Random");
+			m_menuUIs[1]->SetOnClickSound(SoundID::Decision);
 			m_state = CharaSelectState::SelectPlayer;
 			break;
 			// キャラを確定する
@@ -239,7 +245,7 @@ void CharaSelectScene::Render(DirectX::SpriteBatch* spriteBatch) {
 
 	// UIを描画する
 	// 戻る・進むボタン
-	for (std::vector<std::unique_ptr<UISubject>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->Render(spriteBatch);
 	}
 	// キャラアイコン
@@ -281,19 +287,19 @@ void CharaSelectScene::InitializeUI() {
 	// ボタン
 	{
 		// 戻るボタン
-		std::unique_ptr<UISubject> back = std::make_unique<UISubject>(
+		std::unique_ptr<SoundScaleUpUI> back = std::make_unique<SoundScaleUpUI>(
 			UIEventID::Back, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.1f, screen_size.y*0.9f));
 		back->SetText(L"Back");
 		m_menuUIs.emplace_back(std::move(back));
 		// 進むボタン
-		std::unique_ptr<UISubject> next = std::make_unique<UISubject>(
+		std::unique_ptr<SoundScaleUpUI> next = std::make_unique<SoundScaleUpUI>(
 			UIEventID::Next, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.9f, screen_size.y*0.9f));
 		next->SetText(L"Random");
 		m_menuUIs.emplace_back(std::move(next));
 		// ボタンの共通処理
 		const FontResource* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default);
 		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::UIFrame);
-		for (std::vector<std::unique_ptr<UISubject>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->SetFont(font);
 			(*itr)->SetTextColor(DirectX::SimpleMath::Color(DirectX::Colors::Black));
 			(*itr)->SetTexture(texture);

@@ -3,6 +3,7 @@
 #include <Utils\LamdaUtils.h>
 #include <Utils\IfIterator.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\AudioManager.h>
 #include <Parameters\MagicParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
 #include "MagicFactory.h"
@@ -66,4 +67,6 @@ void FireMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::SimpleM
 		}
 	}
 
+	// Œø‰Ê‰¹‚ð–Â‚ç‚·
+	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::FireMagic);
 }

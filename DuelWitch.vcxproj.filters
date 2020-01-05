@@ -384,6 +384,9 @@
     <ClCompile Include="Sources\Utils\AudioManager.cpp">
       <Filter>Utils\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\UI\SoundScaleUpUI.cpp">
+      <Filter>Game\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -787,6 +790,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Utils\AudioManager.h">
       <Filter>Utils\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\UI\SoundScaleUpUI.h">
+      <Filter>Game\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

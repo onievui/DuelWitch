@@ -26,21 +26,28 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	switch (id) {
 	// 共通のリソース
 	case ResourceLoaderID::Common:
+		// フォントの読み込み
 		fontResourceManager->AddResource(FontID::Default, FontResource(L"Protected/Arial.spritefont"));
 		break;
 	// ロゴシーン
 	case ResourceLoaderID::LogoScene:
+		// テクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::Logo, TextureResource(L"Protected/creator_logo.png"));
 		textureResourceManager->AddResource(TextureID::Fade, TextureResource(L"Protected/fade_texture1280.png"));
 		break;
 	// タイトルシーン
 	case ResourceLoaderID::TitleScene:
+		// テクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::Title,   TextureResource(L"Protected/title1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
 		textureResourceManager->AddResource(TextureID::Fade,    TextureResource(L"Protected/fade_texture1280.png"));
+		// サウンドの読み込み
+		soundResourceManager->AddResource(SoundID::Cursor,   SoundResource(L"Protected/cursor.wav", audioEngine));
+		soundResourceManager->AddResource(SoundID::Decision, SoundResource(L"Protected/decision.wav", audioEngine));
 		break;
 	// キャラセレクトシーン
 	case ResourceLoaderID::CharaSelectScene:
+		// テクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::CharaSelectBackGround, TextureResource(L"Protected/chara_select1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame,               TextureResource(L"Protected/title_ui_frame.png"));
 		textureResourceManager->AddResource(TextureID::CharaIcon,             TextureResource(L"Protected/chara_icon1.png"));
@@ -50,6 +57,10 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::CharaSelectMarker,	      L"Protected/chara_select_marker2.png");
 		textureResourceManager->AddResource(TextureID::CharaSelectMarker,	      L"Protected/chara_select_marker3.png");
 		textureResourceManager->AddResource(TextureID::Fade,                  TextureResource(L"Protected/fade_texture1280.png"));
+		// サウンドの読み込み
+		soundResourceManager->AddResource(SoundID::Cursor,   SoundResource(L"Protected/cursor.wav", audioEngine));
+		soundResourceManager->AddResource(SoundID::Decision, SoundResource(L"Protected/decision.wav", audioEngine));
+		soundResourceManager->AddResource(SoundID::Ready,    SoundResource(L"Protected/ready.wav", audioEngine));
 		break;
 	// プレイシーン
 	case ResourceLoaderID::PlayScene:
@@ -95,7 +106,19 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		modelResourceManager->AddResource(ModelID::Bloom,   ModelResource(L"bloom.cmo", L"Protected"));
 		modelResourceManager->AddResource(ModelID::Skydome, ModelResource(L"skydome.cmo", L"Protected"));
 		// サウンドの読み込み
-		soundResourceManager->AddResource(SoundID::Test, SoundResource(L"Protected/se_test.wav", audioEngine));
+		soundResourceManager->AddResource(SoundID::Cursor,             SoundResource(L"Protected/cursor.wav",               audioEngine));
+		soundResourceManager->AddResource(SoundID::Decision,           SoundResource(L"Protected/decision.wav",             audioEngine));
+		soundResourceManager->AddResource(SoundID::Pause,              SoundResource(L"Protected/pause.wav",                audioEngine));
+		soundResourceManager->AddResource(SoundID::NormalMagic,        SoundResource(L"Protected/normal_magic.wav",         audioEngine));
+		soundResourceManager->AddResource(SoundID::FireMagic,          SoundResource(L"Protected/fire_magic.wav",           audioEngine));
+		soundResourceManager->AddResource(SoundID::FreezeMagic,        SoundResource(L"Protected/freeze_magic.wav",         audioEngine));
+		soundResourceManager->AddResource(SoundID::ThunderMagic,       SoundResource(L"Protected/thunder_magic.wav",        audioEngine));
+		soundResourceManager->AddResource(SoundID::ThunderStrikeMagic, SoundResource(L"Protected/thunder_strike_magic.wav", audioEngine));
+		soundResourceManager->AddResource(SoundID::Charge,             SoundResource(L"Protected/charge.wav",               audioEngine));
+		soundResourceManager->AddResource(SoundID::Damage,             SoundResource(L"Protected/damage.wav",               audioEngine));
+		soundResourceManager->AddResource(SoundID::Boost,              SoundResource(L"Protected/boost.wav",                audioEngine));
+		soundResourceManager->AddResource(SoundID::Rolling,            SoundResource(L"Protected/rolling.wav",              audioEngine));
+		soundResourceManager->AddResource(SoundID::GetElement,         SoundResource(L"Protected/get_element.wav",          audioEngine));
 		break;
 	default:
 		ErrorMessage(L"リソースのロードで不正なIDが渡されました");
@@ -114,29 +137,65 @@ void ResourceLoader::Release(ResourceLoaderID id) {
 		break;
 	case ResourceLoaderID::LogoScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
-		ServiceLocater<ResourceManager<SoundResource>>::Get()->Release();
-		ServiceLocater<ResourceManager<BgmResource>>::Get()->Release();
+		ReleaseAudio();
 		break;
 	case ResourceLoaderID::TitleScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
-		ServiceLocater<ResourceManager<SoundResource>>::Get()->Release();
-		ServiceLocater<ResourceManager<BgmResource>>::Get()->Release();
+		ReleaseAudio();
 		break;
 	case ResourceLoaderID::CharaSelectScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
-		ServiceLocater<ResourceManager<SoundResource>>::Get()->Release();
-		ServiceLocater<ResourceManager<BgmResource>>::Get()->Release();
+		ReleaseAudio();
 		break;
 	case ResourceLoaderID::PlayScene:
 		ServiceLocater<ResourceManager<TextureResource>>::Get()->Release();
 		ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()->Release();
 		ServiceLocater<ResourceManager<ModelResource>>::Get()->Release();
-		ServiceLocater<ResourceManager<SoundResource>>::Get()->Release();
-		ServiceLocater<ResourceManager<BgmResource>>::Get()->Release();
+		ReleaseAudio();
 		break;
 	default:
 		ErrorMessage(L"リソースの解放で不正なIDが渡されました");
 		break;
 	}
 	
+}
+
+/// <summary>
+/// 音声リソースを開放する
+/// </summary>
+void ResourceLoader::ReleaseAudio() {
+	ResourceManager<SoundResource>* soundResourceManager = ServiceLocater<ResourceManager<SoundResource>>::Get();
+	ResourceManager<BgmResource>* bgmResourceManager = ServiceLocater<ResourceManager<BgmResource>>::Get();
+	AudioManager* audioManager = ServiceLocater<AudioManager>::Get();
+
+	std::vector<std::unique_ptr<SoundResource>>& sounds = ServiceLocater<ResourceManager<SoundResource>>::Get()->GetRawAllResources();
+	for (std::vector<std::unique_ptr<SoundResource>>::iterator itr = sounds.begin(); itr != sounds.end(); ++itr) {
+		int num = (*itr)->GetAllResources().size();
+		for (int i = 0; i < num; ++i) {
+			if (!(*itr)->IsValid(i)) {
+				continue;
+			}
+			// 使用中の効果音を抽出してオーディオマネージャで管理する
+			if ((*itr)->GetResource(i)->IsInUse()) {
+				audioManager->RegisterUsingSoundEffect(std::move((*itr)->GetResource(i)));
+			}
+		}
+	}
+
+	std::vector<std::unique_ptr<BgmResource>>& bgms = ServiceLocater<ResourceManager<BgmResource>>::Get()->GetRawAllResources();
+	for (std::vector<std::unique_ptr<BgmResource>>::iterator itr = bgms.begin(); itr != bgms.end(); ++itr) {
+		int num = (*itr)->GetAllResources().size();
+		for (int i = 0; i < num; ++i) {
+			if ((*itr)->IsValid(i)) {
+				continue;
+			}
+			// 使用中のBGMを抽出してオーディオマネージャで管理する
+			if ((*itr)->GetResource(i)->IsInUse()) {
+				audioManager->RegisterUsingSoundEffect(std::move((*itr)->GetResource(i)));
+			}
+		}
+	}
+
+	soundResourceManager->Release();
+	bgmResourceManager->Release();
 }

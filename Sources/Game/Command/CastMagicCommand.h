@@ -11,6 +11,10 @@
 /// </summary>
 class CastMagicCommand : public Command {
 public:
+	// チャージ効果音を鳴らす間隔
+	static constexpr float CHARGING_SOUND_DELAY_TIME = 1.0f;
+
+public:
 	// コンストラクタ
 	CastMagicCommand();
 
@@ -43,6 +47,8 @@ private:
 	float                m_chargingTime;
 	// チャージ可能な段階
 	int                  m_chargeAllowedLevel;
+	// チャージ効果音用タイマー
+	float                m_chargingSoundTime;
 };
 
 

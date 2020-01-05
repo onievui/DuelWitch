@@ -26,7 +26,8 @@ UISubject::UISubject(UIEventID eventID, int layer, const DirectX::SimpleMath::Ve
 	, m_text()
 	, m_textColor(DirectX::Colors::White)
 	, m_alpha(1.0f)
-	, m_pFont() {
+	, m_pFont()
+	, m_onMouseOver(false) {
 }
 
 /// <summary>
@@ -40,16 +41,20 @@ void UISubject::Update(const DX::StepTimer& timer) {
 	// UIの領域内かどうか
 	if (std::fabsf(mouse_pos.x - m_pos.x) < m_size.x*0.5f &&
 		std::fabsf(mouse_pos.y - m_pos.y) < m_size.y*0.5f) {
+		// マウスが侵入したかどうか
+		if (!m_onMouseOver) {
+			OnMouseEnter();
+			m_onMouseOver = true;
+		}
+		OnMouseOver();
 		// クリックしたかどうか
 		if (mouseWrapper->GetTracker()->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
 			OnClick();
 		}
-		else {
-			OnMouseOver();
-		}
 	}
 	else {
 		OnIdle();
+		m_onMouseOver = false;
 	}
 }
 

@@ -1,6 +1,8 @@
 #include "ThunderStrikeMagicShooter.h"
 #include <Utils\ServiceLocater.h>
 #include <Utils\LamdaUtils.h>
+#include <Utils\ServiceLocater.h>
+#include <Utils\AudioManager.h>
 #include <Parameters\MagicParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
 #include "MagicFactory.h"
@@ -31,4 +33,6 @@ void ThunderStrikeMagicShooter::Create(const MagicInfo& magicInfo, const DirectX
 		(*itr) = m_pMagicFactory->Create(magicInfo, pos, dir);
 	}
 
+	// Œø‰Ê‰¹‚ð–Â‚ç‚·
+	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::ThunderStrikeMagic);
 }

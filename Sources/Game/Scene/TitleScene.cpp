@@ -5,9 +5,9 @@
 #include <Utils\MouseWrapper.h>
 #include <Utils\MathUtils.h>
 #include <Utils\UIObserver.h>
-#include <Utils\ScaleUpUI.h>
 #include "ISceneRequest.h"
 #include <Game\Load\ResourceLoader.h>
+#include <Game\UI\SoundScaleUpUI.h>
 #include <Game\UI\Fade.h>
 
 
@@ -72,14 +72,14 @@ void TitleScene::Update(const DX::StepTimer& timer) {
 	}
 
 	// UIのアルファ値を更新する
-	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->SetAlpha(m_fadeUI->GetAlpha());
 	}
 
 	// 未選択でフェードが完了していたらUIを更新する
 	const bool ui_fade_end = (m_fadeUIStep == 2);
 	if (!m_wasSelected && ui_fade_end) {
-		for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Update(timer);
 		}
 
@@ -179,7 +179,7 @@ void TitleScene::Render(DirectX::SpriteBatch* spriteBatch) {
 
 	// UIを描画する
 	if (m_fadeUI->GetAlpha() > 0.0f) {
-		for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Render(spriteBatch);
 		}
 	}
@@ -195,7 +195,7 @@ void TitleScene::Render(DirectX::SpriteBatch* spriteBatch) {
 /// </summary>
 void TitleScene::Finalize() {
 	// UIからオブザーバをデタッチする
-	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->Detach(m_uiObserver.get());
 	}
 	ResourceLoader::Release(ResourceLoaderID::TitleScene);
@@ -213,28 +213,28 @@ void TitleScene::InitializeUI() {
 	// UIの生成
 	// チュートリアル
 	//{
-	//	std::unique_ptr<ScaleUpUI> tutorial = std::make_unique<ScaleUpUI>(
+	//	std::unique_ptr<SoundScaleUpUI> tutorial = std::make_unique<SoundScaleUpUI>(
 	//		UIEventID::Tutorial, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.4f));
 	//	tutorial->SetText(L"Tutorial");
 	//	m_menuUIs.emplace_back(std::move(tutorial));
 	//}
 	// プレイ
 	{
-		std::unique_ptr<ScaleUpUI> play = std::make_unique<ScaleUpUI>(
+		std::unique_ptr<SoundScaleUpUI> play = std::make_unique<SoundScaleUpUI>(
 			UIEventID::Play, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.55f));
 		play->SetText(L"Play");
 		m_menuUIs.emplace_back(std::move(play));
 	}
 	// オプション
 	//{
-	//	std::unique_ptr<ScaleUpUI> option = std::make_unique<ScaleUpUI>(
+	//	std::unique_ptr<SoundScaleUpUI> option = std::make_unique<SoundScaleUpUI>(
 	//		UIEventID::Option, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.7f));
 	//	option->SetText(L"Option");
 	//	m_menuUIs.emplace_back(std::move(option));
 	//}
 	// 終了
 	{
-		std::unique_ptr<ScaleUpUI> exit = std::make_unique<ScaleUpUI>(
+		std::unique_ptr<SoundScaleUpUI> exit = std::make_unique<SoundScaleUpUI>(
 			UIEventID::Exit, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.85f));
 		exit->SetText(L"Exit");
 		m_menuUIs.emplace_back(std::move(exit));
@@ -243,7 +243,7 @@ void TitleScene::InitializeUI() {
 	// 共通の処理
 	const FontResource* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default);
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::UIFrame);
-	for (std::vector<std::unique_ptr<ScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->SetFont(font);
 		(*itr)->SetTextColor(DirectX::SimpleMath::Color(DirectX::Colors::Black));
 		(*itr)->SetTexture(texture);

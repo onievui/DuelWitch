@@ -9,7 +9,7 @@
 
 class ISceneRequest;
 class UIObserver;
-class ScaleUpUI;
+class SoundScaleUpUI;
 class Fade;
 enum class SceneID;
 
@@ -59,12 +59,12 @@ private:
 	// UIオブザーバ
 	std::unique_ptr<UIObserver>                        m_uiObserver;
 	// メニューUI
-	std::vector<std::unique_ptr<ScaleUpUI>>            m_menuUIs;
+	std::vector<std::unique_ptr<SoundScaleUpUI>>       m_menuUIs;
 
 	// 選択済みかどうか
-	bool                                                     m_wasSelected;
+	bool                                               m_wasSelected;
 	// 遷移先のシーンID
-	SceneID                                                  m_nextSceneID;
+	SceneID                                            m_nextSceneID;
 };
 
 

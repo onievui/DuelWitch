@@ -3,6 +3,7 @@
 #include <Utils\LamdaUtils.h>
 #include <Utils\IfIterator.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\AudioManager.h>
 #include <Parameters\CommandParameter.h>
 #include <Parameters\EffectParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
@@ -122,6 +123,12 @@ void AIMoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		pos += move * move_speed*elapsed_time*ref_status.boostSpeedRate;
 		// SPを減らす
 		ref_status.sp -= ref_status.boostSpCost*elapsed_time;
+		// 敵の音は鳴らさないようにする
+		// 音を小さくして鳴らすこと検討する
+		// // ブースト開始直後なら効果音を鳴らす
+		//if (!ref_status.isBoosting) {
+		//	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Boost);
+		//}
 		ref_status.isBoosting = true;
 	}
 	// 通常移動

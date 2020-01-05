@@ -2,6 +2,8 @@
 #include <Utils\LamdaUtils.h>
 #include <Utils\IfIterator.h>
 #include <Utils\MathUtils.h>
+#include <Utils\ServiceLocater.h>
+#include <Utils\AudioManager.h>
 #include "MagicFactory.h"
 
 
@@ -44,4 +46,6 @@ void ThunderMagicShooter::Create(const MagicInfo& magicInfo, const DirectX::Simp
 		}
 	}
 	
+	// Œø‰Ê‰¹‚ð–Â‚ç‚·
+	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::ThunderMagic);
 }

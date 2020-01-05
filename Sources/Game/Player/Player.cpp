@@ -134,7 +134,6 @@ void Player::Update(const DX::StepTimer& timer) {
 	
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Z)) {
 		ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::Hit, DirectX::SimpleMath::Vector3::Zero, -DirectX::SimpleMath::Vector3::UnitZ);
-		ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Test);
 	}
 
 }
@@ -250,6 +249,8 @@ float Player::GetMagicPowerRate(ElementID elementId) const {
 /// <param name="elementId">エレメントID</param>
 void Player::GetElement(ElementID elementId) {
 	m_haveElements.push_back(elementId);
+	// エレメント取得音を鳴らす
+	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::GetElement);
 }
 
 /// <summary>
@@ -279,6 +280,9 @@ void Player::HitMagic(const IMagic* magic) {
 	if (m_status.damageTimer <= 0.0f) {
 		m_status.hp -= magic->GetPower();
 		m_status.damageTimer = 3.0f;
+
+		// ダメージ効果音を鳴らす
+		ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Damage);
 	}
 
 	// ヒットエフェクトを出現させる

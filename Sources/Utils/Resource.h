@@ -29,6 +29,11 @@ public:
 		return static_cast<int>(m_resources.size()) > index ? m_resources[index] : m_defaultResource;
 	}
 
+	// 非constのリソースを取得する
+	T& GetResource(int index = 0) {
+		return static_cast<int>(m_resources.size()) > index ? m_resources[index] : m_defaultResource;
+	}
+
 	// 全てのリソースを取得する
 	const std::vector<T>& GetAllResources() const { return m_resources; }
 
@@ -143,6 +148,8 @@ public:
 public:
 	// コンストラクタ
 	SoundResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine);
+	// デストラクタ
+	~SoundResource();
 
 	// ムーブコンストラクタ
 	SoundResource(SoundResource&& from) {
@@ -155,8 +162,6 @@ public:
 			m_instances.emplace_back(std::move(*itr));
 		}
 	}
-	// デストラクタ
-	~SoundResource() = default;
 
 public:
 	// リソースを追加する
@@ -186,6 +191,8 @@ public:
 public:
 	// コンストラクタ
 	BgmResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine);
+	// デストラクタ
+	~BgmResource();
 
 	// ムーブコンストラクタ
 	BgmResource(BgmResource&& from) {
@@ -198,8 +205,6 @@ public:
 			m_instances.emplace_back(std::move(*itr));
 		}
 	}
-	// デストラクタ
-	~BgmResource() = default;
 
 public:
 	// リソースを追加する
