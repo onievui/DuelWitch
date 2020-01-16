@@ -36,8 +36,8 @@ private:
 	bool IsLookingOther(const Transform& transform, const DirectX::SimpleMath::Vector3& otherPos);
 	// 敵プレイヤーへの向き具合を調べる
 	float LookingOther(const Transform& transform, const DirectX::SimpleMath::Vector3& otherPos);
-	// 最も近いエレメントを取得する
-	const Element* GetNearestElement(const DirectX::SimpleMath::Vector3& pos);
+	// 最も取りやすいエレメントを取得する
+	const Element* GetTargetElement(const Transform& transform);
 	// ベクトルの左右判定をする
 	float CheckVecX(DirectX::SimpleMath::Vector3 dir, DirectX::SimpleMath::Vector3 otherDir);
 	// ベクトルの上下判定をする

@@ -170,9 +170,9 @@ void AIMoveCommand::ExecuteAI(Player& player) {
 	float looking_other = LookingOther(transform, GetTransform(*other_player).GetPosition());
 	// 所持しているエレメントの数
 	int has_element_num = GetHaveElements(player).size();
-	// 最も近いエレメントとの距離
+	// 最も取りやすいエレメントとの距離
 	float element_distance = 10000000.0f;
-	const Element* nearest_element = GetNearestElement(pos);
+	const Element* nearest_element = GetTargetElement(pos);
 	if (nearest_element) {
 		element_distance = DirectX::SimpleMath::Vector3::Distance(pos, nearest_element->GetPos());
 	}
@@ -264,19 +264,31 @@ float AIMoveCommand::LookingOther(const Transform& transform, const DirectX::Sim
 }
 
 /// <summary>
-/// 最も近いエレメントを取得する
+/// 最も取りやすいエレメントを取得する
 /// </summary>
-/// <param name="pos">自プレイヤーの座標</param>
+/// <param name="transform">プレイヤーの姿勢</param>
 /// <returns>
-/// 最も近いエレメントへのポインタ
+/// 最も取りやすいエレメントへのポインタ
 /// </returns>
-const Element* AIMoveCommand::GetNearestElement(const DirectX::SimpleMath::Vector3& pos) {
+const Element* AIMoveCommand::GetTargetElement(const Transform& transform) {
 	float min_distance_square = 10000000.0f;
 	const FieldData* field_data = ServiceLocater<FieldData>::Get();
 	const Element* nearest_element = nullptr;
 
 	for (IfIterator<const std::vector<Element*>> itr(*field_data->pElements, LamdaUtils::NotNull()); itr != field_data->pElements->end(); ++itr) {
-		float distance_square = DirectX::SimpleMath::Vector3::DistanceSquared(pos, (*itr)->GetPos());
+		float distance_square = DirectX::SimpleMath::Vector3::DistanceSquared(transform.GetPosition(), (*itr)->GetPos());
+		
+		// 近くて前方にないなら飛ばす（取れないまま旋回し続けるため）
+		DirectX::SimpleMath::Vector3 player_dir =
+			DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
+		DirectX::SimpleMath::Vector3 to_element = (*itr)->GetPos() - transform.GetPosition();
+		to_element.Normalize();
+		const bool dist_near = (distance_square <= 5.0f*5.0f);
+		const bool back = (player_dir.Dot(to_element) < Math::HarfPI);
+		if (dist_near && back) {
+			continue;
+		}
+		
 		// 他のエレメントより近いなら、距離を更新してポインタを記憶する
 		if (distance_square < min_distance_square) {
 			min_distance_square = distance_square;
@@ -354,7 +366,7 @@ void AIMoveCommand::ExecuteCollectElement(Player& player) {
 	const Transform& transform = GetTransform(player);
 	const DirectX::SimpleMath::Vector3& pos = transform.GetPosition();
 	// 最も近いエレメント
-	const Element* nearest_element = GetNearestElement(pos);
+	const Element* nearest_element = GetTargetElement(pos);
 
 	// フィールドにエレメントが存在しない場合はエラー
 	if (!nearest_element) {
