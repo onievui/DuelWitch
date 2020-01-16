@@ -29,6 +29,8 @@ public:
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj);
 
 public:
+	// エレメント出現エリアの中心を設定する
+	void SetCenterPos(const DirectX::SimpleMath::Vector3& center) { m_center = center; }
 	// エレメント出現エリアの半径を設定する
 	void SetRadius(float radius) { m_radius = radius; }
 	// エレメントを取得する
@@ -45,6 +47,8 @@ private:
 	std::unique_ptr<ElementFactory> m_elementFactory;
 	// 生成用タイマー
 	float                           m_creationTimer;
+	// エレメント出現エリア中心点
+	DirectX::SimpleMath::Vector3    m_center;
 	// エレメント出現エリア半径
 	float                           m_radius;
 };

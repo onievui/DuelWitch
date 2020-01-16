@@ -34,6 +34,8 @@ private:
 	const Player* GetNearestPlayer(const DirectX::SimpleMath::Vector3& pos, const std::vector<Player*>& otherPlayers, float* distance);
 	// 敵プレイヤーの方を向いているか調べる
 	bool IsLookingOther(const Transform& transform, const DirectX::SimpleMath::Vector3& otherPos);
+	// 敵プレイヤーへの向き具合を調べる
+	float LookingOther(const Transform& transform, const DirectX::SimpleMath::Vector3& otherPos);
 	// 最も近いエレメントを取得する
 	const Element* GetNearestElement(const DirectX::SimpleMath::Vector3& pos);
 	// ベクトルの左右判定をする

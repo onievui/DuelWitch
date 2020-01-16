@@ -131,6 +131,8 @@ public:
 	~ModelResource() = default;
 
 public:
+	// リソースを追加する
+	void AddResource(const std::wstring& fileName, const std::wstring& directory = L"");
 	// リソースが有効かどうか確認する
 	bool IsValid(int index = 0) const { return m_resources[index].get() != m_defaultResource.get(); }
 
@@ -148,9 +150,7 @@ public:
 public:
 	// コンストラクタ
 	SoundResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine);
-	// デストラクタ
-	~SoundResource();
-
+	
 	// ムーブコンストラクタ
 	SoundResource(SoundResource&& from) {
 		for (std::vector<std::unique_ptr<DirectX::SoundEffect>>::iterator itr = from.m_resources.begin();
@@ -162,6 +162,9 @@ public:
 			m_instances.emplace_back(std::move(*itr));
 		}
 	}
+
+	// デストラクタ
+	~SoundResource();
 
 public:
 	// リソースを追加する
@@ -191,9 +194,7 @@ public:
 public:
 	// コンストラクタ
 	BgmResource(const std::wstring& fileName, DirectX::AudioEngine* audioEngine);
-	// デストラクタ
-	~BgmResource();
-
+	
 	// ムーブコンストラクタ
 	BgmResource(BgmResource&& from) {
 		for (std::vector<std::unique_ptr<DirectX::SoundEffect>>::iterator itr = from.m_resources.begin();
@@ -205,6 +206,9 @@ public:
 			m_instances.emplace_back(std::move(*itr));
 		}
 	}
+
+	// デストラクタ
+	~BgmResource();
 
 public:
 	// リソースを追加する

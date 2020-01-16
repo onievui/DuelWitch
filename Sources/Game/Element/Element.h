@@ -4,6 +4,7 @@
 
 
 #include <Framework\StepTimer.h>
+#include <Utils\MathUtils.h>
 #include <Utils\LoadDataHolder.h>
 #include <Game\Object\IObject.h>
 #include <Game\Object\Transform.h>
@@ -18,7 +19,10 @@ enum class ElementID;
 /// </summary>
 class Element : public IObject {
 public:
+	// 当たり判定の半径
 	static constexpr float ELEMENT_RADIUS = 0.75f;
+	// 回転速度
+	static constexpr float ELEMENT_ROTATE_SPEED = Math::HarfPI;
 
 public:
 	Element();
@@ -47,7 +51,9 @@ public:
 	bool IsUsed() const                                           { return m_isUsed; }
 	// エレメントを使用するかどうか設定する
 	void SetUsed(bool isUsed)                                     { m_isUsed = isUsed; }
-	// フィールドの範囲内に収める
+	// フィールド端との距離を記憶する
+	void SetBetweenFieldRadius(const DirectX::SimpleMath::Vector3& center, float radius);
+	// フィールドとの距離を保つ
 	void FitField(const DirectX::SimpleMath::Vector3& center, float radius);
 
 private:
@@ -63,6 +69,10 @@ private:
 	DirectX::SimpleMath::Color                   m_color;
 	// 使用しているかどうか
 	bool                                         m_isUsed;
+	// 生成されてからの時間
+	float                                        m_time;
+	// 生成されたときの、フィールド端までの距離
+	float                                        m_betweenFieldEnd;
 
 };
 

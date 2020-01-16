@@ -148,6 +148,9 @@
       <AdditionalDependencies>DirectXTK.lib;d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\DirectXTK\Bin\Desktop_2015\Win32\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <MeshContentTask>
+      <ContentOutput>Resources\Models\Protected\%(Filename).cmo</ContentOutput>
+    </MeshContentTask>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -421,6 +424,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\marie.FBX" />
     <MeshContentTask Include="Assets\Models\Protected\skydome.FBX">
       <FileType>Document</FileType>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
@@ -434,12 +438,7 @@
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
     </MeshContentTask>
-    <MeshContentTask Include="Assets\Models\Protected\unity-chan-test.FBX">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\Models\Protected\unity-chan-test2.FBX">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\Protected\%(Filename).cmo</ContentOutput>
-    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\toko.FBX" />
     <MeshContentTask Include="Assets\Models\Protected\unity-chan.FBX" />
   </ItemGroup>
   <ItemGroup>

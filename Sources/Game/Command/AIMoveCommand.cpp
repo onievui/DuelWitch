@@ -165,7 +165,9 @@ void AIMoveCommand::ExecuteAI(Player& player) {
 	// SP
 	float sp = status.sp;
 	// 最も近い敵プレイヤーの方を向いているかどうか
-	bool looking_other = IsLookingOther(transform, GetTransform(*other_player).GetPosition());
+	//bool looking_other = IsLookingOther(transform, GetTransform(*other_player).GetPosition());
+	// 最も近い敵プレイヤーへの向き具合
+	float looking_other = LookingOther(transform, GetTransform(*other_player).GetPosition());
 	// 所持しているエレメントの数
 	int has_element_num = GetHaveElements(player).size();
 	// 最も近いエレメントとの距離
@@ -234,12 +236,31 @@ const Player* AIMoveCommand::GetNearestPlayer(const DirectX::SimpleMath::Vector3
 /// </summary>
 /// <param name="transform">自プレイヤーの姿勢</param>
 /// <param name="otherPos">敵プレイヤーの座標</param>
-/// <returns></returns>
+/// <returns>
+/// true : 向いている
+/// false : 向いていない
+/// </returns>
 bool AIMoveCommand::IsLookingOther(const Transform& transform, const DirectX::SimpleMath::Vector3& otherPos) {
 	DirectX::SimpleMath::Vector3 dir = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
 	DirectX::SimpleMath::Vector3 dir2 = otherPos - transform.GetPosition();
 	
 	return dir.Dot(dir2) > 0;
+}
+
+/// <summary>
+/// 敵プレイヤーへの向き具合を調べる
+/// </summary>
+/// <param name="transform">自プレイヤーの姿勢</param>
+/// <param name="otherPos">敵プレイヤーの座標</param>
+/// <returns>
+/// 1 : 正面
+/// -1 : 逆
+/// </returns>
+float AIMoveCommand::LookingOther(const Transform& transform, const DirectX::SimpleMath::Vector3& otherPos) {
+	DirectX::SimpleMath::Vector3 dir = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
+	DirectX::SimpleMath::Vector3 dir2 = otherPos - transform.GetPosition();
+
+	return dir.Dot(dir2);
 }
 
 /// <summary>

@@ -110,6 +110,15 @@ GeometricPrimitiveResource::GeometricPrimitiveResource(std::unique_ptr<DirectX::
 /// <param name="fileName">ファイル名</param>
 /// <param name="directory">ディレクトリ</param>
 ModelResource::ModelResource(const std::wstring& fileName, const std::wstring& directory) {
+	AddResource(fileName, directory);
+}
+
+/// <summary>
+/// リソースを追加する
+/// </summary>
+/// <param name="fileName">ファイル名</param>
+/// <param name="directory">ディレクトリ</param>
+void ModelResource::AddResource(const std::wstring& fileName, const std::wstring& directory) {
 	ID3D11Device* device = ServiceLocater<DirectX11>::Get()->GetDevice().Get();
 	// エフェクトファクトリーを作成する
 	std::unique_ptr<DirectX::EffectFactory> fxFactory = std::make_unique<DirectX::EffectFactory>(device);

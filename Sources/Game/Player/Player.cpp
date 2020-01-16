@@ -67,6 +67,7 @@ Player::~Player() {
 /// <param name="pOtherPlayers">他のプレイヤーへのポインタの配列</param>
 void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vector<std::unique_ptr<Player>>& pOtherPlayers) {
 	// エフェクトを設定する
+	// 箒モデル
 	const ModelResource* modelResource = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::Bloom);
 	modelResource->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
 		DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
@@ -75,24 +76,28 @@ void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vecto
 			lights->SetPerPixelLighting(true);
 			lights->SetLightEnabled(0, true);
 			lights->SetLightDiffuseColor(0, DirectX::Colors::AntiqueWhite);
-			lights->SetAmbientLightColor(DirectX::Colors::AntiqueWhite*0.3f);
+			lights->SetAmbientLightColor(DirectX::Colors::AntiqueWhite*0.7f);
 			lights->SetLightEnabled(1, false);
 			lights->SetLightEnabled(2, false);
 		}
 	});
+	// キャラクターモデル
 	const ModelResource* modelResource2 = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::Chara);
-	modelResource2->GetResource()->UpdateEffects([](DirectX::IEffect* effect) {
-		DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
-		if (lights) {
-			lights->SetLightingEnabled(true);
-			lights->SetPerPixelLighting(true);
-			lights->SetLightEnabled(0, true);
-			lights->SetLightDiffuseColor(0, DirectX::Colors::AntiqueWhite);
-			lights->SetAmbientLightColor(DirectX::Colors::AntiqueWhite*0.3f);
-			lights->SetLightEnabled(1, false);
-			lights->SetLightEnabled(2, false);
-		}
-	});
+	const std::vector<std::unique_ptr<DirectX::Model>>& charas = modelResource2->GetAllResources();
+	for (std::vector<std::unique_ptr<DirectX::Model>>::const_iterator itr = charas.begin(); itr != charas.end(); ++itr) {
+		(*itr)->UpdateEffects([](DirectX::IEffect* effect) {
+			DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
+			if (lights) {
+				lights->SetLightingEnabled(true);
+				lights->SetPerPixelLighting(true);
+				lights->SetLightEnabled(0, true);
+				lights->SetLightDiffuseColor(0, DirectX::Colors::AntiqueWhite);
+				lights->SetAmbientLightColor(DirectX::Colors::AntiqueWhite*0.8f);
+				lights->SetLightEnabled(1, false);
+				lights->SetLightEnabled(2, false);
+			}
+		});
+	}
 
 	// ポインタを受け取る
 	m_pMagicManager = pMagicManager;

@@ -805,13 +805,13 @@
     <MeshContentTask Include="Assets\Models\Protected\skydome_space.FBX">
       <Filter>Assets</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Assets\Models\Protected\unity-chan-test.FBX">
-      <Filter>Assets</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\Models\Protected\unity-chan-test2.FBX">
-      <Filter>Assets</Filter>
-    </MeshContentTask>
     <MeshContentTask Include="Assets\Models\Protected\unity-chan.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\toko.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\marie.FBX">
       <Filter>Assets</Filter>
     </MeshContentTask>
   </ItemGroup>

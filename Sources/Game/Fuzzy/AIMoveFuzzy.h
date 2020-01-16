@@ -12,7 +12,7 @@
 struct AIMoveInputCrisp {
 	// コンストラクタ
 	AIMoveInputCrisp() = default;
-	AIMoveInputCrisp(float _hpGap, float _sp, float _distance, bool _lookingOther, int _hasElementNum, float _elementDitance) 
+	AIMoveInputCrisp(float _hpGap, float _sp, float _distance, float _lookingOther, int _hasElementNum, float _elementDitance) 
 		: hpGap(_hpGap)
 		, sp(_sp)
 		, distance(_distance)
@@ -27,8 +27,8 @@ struct AIMoveInputCrisp {
 	float sp;
 	// 最も近い敵プレイヤーとの距離
 	float distance;
-	// 最も近い敵プレイヤーの方を向いているかどうか
-	bool lookingOther;
+	// 最も近い敵プレイヤーへの向き具合
+	float lookingOther;
 	// 所持しているエレメントの数
 	int hasElementNum;
 	// 最も近いエレメントとの距離

@@ -7,7 +7,7 @@
 
 void RenderCommand::RenderPlayerModel(const Player& player, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
 	const PlayerStatus& ref_status = GetStatus(player);
-
+	
 	// ダメージ後はプレイヤーを点滅させる
 	const bool not_damaged = ref_status.damageTimer <= 0.0f;
 	const bool time_sin_positive = sin(ref_status.damageTimer*Math::PI2 * 2) > 0;
@@ -15,7 +15,7 @@ void RenderCommand::RenderPlayerModel(const Player& player, const DirectX::Simpl
 		const std::unique_ptr<DirectX::Model>& model = ServiceLocater<ResourceManager<ModelResource>>::Get()->
 			GetResource(ModelID::Bloom)->GetResource();
 		const std::unique_ptr<DirectX::Model>& model2 = ServiceLocater<ResourceManager<ModelResource>>::Get()->
-			GetResource(ModelID::Chara)->GetResource();
+			GetResource(ModelID::Chara)->GetResource(ref_status.charaId);
 
 		ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 		const DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();

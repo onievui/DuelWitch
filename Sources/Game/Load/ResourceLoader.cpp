@@ -103,6 +103,8 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		pixelShaderResourceManager->AddResource(PixelShaderID::ThunderStrikeMagic, PixelShaderResource(L"ThunderStrikePS.cso"));
 		// モデルの読み込み
 		modelResourceManager->AddResource(ModelID::Chara,   ModelResource(L"unity-chan.cmo", L"Protected"));
+		modelResourceManager->AddResource(ModelID::Chara,		L"toko.cmo", L"Protected");
+		modelResourceManager->AddResource(ModelID::Chara,		L"marie.cmo", L"Protected");
 		modelResourceManager->AddResource(ModelID::Bloom,   ModelResource(L"bloom.cmo", L"Protected"));
 		modelResourceManager->AddResource(ModelID::Skydome, ModelResource(L"skydome.cmo", L"Protected"));
 		// サウンドの読み込み

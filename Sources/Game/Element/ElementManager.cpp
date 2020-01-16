@@ -18,7 +18,9 @@
 ElementManager::ElementManager()
 	: m_elements()
 	, m_elementFactory()
-	, m_creationTimer() {
+	, m_creationTimer()
+	, m_center()
+	, m_radius() {
 }
 
 /// <summary>
@@ -54,7 +56,7 @@ void ElementManager::Update(const DX::StepTimer& timer) {
 	// エレメントを更新する
 	for (IfIterator<std::vector<Element*>> itr(m_elements, LamdaUtils::NotNull()); itr != m_elements.end(); ++itr) {
 		(*itr)->Update(timer);
-		// フィールドの範囲内に収めるようにする
+		// フィールドとの位置関係を保つ
 		(*itr)->FitField(fied_data->fieldCenter, fied_data->fieldRadius);
 		// 未使用のエレメントをnullにする
 		if (!(*itr)->IsUsed()) {
@@ -107,10 +109,13 @@ void ElementManager::Render(const DirectX::SimpleMath::Matrix& view, const Direc
 /// <summary>
 /// エレメントを生成する
 /// </summary>
-/// <param name="radius">エリア半径</param>
+/// <param name="radius">フィールド半径</param>
 /// <param name="groupNum">エレメントグループ数</param>
 /// <param name="num">グループ毎の個数</param>
 void ElementManager::CreateElement(float radius, int groupNum, int num) {
+	// フィールド情報を取得する
+	const FieldData* fied_data = ServiceLocater<FieldData>::Get();
+
 	// ランダムに方向を決める（横360°縦+-30°）
 	DirectX::SimpleMath::Vector3 dir = DirectX::SimpleMath::Vector3::UnitZ;
 	dir = DirectX::SimpleMath::Vector3::Transform(dir,
@@ -134,7 +139,7 @@ void ElementManager::CreateElement(float radius, int groupNum, int num) {
 		int rand = RandMt::GetRand(static_cast<int>(ElementID::Num));
 		for (int j = 0; j < num; j++) {
 			// 出現位置をランダムで決める
-			DirectX::SimpleMath::Vector3 pos = DirectX::SimpleMath::Vector3(
+			DirectX::SimpleMath::Vector3 pos = m_center + DirectX::SimpleMath::Vector3(
 				dir.x*(radius-10.0f)+RandMt::GetRange(-3.0f,3.0f),
 				dir.y*(radius-10.0f)+RandMt::GetRange(-2.0f,2.0f),
 				dir.z*(radius-10.0f)+RandMt::GetRange(-3.0f,3.0f)
@@ -144,6 +149,8 @@ void ElementManager::CreateElement(float radius, int groupNum, int num) {
 			std::vector<Element*>::iterator itr = LamdaUtils::FindIf(m_elements, LamdaUtils::IsNull());
 			if (itr != m_elements.end()) {
 				*itr = created_element;
+				// フィールド端との距離を記憶する
+				(*itr)->SetBetweenFieldRadius(fied_data->fieldCenter, fied_data->fieldRadius);
 			}
 			// エレメントを変更する
 			rand = (rand + 1) % static_cast<int>(ElementID::Num);

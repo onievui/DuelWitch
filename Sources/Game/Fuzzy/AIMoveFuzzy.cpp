@@ -1,6 +1,7 @@
 #include "AIMoveFuzzy.h"
 #include <Utils\FuzzyUtils.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\MathUtils.h>
 #include <Parameters\FuzzyParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
 
@@ -19,7 +20,9 @@ void AIMoveFuzzy::Execute() {
 	// 最も近い敵プレイヤーとの距離
 	float distance = Fuzzy::Grade(m_inputData.distance, parameter.distanceMin, parameter.distanceMax);
 	// 最も近い敵プレイヤーの方を向いているかどうか
-	float lookingOther = Fuzzy::Bool(m_inputData.lookingOther, true);
+	//float lookingOther = Fuzzy::Bool(m_inputData.lookingOther, true);
+	// 最も近い敵プレイヤーへの向き具合
+	float lookingOther = Fuzzy::Grade(m_inputData.lookingOther, std::cos(Math::PI), std::cos(Math::QuarterPI));
 	// 所持しているエレメントの数
 	float hasElementNum = Fuzzy::Grade(static_cast<float>(m_inputData.hasElementNum), parameter.hasElementNumMin, parameter.hasElementNumMax);
 	// 最も近いエレメントとの距離
