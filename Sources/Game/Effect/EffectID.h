@@ -14,6 +14,7 @@ enum class EffectID {
 	NormalMagic,        // 通常魔法エフェクト
 	FireMagic,	        // 炎魔法エフェクト
 	ThunderStrikeMagic, // 落雷魔法エフェクト
+	Death,		        // 撃破エフェクト
 
 	Num,
 };

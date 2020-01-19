@@ -12,7 +12,9 @@
 /// </summary>
 class AICastMagicCommand : public Command {
 public:
-	// AI魔法詠唱コマンドを処理するState::
+	// AI魔法詠唱コマンドを初期化する
+	void Initialize(Player& player) override;
+	// AI魔法詠唱コマンドを処理する
 	void Execute(Player& player, const DX::StepTimer& timer) override;
 
 private:

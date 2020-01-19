@@ -90,8 +90,6 @@ public:
 	};
 	fire_magic_param fireMagicParam;
 
-	
-
 	//struct freeze_param {
 	//
 	//};
@@ -108,6 +106,18 @@ public:
 		float scale;		// パーティクルのサイズ
 	};
 	thunder_strike_param thunderStrikeMagicParam;
+
+	// 撃破エフェクト
+	struct death_param {
+		int particleNum;                                // パーティクル数
+		float lifeTime;                                 // パーティクルが出現してから消えるまでの時間
+		float maxScale;	                                // パーティクルの最大サイズ
+		float minScale;	                                // パーティクルの最小サイズ
+		float maxSpeed;                                 // パーティクルの最大速度
+		float minSpeed;                                 // パーティクルの最小速度
+		float blinkSpeed;                               // パーティクルの点滅速度
+	};
+	death_param deathParam;
 };
 
 #endif // !EFFECT_PARAMETER_DEFINED

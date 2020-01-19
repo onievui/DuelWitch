@@ -7,7 +7,17 @@
 
 
 /// <summary>
-/// AI魔法詠唱コマンドクラス
+/// AI魔法詠唱コマンドを初期化する
+/// </summary>
+/// <param name="player"></param>
+void AICastMagicCommand::Initialize(Player& player) {
+	player;
+	// 0にすると出現した直後に発射してしまうため調整
+	m_waitTime = 0.001f;
+}
+
+/// <summary>
+/// AI魔法詠唱コマンドを処理する
 /// </summary>
 /// <param name="player">プレイヤー</param>
 /// <param name="timer">タイマー</param>

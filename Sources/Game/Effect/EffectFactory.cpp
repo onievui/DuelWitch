@@ -13,6 +13,7 @@
 #include "NormalMagicEffectEmitter.h"
 #include "FireMagicEffectEmitter.h"
 #include "ThunderStrikeEffectEmitter.h"
+#include "DeathEffectEmitter.h"
 
 
 /// <summary>
@@ -58,6 +59,7 @@ void EffectFactory::Initialize(EffectManager* effectManager) {
 	InitializeEffect<NormalMagicEffectEmitter>(EffectID::NormalMagic);
 	InitializeEffect<FireMagicEffectEmitter>(EffectID::FireMagic);
 	InitializeEffect<ThunderStrikeEffectEmitter>(EffectID::ThunderStrikeMagic);
+	InitializeEffect<DeathEffectEmitter>(EffectID::Death);
 
 }
 

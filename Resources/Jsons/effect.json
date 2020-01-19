@@ -1,6 +1,6 @@
 {
-  "MaxNum": [ 3, 3, 3, 20, 30, 30, 10 ],
-  "_MaxNum_Size": 7,
+  "MaxNum": [ 3, 3, 3, 20, 30, 30, 10, 3 ],
+  "_MaxNum_Size": 8,
 
   "PlayerTrail": {
     "ParticleNum": 40,
@@ -62,6 +62,14 @@
   "ThunderStrikeMagic": {
     "ParticleNum": 1,
     "Scale": 70.0
+  },
+  "Death": {
+    "ParticleNum": 30,
+    "LifeTime": 3.0,
+    "MaxScale": 2.5,
+    "MinScale": 1.5,
+    "MaxSpeed": 9.0,
+    "MinSpeed": 6.0,
+    "BlinkSpeed": 3
   }
-
 }

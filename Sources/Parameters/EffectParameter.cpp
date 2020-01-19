@@ -82,6 +82,16 @@ bool EffectParameter::Load() {
 		thunderStrikeMagicParam.particleNum = thunder_strike_magic["ParticleNum"].GetNumI();
 		thunderStrikeMagicParam.scale = thunder_strike_magic["Scale"].GetNumF();
 	}
+	{
+		JsonWrapper::value death(root["Death"]);
+		deathParam.particleNum = death["ParticleNum"].GetNumI();
+		deathParam.lifeTime = death["LifeTime"].GetNumF();
+		deathParam.maxScale = death["MaxScale"].GetNumF();
+		deathParam.minScale = death["MinScale"].GetNumF();
+		deathParam.maxSpeed = death["MaxSpeed"].GetNumF();
+		deathParam.minSpeed = death["MinSpeed"].GetNumF();
+		deathParam.blinkSpeed = death["BlinkSpeed"].GetNumF();
+	}
 
 	return true;
 }

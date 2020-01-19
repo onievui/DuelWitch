@@ -198,6 +198,8 @@
     <ClCompile Include="Sources\Game\Command\MoveCommand.cpp" />
     <ClCompile Include="Sources\Game\Command\RenderCommand.cpp" />
     <ClCompile Include="Sources\Game\Command\UserRenderCommand.cpp" />
+    <ClCompile Include="Sources\Game\Effect\DeathEffect.cpp" />
+    <ClCompile Include="Sources\Game\Effect\DeathEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\Effect\Effect.cpp" />
     <ClCompile Include="Sources\Game\Effect\EffectFactory.cpp" />
     <ClCompile Include="Sources\Game\Effect\EffectManager.cpp" />
@@ -299,6 +301,8 @@
     <ClInclude Include="Sources\Game\Command\MoveCommand.h" />
     <ClInclude Include="Sources\Game\Command\RenderCommand.h" />
     <ClInclude Include="Sources\Game\Command\UserRenderCommand.h" />
+    <ClInclude Include="Sources\Game\Effect\DeathEffect.h" />
+    <ClInclude Include="Sources\Game\Effect\DeathEffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\Effect.h" />
     <ClInclude Include="Sources\Game\Effect\EffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\EffectFactory.h" />

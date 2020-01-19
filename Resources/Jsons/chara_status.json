@@ -1,6 +1,6 @@
 {
   "Chara1": {
-    "MaxHp": 100,
+    "MaxHp": 20,
     "MaxSp": 100,
     "SpRecoverySpeed": 10.0,
     "NormalMagicSpCost": 10.0,

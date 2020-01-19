@@ -387,6 +387,12 @@
     <ClCompile Include="Sources\Game\UI\SoundScaleUpUI.cpp">
       <Filter>Game\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\DeathEffect.cpp">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Effect\DeathEffectEmitter.cpp">
+      <Filter>Game\Effect\Emmiter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -793,6 +799,12 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\UI\SoundScaleUpUI.h">
       <Filter>Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\DeathEffect.h">
+      <Filter>Game\Effect\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Effect\DeathEffectEmitter.h">
+      <Filter>Game\Effect\Emmiter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@
 #include <Game\Magic\IMagic.h>
 #include <Game\Magic\MagicManager.h>
 #include <Game\Effect\EffectManager.h>
+#include <Game\Effect\DeathEffectEmitter.h>
 #include <Game\Camera\Camera.h>
 #include <Game\Field\FieldData.h>
 #include "PlayerID.h"
@@ -141,7 +142,7 @@ void Player::Update(const DX::StepTimer& timer) {
 	UpdateStatus(timer);
 	
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Z)) {
-		ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::Hit, DirectX::SimpleMath::Vector3::Zero, -DirectX::SimpleMath::Vector3::UnitZ);
+		//ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::Death, DirectX::SimpleMath::Vector3::Zero, -DirectX::SimpleMath::Vector3::UnitZ);
 	}
 
 }
@@ -284,6 +285,17 @@ void Player::HitMagic(const IMagic* magic) {
 
 		// ダメージ効果音を鳴らす
 		ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Damage);
+
+		// 体力が0になった時はエフェクトを出す
+		if (m_status.hp <= 0.0f) {
+			EffectManager* effect_manager = ServiceLocater<EffectManager>::Get();
+			IEffectEmitter* effect = effect_manager->CreateEffect(EffectID::Death, m_transform.GetPosition(), DirectX::SimpleMath::Vector3::Zero);
+			DeathEffectEmitter* death_effect = dynamic_cast<DeathEffectEmitter*>(effect);
+			if (death_effect) {
+				death_effect->SetColorID(m_status.charaId);
+			}
+
+		}
 	}
 
 	// ヒットエフェクトを出現させる
