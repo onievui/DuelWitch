@@ -110,7 +110,7 @@ void Field::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Simpl
 
 	// スカイドームを描画する
 	ModelResource* skydome = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetRawResource(ModelID::Skydome);
-	skydome->GetResource()->Draw(context, *states, DirectX::SimpleMath::Matrix::CreateScale(1)*world, view, proj);
+	skydome->GetResource()->Draw(context, *states, DirectX::SimpleMath::Matrix::CreateRotationX(0)*world, view, proj);
 
 	// 外壁を描画する
 	m_wall->Draw(world, view, proj, DirectX::SimpleMath::Color(30/255.0f, 130/255.0f, 240/255.0f, 1.0f), nullptr, true);

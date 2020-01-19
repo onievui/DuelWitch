@@ -98,13 +98,6 @@ void FreezeMagic::Update(const DX::StepTimer& timer) {
 }
 
 /// <summary>
-/// 氷魔法を開放する
-/// </summary>
-void FreezeMagic::Lost() {
-
-}
-
-/// <summary>
 /// 氷魔法を描画する
 /// </summary>
 /// <param name="view">ビュー行列</param>

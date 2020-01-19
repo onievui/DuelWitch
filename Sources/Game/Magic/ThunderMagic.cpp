@@ -76,13 +76,6 @@ void ThunderMagic::Update(const DX::StepTimer& timer) {
 }
 
 /// <summary>
-/// 雷魔法を開放する
-/// </summary>
-void ThunderMagic::Lost() {
-
-}
-
-/// <summary>
 /// 雷魔法を描画する
 /// </summary>
 /// <param name="view">ビュー行列</param>

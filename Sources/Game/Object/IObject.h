@@ -19,8 +19,6 @@ public:
 public:
 	// オブジェクトを更新する
 	virtual void Update(const DX::StepTimer& timer) = 0;
-	// オブジェクトを開放する
-	virtual void Lost() = 0;
 	// オブジェクトを描画する
 	virtual void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const = 0;
 

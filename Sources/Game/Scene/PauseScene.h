@@ -20,6 +20,8 @@ class PauseScene : public IScene {
 public:
 	// ポーズにかかる時間
 	static constexpr float PAUSE_TIME = 0.2f;
+	// ポーズ中のBGM音量
+	static constexpr float BGM_VOLUME = 0.3f;
 
 public:
 	// コンストラクタ

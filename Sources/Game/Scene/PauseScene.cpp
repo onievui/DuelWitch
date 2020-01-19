@@ -55,6 +55,10 @@ void PauseScene::Initialize(ISceneRequest* pSceneRequest) {
 
 	// ポーズ音を鳴らす
 	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Pause);
+
+	// BGMの音量を下げる
+	ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Battle, 0, PAUSE_TIME, 1.0f, BGM_VOLUME);
+
 }
 
 /// <summary>
@@ -109,11 +113,15 @@ void PauseScene::Update(const DX::StepTimer& timer) {
 			case UIEventID::CharaSelect:
 				m_nextSceneID = SceneID::CharaSelect;
 				m_fadeFront->Start();
+				// BGMをフェードアウトさせる
+				ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Battle, 0, 0.9f, BGM_VOLUME, 0.0f);
 				break;
 				// タイトルに戻る
 			case UIEventID::Title:
 				m_nextSceneID = SceneID::Title;
 				m_fadeFront->Start();
+				// BGMをフェードアウトさせる
+				ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Battle, 0, 0.9f, BGM_VOLUME, 0.0f);
 				break;
 			default:
 				ErrorMessage(L"不正なUIイベントを取得しました");
@@ -228,6 +236,9 @@ void PauseScene::SelectResume() {
 
 	m_wasSelected = true;
 	m_nextSceneID = SceneID::Play;
+
+	// BGMの音量を戻す
+	ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Battle, 0, PAUSE_TIME, BGM_VOLUME, 1.0f);
 }
 
 /// <summary>

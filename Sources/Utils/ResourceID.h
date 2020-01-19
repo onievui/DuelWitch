@@ -101,7 +101,9 @@ enum class SoundID {
 /// BGMID
 /// </summary>
 enum class BgmID {
-	NullData,
+	Title,
+	CharaSelect,
+	Battle,
 	Num
 };
 

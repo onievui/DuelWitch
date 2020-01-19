@@ -9,11 +9,14 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Element::Element()
+/// <param name="pBasicEffect">ベーシックエフェクトへのポインタ</param>
+/// <param name="pInputLayout">入力レイアウトへのポインタ</param>
+Element::Element(DirectX::BasicEffect* pBasicEffect, ID3D11InputLayout* pInputLayout)
 	: m_id()
 	, m_transform()
 	, m_sphereCollider(&m_transform, ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->radius)
-	, m_color()
+	, m_pBasicEffect(pBasicEffect)
+	, m_pInputLayout(pInputLayout)
 	, m_isUsed(false)
 	, m_time()
 	, m_betweenFieldEnd() {
@@ -46,25 +49,16 @@ void Element::Update(const DX::StepTimer& timer) {
 }
 
 /// <summary>
-/// エレメントを開放する
-/// </summary>
-void Element::Lost() {
-
-}
-
-/// <summary>
 /// エレメントを生成する
 /// </summary>
 /// <param name="id">エレメントID</param>
 /// <param name="pos">座標</param>
-/// <param name="color">色</param>
-void Element::Create(ElementID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector4& color) {
+void Element::Create(ElementID id, const DirectX::SimpleMath::Vector3& pos) {
 	m_id = id;
 	m_transform.SetPosition(pos);
 	m_transform.SetScale(DirectX::SimpleMath::Vector3::Zero);
 	m_sphereCollider.SetRadius(ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->radius);
 	m_world = m_transform.GetMatrix();
-	m_color = color;
 	m_time = 0.0f;
 }
 
@@ -74,9 +68,34 @@ void Element::Create(ElementID id, const DirectX::SimpleMath::Vector3& pos, cons
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
 void Element::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const {
+	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
+	DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();
+
 	const GeometricPrimitiveResource* resource = ServiceLocater<ResourceManager<GeometricPrimitiveResource>>::Get()
 		->GetResource(GeometricPrimitiveID::Element);
-	resource->GetResource()->Draw(m_world, view, proj, m_color, nullptr, false);
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicIcon);
+
+	// パラメータをセットする
+	m_pBasicEffect->SetWorld(m_world);
+	m_pBasicEffect->SetView(view);
+	m_pBasicEffect->SetProjection(proj);
+	m_pBasicEffect->SetDiffuseColor(DirectX::Colors::AntiqueWhite);
+	m_pBasicEffect->SetTexture(texture->GetResource(static_cast<int>(m_id)).Get());
+
+	// テクスチャが半透明なため、先に背面から描画する
+	resource->GetResource()->Draw(m_pBasicEffect, m_pInputLayout, true, false, [&]() {
+		// 透明判定処理
+		context->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFFFFFFF);
+		// 時計回りカリング
+		context->RSSetState(states->CullClockwise());
+	});
+	resource->GetResource()->Draw(m_pBasicEffect, m_pInputLayout, true, false, [&]() {
+		// 透明判定処理
+		context->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFFFFFFF);
+		// 反時計周りカリング
+		context->RSSetState(states->CullCounterClockwise());
+	});
+
 }
 
 /// <summary>

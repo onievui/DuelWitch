@@ -70,13 +70,6 @@ void FireMagic::Update(const DX::StepTimer& timer) {
 }
 
 /// <summary>
-/// 炎魔法を開放する
-/// </summary>
-void FireMagic::Lost() {
-
-}
-
-/// <summary>
 /// 炎魔法を描画する
 /// </summary>
 /// <param name="view">ビュー行列</param>

@@ -3,6 +3,7 @@
 #define AUDIO_MANAGER_DEFINED
 
 
+#include <Framework\StepTimer.h>
 #include "ResourceID.h"
 
 
@@ -20,7 +21,7 @@ public:
 	// オーディオエンジンを取得する
 	DirectX::AudioEngine* GetAudioEngine() { return m_audioEngine.get(); }
 	// オーディオを更新する
-	void Update();
+	void Update(const DX::StepTimer& timer);
 	// サウンドを再生する
 	void PlaySound(SoundID id, int index = 0);
 	// BGMを再生する
@@ -33,6 +34,8 @@ public:
 	void PauseBgm(BgmID id, int index = 0);
 	// BGMを再開する
 	void ResumeBgm(BgmID id, int index = 0);
+	// BGMをフェードさせる
+	void FadeBgm(BgmID id, int index, float time, float startVolume, float endVolume);
 	// 全ての音声を止める
 	void StopAll();
 	// 破棄予定のSoundEffectを管理させる
@@ -41,12 +44,31 @@ public:
 	void DestroyAllSounds();
 
 private:
+	// BGMのフェードアウトに関する情報
+	struct FadeInfo {
+		// BGMID
+		BgmID bgmId;
+		// BGMインデックス
+		int   index;
+		// 初期ボリューム
+		float startVolume;
+		// 最終ボリューム
+		float endVolume;
+		// フェードが完了するまでの時間
+		float fadeTime;
+		// 経過時間
+		float timer;
+	};
+
+private:
 	// オーディオエンジン
-	std::unique_ptr<DirectX::AudioEngine>              m_audioEngine;
+	std::unique_ptr<DirectX::AudioEngine>                      m_audioEngine;
 	// 再生中の効果音リスト
 	std::vector<std::unique_ptr<DirectX::SoundEffectInstance>> m_playingSounds;
 	// 破棄予定のSoundEffect
-	std::vector<std::unique_ptr<DirectX::SoundEffect>> m_usingSoundEffects;
+	std::vector<std::unique_ptr<DirectX::SoundEffect>>         m_usingSoundEffects;
+	// フェードアウトしているBGMリスト
+	std::vector<FadeInfo>                                      m_fadeoutBgm;
 };
 
 

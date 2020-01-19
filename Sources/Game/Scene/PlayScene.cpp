@@ -6,6 +6,7 @@
 #include <Utils\LamdaUtils.h>
 #include <Utils\Resource.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\AudioManager.h>
 #include <Game\Load\PlayParameterLoader.h>
 #include <Game\Load\ResourceLoader.h>
 #include "ISceneRequest.h"
@@ -100,6 +101,11 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	// フェードを生成する
 	m_fade = std::make_unique<Fade>();
 	m_fade->Initialize(Fade::State::FadeIn, 1.0f, 0.0f);
+
+	// BGMを再生する
+	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::Battle);
+	// BGMをフェードインさせる
+	ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Battle, 0, 0.9f, 0.0f, 1.0f);
 }
 
 /// <summary>
@@ -134,6 +140,10 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 			// 敗北した場合は黒くフェードアウトする
 			m_fade->Initialize(Fade::State::FadeOut, 3.0f, 0.8f, static_cast<DirectX::SimpleMath::Color>(DirectX::Colors::Black));
 			m_isFinished = true;
+		}
+		if (m_isFinished) {
+			// BGMをフェードアウトさせる
+			ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Battle, 0, 0.9f, 1.0f, 0.0f);
 		}
 	}
 	else if(m_fade->IsFinished()) {

@@ -44,6 +44,8 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		// サウンドの読み込み
 		soundResourceManager->AddResource(SoundID::Cursor,   SoundResource(L"Protected/cursor.wav", audioEngine));
 		soundResourceManager->AddResource(SoundID::Decision, SoundResource(L"Protected/decision.wav", audioEngine));
+		// BGMの読み込み
+		bgmResourceManager->AddResource(BgmID::Title, BgmResource(L"Protected/title.wav", audioEngine));
 		break;
 	// キャラセレクトシーン
 	case ResourceLoaderID::CharaSelectScene:
@@ -61,6 +63,8 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		soundResourceManager->AddResource(SoundID::Cursor,   SoundResource(L"Protected/cursor.wav", audioEngine));
 		soundResourceManager->AddResource(SoundID::Decision, SoundResource(L"Protected/decision.wav", audioEngine));
 		soundResourceManager->AddResource(SoundID::Ready,    SoundResource(L"Protected/ready.wav", audioEngine));
+		// BGMの読み込み
+		bgmResourceManager->AddResource(BgmID::CharaSelect, BgmResource(L"Protected/chara_select.wav", audioEngine));
 		break;
 	// プレイシーン
 	case ResourceLoaderID::PlayScene:
@@ -106,7 +110,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		modelResourceManager->AddResource(ModelID::Chara,		L"toko.cmo", L"Protected");
 		modelResourceManager->AddResource(ModelID::Chara,		L"marie.cmo", L"Protected");
 		modelResourceManager->AddResource(ModelID::Bloom,   ModelResource(L"bloom.cmo", L"Protected"));
-		modelResourceManager->AddResource(ModelID::Skydome, ModelResource(L"skydome.cmo", L"Protected"));
+		modelResourceManager->AddResource(ModelID::Skydome, ModelResource(L"skydome_moon.cmo", L"Protected"));
 		// サウンドの読み込み
 		soundResourceManager->AddResource(SoundID::Cursor,             SoundResource(L"Protected/cursor.wav",               audioEngine));
 		soundResourceManager->AddResource(SoundID::Decision,           SoundResource(L"Protected/decision.wav",             audioEngine));
@@ -121,6 +125,8 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		soundResourceManager->AddResource(SoundID::Boost,              SoundResource(L"Protected/boost.wav",                audioEngine));
 		soundResourceManager->AddResource(SoundID::Rolling,            SoundResource(L"Protected/rolling.wav",              audioEngine));
 		soundResourceManager->AddResource(SoundID::GetElement,         SoundResource(L"Protected/get_element.wav",          audioEngine));
+		// BGMの読み込み
+		bgmResourceManager->AddResource(BgmID::Battle, BgmResource(L"Protected/battle.wav", audioEngine));
 		break;
 	default:
 		ErrorMessage(L"リソースのロードで不正なIDが渡されました");

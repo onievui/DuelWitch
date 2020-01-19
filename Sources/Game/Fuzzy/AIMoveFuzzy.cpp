@@ -25,6 +25,8 @@ void AIMoveFuzzy::Execute() {
 	float lookingOther = Fuzzy::Grade(m_inputData.lookingOther, std::cos(Math::PI), std::cos(Math::QuarterPI));
 	// 所持しているエレメントの数
 	float hasElementNum = Fuzzy::Grade(static_cast<float>(m_inputData.hasElementNum), parameter.hasElementNumMin, parameter.hasElementNumMax);
+	// エレメントを所持してないかどうか
+	float hasNotElement = Fuzzy::ReverseGrade(static_cast<float>(m_inputData.hasElementNum), 0, 1);
 	// 最も近いエレメントとの距離
 	float elementDistance = Fuzzy::Grade(m_inputData.elementDistance, parameter.elementDistanceMin, parameter.elementDistanceMax);
 	// エレメントがフィールドに存在するかどうか
@@ -32,6 +34,7 @@ void AIMoveFuzzy::Execute() {
 
 	// 非ファジー化
 	float collect_element_state = Fuzzy::And(Fuzzy::Not(hasElementNum), Fuzzy::Or(distance, Fuzzy::Not(elementDistance)));
+	collect_element_state = Fuzzy::Or(collect_element_state, hasNotElement);
 	collect_element_state = Fuzzy::And(collect_element_state, existElements);
 	float chase_state = Fuzzy::And(Fuzzy::Or(hpGap, hasElementNum), Fuzzy::And(Fuzzy::Not(distance), lookingOther));
 	float evade_state = Fuzzy::And(Fuzzy::Not(hpGap), Fuzzy::And(Fuzzy::Not(distance), Fuzzy::Not(lookingOther)));

@@ -64,13 +64,6 @@ void NormalMagic::Update(const DX::StepTimer& timer) {
 }
 
 /// <summary>
-/// 通常魔法を開放する
-/// </summary>
-void NormalMagic::Lost() {
-
-}
-
-/// <summary>
 /// 通常魔法を描画する
 /// </summary>
 /// <param name="view">ビュー行列</param>

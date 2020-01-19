@@ -76,7 +76,7 @@ void MyGame::Update(const DX::StepTimer& timer) {
 	// マウストラッカーを更新する
 	ServiceLocater<MouseWrapper>::Get()->Update(m_width, m_height);
 	// オーディオマネージャを更新する
-	ServiceLocater<AudioManager>::Get()->Update();
+	ServiceLocater<AudioManager>::Get()->Update(timer);
 
 	// シーンを更新する
 	m_sceneManager->Update(timer);

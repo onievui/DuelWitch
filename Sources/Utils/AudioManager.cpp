@@ -2,6 +2,7 @@
 #include "ErrorMessage.h"
 #include "ServiceLocater.h"
 #include "ResourceManager.h"
+#include "MathUtils.h"
 
 
 /// <summary>
@@ -29,13 +30,39 @@ AudioManager::~AudioManager() {
 /// <summary>
 /// オーディオエンジンを更新する
 /// </summary>
-void AudioManager::Update() {
+/// <param name="timer">ステップタイマー</param>
+void AudioManager::Update(const DX::StepTimer& timer) {
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+
 	if(!m_audioEngine->Update()) {
 		// オーディオデバイスがアクティブでない場合
 		if(m_audioEngine->IsCriticalError()) {
 			ErrorMessage(L"オーディオデバイスがアクティブでありません");
 		}
 	}
+
+	// BGMをフェードさせる
+	for (std::vector<FadeInfo>::iterator itr = m_fadeoutBgm.begin(); itr != m_fadeoutBgm.end(); ++itr) {
+		// タイマーを進める
+		itr->timer = std::min(itr->timer + elapsed_time, itr->fadeTime);
+		// ボリュームを更新する
+		DirectX::SoundEffectInstance* instance = ServiceLocater<ResourceManager<BgmResource>>::Get()
+			->GetRawResource(itr->bgmId)->GetInstance(itr->index);
+		float volume = Math::Lerp(itr->startVolume, itr->endVolume, itr->timer / itr->fadeTime);
+		instance->SetVolume(volume);
+		// フェード終了時にボリュームが0なら、BGMを停止させる
+		if (itr->timer >= itr->fadeTime && volume <= 0.0f) {
+			instance->Stop();
+		}
+	}
+
+	// フェードが終わったBGM情報を破棄する
+	std::vector<FadeInfo>::iterator fadeout_result = std::remove_if(m_fadeoutBgm.begin(), m_fadeoutBgm.end(),
+		[](const FadeInfo& info) {
+		return (info.timer >= info.fadeTime);
+	});
+	m_fadeoutBgm.erase(fadeout_result, m_fadeoutBgm.end());
+
 
 	// 再生が終了した効果音を破棄する
 	std::vector<std::unique_ptr<DirectX::SoundEffectInstance>>::iterator result = std::remove_if(m_playingSounds.begin(), m_playingSounds.end(),
@@ -182,6 +209,25 @@ void AudioManager::ResumeBgm(BgmID id, int index) {
 	if (sound_effect_instance) {
 		sound_effect_instance->Resume();
 	}
+}
+
+/// <summary>
+/// BGMをフェードアウト
+/// </summary>
+/// <param name="id">BGMID</param>
+/// <param name="index">インデックス</param>
+/// <param name="time">フェードが完了するまでの時間</param>
+/// <param name="time">フェードが完了するまでの時間</param>
+/// <param name="time">フェードが完了するまでの時間</param>
+void AudioManager::FadeBgm(BgmID id, int index, float time, float startVolume, float endVolume) {
+	FadeInfo fade_info;
+	fade_info.bgmId = id;
+	fade_info.index = index;
+	fade_info.startVolume = startVolume;
+	fade_info.endVolume = endVolume;
+	fade_info.fadeTime = time;
+	fade_info.timer = 0;
+	m_fadeoutBgm.push_back(fade_info);
 }
 
 /// <summary>

@@ -36,8 +36,6 @@ public:
 	void Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vector<std::unique_ptr<Player>>& pOtherPlayers);
 	// プレイヤーを更新する
 	void Update(const DX::StepTimer& timer) override;
-	// プレイヤーを開放する
-	void Lost() override;
 	// プレイヤーを描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const;

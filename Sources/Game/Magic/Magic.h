@@ -38,8 +38,6 @@ public:
 	}
 	// 魔法を更新する
 	virtual void Update(const DX::StepTimer& timer) { timer; }
-	// 魔法を開放する
-	virtual void Lost() {}	
 	// 魔法を描画する
 	virtual void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const { view; proj; }
 	// 魔法の終了処理を行う

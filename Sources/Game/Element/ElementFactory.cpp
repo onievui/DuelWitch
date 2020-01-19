@@ -1,4 +1,5 @@
 #include "ElementFactory.h"
+#include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\LamdaUtils.h>
 #include <Parameters\ElementParameter.h>
@@ -24,9 +25,31 @@ ElementFactory::~ElementFactory() {
 void ElementFactory::Initialize() {
 	m_elements.clear();
 	m_elements.resize(ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->maxNum);
+
+	// ベーシックエフェクトを生成する
+	ID3D11Device* device = ServiceLocater<DirectX11>::Get()->GetDevice().Get();
+	m_basicEffect = std::make_unique<DirectX::BasicEffect>(device);
+	m_basicEffect->SetTextureEnabled(true);
+	// 入力レイアウトを生成する
+	void const* shader_byte_code;
+	size_t byte_code_length;
+
+	m_basicEffect->GetVertexShaderBytecode(&shader_byte_code, &byte_code_length);
+
+	DX::ThrowIfFailed(
+		device->CreateInputLayout(
+			DirectX::GeometricPrimitive::VertexType::InputElements,
+			DirectX::GeometricPrimitive::VertexType::InputElementCount,
+			shader_byte_code, byte_code_length,
+			m_inputLayout.GetAddressOf())
+	);
+
+	// エレメントを生成する
 	for (std::vector<std::unique_ptr<Element>>::iterator itr = m_elements.begin(); itr != m_elements.end(); ++itr) {
-		(*itr) = std::make_unique<Element>();
+		(*itr) = std::make_unique<Element>(m_basicEffect.get(), m_inputLayout.Get());
 	}
+	
+
 }
 
 /// <summary>
@@ -46,24 +69,7 @@ Element* ElementFactory::Create(ElementID id, const DirectX::SimpleMath::Vector3
 		return nullptr;
 	}
 	
-	DirectX::SimpleMath::Color color;
-	const float alpha_rate = ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->alphaRate;
-
-	switch (id) {
-	case ElementID::Fire:
-		color = DirectX::Colors::Red;
-		break;
-	case ElementID::Thunder:
-		color = DirectX::Colors::Yellow;
-		break;
-	case ElementID::Freeze:
-		color = DirectX::Colors::SkyBlue;
-		break;
-	default:
-		return nullptr;
-	}
-	color.w *= alpha_rate;
-	(*itr)->Create(id, position, color);
+	(*itr)->Create(id, position);
 
 	(*itr)->SetUsed(true);
 

@@ -84,15 +84,18 @@ void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vecto
 	// キャラクターモデル
 	const ModelResource* modelResource2 = ServiceLocater<ResourceManager<ModelResource>>::Get()->GetResource(ModelID::Chara);
 	const std::vector<std::unique_ptr<DirectX::Model>>& charas = modelResource2->GetAllResources();
-	for (std::vector<std::unique_ptr<DirectX::Model>>::const_iterator itr = charas.begin(); itr != charas.end(); ++itr) {
-		(*itr)->UpdateEffects([](DirectX::IEffect* effect) {
+	for (unsigned int i = 0; i < charas.size(); ++i) {
+		// unityちゃんモデルは元から明るいため、環境光を控えめにする
+		float ambient_light_power = (i == 0 ? 0.5f : 0.8f);
+
+		charas[i]->UpdateEffects([ambient_light_power](DirectX::IEffect* effect) {
 			DirectX::IEffectLights* lights = dynamic_cast<DirectX::IEffectLights*>(effect);
 			if (lights) {
 				lights->SetLightingEnabled(true);
 				lights->SetPerPixelLighting(true);
 				lights->SetLightEnabled(0, true);
 				lights->SetLightDiffuseColor(0, DirectX::Colors::AntiqueWhite);
-				lights->SetAmbientLightColor(DirectX::Colors::AntiqueWhite*0.8f);
+				lights->SetAmbientLightColor(DirectX::Colors::AntiqueWhite*ambient_light_power);
 				lights->SetLightEnabled(1, false);
 				lights->SetLightEnabled(2, false);
 			}
@@ -140,13 +143,6 @@ void Player::Update(const DX::StepTimer& timer) {
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Z)) {
 		ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::Hit, DirectX::SimpleMath::Vector3::Zero, -DirectX::SimpleMath::Vector3::UnitZ);
 	}
-
-}
-
-/// <summary>
-/// プレイヤーを解放する
-/// </summary>
-void Player::Lost() {
 
 }
 

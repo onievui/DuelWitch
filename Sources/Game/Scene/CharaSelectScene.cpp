@@ -2,15 +2,16 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\AudioManager.h>
 #include <Utils\MathUtils.h>
 #include <Utils\UIObserver.h>
 #include <Utils\UISubject.h>
 #include <Utils\RandMt.h>
 #include "ISceneRequest.h"
 #include <Game\Load\ResourceLoader.h>
+#include <Game\Scene\ShareData\ShareData.h>
 #include <Game\UI\CharaIcon.h>
 #include <Game\UI\CharaSelectMarker.h>
-#include <Game\Scene\ShareData\ShareData.h>
 #include <Game\UI\SoundScaleUpUI.h>
 #include <Game\UI\Fade.h>
 
@@ -47,6 +48,11 @@ void CharaSelectScene::Initialize(ISceneRequest* pSceneRequest) {
 	// フェードを生成する
 	m_fade = std::make_unique<Fade>();
 	m_fade->Initialize(Fade::State::FadeIn, 1.0f, 0.0f);
+
+	// BGMを再生する
+	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::CharaSelect);
+	// BGMをフェードインさせる
+	ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::CharaSelect, 0, 0.9f, 0.0f, 1.0f);
 }
 
 /// <summary>
@@ -191,6 +197,8 @@ void CharaSelectScene::UpdateReady(const DX::StepTimer& timer) {
 			m_state = CharaSelectState::FadeOut;
 			m_nextSceneID = SceneID::Play;
 			m_fade->Initialize(Fade::State::FadeOut, 1.0f, 1.0f);
+			// BGMをフェードアウトさせる
+			ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::CharaSelect, 0, 0.9f, 1.0f, 0.0f);
 			break;
 		default:
 			break;

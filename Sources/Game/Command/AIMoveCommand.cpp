@@ -271,6 +271,7 @@ float AIMoveCommand::LookingOther(const Transform& transform, const DirectX::Sim
 /// 最も取りやすいエレメントへのポインタ
 /// </returns>
 const Element* AIMoveCommand::GetTargetElement(const Transform& transform) {
+	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
 	float min_distance_square = 10000000.0f;
 	const FieldData* field_data = ServiceLocater<FieldData>::Get();
 	const Element* nearest_element = nullptr;
@@ -283,9 +284,14 @@ const Element* AIMoveCommand::GetTargetElement(const Transform& transform) {
 			DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
 		DirectX::SimpleMath::Vector3 to_element = (*itr)->GetPos() - transform.GetPosition();
 		to_element.Normalize();
-		const bool dist_near = (distance_square <= 5.0f*5.0f);
-		const bool back = (player_dir.Dot(to_element) < Math::HarfPI);
-		if (dist_near && back) {
+		
+		float angle = std::acosf(player_dir.Dot(to_element));
+		float time = angle / parameter.rotSpeed;
+		float r = parameter.moveSpeed*time;
+		const bool dist_near = (distance_square >= r*r);
+		
+		//const bool back = (player_dir.Dot(to_element) > std::cosf(Math::HarfPI));
+		if (dist_near/* && back*/) {
 			continue;
 		}
 		

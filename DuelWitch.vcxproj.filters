@@ -802,9 +802,6 @@
     <MeshContentTask Include="Assets\Models\Protected\skydome.FBX">
       <Filter>Assets</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Assets\Models\Protected\skydome_space.FBX">
-      <Filter>Assets</Filter>
-    </MeshContentTask>
     <MeshContentTask Include="Assets\Models\Protected\unity-chan.FBX">
       <Filter>Assets</Filter>
     </MeshContentTask>
@@ -812,6 +809,9 @@
       <Filter>Assets</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\Models\Protected\marie.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\Models\Protected\skydome_moon.FBX">
       <Filter>Assets</Filter>
     </MeshContentTask>
   </ItemGroup>

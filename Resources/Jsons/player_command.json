@@ -1,7 +1,7 @@
 {
   "MoveCommand": {
     "MoveSpeed": 16.0,
-    "RotSpeed_Deg": 80.0,
+    "RotSpeed_Deg": 95.0,
     "BoostRotSpeed_Deg": 40.0,
     "RotZLimit_Deg": 22.5,
     "RotXLimit_Deg": 60.0,
@@ -23,8 +23,8 @@
       "CollectElementBoostSp": 80.0,
       "ChaseBoostSp": 50.0,
       "ChaseBoostDistance": 40.0,
-      "EvadeNearBoostSp": 20.0,
-      "EvadeNearBoostDistance": 10.0,
+      "EvadeNearBoostSp": 10.0,
+      "EvadeNearBoostDistance": 15.0,
       "EvadeFarBoostSp": 40.0,
       "EvadeFarBoostDistance": 30.0
     }

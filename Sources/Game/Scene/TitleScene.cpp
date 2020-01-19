@@ -5,6 +5,7 @@
 #include <Utils\MouseWrapper.h>
 #include <Utils\MathUtils.h>
 #include <Utils\UIObserver.h>
+#include <Utils\AudioManager.h>
 #include "ISceneRequest.h"
 #include <Game\Load\ResourceLoader.h>
 #include <Game\UI\SoundScaleUpUI.h>
@@ -47,6 +48,11 @@ void TitleScene::Initialize(ISceneRequest* pSceneRequest) {
 	// 後から動作を開始させる
 	m_fadeUI->Stop();
 	m_fadeUIStep = 0;
+
+	// BGMを再生する
+	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::Title);
+	// BGMをフェードインさせる
+	ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Title, 0, 0.9f, 0.0f, 1.0f);
 }
 
 /// <summary>
@@ -97,6 +103,8 @@ void TitleScene::Update(const DX::StepTimer& timer) {
 				// フェードアウト後にシーン遷移する
 				m_fadeScreen->Start();
 				m_wasSelected = true;
+				// BGMをフェードアウトさせる
+				ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Title, 0, 0.9f, 1.0f, 0.0f);
 				break;
 			case UIEventID::Option:
 				ErrorMessage(L"未実装");

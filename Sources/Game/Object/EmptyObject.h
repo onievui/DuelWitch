@@ -20,8 +20,6 @@ public:
 public:
 	// オブジェクトを更新する
 	void Update(const DX::StepTimer& timer) override;
-	// オブジェクトを開放する
-	void Lost() override {};
 	// オブジェクトを描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override { view, proj; };
 

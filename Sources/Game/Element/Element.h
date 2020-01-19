@@ -25,16 +25,16 @@ public:
 	static constexpr float ELEMENT_ROTATE_SPEED = Math::HarfPI;
 
 public:
-	Element();
+	// コンストラクタ
+	Element(DirectX::BasicEffect* pBasicEffect, ID3D11InputLayout* pInputLayout);
+	// デストラクタ
 	~Element();
 
 public:
 	// エレメントを更新する
 	void Update(const DX::StepTimer& timer) override;
-	// エレメントを開放する
-	void Lost() override;
 	// エレメントを生成する
-	void Create(ElementID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector4& color);
+	void Create(ElementID id, const DirectX::SimpleMath::Vector3& pos);
 	// エレメントを描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
 
@@ -65,8 +65,10 @@ private:
 	SphereCollider                               m_sphereCollider;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix                  m_world;
-	// 色
-	DirectX::SimpleMath::Color                   m_color;
+	// ベーシックエフェクトへのポインタ
+	DirectX::BasicEffect*                        m_pBasicEffect;
+	// 入力レイアウトへのポインタ
+	ID3D11InputLayout*                           m_pInputLayout;
 	// 使用しているかどうか
 	bool                                         m_isUsed;
 	// 生成されてからの時間

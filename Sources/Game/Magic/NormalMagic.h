@@ -25,8 +25,6 @@ public:
 	void Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) override;
 	// 通常魔法を更新する
 	void Update(const DX::StepTimer& timer) override;
-	// 通常魔法を開放する
-	void Lost() override;
 	// 通常魔法を描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) const override;
 	// 通常魔法の終了処理を行う

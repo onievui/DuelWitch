@@ -41,7 +41,11 @@ public:
 
 private:
 	// 管理するエレメント
-	std::vector<std::unique_ptr<Element>> m_elements;
+	std::vector<std::unique_ptr<Element>>     m_elements;
+	// エレメント用ベーシックエフェクト
+	std::unique_ptr<DirectX::BasicEffect>     m_basicEffect;
+	// エレメント用入力レイアウト
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 
 };
 
