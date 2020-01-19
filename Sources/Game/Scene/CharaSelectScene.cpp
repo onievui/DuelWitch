@@ -225,7 +225,7 @@ void CharaSelectScene::UpdateFadeOut(const DX::StepTimer& timer) {
 /// <param name="marker">選択マーカー</param>
 void CharaSelectScene::SelectChara(const UISubject* charaIcon, UISubject* backChara, CharaSelectMarker* marker) {
 	// 選択済みキャラにテクスチャをセットする
-	backChara->SetTexture(charaIcon->GetTexture());
+	backChara->SetTexture(ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaPortrait2));
 	backChara->SetTextureIndex(charaIcon->GetTextureIndex());
 	backChara->FitTextureSize();
 	// ランダムで選択した場合のために、マーカーを動かす
@@ -256,12 +256,12 @@ void CharaSelectScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->Render(spriteBatch);
 	}
-	// キャラアイコン
-	for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
-		(*itr)->Render(spriteBatch);
-	}
 	// 選択済みキャラ
 	for (std::vector<std::unique_ptr<UISubject>>::iterator itr = m_backCharas.begin(); itr != m_backCharas.end(); ++itr) {
+		(*itr)->Render(spriteBatch);
+	}
+	// キャラアイコン
+	for (std::vector<std::unique_ptr<CharaIcon>>::iterator itr = m_charaIcons.begin(); itr != m_charaIcons.end(); ++itr) {
 		(*itr)->Render(spriteBatch);
 	}
 	// 選択マーカー
@@ -321,8 +321,8 @@ void CharaSelectScene::InitializeUI() {
 	{
 		// キャラクターの数
 		constexpr int chara_count = 3;
-		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaIcon);
-		float scale = 0.6f;
+		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaPortrait);
+		constexpr float scale = 0.6f;
 		float texture_width = texture->GetSize().x*scale;
 		for (int i = 0; i < chara_count; ++i) {
 			// キャラアイコンを並べるためのオフセット
@@ -336,9 +336,11 @@ void CharaSelectScene::InitializeUI() {
 	}
 	// 選択済みキャラクター
 	{
+		constexpr float scale = 0.9f;
 		for (int i = 0; i < PLAYER_COUNT; ++i) {
 			std::unique_ptr<UISubject> chara = std::make_unique<UISubject>(
 				UIEventID::Null, 0, DirectX::SimpleMath::Vector2(screen_size.x*(0.2f+0.3f*i), screen_size.y*0.4f));
+			chara->SetScale(DirectX::SimpleMath::Vector2::One*scale);
 			m_backCharas.emplace_back(std::move(chara));
 		}
 	}

@@ -52,9 +52,12 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		// テクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::CharaSelectBackGround, TextureResource(L"Protected/chara_select1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame,               TextureResource(L"Protected/title_ui_frame.png"));
-		textureResourceManager->AddResource(TextureID::CharaIcon,             TextureResource(L"Protected/chara_icon1.png"));
-		textureResourceManager->AddResource(TextureID::CharaIcon,                 L"Protected/chara_icon2.png");
-		textureResourceManager->AddResource(TextureID::CharaIcon,                 L"Protected/chara_icon3.png");
+		textureResourceManager->AddResource(TextureID::CharaPortrait,         TextureResource(L"Protected/portrait1.png"));
+		textureResourceManager->AddResource(TextureID::CharaPortrait,		      L"Protected/portrait2.png");
+		textureResourceManager->AddResource(TextureID::CharaPortrait,		      L"Protected/portrait3.png");
+		textureResourceManager->AddResource(TextureID::CharaPortrait2,        TextureResource(L"Protected/portrait2_1.png"));
+		textureResourceManager->AddResource(TextureID::CharaPortrait2,            L"Protected/portrait2_2.png");
+		textureResourceManager->AddResource(TextureID::CharaPortrait2,            L"Protected/portrait2_3.png");
 		textureResourceManager->AddResource(TextureID::CharaSelectMarker,     TextureResource(L"Protected/chara_select_marker1.png"));
 		textureResourceManager->AddResource(TextureID::CharaSelectMarker,	      L"Protected/chara_select_marker2.png");
 		textureResourceManager->AddResource(TextureID::CharaSelectMarker,	      L"Protected/chara_select_marker3.png");
