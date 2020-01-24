@@ -48,7 +48,7 @@ bool MagicParameter::Reload() {
 		resource_manager->Replace(GeometricPrimitiveID::FireMagic,
 			DirectX::GeometricPrimitive::CreateCone(context, fireParam.radius*2.0f, fireParam.height));
 		resource_manager->Replace(GeometricPrimitiveID::FreezeMagic,
-			DirectX::GeometricPrimitive::CreateSphere(context, freezeParam.radius*2.0f));
+			DirectX::GeometricPrimitive::CreateDodecahedron(context, freezeParam.radius));
 		resource_manager->Replace(GeometricPrimitiveID::ThunderMagic,
 			DirectX::GeometricPrimitive::CreateSphere(context, thunderParam.radius*2.0f));
 		resource_manager->Replace(GeometricPrimitiveID::ThunderStrikeMagic,

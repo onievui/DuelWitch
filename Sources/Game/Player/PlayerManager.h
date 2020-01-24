@@ -26,6 +26,8 @@ public:
 	void Update(const DX::StepTimer& timer);
 	// プレイヤーを描画する
 	void Render(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj, DirectX::SpriteBatch* spriteBatch) const;
+	// プレイヤー1の状態からポストエフェクトを発生させる
+	void RenderPlayer1Effect(DirectX::SpriteBatch* spriteBatch);
 
 public:
 	// プレイヤーを取得する
@@ -36,7 +38,17 @@ public:
 	bool Player1Lose();
 
 private:
+	// 画面エフェクト用定数
+	struct Player1EffectBuffer {
+		// 時間
+		DirectX::SimpleMath::Vector4 time;
+	};
+
+private:
 	// プレイヤー
 	std::vector<std::unique_ptr<Player>> m_players;
-	//
+	// 画面エフェクト用定数バッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_cBuffer;
+	// 画面エフェクト用定数
+	Player1EffectBuffer                  m_player1EffectBuffer;
 };

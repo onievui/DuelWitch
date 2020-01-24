@@ -870,5 +870,8 @@
     <FxCompile Include="Assets\Shaders\IceVS.hlsl">
       <Filter>Assets\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Assets\Shaders\BoostPS.hlsl">
+      <Filter>Assets\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

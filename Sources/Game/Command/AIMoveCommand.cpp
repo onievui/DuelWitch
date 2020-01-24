@@ -271,7 +271,6 @@ float AIMoveCommand::LookingOther(const Transform& transform, const DirectX::Sim
 /// 最も取りやすいエレメントへのポインタ
 /// </returns>
 const Element* AIMoveCommand::GetTargetElement(const Transform& transform) {
-	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
 	float min_distance_square = 10000000.0f;
 	const FieldData* field_data = ServiceLocater<FieldData>::Get();
 	const Element* nearest_element = nullptr;
@@ -285,13 +284,9 @@ const Element* AIMoveCommand::GetTargetElement(const Transform& transform) {
 		DirectX::SimpleMath::Vector3 to_element = (*itr)->GetPos() - transform.GetPosition();
 		to_element.Normalize();
 		
-		float angle = std::acosf(player_dir.Dot(to_element));
-		float time = angle / parameter.rotSpeed;
-		float r = parameter.moveSpeed*time;
-		const bool dist_near = (distance_square >= r*r);
-		
-		//const bool back = (player_dir.Dot(to_element) > std::cosf(Math::HarfPI));
-		if (dist_near/* && back*/) {
+		float angle = Math::BetweenAngle(player_dir, to_element);
+		// 確実に取れる範囲のみ対象にする
+		if (angle > Math::QuarterPI) {
 			continue;
 		}
 		
@@ -374,9 +369,11 @@ void AIMoveCommand::ExecuteCollectElement(Player& player) {
 	// 最も近いエレメント
 	const Element* nearest_element = GetTargetElement(pos);
 
-	// フィールドにエレメントが存在しない場合はエラー
+	// フィールドにエレメントが存在しない場合
 	if (!nearest_element) {
-		ErrorMessage(L"敵AIの処理で収集するエレメントが存在しません");
+		// 逃避の処理を行う
+		ExecuteEvade(player);
+		//ErrorMessage(L"敵AIの処理で収集するエレメントが存在しません");
 		return;
 	}
 
@@ -440,6 +437,21 @@ void AIMoveCommand::ExecuteEvade(Player& player) {
 
 	// プレイヤーの方向ベクトル
 	DirectX::SimpleMath::Vector3 dir = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, transform.GetRotation());
+	// フィールドの中心からプレイヤーへの方向ベクトル
+	DirectX::SimpleMath::Vector3 field_dir = pos - field_pos;
+
+	//// フィールド端でフィールドの方を向いている場合はフィールドの中心へ向かう
+	//const bool near_outside = (DirectX::SimpleMath::Vector3::Distance(pos, field_pos) >= field_data->fieldRadius - 3.0f);
+	//const bool face_to_outside = (Math::BetweenAngle(dir, field_dir) < Math::HarfPI);
+	//if (near_outside && face_to_outside) {
+	//	// X方向の回転を調べる
+	//	m_moveInfo.xVec = CheckVecX(dir, -field_dir);
+	//	// Y方向の回転を調べる
+	//	m_moveInfo.yVec = CheckVecY(dir, -field_dir);
+	//	return;
+	//}
+
+
 	// 敵プレイヤーの座標を取得する
 	DirectX::SimpleMath::Vector3 other_pos = GetTransform(*other_player).GetPosition();
 	// 敵プレイヤーとの距離
@@ -447,7 +459,7 @@ void AIMoveCommand::ExecuteEvade(Player& player) {
 	// フィールドの中心から逃避先へのベクトル
 	DirectX::SimpleMath::Vector3 field_target_dir; 
 	{
-		DirectX::SimpleMath::Vector3 field_dir = pos - field_pos;
+
 		field_dir.Normalize();
 		DirectX::SimpleMath::Vector3 field_other_dir = other_pos - field_pos;
 		field_other_dir.Normalize();

@@ -51,6 +51,8 @@ public:
 	void SetOtherPlayers(std::vector<std::unique_ptr<Player>>& pOtherPlayers);
 	// プレイヤーのHPが0以下か取得する
 	bool IsDead() const;
+	// プレイヤーがブースト移動中か取得する
+	bool IsBoosting() const;
 	// 魔法のダメージ倍率を取得する
 	float GetMagicPowerRate(ElementID elementId) const;
 

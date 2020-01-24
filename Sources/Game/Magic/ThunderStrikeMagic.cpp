@@ -119,7 +119,8 @@ void ThunderStrikeMagic::HitMagic(const IMagic* other) {
 	MagicID other_id = other->GetID();
 	// •X–‚–@‚ÆÕ“Ë‚µ‚½‚ç’µ‚Ë•Ô‚é
 	if (other_id == MagicID::Freeze) {
-		DirectX::SimpleMath::Vector3 direction = m_transform.GetLocalPosition() - other->GetCollider()->GetPos();
+		//DirectX::SimpleMath::Vector3 direction = m_transform.GetLocalPosition() - other->GetCollider()->GetPos();
+		DirectX::SimpleMath::Vector3 direction = -m_vel;
 		direction.y *= 0.0f;
 		direction.Normalize();
 

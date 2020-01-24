@@ -13,6 +13,7 @@
 /// <param name="player">プレイヤー</param>
 void UserRenderCommand::Initialize(Player& player) {
 	m_targetIconInfo.resize(GetOtherPlayers(player).size());
+
 }
 
 /// <summary>
@@ -27,6 +28,7 @@ void UserRenderCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	
 	// 照準を更新する
 	UpdateAiming(player, timer);
+
 }
 
 /// <summary>
@@ -309,3 +311,4 @@ void UserRenderCommand::RenderAiming(const Player& player, DirectX::SpriteBatch*
 		m_aimingPos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, 0.8f), m_aimigRotation,
 		texture->GetCenter(), DirectX::SimpleMath::Vector2(0.25f, 0.25f));
 }
+

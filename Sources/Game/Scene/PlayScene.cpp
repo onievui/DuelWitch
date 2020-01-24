@@ -206,8 +206,11 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	// シーンの最初と終わりでフェードイン・フェードアウトする
 	m_fade->Render(spriteBatch);
 
-
 	spriteBatch->End();
+
+	// プレイヤー1の画面エフェクトを描画する
+	m_playerManager->RenderPlayer1Effect(spriteBatch);
+
 }
 
 /// <summary>

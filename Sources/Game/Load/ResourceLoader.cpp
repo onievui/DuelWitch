@@ -38,7 +38,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	// タイトルシーン
 	case ResourceLoaderID::TitleScene:
 		// テクスチャの読み込み
-		textureResourceManager->AddResource(TextureID::Title,   TextureResource(L"Protected/title1280.png"));
+		textureResourceManager->AddResource(TextureID::Title,   TextureResource(L"Protected/title_bg.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
 		textureResourceManager->AddResource(TextureID::Fade,    TextureResource(L"Protected/fade_texture1280.png"));
 		// サウンドの読み込み
@@ -96,6 +96,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike12.png");
 		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike13.png");
 		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike14.png");
+		textureResourceManager->AddResource(TextureID::BoostEffect,              TextureResource(L"Protected/boost_effect.png"));
 		// ポーズシーンで使うテクスチャも読みこんでおく
 		textureResourceManager->AddResource(TextureID::Fade,    TextureResource(L"Protected/fade_texture1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
@@ -108,6 +109,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		geometryShaderResourceManager->AddResource(GeometryShaderID::Billboard,    GeometryShaderResource(L"BillboardGS.cso"));
 		pixelShaderResourceManager->AddResource(PixelShaderID::Default,            PixelShaderResource(L"DefaultPS.cso"));
 		pixelShaderResourceManager->AddResource(PixelShaderID::ThunderStrikeMagic, PixelShaderResource(L"ThunderStrikePS.cso"));
+		pixelShaderResourceManager->AddResource(PixelShaderID::Boost,              PixelShaderResource(L"BoostPS.cso"));
 		// モデルの読み込み
 		modelResourceManager->AddResource(ModelID::Chara,   ModelResource(L"unity-chan.cmo", L"Protected"));
 		modelResourceManager->AddResource(ModelID::Chara,		L"toko.cmo", L"Protected");

@@ -13,7 +13,7 @@
 void AICastMagicCommand::Initialize(Player& player) {
 	player;
 	// 0Ç…Ç∑ÇÈÇ∆èoåªÇµÇΩíºå„Ç…î≠éÀÇµÇƒÇµÇ‹Ç§ÇΩÇﬂí≤êÆ
-	m_waitTime = 0.001f;
+	m_waitTime = 5.0f;
 }
 
 /// <summary>

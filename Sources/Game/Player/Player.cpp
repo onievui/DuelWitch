@@ -223,6 +223,17 @@ bool Player::IsDead() const {
 }
 
 /// <summary>
+/// プレイヤーがブースト移動中か取得する
+/// </summary>
+/// <returns>
+/// true : ブースト移動中
+/// false : ブースト移動していない
+/// </returns>
+bool Player::IsBoosting() const {
+	return m_status.isBoosting;
+}
+
+/// <summary>
 /// 魔法のダメージ倍率を取得する
 /// </summary>
 /// <param name="elementId">エレメントID</param>

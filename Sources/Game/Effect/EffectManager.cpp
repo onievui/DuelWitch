@@ -78,7 +78,7 @@ void EffectManager::Render(const DirectX::SimpleMath::Matrix& view, const Direct
 /// <param name="pos"></param>
 /// <param name="dir"></param>
 IEffectEmitter* EffectManager::CreateEffect(EffectID id, const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	std::vector<IEffectEmitter*>::iterator itr = LamdaUtils::FindIf()(m_effects, LamdaUtils::IsNull());
+	std::vector<IEffectEmitter*>::iterator itr = LamdaUtils::FindIf(m_effects, LamdaUtils::IsNull());
 	// ‹ó‚«‚ª‚ ‚éê‡‚É“o˜^‚·‚é
 	if (itr != m_effects.end()) {
 		*itr = m_effectFactory->Create(id, pos, dir);

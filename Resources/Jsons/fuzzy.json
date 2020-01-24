@@ -6,7 +6,7 @@
     "DistanceMax": 60.0,
     "HasElementNumMin": 0,
     "HasElementNumMax": 6,
-    "ElementDistanceMin": 3.0,
+    "ElementDistanceMin": 5.0,
     "ElementDistanceMax": 60.0
   }
 }

@@ -20,6 +20,12 @@ struct PS_INPUT
 	float2 Tex : TEXCOORD;
 };
 
+struct PS_INPUT_SPRITEBATCH
+{
+	float4 Color : COLOR;
+	float2 Tex : TEXCOORD;
+};
+
 struct PS_INPUT_NORMAL
 {
 	float4 Pos : SV_POSITION;

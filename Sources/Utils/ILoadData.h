@@ -2,6 +2,8 @@
 #ifndef ILOAD_DATA_DEFINED
 #define ILOAD_DATA_DEFINED
 
+#include <cctype>
+
 
 /// <summary>
 /// 読み込みデータインタフェースクラス
@@ -14,6 +16,7 @@ public:
 	virtual bool Reload() = 0;
 	// データを保存する
 	virtual bool Save() = 0;
+
 };
 
 #endif // !ILOAD_DATA_DEFINED

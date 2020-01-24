@@ -50,6 +50,8 @@ enum class TextureID {
 	Ice,
 	ThunderStrikeMagicEffect,
 
+	BoostEffect,
+
 	Num
 };
 
@@ -140,6 +142,7 @@ enum class GeometryShaderID {
 enum class PixelShaderID {
 	Default,
 	ThunderStrikeMagic,
+	Boost,
 	Num
 };
 

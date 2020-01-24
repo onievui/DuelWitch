@@ -18,7 +18,7 @@
   },
   "PlayerCharge": {
     "ParticleNum": 3,
-    "AppearPosOffset": [ 0, 0, 0 ],
+    "AppearPosOffset": [ 0, 0.25, -0.1 ],
     "LifeTime": 1.5,
     "MaxScale": 2.0,
     "MinScale": 0.0,
