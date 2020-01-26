@@ -329,7 +329,8 @@ void Player::InitializeStatus() {
 	const std::vector<int>& chara_id = ServiceLocater<ShareData>::Get()->GetSelectCharaID();
 	m_status.charaId = chara_id[static_cast<int>(m_id)];
 
-	const CharaStatusParameter::chara1_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCharaStatusParameter()->chara1Param;
+	const CharaStatusParameter::chara_param& parameter =
+		ServiceLocater<PlayParameterLoader>::Get()->GetCharaStatusParameter()->charaParams[m_status.charaId];
 
 	m_status.maxHp = m_status.hp = m_status.preHp = parameter.maxHp;
 	m_status.maxSp = m_status.sp = m_status.preSp = parameter.maxSp;

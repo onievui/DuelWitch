@@ -19,8 +19,8 @@ public:
 	bool Save() override;
 
 public:
-	// キャラクター1のパラメータ
-	struct chara1_param {
+	// キャラクターのパラメータ
+	struct chara_param {
 		float maxHp;                    // 最大HP
 		float maxSp;                    // 最大SP
 		float spRecoverySpeed;          // SP回復速度
@@ -35,7 +35,7 @@ public:
 		float freezeMagicPowerRate;     // 氷魔法の攻撃倍率
 		float thunderMagicPowerRate;	// 雷魔法の攻撃倍率
 	};
-	chara1_param chara1Param;
+	std::vector<chara_param> charaParams;
 
 };
 

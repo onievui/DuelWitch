@@ -17,20 +17,24 @@ bool CharaStatusParameter::Load() {
 	}
 
 	{
-		JsonWrapper::value chara1(root["Chara1"]);
-		chara1Param.maxHp                 = chara1["MaxHp"].GetNumF();
-		chara1Param.maxSp                 = chara1["MaxSp"].GetNumF();
-		chara1Param.spRecoverySpeed       = chara1["SpRecoverySpeed"].GetNumF();
-		chara1Param.normalMagicSpCost     = chara1["NormalMagicSpCost"].GetNumF();
-		chara1Param.boostSpeedRate        = chara1["BoostSpeedRate"].GetNumF();
-		chara1Param.boostSpCost           = chara1["BoostSpCost"].GetNumF();
-		chara1Param.rollSpCost            = chara1["RollSpCost"].GetNumF();
-		chara1Param.quickTurnSpCost       = chara1["QuickTurnSpCost"].GetNumF();
-		chara1Param.firstChargeTime       = chara1["FirstChargeTime"].GetNumF();
-		chara1Param.secoundChargeTime     = chara1["SecoundChargeTime"].GetNumF();
-		chara1Param.fireMagicPowerRate    = chara1["FireMagicPowerRate"].GetNumF();
-		chara1Param.freezeMagicPowerRate  = chara1["FreezeMagicPowerRate"].GetNumF();
-		chara1Param.thunderMagicPowerRate = chara1["ThunderMagicPowerRate"].GetNumF();
+		int size = root["_CharaNum"].GetNumI();
+		charaParams.resize(size);
+		JsonWrapper::value chara(root["Charas"]);
+		for (int i = 0; i < size; ++i) {
+			charaParams[i].maxHp                 = chara[i]["MaxHp"].GetNumF();
+			charaParams[i].maxSp                 = chara[i]["MaxSp"].GetNumF();
+			charaParams[i].spRecoverySpeed       = chara[i]["SpRecoverySpeed"].GetNumF();
+			charaParams[i].normalMagicSpCost     = chara[i]["NormalMagicSpCost"].GetNumF();
+			charaParams[i].boostSpeedRate        = chara[i]["BoostSpeedRate"].GetNumF();
+			charaParams[i].boostSpCost           = chara[i]["BoostSpCost"].GetNumF();
+			charaParams[i].rollSpCost            = chara[i]["RollSpCost"].GetNumF();
+			charaParams[i].quickTurnSpCost       = chara[i]["QuickTurnSpCost"].GetNumF();
+			charaParams[i].firstChargeTime       = chara[i]["FirstChargeTime"].GetNumF();
+			charaParams[i].secoundChargeTime     = chara[i]["SecoundChargeTime"].GetNumF();
+			charaParams[i].fireMagicPowerRate    = chara[i]["FireMagicPowerRate"].GetNumF();
+			charaParams[i].freezeMagicPowerRate  = chara[i]["FreezeMagicPowerRate"].GetNumF();
+			charaParams[i].thunderMagicPowerRate = chara[i]["ThunderMagicPowerRate"].GetNumF();
+		}
 	}
 
 	return true;
