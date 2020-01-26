@@ -28,6 +28,7 @@ public:
 		float boostSpeedRate;	        // ブースト移動時の速度倍率
 		float boostSpCost;              // ブースト移動の消費SP(秒)
 		float rollSpCost;               // ロール回避の消費SP
+		float quickTurnSpCost;          // クイックターンの消費SP
 		float firstChargeTime;          // 1段階チャージまでの時間
 		float secoundChargeTime;        // 2段階チャージまでの時間
 		float fireMagicPowerRate;       // 炎魔法の攻撃倍率

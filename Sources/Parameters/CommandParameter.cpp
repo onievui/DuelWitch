@@ -30,6 +30,8 @@ bool CommandParameter::Load() {
 		moveParam.rollAngle       = Math::Deg2Rad(move_command["RollAngle_Deg"].GetNumF());
 		moveParam.rollMoveLength  = move_command["RollMoveLength"].GetNumF();
 
+		moveParam.quickTurnTime  = move_command["QuickTurnTime"].GetNumF();
+
 		{
 			JsonWrapper::value user(move_command["User"]);
 			moveParam.userParam.cameraRotXLimit = Math::Deg2Rad(user["CameraRotXLimit_Deg"].GetNumF());

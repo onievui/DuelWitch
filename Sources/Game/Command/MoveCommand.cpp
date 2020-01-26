@@ -20,6 +20,7 @@
 MoveCommand::MoveCommand()
 	: m_state(MoveState::Move)
 	, m_rollInfo()
+	, m_turnInfo()
 	, m_cameraTarget()
 	, m_pTargetCamera(nullptr)
 	, m_boostTime()
@@ -111,6 +112,10 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	// ロール回避
 	case MoveCommand::MoveState::Roll:
 		ExcuteRoll(player, timer);
+		break;
+	// クイックターン
+	case MoveCommand::MoveState::Turn:
+		ExecuteTurn(player, timer);
 		break;
 	default:
 		ErrorMessage(L"移動コマンドの状態が不正です");
@@ -233,7 +238,8 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 
 	// ロール回避の入力判定を行う
 	RollInputCheck(player, timer);
-
+	// クイックターンの入力判定を行う
+	TurnInputCheck(player, timer);
 }
 
 /// <summary>
@@ -317,6 +323,67 @@ void MoveCommand::ExcuteRoll(Player& player, const DX::StepTimer& timer) {
 }
 
 /// <summary>
+/// クイックターンの処理を行う
+/// </summary>
+/// <param name="player">プレイヤー</param>
+/// <param name="timer">ステップタイマー</param>
+void MoveCommand::ExecuteTurn(Player& player, const DX::StepTimer& timer) {
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
+
+	const float move_speed = parameter.moveSpeed;
+	const float quick_turn_time = parameter.quickTurnTime;
+
+	PlayerStatus& ref_status = GetStatus(player);
+	Transform& ref_transform = GetTransform(player);
+	DirectX::SimpleMath::Vector3 pos = ref_transform.GetLocalPosition();
+
+	m_turnInfo.turningTime += elapsed_time;
+	// 移動量
+	DirectX::SimpleMath::Vector3 turn_move(0, 0, 0);
+	// 移動速度倍率
+	float move_speed_rate = 1.0f;
+
+	// 移動後の進行度
+	float t = m_turnInfo.turningTime / quick_turn_time;
+	t = Math::Clamp(t, 0.0f, 1.0f);
+	t = t * (2 - t);
+
+	// 回転させる
+	m_euler.x = m_turnInfo.preRotX * (t*-2 + 1);
+	m_euler.y = m_turnInfo.preRotY + Math::PI*t*m_turnInfo.turnDirection;
+	// 移動速度倍率を求める
+	move_speed_rate = (t < 0.5f ? 1-(t * 2)*(2 - t * 2) : std::powf((t - 0.5f)*2, 2));
+	
+	// 回転量と移動量を計算する
+	DirectX::SimpleMath::Quaternion rotation = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(m_euler.y, m_euler.x, m_euler.z);
+	DirectX::SimpleMath::Vector3 move = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, rotation);
+	pos += move * move_speed*move_speed_rate*elapsed_time;
+
+	// カメラのズームを制御する
+	ref_status.isBoosting = false;
+	Zoom(GetCamera(player), timer, false);
+
+	// 回転と移動を反映する
+	ref_transform.SetPosition(pos);
+	ref_transform.SetRotation(rotation);
+	GetWorld(player) = ref_transform.GetMatrix();
+
+	// カメラの追従先を更新する
+	m_cameraTarget.GetTransformRef().SetPosition(pos);
+	m_cameraTarget.GetTransformRef().SetRotation(rotation);
+	m_cameraTarget.Update(timer);
+
+	// クイックターンが終わったら元の状態に戻す
+	if (m_turnInfo.turningTime > quick_turn_time) {
+		// 入力をリセットする
+		m_turnInfo.graceTime = 0.0f;
+
+		m_state = MoveState::Move;
+	}
+}
+
+/// <summary>
 /// ロール回避の入力判定を行う
 /// </summary>
 /// <param name="player">プレイヤー</param>
@@ -338,7 +405,8 @@ void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 	// ロール回避の入力判定を行う
 	const float grace_time = 0.2f;
 	// 左にロールする
-	if (key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::A) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Left)) {
+	const bool press_left = (key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::A) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Left));
+	if (press_left) {
 		// 素早く2回入力した時に判定する
 		if (m_rollInfo.leftGraceTime > 0.0f) {
 			m_state = MoveState::Roll;
@@ -354,7 +422,8 @@ void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 	}
 	
 	// 右にロールする
-	if (key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::D) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Right)) {
+	const bool press_right = (key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::D) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Right));
+	if (press_right) {
 		// 素早く2回入力した時に判定する
 		if (m_rollInfo.rightGraceTime > 0.0f) {
 			m_state = MoveState::Roll;
@@ -369,6 +438,52 @@ void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 		m_rollInfo.rightGraceTime = grace_time;
 	}
 	
+}
+
+/// <summary>
+/// クイックターンの入力判定を行う
+/// </summary>
+/// <param name="player">プレイヤー</param>
+/// <param name="timer">ステップタイマー</param>
+void MoveCommand::TurnInputCheck(Player& player, const DX::StepTimer& timer) {
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	DirectX::Keyboard::KeyboardStateTracker* key_tracker = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get();
+	PlayerStatus& ref_status = GetStatus(player);
+
+	// タイマーを進める
+	m_turnInfo.graceTime -= elapsed_time;
+
+	// SPが足りない時は判定しない
+	if (ref_status.sp < ref_status.quickTurnSpCost) {
+		return;
+	}
+
+	// クイックターンの入力判定を行う
+	const float grace_time = 0.2f;
+	const bool press_down = (key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::S) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Down));
+	const bool down_left = (key_tracker->GetLastState().A || key_tracker->GetLastState().Left);
+	const bool down_right = (key_tracker->GetLastState().D || key_tracker->GetLastState().Right);
+	if (press_down) {
+		// 素早く2回入力した時に判定する
+		if (m_turnInfo.graceTime > 0.0f) {
+			m_state = MoveState::Turn;
+			m_turnInfo.turningTime = 0.0f;
+			// 回転しているならその方向へ回る
+			if (!down_left && down_right) {
+				m_turnInfo.turnDirection = -1;
+			}
+			else {
+				m_turnInfo.turnDirection = 1;
+			}
+			m_turnInfo.preRotX = m_euler.x;
+			m_turnInfo.preRotY = m_euler.y;
+			// SPを消費する
+			ref_status.sp -= ref_status.quickTurnSpCost;
+			// 効果音を鳴らす
+			ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Rolling);
+		}
+		m_turnInfo.graceTime = grace_time;
+	}
 }
 
 /// <summary>

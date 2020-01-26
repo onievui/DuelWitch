@@ -33,6 +33,8 @@ public:
 		float rollAngle;
 		float rollMoveLength;
 
+		float quickTurnTime;
+
 		struct user_param {
 			float cameraRotXLimit;
 			float cameraRotYLimit;

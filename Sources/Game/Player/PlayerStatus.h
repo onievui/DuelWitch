@@ -31,6 +31,8 @@ struct PlayerStatus {
 	float                             boostSpCost;
 	// ロール回避消費SP
 	float                             rollSpCost;
+	// クイックターン消費SP
+	float                             quickTurnSpCost;
 	// 1段階目のチャージタイム
 	float                             firstChargeTime;
 	// 2段階目のチャージタイム

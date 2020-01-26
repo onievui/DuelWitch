@@ -339,6 +339,7 @@ void Player::InitializeStatus() {
 	m_status.boostSpeedRate        = parameter.boostSpeedRate;
 	m_status.boostSpCost           = parameter.boostSpCost;
 	m_status.rollSpCost            = parameter.rollSpCost;
+	m_status.quickTurnSpCost       = parameter.quickTurnSpCost;
 	m_status.firstChargeTime       = parameter.firstChargeTime;
 	m_status.secoundChargeTime     = parameter.secoundChargeTime;
 	m_status.fireMagicPowerRate    = parameter.fireMagicPowerRate;
