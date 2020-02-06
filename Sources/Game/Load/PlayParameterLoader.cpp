@@ -9,6 +9,7 @@
 #include <Parameters\MagicParameter.h>
 #include <Parameters\EffectParameter.h>
 #include <Parameters\FuzzyParameter.h>
+#include <Parameters\OptionParameter.h>
 
 
 /// <summary>
@@ -30,6 +31,7 @@ public:
 	LoadDataHolder<MagicParameter,       LoadDataID::PlayScene> magicParameter;
 	LoadDataHolder<EffectParameter,      LoadDataID::PlayScene> effectParameter;
 	LoadDataHolder<FuzzyParameter,       LoadDataID::PlayScene> fuzzyParameter;
+	LoadDataHolder<OptionParameter,      LoadDataID::PlayScene> optionParameter;
 
 };
 
@@ -45,6 +47,7 @@ PlayParameterLoader::Impl::Impl() {
 	manager->Register(&magicParameter); 
 	manager->Register(&effectParameter);
 	manager->Register(&fuzzyParameter);
+	manager->Register(&optionParameter);
 }
 
 /// <summary>
@@ -58,6 +61,7 @@ PlayParameterLoader::Impl::~Impl(){
 	manager->Unregister(&elementParameter);
 	manager->Unregister(&effectParameter);
 	manager->Unregister(&fuzzyParameter);
+	manager->Unregister(&optionParameter);
 }
 
 
@@ -165,5 +169,15 @@ const EffectParameter* PlayParameterLoader::GetEffectParameter() {
 /// </returns>
 const FuzzyParameter* PlayParameterLoader::GetFuzzyParameter() {
 	return m_impl->fuzzyParameter.Get();
+}
+
+/// <summary>
+/// パラメータを取得する
+/// </summary>
+/// <returns>
+/// パラメータへのポインタ
+/// </returns>
+const OptionParameter* PlayParameterLoader::GetOptionParameter() {
+	return m_impl->optionParameter.Get();
 }
 

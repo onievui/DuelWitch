@@ -83,14 +83,14 @@
     <Filter Include="Game\Magic\Magic">
       <UniqueIdentifier>{389a2334-26dc-4e3b-8653-11c1ae8e784f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Player">
-      <UniqueIdentifier>{4ab63e9c-e51a-4ba1-922b-d905daed3fd8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Object">
       <UniqueIdentifier>{4bb48832-8494-452a-a067-e3b794838c8c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Scene\ShareData">
       <UniqueIdentifier>{156c1b32-911c-4610-9f5f-8a9f3e1910db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Player">
+      <UniqueIdentifier>{4ab63e9c-e51a-4ba1-922b-d905daed3fd8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -392,6 +392,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\Effect\DeathEffectEmitter.cpp">
       <Filter>Game\Effect\Emmiter</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Parameters\OptionParameter.cpp">
+      <Filter>Game\Parameters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -806,6 +809,9 @@
     <ClInclude Include="Sources\Game\Effect\DeathEffectEmitter.h">
       <Filter>Game\Effect\Emmiter</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Parameters\OptionParameter.h">
+      <Filter>Game\Parameters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">
@@ -852,6 +858,9 @@
     <None Include="ClassDiagram.cd" />
     <None Include="Assets\Shaders\Default.hlsli">
       <Filter>Assets\Shader</Filter>
+    </None>
+    <None Include="Resources\Jsons\play_option.json">
+      <Filter>Assets\Jsons</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,7 @@
 #include <Game\Field\GridFloor.h>
 #include <Game\Collision\CollisionManager.h>
 #include <Game\UI\Fade.h>
+#include <Parameters\OptionParameter.h>
 
 
 /// <summary>
@@ -60,6 +61,10 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_parameterLoader = std::make_unique<PlayParameterLoader>();
 	m_parameterLoader->Load();
 	ServiceLocater<PlayParameterLoader>::Register(m_parameterLoader.get());
+	
+	// マウスの感度を設定する
+	ServiceLocater<MouseWrapper>::Get()->SetSensivity(m_parameterLoader->GetOptionParameter()->mouseParam.sensivity);
+
 
 	// エフェクトマネージャを生成する
 	m_effectManager = std::make_unique<EffectManager>();
@@ -125,6 +130,8 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	// F2キーでパラメータを再読み込みする
 	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::F2)) {
 		m_parameterLoader->Reload();
+		// マウスの感度を設定する
+		ServiceLocater<MouseWrapper>::Get()->SetSensivity(m_parameterLoader->GetOptionParameter()->mouseParam.sensivity);
 	}
 
 	// 勝敗を判定する
