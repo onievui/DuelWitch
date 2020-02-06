@@ -29,6 +29,10 @@ void AIRenderCommand::Initialize(Player& player) {
 
 	//プリミティブバッチの作成
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>>(context);
+
+	// 赤HPの初期化
+	m_redHp = m_preHp = GetStatus(player).hp;
+	m_redHpTime = 0.0f;
 }
 
 /// <summary>
@@ -37,7 +41,8 @@ void AIRenderCommand::Initialize(Player& player) {
 /// <param name="player">プレイヤー</param>
 /// <param name="timer">ステップタイマー</param>
 void AIRenderCommand::Execute(Player& player, const DX::StepTimer& timer) {
-	player, timer;
+	// 赤HPを更新する
+	UpdateRedHpBar(player, timer);
 }
 
 /// <summary>
@@ -90,15 +95,18 @@ void AIRenderCommand::RenderHpBar(const Player& player, DirectX::SpriteBatch* sp
 	// 画像の矩形を作成する
 	DirectX::SimpleMath::Vector2 size = texture->GetSize();
 	const PlayerStatus& status = GetStatus(player);
-	RECT rect;
-	rect.left = 0; rect.top = 0;
-	// HPの割合に応じて描画範囲を決める
-	rect.right = static_cast<LONG>(size.x*status.hp / status.maxHp);
+	RECT rect{ 0,0,0,0 };
+	// 赤HPの割合に応じて描画範囲を決める
+	rect.right = static_cast<LONG>(size.x*m_redHp / status.maxHp);
 	rect.bottom = static_cast<LONG>(size.y);
 
 	// 赤の部分を描画する
 	spriteBatch->Draw(texture->GetResource(1).Get(), screen_pos, &rect,
 		DirectX::Colors::White, 0, texture->GetCenter(), scale);
+
+	// HPの割合に応じて描画範囲を決める
+	rect.right = static_cast<LONG>(size.x*status.hp / status.maxHp);
+
 	// 緑の部分を描画する
 	spriteBatch->Draw(texture->GetResource(0).Get(), screen_pos, &rect,
 		DirectX::Colors::White, 0, texture->GetCenter(), scale);

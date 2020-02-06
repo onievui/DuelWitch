@@ -14,6 +14,9 @@
 void UserRenderCommand::Initialize(Player& player) {
 	m_targetIconInfo.resize(GetOtherPlayers(player).size());
 
+	// ÔHP‚Ì‰Šú‰»
+	m_redHp = m_preHp = GetStatus(player).hp;
+	m_redHpTime = 0.0f;
 }
 
 /// <summary>
@@ -29,6 +32,8 @@ void UserRenderCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	// Æ€‚ğXV‚·‚é
 	UpdateAiming(player, timer);
 
+	// ÔHP‚ğXV‚·‚é
+	UpdateRedHpBar(player, timer);
 }
 
 /// <summary>
@@ -252,15 +257,18 @@ void UserRenderCommand::RenderHpBar(const Player& player, DirectX::SpriteBatch* 
 	// ‰æ‘œ‚Ì‹éŒ`‚ğì¬‚·‚é
 	DirectX::SimpleMath::Vector2 size = texture->GetSize();
 	const PlayerStatus& status = GetStatus(player);
-	RECT rect;
-	rect.left = 0; rect.top = 0;
-	// HP‚ÌŠ„‡‚É‰‚¶‚Ä•`‰æ”ÍˆÍ‚ğŒˆ‚ß‚é
-	rect.right = static_cast<LONG>(size.x*status.hp / status.maxHp);
+	RECT rect{ 0,0,0,0 };
+	// ÔHP‚ÌŠ„‡‚É‰‚¶‚Ä•`‰æ”ÍˆÍ‚ğŒˆ‚ß‚é
+	rect.right = static_cast<LONG>(size.x*m_redHp / status.maxHp);
 	rect.bottom = static_cast<LONG>(size.y);
 
 	// Ô‚Ì•”•ª‚ğ•`‰æ‚·‚é
 	spriteBatch->Draw(texture->GetResource(1).Get(), pos, &rect,
 		DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, scale);
+
+	// HP‚ÌŠ„‡‚É‰‚¶‚Ä•`‰æ”ÍˆÍ‚ğŒˆ‚ß‚é
+	rect.right = static_cast<LONG>(size.x*status.hp / status.maxHp);
+
 	// —Î‚Ì•”•ª‚ğ•`‰æ‚·‚é
 	spriteBatch->Draw(texture->GetResource(0).Get(), pos, &rect,
 		DirectX::Colors::White, 0, DirectX::SimpleMath::Vector2::Zero, scale);
