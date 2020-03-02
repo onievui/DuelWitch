@@ -28,6 +28,8 @@ public:
 	void SetSensivity(float sensivity);
 	// マウス感度を取得する
 	float GetSensivity() const;
+	// マウスの可視性を設定する
+	void SetVisible(bool visible);
 	// マウスの座標を取得する
 	const DirectX::SimpleMath::Vector2& GetPos() const;
 	// マウスの座標を設定する
@@ -36,12 +38,16 @@ public:
 	const DirectX::SimpleMath::Vector2& GetMoved() const;
 	// マウスの座標モードを設定する
 	void SetMode(DirectX::Mouse::Mode mode);
+	// マウスをウインドウ内に収める
+	void ClipToWindow(bool enable);
 
 private:
 	// マウス本体
 	std::unique_ptr<DirectX::Mouse>                     m_mouse;
 	// マウストラッカー
 	std::unique_ptr<DirectX::Mouse::ButtonStateTracker> m_tracker;
+	// ウインドウハンドル
+	HWND                                                m_window;
 	// マウス感度
 	float                                               m_sensivity;
 	// マウス座標

@@ -10,6 +10,7 @@ enum class SceneID {
 	Logo,
 	Title,
 	CharaSelect,
+	CharaManual,
 	Play,
 	Pause,
 	WinResult,

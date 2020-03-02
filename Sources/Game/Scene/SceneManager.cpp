@@ -4,6 +4,7 @@
 #include "LogoScene.h"
 #include "TitleScene.h"
 #include "CharaSelectScene.h"
+#include "CharaManualScene.h"
 #include "PlayScene.h"
 #include "PauseScene.h"
 #include "WinResultScene.h"
@@ -44,6 +45,7 @@ void SceneManager::Initialize() {
 	m_sceneCreateFunc.emplace(SceneID::Logo,        MakeSceneCreateFunc<LogoScene>());
 	m_sceneCreateFunc.emplace(SceneID::Title,       MakeSceneCreateFunc<TitleScene>());
 	m_sceneCreateFunc.emplace(SceneID::CharaSelect, MakeSceneCreateFunc<CharaSelectScene>());
+	m_sceneCreateFunc.emplace(SceneID::CharaManual, MakeSceneCreateFunc<CharaManualScene>());
 	m_sceneCreateFunc.emplace(SceneID::Play,        MakeSceneCreateFunc<PlayScene>());
 	m_sceneCreateFunc.emplace(SceneID::Pause,       MakeSceneCreateFunc<PauseScene>());
 	m_sceneCreateFunc.emplace(SceneID::WinResult,   MakeSceneCreateFunc<WinResultScene>());

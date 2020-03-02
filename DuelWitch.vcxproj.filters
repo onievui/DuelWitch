@@ -396,6 +396,9 @@
     <ClCompile Include="Sources\Parameters\OptionParameter.cpp">
       <Filter>Game\Parameters</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\Scene\CharaManualScene.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -811,6 +814,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Parameters\OptionParameter.h">
       <Filter>Game\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Scene\CharaManualScene.h">
+      <Filter>Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

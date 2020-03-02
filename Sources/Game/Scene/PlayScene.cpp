@@ -48,7 +48,11 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	DirectX11* directX = ServiceLocater<DirectX11>::Get();
 
 	// マウスを相対モードに変更する
-	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
+	//ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
+	// マウスを非表示にする
+	ServiceLocater<MouseWrapper>::Get()->SetVisible(false);
+	// マウスをウインドウ内に収める
+	ServiceLocater<MouseWrapper>::Get()->ClipToWindow(true);
 	// カーソルを画面の中心に移動させる
 	ServiceLocater<MouseWrapper>::Get()->SetPos(DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.5f));
 
@@ -156,6 +160,10 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	else if(m_fade->IsFinished()) {
 		// フェードアウトが完了したらシーン遷移する
 		m_pSceneRequest->RequestScene(m_nextSceneID, RequestSceneType::StackScene);
+		// マウスを表示する
+		ServiceLocater<MouseWrapper>::Get()->SetVisible(true);
+		// マウスをウインドウ内に移動できるようにする
+		ServiceLocater<MouseWrapper>::Get()->ClipToWindow(false);
 	}
 
 	// プレイヤーマネージャを更新する
@@ -224,8 +232,12 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 /// プレイシーンを終了する
 /// </summary>
 void PlayScene::Finalize() {
-	// マウスを絶対モードに変更する
-	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_ABSOLUTE);
+	//// マウスを絶対モードに変更する
+	//ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_ABSOLUTE);
+	// マウスを表示する
+	ServiceLocater<MouseWrapper>::Get()->SetVisible(true);
+	// マウスをウインドウ内に移動できるようにする
+	ServiceLocater<MouseWrapper>::Get()->ClipToWindow(false);
 	// リソースを解放する
 	ResourceLoader::Release(ResourceLoaderID::PlayScene);
 	// パラメータを開放する

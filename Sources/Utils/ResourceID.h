@@ -27,6 +27,8 @@ enum class TextureID {
 	Title,
 	UIFrame,
 	CharaSelectBackGround,
+	CharaManual,
+	CharaManualText,
 	CharaPortrait,
 	CharaPortrait2,
 	CharaSelectMarker,

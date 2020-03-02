@@ -7,6 +7,7 @@
 #include <Utils\UIObserver.h>
 #include <Utils\UISubject.h>
 #include <Utils\RandMt.h>
+#include <Utils\MouseWrapper.h>
 #include "ISceneRequest.h"
 #include <Game\Load\ResourceLoader.h>
 #include <Game\Scene\ShareData\ShareData.h>
@@ -109,6 +110,13 @@ void CharaSelectScene::UpdateSelectPlayer(const DX::StepTimer& timer) {
 	int rand;
 	// 次に進んだかどうか
 	bool select_next = false;
+
+	// 右クリックでキャラマニュアルを呼び出す
+	const bool right_click = (ServiceLocater<MouseWrapper>::Get()->GetTracker()->rightButton == DirectX::Mouse::ButtonStateTracker::PRESSED);
+	if (right_click) {
+		m_pSceneRequest->RequestScene(SceneID::CharaManual, RequestSceneType::StackScene);
+		return;
+	}
 
 	// イベントを取得しているかどうか確認する
 	if (m_uiObserver->HasNewEvent()) {
@@ -250,6 +258,13 @@ void CharaSelectScene::Render(DirectX::SpriteBatch* spriteBatch) {
 		DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.5f),
 		nullptr, DirectX::Colors::White, 0,
 		texture->GetCenter(), DirectX::SimpleMath::Vector2(1.0f, 1.0f));
+
+	// マニュアルテキストを描画する
+	texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaManualText);
+	spriteBatch->Draw(texture->GetResource().Get(),
+		DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.95f),
+		nullptr, DirectX::Colors::White, 0,
+		texture->GetCenter(), DirectX::SimpleMath::Vector2(0.6f, 0.6f));
 
 	// UIを描画する
 	// 戻る・進むボタン

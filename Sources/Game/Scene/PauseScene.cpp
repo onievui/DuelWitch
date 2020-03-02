@@ -37,7 +37,10 @@ void PauseScene::Initialize(ISceneRequest* pSceneRequest) {
 	InitializeUI();
 
 	// マウスカーソルを表示する
-	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_ABSOLUTE);
+	//ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_ABSOLUTE);
+	ServiceLocater<MouseWrapper>::Get()->SetVisible(true);
+	// マウスをウインドウ内に移動できるようにする
+	ServiceLocater<MouseWrapper>::Get()->ClipToWindow(false);
 
 	// フェードを生成する
 	m_fadeBack = std::make_unique<Fade>();
@@ -247,6 +250,9 @@ void PauseScene::SelectResume() {
 void PauseScene::Resume() {
 	m_pSceneRequest->PopScene();
 	// マウスカーソルを非表示に戻す
-	ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
+	//ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
+	ServiceLocater<MouseWrapper>::Get()->SetVisible(false);
+	// マウスをウインドウ内に収める
+	ServiceLocater<MouseWrapper>::Get()->ClipToWindow(true);
 }
 

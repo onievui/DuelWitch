@@ -9,7 +9,8 @@
 /// </summary>
 /// <param name="hWnd">ウインドウハンドル</param>
 MouseWrapper::MouseWrapper(HWND hWnd)
-	: m_sensivity(1.0f)
+	: m_window(hWnd)
+	, m_sensivity(1.0f)
 	, m_pos()
 	, m_moved()
 	, m_wasChangedToAbsolute(false)
@@ -109,6 +110,14 @@ float MouseWrapper::GetSensivity() const {
 }
 
 /// <summary>
+/// マウスの可視性を設定する
+/// </summary>
+/// <param name="visible">true : 表示する false : 表示しない</param>
+void MouseWrapper::SetVisible(bool visible) {
+	m_mouse->SetVisible(visible);
+}
+
+/// <summary>
 /// マウスの座標を取得する
 /// </summary>
 /// <returns>
@@ -158,4 +167,41 @@ void MouseWrapper::SetMode(DirectX::Mouse::Mode mode) {
 	}
 	m_mouse->SetMode(mode);
 	m_mode = mode;
+}
+
+/// <summary>
+/// マウスをウインドウ内に収める
+/// </summary>
+/// <param name="enable">true : 有効化 false : 無効化</param>
+void MouseWrapper::ClipToWindow(bool enable) {
+	// 無効化の場合は解除する
+	if (!enable) {
+		ClipCursor(NULL);
+		return;
+	}
+
+	// クライアント領域を取得する
+	RECT rect;
+	GetClientRect(m_window, &rect);
+
+	POINT ul;
+	ul.x = rect.left;
+	ul.y = rect.top;
+
+	POINT lr;
+	lr.x = rect.right;
+	lr.y = rect.bottom;
+
+	// 絶対位置に変換する
+	MapWindowPoints(m_window, nullptr, &ul, 1);
+	MapWindowPoints(m_window, nullptr, &lr, 1);
+
+	rect.left = ul.x;
+	rect.top = ul.y;
+
+	rect.right = lr.x;
+	rect.bottom = lr.y;
+
+	// 範囲内に収める
+	ClipCursor(&rect);
 }

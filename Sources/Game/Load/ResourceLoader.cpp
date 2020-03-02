@@ -50,6 +50,8 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	// キャラセレクトシーン
 	case ResourceLoaderID::CharaSelectScene:
 		// テクスチャの読み込み
+		textureResourceManager->AddResource(TextureID::CharaManual,           TextureResource(L"Protected/chara_manual.png"));
+		textureResourceManager->AddResource(TextureID::CharaManualText,       TextureResource(L"Protected/chara_manual_text.png"));
 		textureResourceManager->AddResource(TextureID::CharaSelectBackGround, TextureResource(L"Protected/chara_select1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame,               TextureResource(L"Protected/title_ui_frame.png"));
 		textureResourceManager->AddResource(TextureID::CharaPortrait,         TextureResource(L"Protected/portrait1.png"));
@@ -66,6 +68,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		soundResourceManager->AddResource(SoundID::Cursor,   SoundResource(L"Protected/cursor.wav", audioEngine));
 		soundResourceManager->AddResource(SoundID::Decision, SoundResource(L"Protected/decision.wav", audioEngine));
 		soundResourceManager->AddResource(SoundID::Ready,    SoundResource(L"Protected/ready.wav", audioEngine));
+		soundResourceManager->AddResource(SoundID::Pause,    SoundResource(L"Protected/pause.wav", audioEngine));
 		// BGMの読み込み
 		bgmResourceManager->AddResource(BgmID::CharaSelect, BgmResource(L"Protected/chara_select.wav", audioEngine));
 		break;
