@@ -2,13 +2,13 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
-#include <Utils\MouseWrapper.h>
+#include <Utils\InputManager.h>
 #include <Utils\MathUtils.h>
 #include <Utils\UIObserver.h>
 #include <Utils\AudioManager.h>
 #include "ISceneRequest.h"
 #include <Game\Load\ResourceLoader.h>
-#include <Game\UI\SoundScaleUpUI.h>
+#include <Game\UI\MenuUI.h>
 #include <Game\UI\Fade.h>
 
 
@@ -66,10 +66,9 @@ void TitleScene::Update(const DX::StepTimer& timer) {
 		ExitGame();
 	}
 
-	// スペースキーを押すか左クリックした場合
-	const bool press_space = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space);
-	const bool click_left = (ServiceLocater<MouseWrapper>::Get()->GetTracker()->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED);
-	if (press_space || click_left) {
+	// ボタンを押した場合
+	const bool press_button = ServiceLocater<InputManager>::Get()->IsPressed(InputID::Desicion);
+	if (press_button) {
 		// タイトルが表示されていなければ、タイマーを進めて表示させる
 		if (m_fadeScreenStep < 3) {
 			m_fadeScreenStep = 2;
@@ -78,46 +77,14 @@ void TitleScene::Update(const DX::StepTimer& timer) {
 	}
 
 	// UIのアルファ値を更新する
-	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->SetAlpha(m_fadeUI->GetAlpha());
 	}
 
 	// 未選択でフェードが完了していたらUIを更新する
 	const bool ui_fade_end = (m_fadeUIStep == 2);
 	if (!m_wasSelected && ui_fade_end) {
-		for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
-			(*itr)->Update(timer);
-		}
-
-		// イベントを取得しているかどうか確認する
-		if (m_uiObserver->HasNewEvent()) {
-			UIEventID event_id = m_uiObserver->GetEventID();
-			// イベントに応じてシーンを切り替える
-			switch (event_id) {
-			case UIEventID::Tutorial:
-				ErrorMessage(L"未実装");
-				break;
-			case UIEventID::Play:
-				// キャラセレクトシーンに進む
-				m_nextSceneID = SceneID::CharaSelect;
-				// フェードアウト後にシーン遷移する
-				m_fadeScreen->Start();
-				m_wasSelected = true;
-				// BGMをフェードアウトさせる
-				ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Title, 0, 0.9f, 1.0f, 0.0f);
-				break;
-			case UIEventID::Option:
-				ErrorMessage(L"未実装");
-				break;
-				// ゲームを終了する
-			case UIEventID::Exit:
-				ExitGame();
-				break;
-			default:
-				ErrorMessage(L"不正なUIイベントを取得しました");
-				break;
-			}
-		}
+		UpdateUI(timer);
 	}
 
 	// 画面用フェードを更新する
@@ -162,6 +129,8 @@ void TitleScene::Update(const DX::StepTimer& timer) {
 			break;
 		case 1:
 			m_fadeUI->Stop();
+			// 一つ目のUIを選択済みにする
+			m_menuUIs[m_selectedUI]->Select();
 		default:
 			break;
 		}
@@ -187,7 +156,7 @@ void TitleScene::Render(DirectX::SpriteBatch* spriteBatch) {
 
 	// UIを描画する
 	if (m_fadeUI->GetAlpha() > 0.0f) {
-		for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Render(spriteBatch);
 		}
 	}
@@ -203,7 +172,7 @@ void TitleScene::Render(DirectX::SpriteBatch* spriteBatch) {
 /// </summary>
 void TitleScene::Finalize() {
 	// UIからオブザーバをデタッチする
-	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->Detach(m_uiObserver.get());
 	}
 	ResourceLoader::Release(ResourceLoaderID::TitleScene);
@@ -217,7 +186,7 @@ void TitleScene::InitializeUI() {
 
 	const DirectX11* directX = ServiceLocater<DirectX11>::Get();
 	DirectX::SimpleMath::Vector2 screen_size(static_cast<float>(directX->GetWidth()), static_cast<float>(directX->GetHeight()));
-	
+
 	// UIの生成
 	// チュートリアル
 	//{
@@ -228,7 +197,7 @@ void TitleScene::InitializeUI() {
 	//}
 	// プレイ
 	{
-		std::unique_ptr<SoundScaleUpUI> play = std::make_unique<SoundScaleUpUI>(
+		std::unique_ptr<MenuUI> play = std::make_unique<MenuUI>(
 			UIEventID::Play, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.55f));
 		play->SetText(L"Play");
 		m_menuUIs.emplace_back(std::move(play));
@@ -242,7 +211,7 @@ void TitleScene::InitializeUI() {
 	//}
 	// 終了
 	{
-		std::unique_ptr<SoundScaleUpUI> exit = std::make_unique<SoundScaleUpUI>(
+		std::unique_ptr<MenuUI> exit = std::make_unique<MenuUI>(
 			UIEventID::Exit, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.85f));
 		exit->SetText(L"Exit");
 		m_menuUIs.emplace_back(std::move(exit));
@@ -251,13 +220,71 @@ void TitleScene::InitializeUI() {
 	// 共通の処理
 	const FontResource* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default);
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::UIFrame);
-	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->SetFont(font);
 		(*itr)->SetTextColor(DirectX::SimpleMath::Color(DirectX::Colors::Black));
 		(*itr)->SetTexture(texture);
 		(*itr)->FitTextureSize();
 		// UIにオブザーバをアタッチする
 		(*itr)->Attach(m_uiObserver.get());
+	}
+
+	// 選択中のUIのインデックスを初期化する
+	m_selectedUI = 0;
+}
+
+/// <summary>
+/// UIを更新する
+/// </summary>
+/// <param name="timer">ステップタイマー</param>
+void TitleScene::UpdateUI(const DX::StepTimer& timer) {
+	for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		(*itr)->Update(timer);
+	}
+
+	// パッド接続時にカーソル移動を行う
+	const InputManager* input_manager = ServiceLocater<InputManager>::Get();
+	if (input_manager->IsPadConnected()) {
+		if (input_manager->IsPressed(InputID::Up)) {
+			m_menuUIs[m_selectedUI]->Deselect();
+			m_selectedUI = (m_selectedUI + m_menuUIs.size() - 1) % m_menuUIs.size();
+			m_menuUIs[m_selectedUI]->Select();
+		}
+		else if (input_manager->IsPressed(InputID::Down)) {
+			m_menuUIs[m_selectedUI]->Deselect();
+			m_selectedUI = (m_selectedUI + 1) % m_menuUIs.size();
+			m_menuUIs[m_selectedUI]->Select();
+		}
+	}
+
+	// イベントを取得しているかどうか確認する
+	if (m_uiObserver->HasNewEvent()) {
+		UIEventID event_id = m_uiObserver->GetEventID();
+		// イベントに応じてシーンを切り替える
+		switch (event_id) {
+		case UIEventID::Tutorial:
+			ErrorMessage(L"未実装");
+			break;
+		case UIEventID::Play:
+			// キャラセレクトシーンに進む
+			m_nextSceneID = SceneID::CharaSelect;
+			// フェードアウト後にシーン遷移する
+			m_fadeScreen->Start();
+			m_wasSelected = true;
+			// BGMをフェードアウトさせる
+			ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Title, 0, 0.9f, 1.0f, 0.0f);
+			break;
+		case UIEventID::Option:
+			ErrorMessage(L"未実装");
+			break;
+			// ゲームを終了する
+		case UIEventID::Exit:
+			ExitGame();
+			break;
+		default:
+			ErrorMessage(L"不正なUIイベントを取得しました");
+			break;
+		}
 	}
 }
 

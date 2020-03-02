@@ -13,7 +13,7 @@
 #include <Game\Scene\ShareData\ShareData.h>
 #include <Game\UI\CharaIcon.h>
 #include <Game\UI\CharaSelectMarker.h>
-#include <Game\UI\SoundScaleUpUI.h>
+#include <Game\UI\MenuUI.h>
 #include <Game\UI\Fade.h>
 
 
@@ -76,7 +76,7 @@ void CharaSelectScene::Update(const DX::StepTimer& timer) {
 	// UIを更新する
 	if (m_state != CharaSelectScene::CharaSelectState::FadeOut) {
 		// 戻る・進むボタン
-		for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Update(timer);
 		}
 		// キャラアイコン
@@ -268,7 +268,7 @@ void CharaSelectScene::Render(DirectX::SpriteBatch* spriteBatch) {
 
 	// UIを描画する
 	// 戻る・進むボタン
-	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->Render(spriteBatch);
 	}
 	// 選択済みキャラ
@@ -310,19 +310,19 @@ void CharaSelectScene::InitializeUI() {
 	// ボタン
 	{
 		// 戻るボタン
-		std::unique_ptr<SoundScaleUpUI> back = std::make_unique<SoundScaleUpUI>(
+		std::unique_ptr<MenuUI> back = std::make_unique<MenuUI>(
 			UIEventID::Back, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.1f, screen_size.y*0.9f));
 		back->SetText(L"Back");
 		m_menuUIs.emplace_back(std::move(back));
 		// 進むボタン
-		std::unique_ptr<SoundScaleUpUI> next = std::make_unique<SoundScaleUpUI>(
+		std::unique_ptr<MenuUI> next = std::make_unique<MenuUI>(
 			UIEventID::Next, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.9f, screen_size.y*0.9f));
 		next->SetText(L"Random");
 		m_menuUIs.emplace_back(std::move(next));
 		// ボタンの共通処理
 		const FontResource* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default);
 		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::UIFrame);
-		for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->SetFont(font);
 			(*itr)->SetTextColor(DirectX::SimpleMath::Color(DirectX::Colors::Black));
 			(*itr)->SetTexture(texture);

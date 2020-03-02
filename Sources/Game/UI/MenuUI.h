@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SOUND_SCALE_UP_UI_DEFINED
-#define SOUND_SCALE_UP_UI_DEFINED
+#ifndef MENU_UI_DEFINED
+#define MENU_UI_DEFINED
 
 
 #include <Utils\ScaleUpUI.h>
@@ -8,18 +8,21 @@ enum class SoundID;
 
 
 /// <summary>
-/// ScaleUpUIの音付き版
+/// メニュー用UI
 /// </summary>
-class SoundScaleUpUI : public ScaleUpUI {
+class MenuUI : public ScaleUpUI {
 public:
 	// コンストラクタ
-	SoundScaleUpUI(UIEventID eventID = UIEventID::Null,
+	MenuUI(UIEventID eventID = UIEventID::Null,
 		int layer = 0,
 		const DirectX::SimpleMath::Vector2& pos = DirectX::SimpleMath::Vector2::Zero,
 		const DirectX::SimpleMath::Vector2& size = DirectX::SimpleMath::Vector2(100.0f, 100.0f),
 		const TextureResource* pTexture = nullptr,
 		int textureIndex = 0);
 		
+public:
+	// UIを更新する
+	void Update(const DX::StepTimer& timer) override;
 
 protected:
 	// マウス侵入時処理
@@ -28,16 +31,22 @@ protected:
 	void OnClick() override;
 
 public:
+	// UIを選択する
+	void Select();
+	// UIを選択解除する
+	void Deselect()                       { m_isSelected = false; }
 	// マウス侵入時の効果音を設定する
 	void SetOnMouseEnterSound(SoundID id) { m_onMouseEnterSoundId = id; }
 	// クリック時の効果音を設定する
 	void SetOnClickSound(SoundID id)      { m_onClickSoundId = id; }
 
 protected:
+	// UIが選択されているかどうか
+	bool                  m_isSelected;
 	// マウス侵入時の効果音
 	SoundID               m_onMouseEnterSoundId;
 	// クリック時の効果音
 	SoundID               m_onClickSoundId;
 };
 
-#endif // !SOUND_SCALE_UP_UI_DEFINED
+#endif // !MENU_UI_DEFINED

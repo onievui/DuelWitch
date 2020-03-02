@@ -9,7 +9,7 @@
 #include <Utils\LoadDataManager.h>
 #include "ISceneRequest.h"
 #include <Game\Load\ResourceLoader.h>
-#include <Game\UI\SoundScaleUpUI.h>
+#include <Game\UI\MenuUI.h>
 #include <Game\UI\Fade.h>
 
 
@@ -75,7 +75,7 @@ void PauseScene::Update(const DX::StepTimer& timer) {
 	m_fadeUI->Update(timer);
 
 	// UIのアルファ値を更新する
-	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->SetAlpha(m_fadeUI->GetAlpha());
 	}
 
@@ -99,7 +99,7 @@ void PauseScene::Update(const DX::StepTimer& timer) {
 	// 未選択でフェードが完了していたらUIを更新する
 	if (!m_wasSelected && m_fadeUI->IsFinished()) {
 		// UIを更新する
-		for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+		for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Update(timer);
 		}
 
@@ -159,7 +159,7 @@ void PauseScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	m_fadeBack->Render(spriteBatch);
 
 	// UIを描画する
-	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->Render(spriteBatch);
 	}
 	
@@ -174,7 +174,7 @@ void PauseScene::Render(DirectX::SpriteBatch* spriteBatch) {
 /// </summary>
 void PauseScene::Finalize() {
 	// UIからオブザーバをデタッチする
-	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->Detach(m_uiObserver.get());
 	}
 }
@@ -191,21 +191,21 @@ void PauseScene::InitializeUI() {
 	// UIの生成
 	// 再開
 	{
-		std::unique_ptr<SoundScaleUpUI> resume = std::make_unique<SoundScaleUpUI>(
+		std::unique_ptr<MenuUI> resume = std::make_unique<MenuUI>(
 			UIEventID::Resume, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.25f));
 		resume->SetText(L"Resume");
 		m_menuUIs.emplace_back(std::move(resume));
 	}
 	// キャラセレクト
 	{
-		std::unique_ptr<SoundScaleUpUI> charaselect = std::make_unique<SoundScaleUpUI>(
+		std::unique_ptr<MenuUI> charaselect = std::make_unique<MenuUI>(
 			UIEventID::CharaSelect, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.5f));
 		charaselect->SetText(L"CharaSelect");
 		m_menuUIs.emplace_back(std::move(charaselect));
 	}
 	// タイトル 
 	{
-		std::unique_ptr<SoundScaleUpUI> title = std::make_unique<SoundScaleUpUI>(
+		std::unique_ptr<MenuUI> title = std::make_unique<MenuUI>(
 			UIEventID::Title, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.5f, screen_size.y*0.75f));
 		title->SetText(L"Title");
 		m_menuUIs.emplace_back(std::move(title));
@@ -214,7 +214,7 @@ void PauseScene::InitializeUI() {
 	// 共通の処理
 	const FontResource* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default);
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::UIFrame);
-	for (std::vector<std::unique_ptr<SoundScaleUpUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
+	for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 		(*itr)->SetFont(font);
 		(*itr)->SetTextColor(DirectX::SimpleMath::Color(DirectX::Colors::Black));
 		(*itr)->SetTexture(texture);

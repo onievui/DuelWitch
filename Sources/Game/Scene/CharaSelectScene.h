@@ -10,7 +10,7 @@
 class ISceneRequest;
 class UIObserver;
 class UISubject;
-class SoundScaleUpUI;
+class MenuUI;
 class CharaIcon;
 class CharaSelectMarker;
 class Fade;
@@ -82,7 +82,7 @@ private:
 	// 選択マーカーUI
 	std::vector<std::unique_ptr<CharaSelectMarker>>	 m_markerUIs;
 	// メニューUI
-	std::vector<std::unique_ptr<SoundScaleUpUI>>     m_menuUIs;
+	std::vector<std::unique_ptr<MenuUI>>     m_menuUIs;
 
 	// 遷移先のシーンID
 	SceneID                                          m_nextSceneID;

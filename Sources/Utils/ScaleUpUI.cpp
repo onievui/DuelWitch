@@ -14,7 +14,8 @@
 /// <param name="textureIndex">テクスチャのインデックス</param>
 ScaleUpUI::ScaleUpUI(UIEventID eventID, int layer, const DirectX::SimpleMath::Vector2& pos,
 	const DirectX::SimpleMath::Vector2& size, const TextureResource* pTexture, int textureIndex)
-	: UISubject(eventID,layer,pos,size,pTexture,textureIndex)
+	: UISubject(eventID, layer, pos, size, pTexture, textureIndex)
+	, m_isScaleUp(false)
 	, m_clickWaitTime() {
 }
 
@@ -29,6 +30,8 @@ void ScaleUpUI::Update(const DX::StepTimer& timer) {
 		float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 		m_clickWaitTime -= elapsed_time;
 	}
+	// マウスオーバー時に拡大する
+	m_isScaleUp = m_onMouseOver;
 }
 
 /// <summary>
@@ -37,10 +40,10 @@ void ScaleUpUI::Update(const DX::StepTimer& timer) {
 /// <param name="spriteBatch">スプライトバッチ</param>
 void ScaleUpUI::Render(DirectX::SpriteBatch* spriteBatch) const {
 	// マウスが乗っている間は拡大する
-	DirectX::SimpleMath::Vector2 scale = DirectX::SimpleMath::Vector2::One*(m_onMouseOver ? 1.25f : 1.0f);
+	DirectX::SimpleMath::Vector2 scale = DirectX::SimpleMath::Vector2::One*(m_isScaleUp ? 1.25f : 1.0f);
 	// マウスオーバー時は赤色、クリック時は灰色にする
 	DirectX::SimpleMath::Color color = DirectX::Colors::White;
-	if (m_onMouseOver) {
+	if (m_isScaleUp) {
 		if (m_clickWaitTime > 0.0f) {
 			color = DirectX::Colors::Gray;
 		}

@@ -90,6 +90,8 @@ public:
 		KeyCode keyCode = static_cast<KeyCode>(NONE_USE),
 		PadCode padCode = static_cast<PadCode>(NONE_USE),
 		MouseCode mouseCode = static_cast<MouseCode>(NONE_USE));
+	// ƒpƒbƒh‚ÌÚ‘±ó‘Ô‚ğæ“¾‚·‚é
+	bool IsPadConnected() const;
 	// “ü—Í‚µ‚Ä‚¢‚é‚©æ“¾‚·‚é
 	bool IsDown(InputID id) const;
 	// “ü—Í‚µ‚½’¼Œã‚©Š“¾‚·‚é

@@ -9,7 +9,7 @@
 
 class ISceneRequest;
 class UIObserver;
-class SoundScaleUpUI;
+class MenuUI;
 class Fade;
 enum class SceneID;
 

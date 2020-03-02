@@ -9,7 +9,7 @@
 
 class ISceneRequest;
 class UIObserver;
-class SoundScaleUpUI;
+class MenuUI;
 class Fade;
 enum class SceneID;
 
@@ -36,6 +36,8 @@ public:
 private:
 	// UIを初期化する
 	void InitializeUI();
+	// UIを更新する
+	void UpdateUI(const DX::StepTimer& timer);
 
 private:
 	// リクエストシーンインタフェース
@@ -53,8 +55,10 @@ private:
 	// UIオブザーバ
 	std::unique_ptr<UIObserver>                              m_uiObserver;
 	// メニューUI
-	std::vector<std::unique_ptr<SoundScaleUpUI>>             m_menuUIs;
+	std::vector<std::unique_ptr<MenuUI>>                     m_menuUIs;
 
+	// 選択中のUI
+	int                                                      m_selectedUI;
 	// 選択済みかどうか
 	bool                                                     m_wasSelected;
 	// 遷移先のシーンID

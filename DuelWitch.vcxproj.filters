@@ -390,9 +390,6 @@
     <ClCompile Include="Sources\Utils\AudioManager.cpp">
       <Filter>Utils\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game\UI\SoundScaleUpUI.cpp">
-      <Filter>Game\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Game\Effect\DeathEffect.cpp">
       <Filter>Game\Effect\Effect</Filter>
     </ClCompile>
@@ -410,6 +407,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\Input\InputCodeLoader.cpp">
       <Filter>Game\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\UI\MenuUI.cpp">
+      <Filter>Game\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -815,9 +815,6 @@
     <ClInclude Include="Sources\Utils\AudioManager.h">
       <Filter>Utils\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game\UI\SoundScaleUpUI.h">
-      <Filter>Game\UI</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Game\Effect\DeathEffect.h">
       <Filter>Game\Effect\Effect</Filter>
     </ClInclude>
@@ -838,6 +835,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\Input\InputCodeLoader.h">
       <Filter>Game\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\UI\MenuUI.h">
+      <Filter>Game\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

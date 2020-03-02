@@ -30,6 +30,9 @@ protected:
 	void OnClick() override;
 
 protected:
+	// 拡大するかどうか
+	bool  m_isScaleUp;
+	// 一度選択してから再度選択できるまでの時間
 	float m_clickWaitTime;
 };
 

@@ -251,6 +251,17 @@ void InputManager::SetInputCode(InputID id, KeyCode keyCode, PadCode padCode, Mo
 }
 
 /// <summary>
+/// ƒpƒbƒh‚ÌÚ‘±ó‘Ô‚ğæ“¾‚·‚é
+/// </summary>
+/// <returns>
+/// true : Ú‘±‚µ‚Ä‚¢‚é
+/// false : Ú‘±‚µ‚Ä‚¢‚È‚¢
+/// </returns>
+bool InputManager::IsPadConnected() const {
+	return InputHelper::IsPadConnected();
+}
+
+/// <summary>
 /// “ü—Í‚µ‚Ä‚¢‚é‚©æ“¾‚·‚é
 /// </summary>
 /// <param name="id">“ü—ÍID</param>
