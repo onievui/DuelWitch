@@ -22,7 +22,7 @@ void AIMoveFuzzy::Execute() {
 	// 所持しているエレメントの数
 	float has_element_num = Fuzzy::Grade(static_cast<float>(m_inputData.hasElementNum), parameter.hasElementNumMin, parameter.hasElementNumMax);
 	// エレメントを所持してないかどうか
-	float has_not_element = Fuzzy::ReverseGrade(static_cast<float>(m_inputData.hasElementNum), 0, 1);
+	//float has_not_element = Fuzzy::ReverseGrade(static_cast<float>(m_inputData.hasElementNum), 0, 1);
 	// 最も近いエレメントとの距離
 	float element_distance = Fuzzy::Grade(m_inputData.elementDistance, parameter.elementDistanceMin, parameter.elementDistanceMax);
 	// エレメントがフィールドに存在するかどうか

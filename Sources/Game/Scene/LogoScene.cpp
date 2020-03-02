@@ -2,7 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
-#include <Utils\MouseWrapper.h>
+#include <Utils\InputManager.h>
 #include <Utils\MathUtils.h>
 #include "ISceneRequest.h"
 #include <Game\Load\ResourceLoader.h>
@@ -48,11 +48,10 @@ void LogoScene::Update(const DX::StepTimer& timer) {
 		ExitGame();
 	}
 
-	// スペースキーを押すか左クリック、または時間経過でタイトルシーンに移行する
-	const bool press_space = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Space);
-	const bool click_left = (ServiceLocater<MouseWrapper>::Get()->GetTracker()->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED);
+	// ボタンを押す、または時間経過でタイトルシーンに移行する
+	const bool press_button = ServiceLocater<InputManager>::Get()->IsPressed(InputID::Desicion);
 	const bool time_end = (m_fadeStep > 4 && m_fade->IsFinished());
-	if (press_space || click_left || time_end) {
+	if (press_button || time_end) {
 		m_pSceneRequest->RequestScene(SceneID::Title);
 	}
 

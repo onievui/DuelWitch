@@ -5,6 +5,7 @@
 #include <Utils\ResourceManager.h>
 #include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
+#include <Utils\InputManager.h>
 #include <Game\Scene\ShareData\ShareData.h>
 
 
@@ -19,6 +20,10 @@ public:
 	std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker>       keyboardStateTracker;
 	// マウスラッパ―
 	std::unique_ptr<MouseWrapper>                                  mouseWrapper;
+	// パッドトラッカー
+	std::unique_ptr<DirectX::GamePad::ButtonStateTracker>          padStateTracker;
+	// 入力マネージャ
+	std::unique_ptr<InputManager>                                  inputManager;
 
 	// シーン間で共有するデータ
 	std::unique_ptr<ShareData>                                     shareData;
@@ -76,6 +81,8 @@ void CommonServices::Initialize() {
 	RegisterService(m_services->commonStates, ServiceLocater<DirectX11>::Get()->GetDevice().Get());
 	RegisterService(m_services->keyboardStateTracker);
 	RegisterService(m_services->mouseWrapper, ServiceLocater<DirectX11>::Get()->GetHWnd());
+	RegisterService(m_services->padStateTracker);
+	RegisterService(m_services->inputManager);
 	RegisterService(m_services->shareData);
 	RegisterService(m_services->audioManager);
 
@@ -99,6 +106,8 @@ void CommonServices::Finalize() {
 	ServiceLocater<DirectX::CommonStates>::Unregister();
 	ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Unregister();
 	ServiceLocater<MouseWrapper>::Unregister();
+	ServiceLocater<DirectX::GamePad::ButtonStateTracker>::Unregister();
+	ServiceLocater<InputManager>::Unregister();
 	ServiceLocater<ShareData>::Unregister();
 	ServiceLocater<AudioManager>::Unregister();
 	ServiceLocater<ResourceManager<TextureResource>>::Unregister();

@@ -7,6 +7,7 @@
 #include <Utils\ResourceManager.h>
 #include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
+#include <Game\Input\InputCodeLoader.h>
 #include <Game\Load\CommonServices.h>
 #include <Game\Load\ResourceLoader.h>
 #include <Game\Scene\SceneManager.h>
@@ -40,10 +41,16 @@ void MyGame::Initialize(int width, int height) {
 
 	// キーボードを生成する
 	m_keyboard = std::make_unique<DirectX::Keyboard>();
+	// ゲームパッドを生成する
+	m_gamePad = std::make_unique<DirectX::GamePad>();
 
 	// コモンサービスを初期化する
 	m_commonServices = std::make_unique<CommonServices>();
 	m_commonServices->Initialize();
+
+	// 入力コードを読み込む
+	InputCodeLoader input_code_loader;
+	input_code_loader.Load();
 
 	// フォントを読み込む
 	ResourceLoader::Load(ResourceLoaderID::Common);
@@ -52,7 +59,7 @@ void MyGame::Initialize(int width, int height) {
 	m_sceneManager = std::make_unique<SceneManager>();
 	m_sceneManager->Initialize();
 
-	// プレイシーンを呼び出す
+	// ロゴシーンを呼び出す
 	m_sceneManager->RequestScene(SceneID::Logo);
 }
 
@@ -69,6 +76,13 @@ void MyGame::CreateResources() {
 void MyGame::Update(const DX::StepTimer& timer) {
 	// キートラッカーを更新する
 	ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->Update(m_keyboard->GetState());
+	// パッドトラッカーを更新する
+	if (m_gamePad->GetState(0).IsConnected()) {
+		ServiceLocater<DirectX::GamePad::ButtonStateTracker>::Get()->Update(m_gamePad->GetState(0));
+	}
+	else {
+		ServiceLocater<DirectX::GamePad::ButtonStateTracker>::Get()->Reset();
+	}
 	// マウストラッカーを更新する
 	ServiceLocater<MouseWrapper>::Get()->Update(m_width, m_height);
 	// オーディオマネージャを更新する
@@ -105,6 +119,26 @@ void MyGame::Finalize() {
 	m_commonServices->Finalize();
 
 	m_keyboard.reset();
+}
+
+/// <summary>
+/// ゲームがパワーサスペンデッドになる場合の処理を行う
+/// </summary>
+void MyGame::OnSuspending() {
+	// ゲームパッドを一時停止させる
+	if (m_gamePad) {
+		m_gamePad->Suspend();
+	}
+}
+
+/// <summary>
+/// ゲームがパワーレジュームになる場合の処理を行う
+/// </summary>
+void MyGame::OnResuming() {
+	// ゲームパッドを再開させる
+	if (m_gamePad) {
+		m_gamePad->Resume();
+	}
 }
 
 // FPSを描画する

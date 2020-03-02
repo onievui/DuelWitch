@@ -31,6 +31,12 @@ public:
 	// 終了処理をおこなう
 	void Finalize() override;
 
+public:
+	// メッセージ
+	void OnSuspending() override;
+	void OnResuming() override;
+
+public:
 	// FPSを描画する
 	void DrawFPS(const DX::StepTimer& timer);
 
@@ -42,6 +48,8 @@ private:
 
 	// キーボード
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
+	// ゲームパッド
+	std::unique_ptr<DirectX::GamePad>  m_gamePad;
 
 	// コモンサービス
 	std::unique_ptr<CommonServices>    m_commonServices;

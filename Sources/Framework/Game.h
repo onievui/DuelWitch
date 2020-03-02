@@ -37,11 +37,11 @@ public:
 	virtual void Finalize();
 
     // メッセージ
-    void OnActivated();
-    void OnDeactivated();
-    void OnSuspending();
-    void OnResuming();
-    void OnWindowSizeChanged(int width, int height);
+    virtual void OnActivated();
+    virtual void OnDeactivated();
+    virtual void OnSuspending();
+    virtual void OnResuming();
+    virtual void OnWindowSizeChanged(int width, int height);
 
     // プロパティ 
     void GetDefaultSize(int& width, int& height) const;

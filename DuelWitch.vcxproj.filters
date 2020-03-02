@@ -92,6 +92,12 @@
     <Filter Include="Game\Player">
       <UniqueIdentifier>{4ab63e9c-e51a-4ba1-922b-d905daed3fd8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Input">
+      <UniqueIdentifier>{eccada60-cb84-4fb1-ab8e-0a81da5d634e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Input">
+      <UniqueIdentifier>{b9147d6f-a65a-4371-a18f-f6cb5e26a1a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
@@ -398,6 +404,12 @@
     </ClCompile>
     <ClCompile Include="Sources\Game\Scene\CharaManualScene.cpp">
       <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\InputManager.cpp">
+      <Filter>Utils\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game\Input\InputCodeLoader.cpp">
+      <Filter>Game\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -817,6 +829,15 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\Scene\CharaManualScene.h">
       <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\InputID.h">
+      <Filter>Utils\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\InputManager.h">
+      <Filter>Utils\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\Input\InputCodeLoader.h">
+      <Filter>Game\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

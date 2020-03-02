@@ -47,8 +47,6 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_pSceneRequest = pSceneRequest;
 	DirectX11* directX = ServiceLocater<DirectX11>::Get();
 
-	// マウスを相対モードに変更する
-	//ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_RELATIVE);
 	// マウスを非表示にする
 	ServiceLocater<MouseWrapper>::Get()->SetVisible(false);
 	// マウスをウインドウ内に収める
@@ -90,9 +88,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());
 	//ターゲットカメラを生成する
 	//DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f)
-	m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
-	//m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 2.0f, 5.0f),
-		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 2.0f), DirectX::SimpleMath::Vector3::UnitY,
+	//m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
+	m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 3.5f, -7.0f),
+		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 3.0f), DirectX::SimpleMath::Vector3::UnitY,
 		PerspectiveFovInfo(Math::HarfPI*0.5f, static_cast<float>(directX->GetWidth()) / static_cast<float>(directX->GetHeight()), 0.1f, 5000.0f));
 
 	ServiceLocater<TargetCamera>::Register(m_targetCamera.get());
@@ -232,8 +230,6 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 /// プレイシーンを終了する
 /// </summary>
 void PlayScene::Finalize() {
-	//// マウスを絶対モードに変更する
-	//ServiceLocater<MouseWrapper>::Get()->SetMode(DirectX::Mouse::Mode::MODE_ABSOLUTE);
 	// マウスを表示する
 	ServiceLocater<MouseWrapper>::Get()->SetVisible(true);
 	// マウスをウインドウ内に移動できるようにする

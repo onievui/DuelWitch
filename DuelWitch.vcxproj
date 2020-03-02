@@ -229,6 +229,7 @@
     <ClCompile Include="Sources\Game\Field\Field.cpp" />
     <ClCompile Include="Sources\Game\Field\GridFloor.cpp" />
     <ClCompile Include="Sources\Game\Fuzzy\AIMoveFuzzy.cpp" />
+    <ClCompile Include="Sources\Game\Input\InputCodeLoader.cpp" />
     <ClCompile Include="Sources\Game\Load\CommonServices.cpp" />
     <ClCompile Include="Sources\Game\Load\PlayParameterLoader.cpp" />
     <ClCompile Include="Sources\Game\Load\ResourceLoader.cpp" />
@@ -276,6 +277,7 @@
     </ClCompile>
     <ClCompile Include="Sources\Utils\AudioManager.cpp" />
     <ClCompile Include="Sources\Utils\Color.cpp" />
+    <ClCompile Include="Sources\Utils\InputManager.cpp" />
     <ClCompile Include="Sources\Utils\JsonWrapper.cpp" />
     <ClCompile Include="Sources\Utils\LoadDataManager.cpp" />
     <ClCompile Include="Sources\Utils\MouseWrapper.cpp" />
@@ -339,6 +341,7 @@
     <ClInclude Include="Sources\Game\Field\FieldData.h" />
     <ClInclude Include="Sources\Game\Field\GridFloor.h" />
     <ClInclude Include="Sources\Game\Fuzzy\AIMoveFuzzy.h" />
+    <ClInclude Include="Sources\Game\Input\InputCodeLoader.h" />
     <ClInclude Include="Sources\Game\Load\CommonServices.h" />
     <ClInclude Include="Sources\Game\Load\IParameterLoader.h" />
     <ClInclude Include="Sources\Game\Load\PlayParameterLoader.h" />
@@ -404,7 +407,9 @@
     <ClInclude Include="Sources\Utils\IfIterator.h" />
     <ClInclude Include="Sources\Utils\ILoadData.h" />
     <ClInclude Include="Sources\Utils\ILoadDataHolder.h" />
+    <ClInclude Include="Sources\Utils\InputID.h" />
     <ClInclude Include="Sources\Utils\InputLayoutData.h" />
+    <ClInclude Include="Sources\Utils\InputManager.h" />
     <ClInclude Include="Sources\Utils\IObserver.h" />
     <ClInclude Include="Sources\Utils\ISubject.h" />
     <ClInclude Include="Sources\Utils\JsonWrapper.h" />

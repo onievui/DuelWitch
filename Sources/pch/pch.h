@@ -67,6 +67,7 @@
 #include <Audio.h>
 #include <Mouse.h>
 #include <Keyboard.h>
+#include <GamePad.h>
 
 #ifdef _DEBUG
 #include <dxgidebug.h>
