@@ -1,6 +1,7 @@
 #include "CharaManualScene.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\InputManager.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
@@ -62,12 +63,12 @@ void CharaManualScene::Update(const DX::StepTimer& timer) {
 		m_pSceneRequest->PopScene();
 	}
 
-	// クリックかエスケープキーを押して、キャンセルする
-	DirectX::Mouse::ButtonStateTracker* mouse_tracker = ServiceLocater<MouseWrapper>::Get()->GetTracker();
-	const bool left_click = (mouse_tracker->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED);
-	const bool right_click = (mouse_tracker->rightButton == DirectX::Mouse::ButtonStateTracker::PRESSED);
-	const bool press_escape = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape);
-	if (left_click || right_click || press_escape) {
+	// 何かボタンを押して、キャンセルする
+	const bool press_decision = ServiceLocater<InputManager>::Get()->IsPressed(InputID::Desicion);
+	const bool preee_back     = ServiceLocater<InputManager>::Get()->IsPressed(InputID::Back);
+	const bool press_menu     = ServiceLocater<InputManager>::Get()->IsPressed(InputID::Menu);
+	const bool press_pause    = ServiceLocater<InputManager>::Get()->IsPressed(InputID::Pause);
+	if (press_decision || preee_back || press_menu || press_pause) {
 		m_fade->Initialize(Fade::State::FadeIn, CHARA_MANUAL_TIME*1.25f, 0.0f);
 		m_fade->SkipTime(0.2f);
 		m_fadeTexture->Initialize(Fade::State::FadeOutAlpha, CHARA_MANUAL_TIME, 0.0f);

@@ -1,6 +1,7 @@
 #include "PauseScene.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\InputManager.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
@@ -90,14 +91,35 @@ void PauseScene::Update(const DX::StepTimer& timer) {
 		LoadDataManager::GetIns()->Reload(LoadDataID::PlayScene);
 	}
 
-	// エスケープキーを押して、プレイシーンを再開する
-	const bool press_escape = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape);
-	if (press_escape) {
+	// ポーズボタンを押して、プレイシーンを再開する
+	const bool press_pause = ServiceLocater<InputManager>::Get()->IsPressed(InputID::Pause);
+	if (press_pause) {
 		SelectResume();
+	}
+
+	// UIのフェードが完了したタイミングでカーソルを初期位置にする
+	if (!m_fadeUIFinished && m_fadeUI->IsFinished()) {
+		m_menuUIs[m_selectedUI]->Select();
+		m_fadeUIFinished = true;
 	}
 
 	// 未選択でフェードが完了していたらUIを更新する
 	if (!m_wasSelected && m_fadeUI->IsFinished()) {
+		// パッド接続時にカーソル移動を行う
+		const InputManager* input_manager = ServiceLocater<InputManager>::Get();
+		if (input_manager->IsPadConnected()) {
+			if (input_manager->IsPressed(InputID::Up)) {
+				m_menuUIs[m_selectedUI]->Deselect();
+				m_selectedUI = (m_selectedUI + m_menuUIs.size() - 1) % m_menuUIs.size();
+				m_menuUIs[m_selectedUI]->Select();
+			}
+			else if (input_manager->IsPressed(InputID::Down)) {
+				m_menuUIs[m_selectedUI]->Deselect();
+				m_selectedUI = (m_selectedUI + 1) % m_menuUIs.size();
+				m_menuUIs[m_selectedUI]->Select();
+			}
+		}
+
 		// UIを更新する
 		for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Update(timer);
@@ -222,6 +244,8 @@ void PauseScene::InitializeUI() {
 		// UIにオブザーバをアタッチする
 		(*itr)->Attach(m_uiObserver.get());
 	}
+
+	m_selectedUI = 0;
 }
 
 /// <summary>

@@ -55,7 +55,7 @@ private:
 	public:
 		// “ü—Í‚µ‚Ä‚¢‚é‚©æ“¾‚·‚é
 		bool IsDown() const;
-		// “ü—Í‚µ‚½’¼Œã‚©Š“¾‚·‚é
+		// “ü—Í‚µ‚½’¼Œã‚©æ“¾‚·‚é
 		bool IsPressed() const;
 		// “ü—Í‚µ‚Ä‚¢‚È‚¢‚©æ“¾‚·‚é
 		bool IsUp() const;

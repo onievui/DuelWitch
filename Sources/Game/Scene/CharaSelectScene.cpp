@@ -455,6 +455,8 @@ void CharaSelectScene::InitializeUI() {
 
 	// 選択中のUIのインデックスを初期化する
 	m_selectedUI = m_menuUIs.size();
+	// 一つ目のUIを選択済みにする
+	MoveCursor(m_selectedUI);
 }
 
 

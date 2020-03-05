@@ -52,8 +52,12 @@ private:
 	// UIオブザーバ
 	std::unique_ptr<UIObserver>                              m_uiObserver;
 	// メニューUI
-	std::vector<std::unique_ptr<MenuUI>>             m_menuUIs;
+	std::vector<std::unique_ptr<MenuUI>>                     m_menuUIs;
 
+	// 選択中のUI
+	int                                                      m_selectedUI;
+	// UIのフェードが完了したかどうか
+	bool                                                     m_fadeUIFinished;
 	// 選択されたかどうか
 	bool                                                     m_wasSelected;
 	// 遷移先のシーンID

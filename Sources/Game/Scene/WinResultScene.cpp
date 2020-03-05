@@ -1,6 +1,7 @@
 #include "WinResultScene.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\InputManager.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
 #include <Utils\UIObserver.h>
@@ -49,6 +50,7 @@ void WinResultScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_fadeUI->Initialize(Fade::State::FadeInAlpha, 1.0f, 1.0f);
 	// 後から動作を開始させる
 	m_fadeUI->Stop();
+	m_fadeUIFinished = false;
 
 	m_wasSelected = false;
 }
@@ -74,8 +76,29 @@ void WinResultScene::Update(const DX::StepTimer& timer) {
 		(*itr)->SetAlpha(m_fadeUI->GetAlpha());
 	}
 
+	// UIのフェードが完了したタイミングでカーソルを初期位置にする
+	if (!m_fadeUIFinished && m_fadeUI->IsFinished()) {
+		m_menuUIs[m_selectedUI]->Select();
+		m_fadeUIFinished = true;
+	}
+
 	// 未選択でフェードが完了していたらUIを更新する
 	if (!m_wasSelected && m_fadeUI->IsFinished()) {
+		// パッド接続時にカーソル移動を行う
+		const InputManager* input_manager = ServiceLocater<InputManager>::Get();
+		if (input_manager->IsPadConnected()) {
+			if (input_manager->IsPressed(InputID::Left)) {
+				m_menuUIs[m_selectedUI]->Deselect();
+				m_selectedUI = (m_selectedUI + m_menuUIs.size() - 1) % m_menuUIs.size();
+				m_menuUIs[m_selectedUI]->Select();
+			}
+			else if (input_manager->IsPressed(InputID::Right)) {
+				m_menuUIs[m_selectedUI]->Deselect();
+				m_selectedUI = (m_selectedUI + 1) % m_menuUIs.size();
+				m_menuUIs[m_selectedUI]->Select();
+			}
+		}
+
 		for (std::vector<std::unique_ptr<MenuUI>>::iterator itr = m_menuUIs.begin(); itr != m_menuUIs.end(); ++itr) {
 			(*itr)->Update(timer);
 		}
@@ -180,5 +203,7 @@ void WinResultScene::InitializeUI() {
 		// UIにオブザーバをアタッチする
 		(*itr)->Attach(m_uiObserver.get());
 	}
+
+	m_selectedUI = 0;
 }
 
