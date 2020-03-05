@@ -2,6 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\MathUtils.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\InputManager.h>
 #include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
 #include <Parameters\CommandParameter.h>
@@ -149,8 +150,8 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 /// <param name="timer">ステップタイマー</param>
 void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
-	DirectX::Keyboard::KeyboardStateTracker* key_tracker = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get();
-	DirectX::Keyboard::State key_state = key_tracker->GetLastState();
+	const InputManager* input_manager = ServiceLocater<InputManager>::Get();
+	const DirectX::Keyboard::State key_state = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->GetLastState();
 	const CommandParameter::move_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetCommandParameter()->moveParam;
 
 	const float move_speed = parameter.moveSpeed;
@@ -169,11 +170,11 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	float rot_speed = (ref_status.isBoosting ? parameter.boostRotSpeed : parameter.rotSpeed);
 
 	// 左右移動
-	if (key_state.A || key_state.Left) {
+	if (input_manager->IsDown(InputID::Left) || key_state.Left) {
 		change_euler.z = Math::Lerp(m_euler.z, -rot_z_limit, lerp_speed) - m_euler.z;
 		change_euler.y = rot_speed * elapsed_time;
 	}
-	else if (key_state.D || key_state.Right) {
+	else if (input_manager->IsDown(InputID::Right) || key_state.Right) {
 		change_euler.z = Math::Lerp(m_euler.z, rot_z_limit, lerp_speed) - m_euler.z;
 		change_euler.y = -rot_speed * elapsed_time;
 	}
@@ -183,10 +184,10 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	}
 
 	// 上下移動
-	if (key_state.W || key_state.Up) {
+	if (input_manager->IsDown(InputID::Up) || key_state.Up) {
 		change_euler.x = -rot_speed * elapsed_time;
 	}
-	else if (key_state.S || key_state.Down) {
+	else if (input_manager->IsDown(InputID::Down) || key_state.Down) {
 		change_euler.x = rot_speed * elapsed_time;
 	}
 
@@ -203,9 +204,8 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	// 移動方向を計算する
 	DirectX::SimpleMath::Vector3 move = DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::UnitZ, rotation);
 	
-	MouseWrapper* mouse = ServiceLocater<MouseWrapper>::Get();
-	// 右クリックしていて、残りSPが10％以上ならブースト移動
-	const bool use_boost = mouse->GetTracker()->rightButton == DirectX::Mouse::ButtonStateTracker::ButtonState::HELD;
+	// ブーストボタンを押していて、残りSPが10％以上ならブースト移動
+	const bool use_boost = input_manager->IsDown(InputID::Boost);
 	const bool can_boost = ref_status.sp / ref_status.maxSp >= 0.1f;
 	if (use_boost && can_boost) {
 		pos += move * move_speed*elapsed_time*ref_status.boostSpeedRate;
@@ -390,6 +390,7 @@ void MoveCommand::ExecuteTurn(Player& player, const DX::StepTimer& timer) {
 /// <param name="timer">ステップタイマー</param>
 void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	const InputManager* input_manager = ServiceLocater<InputManager>::Get();
 	DirectX::Keyboard::KeyboardStateTracker* key_tracker = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get();
 	PlayerStatus& ref_status = GetStatus(player);
 
@@ -405,10 +406,10 @@ void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 	// ロール回避の入力判定を行う
 	const float grace_time = 0.2f;
 	// 左にロールする
-	const bool press_left = (key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::A) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Left));
+	const bool press_left = (input_manager->IsPressed(InputID::LeftRoll) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Left));
 	if (press_left) {
-		// 素早く2回入力した時に判定する
-		if (m_rollInfo.leftGraceTime > 0.0f) {
+		// パッド未接続時は素早く2回入力した時に判定する
+		if (m_rollInfo.leftGraceTime > 0.0f || input_manager->IsPadConnected()) {
 			m_state = MoveState::Roll;
 			m_rollInfo.rollingTime = 0.0f;
 			m_rollInfo.isRollingLeft = true;
@@ -422,10 +423,10 @@ void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 	}
 	
 	// 右にロールする
-	const bool press_right = (key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::D) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Right));
+	const bool press_right = (input_manager->IsPressed(InputID::RightRoll) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Right));
 	if (press_right) {
-		// 素早く2回入力した時に判定する
-		if (m_rollInfo.rightGraceTime > 0.0f) {
+		// パッド未接続時は素早く2回入力した時に判定する
+		if (m_rollInfo.rightGraceTime > 0.0f || input_manager->IsPadConnected()) {
 			m_state = MoveState::Roll;
 			m_rollInfo.rollingTime = 0.0f;
 			m_rollInfo.isRollingLeft = false;
@@ -447,6 +448,7 @@ void MoveCommand::RollInputCheck(Player& player, const DX::StepTimer& timer) {
 /// <param name="timer">ステップタイマー</param>
 void MoveCommand::TurnInputCheck(Player& player, const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	const InputManager* input_manager = ServiceLocater<InputManager>::Get();
 	DirectX::Keyboard::KeyboardStateTracker* key_tracker = ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get();
 	PlayerStatus& ref_status = GetStatus(player);
 
@@ -460,12 +462,12 @@ void MoveCommand::TurnInputCheck(Player& player, const DX::StepTimer& timer) {
 
 	// クイックターンの入力判定を行う
 	const float grace_time = 0.2f;
-	const bool press_down = (key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::S) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Down));
-	const bool down_left = (key_tracker->GetLastState().A || key_tracker->GetLastState().Left);
-	const bool down_right = (key_tracker->GetLastState().D || key_tracker->GetLastState().Right);
+	const bool press_down = (input_manager->IsPressed(InputID::Turn) || key_tracker->IsKeyPressed(DirectX::Keyboard::Keys::Down));
+	const bool down_left = (input_manager->IsDown(InputID::Left) || key_tracker->GetLastState().Left);
+	const bool down_right = (input_manager->IsDown(InputID::Right) || key_tracker->GetLastState().Right);
 	if (press_down) {
-		// 素早く2回入力した時に判定する
-		if (m_turnInfo.graceTime > 0.0f) {
+		// パッド未接続時は素早く2回入力した時に判定する
+		if (m_turnInfo.graceTime > 0.0f || input_manager->IsPadConnected()) {
 			m_state = MoveState::Turn;
 			m_turnInfo.turningTime = 0.0f;
 			// 回転しているならその方向へ回る

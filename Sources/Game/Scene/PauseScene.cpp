@@ -54,6 +54,7 @@ void PauseScene::Initialize(ISceneRequest* pSceneRequest) {
 
 	m_fadeUI = std::make_unique<Fade>();
 	m_fadeUI->Initialize(Fade::State::FadeInAlpha, PAUSE_TIME, 1.0f);
+	m_fadeUIFinished = false;
 
 	m_wasSelected = false;
 

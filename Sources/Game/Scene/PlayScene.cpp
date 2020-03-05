@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
+#include <Utils\InputManager.h>
 #include <Utils\MathUtils.h>
 #include <Utils\MouseWrapper.h>
 #include <Utils\LamdaUtils.h>
@@ -124,8 +125,8 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	// フェードを更新する
 	m_fade->Update(timer);
 
-	// エスケープキーでポーズ画面を呼び出す
-	if (ServiceLocater<DirectX::Keyboard::KeyboardStateTracker>::Get()->IsKeyPressed(DirectX::Keyboard::Keys::Escape)) {
+	// ポーズボタンでポーズ画面を呼び出す
+	if (ServiceLocater<InputManager>::Get()->IsPressed(InputID::Pause)) {
 		m_pSceneRequest->RequestScene(SceneID::Pause, RequestSceneType::StackScene);
 	}
 

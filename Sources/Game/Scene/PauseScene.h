@@ -66,7 +66,7 @@ private:
 	// 選択中のUI
 	int                                                m_selectedUI;
 	// UIのフェードが完了したかどうか
-	bool                                                     m_fadeUIFinished;
+	bool                                               m_fadeUIFinished;
 	// 選択済みかどうか
 	bool                                               m_wasSelected;
 	// 遷移先のシーンID

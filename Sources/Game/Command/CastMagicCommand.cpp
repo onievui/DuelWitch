@@ -1,5 +1,6 @@
 #include "CastMagicCommand.h"
 #include <Utils\ServiceLocater.h>
+#include <Utils\InputManager.h>
 #include <Utils\AudioManager.h>
 #include <Utils\MouseWrapper.h>
 #include <Game\Magic\MagicID.h>
@@ -24,6 +25,22 @@ CastMagicCommand::CastMagicCommand()
 void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
 	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
 	elapsedTime;
+
+	const InputManager* input_manager = ServiceLocater<InputManager>::Get();
+	MouseWrapper* mouse_wrapper = ServiceLocater<MouseWrapper>::Get();
+
+	// パッド接続時は右スティックでマウスカーソルを動かせるようにする
+	if (input_manager->IsPadConnected()) {
+		DirectX::GamePad::ThumbSticks thumb = ServiceLocater<DirectX::GamePad::ButtonStateTracker>::Get()->GetLastState().thumbSticks;
+		DirectX::SimpleMath::Vector2 axis(thumb.rightX, -thumb.rightY);
+		// 速度が1以上なら正規化する
+		if (axis.LengthSquared() > 1.0f) {
+			axis.Normalize();
+		}
+		// マウスの座標に右スティックの移動量を足して反映する
+		DirectX::SimpleMath::Vector2 mouse_pos = mouse_wrapper->GetPos() + axis * CURSOR_SENSITIVITY*elapsedTime;
+		mouse_wrapper->SetPos(mouse_pos);
+	}
 
 	// 状態に応じた処理を行う
 	switch (m_state) {
@@ -50,11 +67,10 @@ void CastMagicCommand::ExecuteIdle(Player& player, const DX::StepTimer& timer) {
 	timer;
 
 	Transform& ref_transform = GetTransform(player);
-	DirectX::Mouse::ButtonStateTracker* mouse_tracker = ServiceLocater<MouseWrapper>::Get()->GetTracker();
 	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
 
-	// クリックして魔法を発射する
-	if (mouse_tracker->leftButton == DirectX::Mouse::ButtonStateTracker::PRESSED) {
+	// ボタンを押して魔法を発射する
+	if (ServiceLocater<InputManager>::Get()->IsPressed(InputID::Shot)) {
 		// チャージショット可能ならチャージ状態へ遷移する
 		m_chargeAllowedLevel = ChargeAllowedLevel(GetHaveElements(player));
 		if (m_chargeAllowedLevel > 0) {
@@ -102,14 +118,15 @@ void CastMagicCommand::ExecuteIdle(Player& player, const DX::StepTimer& timer) {
 void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& timer) {
 	Transform& ref_transform = GetTransform(player);
 	PlayerStatus& ref_status = GetStatus(player);
-	DirectX::Mouse::ButtonStateTracker* mouse_tracker = ServiceLocater<MouseWrapper>::Get()->GetTracker();
 	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
 
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 
-	// クリックし続けることでチャージする
-	if (mouse_tracker->leftButton == DirectX::Mouse::ButtonStateTracker::HELD) {
+	// ボタンを押し続けることでチャージする
+	if (ServiceLocater<InputManager>::Get()->IsDown(InputID::Shot)) {
 		m_chargingTime += elapsed_time;
+		// 途中でエレメントが増えた時に対応できるようにする
+		m_chargeAllowedLevel = ChargeAllowedLevel(GetHaveElements(player));
 		// 一定時間チャージすることでチャージ段階が大きくなる
 		if (ref_status.chargeLevel < m_chargeAllowedLevel) {
 			if (ref_status.chargeLevel == 0 && m_chargingTime >= ref_status.firstChargeTime) {
@@ -128,8 +145,8 @@ void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& time
 			m_chargingSoundTime += CHARGING_SOUND_DELAY_TIME;
 		}
 	}
-	// クリックを離して魔法を発射する
-	else if (mouse_tracker->leftButton == DirectX::Mouse::ButtonStateTracker::UP) {
+	// ボタンを離して魔法を発射する
+	else if (ServiceLocater<InputManager>::Get()->IsUp(InputID::Shot)) {
 		// レイの作成
 		DirectX::SimpleMath::Ray ray = GetCamera(player).ScreenPointToRay(DirectX::SimpleMath::Vector3(mouse_pos.x, mouse_pos.y, 0));
 		// 平面の作成

@@ -11,6 +11,8 @@
 /// </summary>
 class CastMagicCommand : public Command {
 public:
+	// 右スティックの感度
+	static constexpr float CURSOR_SENSITIVITY = 1280.0f;
 	// チャージ効果音を鳴らす間隔
 	static constexpr float CHARGING_SOUND_DELAY_TIME = 1.0f;
 
