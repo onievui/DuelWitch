@@ -24,7 +24,11 @@ void UIObserver::Update(ISubject* subject) {
 		return;
 	}
 	// イベントを取得
-	m_reservedEvent = ui_subject->GetUIEvent();
+	UIEvent get_event = ui_subject->GetUIEvent();
+	// 現在受け取っているイベントよりも優先度が高ければ更新する
+	if (!m_hasNewEvent || get_event.eventID > m_reservedEvent.eventID) {
+		m_reservedEvent = get_event;
+	}
 	// イベントを取得している状態にする
 	m_hasNewEvent = true;
 }

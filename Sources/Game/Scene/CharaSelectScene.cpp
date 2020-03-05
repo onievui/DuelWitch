@@ -2,6 +2,7 @@
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\InputManager.h>
 #include <Utils\AudioManager.h>
 #include <Utils\MathUtils.h>
 #include <Utils\UIObserver.h>
@@ -73,6 +74,16 @@ void CharaSelectScene::Update(const DX::StepTimer& timer) {
 		return;
 	}
 
+	// パッド接続時の処理を行う
+	if (ServiceLocater<InputManager>::Get()->IsPadConnected()) {
+		// カーソル移動を行う
+		PadCursorUpdate();
+		// 戻るボタンで状態を一つ戻す
+		if (ServiceLocater<InputManager>::Get()->IsPressed(InputID::Back)) {
+			m_menuUIs[1]->Decide();
+		}
+	}
+
 	// UIを更新する
 	if (m_state != CharaSelectScene::CharaSelectState::FadeOut) {
 		// 戻る・進むボタン
@@ -111,9 +122,9 @@ void CharaSelectScene::UpdateSelectPlayer(const DX::StepTimer& timer) {
 	// 次に進んだかどうか
 	bool select_next = false;
 
-	// 右クリックでキャラマニュアルを呼び出す
-	const bool right_click = (ServiceLocater<MouseWrapper>::Get()->GetTracker()->rightButton == DirectX::Mouse::ButtonStateTracker::PRESSED);
-	if (right_click) {
+	// キャラマニュアルを呼び出す
+	const bool press_manual = (ServiceLocater<InputManager>::Get()->IsPressed(InputID::Menu));
+	if (press_manual) {
 		m_pSceneRequest->RequestScene(SceneID::CharaManual, RequestSceneType::StackScene);
 		return;
 	}
@@ -138,6 +149,8 @@ void CharaSelectScene::UpdateSelectPlayer(const DX::StepTimer& timer) {
 				// 操作するマーカーを切り替える
 				m_markerUIs[m_currentPlayer]->SetEnableObserver(false);
 				m_markerUIs[m_currentPlayer - 1]->SetEnableObserver(true);
+				// カーソルの位置を前回のキャラクターの位置にする
+				MoveCursor(m_menuUIs.size() + m_backCharas[m_currentPlayer - 1]->GetTextureIndex());
 				--m_currentPlayer;
 			}
 			break;
@@ -169,9 +182,13 @@ void CharaSelectScene::UpdateSelectPlayer(const DX::StepTimer& timer) {
 			// マーカーの操作を解除する
 			m_markerUIs[m_currentPlayer]->SetEnableObserver(false);
 			// 次に進むボタンのテキストを変更する
-			m_menuUIs[1]->SetText(L"Fight!");
+			m_menuUIs[0]->SetText(L"Fight!");
 			// UIの効果音を変更する
-			m_menuUIs[1]->SetOnClickSound(SoundID::Ready);
+			m_menuUIs[0]->SetOnClickSound(SoundID::Ready);
+			// パッド接続時はカーソルを決定の位置に移動させる
+			if (ServiceLocater<InputManager>::Get()->IsPadConnected()) {
+				MoveCursor(0);
+			}
 			// 決定待ち状態に進む
 			m_state = CharaSelectState::Ready;
 		}
@@ -193,8 +210,10 @@ void CharaSelectScene::UpdateReady(const DX::StepTimer& timer) {
 			m_backCharas[2]->SetTexture(nullptr);
 			m_markerUIs[m_currentPlayer]->SetEnableObserver(true);
 			// 次に進むボタンを元に戻す
-			m_menuUIs[1]->SetText(L"Random");
-			m_menuUIs[1]->SetOnClickSound(SoundID::Decision);
+			m_menuUIs[0]->SetText(L"Random");
+			m_menuUIs[0]->SetOnClickSound(SoundID::Decision);
+			// カーソルの位置を最後のキャラクターの位置にする
+			MoveCursor(m_menuUIs.size() + m_backCharas[2]->GetTextureIndex());
 			m_state = CharaSelectState::SelectPlayer;
 			break;
 			// キャラを確定する
@@ -242,6 +261,55 @@ void CharaSelectScene::SelectChara(const UISubject* charaIcon, UISubject* backCh
 	m_selectCharaId[m_currentPlayer] = charaIcon->GetTextureIndex();
 }
 
+/// <summary>
+/// パッド接続時のカーソルを更新する
+/// </summary>
+void CharaSelectScene::PadCursorUpdate() {
+	const InputManager* input_manager = ServiceLocater<InputManager>::Get();
+	// メニューUIの数
+	int menu_num = m_menuUIs.size();
+	// キャラアイコンの数
+	// 開始待ち状態では、キャラアイコン上にカーソルを移動させないため0とみなす
+	int chara_icon_num = (m_state != CharaSelectScene::CharaSelectState::Ready ? m_charaIcons.size() : 0);
+	// UIの数
+	int ui_num = menu_num + chara_icon_num;
+
+	// 方向キーでカーソル移動
+	if (input_manager->IsPressed(InputID::Left)) {
+		MoveCursor((m_selectedUI + ui_num - 1) % ui_num);
+	}
+	else if (input_manager->IsPressed(InputID::Right)) {
+		MoveCursor((m_selectedUI + 1) % ui_num);
+	}
+}
+
+/// <summary>
+/// カーソルを移動する
+/// </summary>
+/// <param name="index">移動先のUIのインデックス</param>
+void CharaSelectScene::MoveCursor(int index) {
+	// メニューUIの数
+	int menu_num = m_menuUIs.size();
+
+	// 移動前のUIを選択解除する
+	if (m_selectedUI < menu_num) {
+		m_menuUIs[m_selectedUI]->Deselect();
+	}
+	else {
+		m_charaIcons[m_selectedUI - menu_num]->Deselect();
+	}
+
+	// 移動先のUIを選択する
+	if (index < menu_num) {
+		m_menuUIs[index]->Select();
+	}
+	else {
+		m_charaIcons[index - menu_num]->Select();
+	}
+
+	// UIの位置を更新する
+	m_selectedUI = index;
+}
 
 /// <summary>
 /// キャラセレクトシーンを描画する
@@ -309,16 +377,16 @@ void CharaSelectScene::InitializeUI() {
 	// UIの生成
 	// ボタン
 	{
-		// 戻るボタン
-		std::unique_ptr<MenuUI> back = std::make_unique<MenuUI>(
-			UIEventID::Back, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.1f, screen_size.y*0.9f));
-		back->SetText(L"Back");
-		m_menuUIs.emplace_back(std::move(back));
 		// 進むボタン
 		std::unique_ptr<MenuUI> next = std::make_unique<MenuUI>(
 			UIEventID::Next, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.9f, screen_size.y*0.9f));
 		next->SetText(L"Random");
 		m_menuUIs.emplace_back(std::move(next));
+		// 戻るボタン
+		std::unique_ptr<MenuUI> back = std::make_unique<MenuUI>(
+			UIEventID::Back, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.1f, screen_size.y*0.9f));
+		back->SetText(L"Back");
+		m_menuUIs.emplace_back(std::move(back));	
 		// ボタンの共通処理
 		const FontResource* font = ServiceLocater<ResourceManager<FontResource>>::Get()->GetResource(FontID::Default);
 		const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::UIFrame);
@@ -385,6 +453,8 @@ void CharaSelectScene::InitializeUI() {
 		}
 	}
 
+	// 選択中のUIのインデックスを初期化する
+	m_selectedUI = m_menuUIs.size();
 }
 
 

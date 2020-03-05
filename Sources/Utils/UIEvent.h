@@ -5,9 +5,11 @@
 
 /// <summary>
 /// UIイベントID
+/// 値が大きいほど優先度が高い
 /// </summary>
 enum class UIEventID {
 	Null,
+	MouseOver,
 	Title,
 	CharaSelect,
 	Tutorial,
@@ -17,7 +19,6 @@ enum class UIEventID {
 	Exit,
 	Back,
 	Next,
-	MouseOver,
 	CharaIcon,
 };
 

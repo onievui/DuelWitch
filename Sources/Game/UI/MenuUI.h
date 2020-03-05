@@ -35,6 +35,8 @@ public:
 	void Select();
 	// UIを選択解除する
 	void Deselect()                       { m_isSelected = false; }
+	// クリック時処理を呼び出す
+	void Decide()                         { OnClick(); }
 	// マウス侵入時の効果音を設定する
 	void SetOnMouseEnterSound(SoundID id) { m_onMouseEnterSoundId = id; }
 	// クリック時の効果音を設定する

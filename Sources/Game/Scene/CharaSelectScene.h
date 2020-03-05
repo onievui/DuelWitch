@@ -58,6 +58,10 @@ private:
 	void UpdateFadeOut(const DX::StepTimer& timer);
 	// キャラを選択する
 	void SelectChara(const UISubject* charaIcon, UISubject* backChara, CharaSelectMarker* marker);
+	// パッド接続時のカーソルを更新する
+	void PadCursorUpdate();
+	// カーソルを移動する
+	void MoveCursor(int index);
 
 private:
 	// リクエストシーンインタフェース
@@ -69,6 +73,8 @@ private:
 	int                                              m_currentPlayer;
 	// 選択したキャラのID
 	std::vector<int>                                 m_selectCharaId;
+	// 選択中のUI
+	int                                              m_selectedUI;
 
 	// 画面用フェード
 	std::unique_ptr<Fade>                            m_fade;
