@@ -51,7 +51,8 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	case ResourceLoaderID::CharaSelectScene:
 		// テクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::CharaManual,           TextureResource(L"Protected/chara_manual.png"));
-		textureResourceManager->AddResource(TextureID::CharaManualText,       TextureResource(L"Protected/chara_manual_text.png"));
+		textureResourceManager->AddResource(TextureID::CharaManualText,       TextureResource(L"Protected/chara_manual_text1.png"));
+		textureResourceManager->AddResource(TextureID::CharaManualText,		      L"Protected/chara_manual_text2.png");
 		textureResourceManager->AddResource(TextureID::CharaSelectBackGround, TextureResource(L"Protected/chara_select1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame,               TextureResource(L"Protected/title_ui_frame.png"));
 		textureResourceManager->AddResource(TextureID::CharaPortrait,         TextureResource(L"Protected/portrait1.png"));

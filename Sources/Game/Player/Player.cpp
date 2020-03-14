@@ -24,6 +24,7 @@
 #include <Game\Camera\Camera.h>
 #include <Game\Field\FieldData.h>
 #include "PlayerID.h"
+#include "PlayerData.h"
 
 
 /// <summary>
@@ -123,6 +124,8 @@ void Player::Initialize(MagicManager* pMagicManager, Camera* pCamera, std::vecto
 	m_castCommand->Initialize(*this);
 	m_renderCommand->Initialize(*this);
 
+	// ŠO•”‚©‚çp¨‚ğQÆ‚Å‚«‚é‚æ‚¤‚É‚·‚é
+	ServiceLocater<PlayerData>::Get()->transforms[static_cast<int>(m_id)] = &m_transform;
 }
 
 

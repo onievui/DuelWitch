@@ -2,6 +2,7 @@
 
 
 #include <Framework\StepTimer.h>
+#include "PlayerData.h"
 
 
 class Player;
@@ -47,6 +48,8 @@ private:
 private:
 	// プレイヤー
 	std::vector<std::unique_ptr<Player>> m_players;
+	// 外部参照用プレイヤーデータ
+	PlayerData                           m_playerData;
 	// 画面エフェクト用定数バッファ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_cBuffer;
 	// 画面エフェクト用定数

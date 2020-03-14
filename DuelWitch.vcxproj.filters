@@ -839,6 +839,9 @@
     <ClInclude Include="Sources\Game\UI\MenuUI.h">
       <Filter>Game\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Game\Player\PlayerData.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\Models\Protected\bloom.FBX">

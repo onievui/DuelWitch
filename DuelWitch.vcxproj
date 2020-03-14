@@ -367,6 +367,7 @@
     <ClInclude Include="Sources\Game\Object\IObject.h" />
     <ClInclude Include="Sources\Game\Object\Transform.h" />
     <ClInclude Include="Sources\Game\Player\Player.h" />
+    <ClInclude Include="Sources\Game\Player\PlayerData.h" />
     <ClInclude Include="Sources\Game\Player\PlayerID.h" />
     <ClInclude Include="Sources\Game\Player\PlayerManager.h" />
     <ClInclude Include="Sources\Game\Player\PlayerStatus.h" />

@@ -12,6 +12,11 @@
 /// コンストラクタ
 /// </summary>
 PlayerManager::PlayerManager() {
+	// プレイヤーデータをサービスロケータに登録する
+	ServiceLocater<PlayerData>::Register(&m_playerData);
+	// プレイヤーデータの容量を設定する
+	m_playerData.transforms.resize(static_cast<int>(PlayerID::Num));
+
 	// プレイヤーの初期座標
 	DirectX::SimpleMath::Vector3 player_pos(0, 0, -75);
 	// プレイヤーの初期座標をずらすための回転を生成する
@@ -30,7 +35,8 @@ PlayerManager::PlayerManager() {
 /// デストラクタ
 /// </summary>
 PlayerManager::~PlayerManager() {
-
+	m_players.clear();
+	ServiceLocater<PlayerData>::Unregister();
 }
 
 /// <summary>

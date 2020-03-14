@@ -329,7 +329,7 @@ void CharaSelectScene::Render(DirectX::SpriteBatch* spriteBatch) {
 
 	// マニュアルテキストを描画する
 	texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::CharaManualText);
-	spriteBatch->Draw(texture->GetResource().Get(),
+	spriteBatch->Draw(texture->GetResource(ServiceLocater<InputManager>::Get()->IsPadConnected() ? 1 : 0).Get(),
 		DirectX::SimpleMath::Vector2(directX->GetWidth()*0.5f, directX->GetHeight()*0.95f),
 		nullptr, DirectX::Colors::White, 0,
 		texture->GetCenter(), DirectX::SimpleMath::Vector2(0.6f, 0.6f));

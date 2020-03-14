@@ -9,6 +9,7 @@
 #include "MagicID.h"
 #include <Game\Effect\EffectManager.h>
 #include <Game\Effect\IEffectEmitter.h>
+#include <Game\Player\PlayerData.h>
 
 
 /// <summary>
@@ -119,9 +120,11 @@ void ThunderStrikeMagic::HitMagic(const IMagic* other) {
 	MagicID other_id = other->GetID();
 	// •X–‚–@‚ÆÕ“Ë‚µ‚½‚ç’µ‚Ë•Ô‚é
 	if (other_id == MagicID::Freeze) {
-		//DirectX::SimpleMath::Vector3 direction = m_transform.GetLocalPosition() - other->GetCollider()->GetPos();
-		DirectX::SimpleMath::Vector3 direction = -m_vel;
-		direction.y *= 0.0f;
+		const PlayerData* player_data = ServiceLocater<PlayerData>::Get();
+		// Œ³‚ÌŠ—LŽÒ‚ÉŒü‚¯‚Ä’µ‚Ë•Ô‚é
+		DirectX::SimpleMath::Vector3 direction =
+			player_data->transforms[static_cast<int>(m_info.playerId)]->GetPosition() - m_transform.GetPosition();
+		direction.y = 0.0f;
 		direction.Normalize();
 
 		m_transform.SetRotation(Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::Up, direction));
