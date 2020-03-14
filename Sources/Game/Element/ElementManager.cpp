@@ -113,8 +113,13 @@ void ElementManager::Render(const DirectX::SimpleMath::Matrix& view, const Direc
 /// <param name="groupNum">エレメントグループ数</param>
 /// <param name="num">グループ毎の個数</param>
 void ElementManager::CreateElement(float radius, int groupNum, int num) {
+	// パラメータを取得する
+	const ElementParameter* parameter = ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter();
 	// フィールド情報を取得する
 	const FieldData* fied_data = ServiceLocater<FieldData>::Get();
+
+	const DirectX::SimpleMath::Vector3& appear_area = parameter->appearArea;
+	const float min_distance = parameter->minDistance;
 
 	// ランダムに方向を決める（横360°縦+-30°）
 	DirectX::SimpleMath::Vector3 dir = DirectX::SimpleMath::Vector3::UnitZ;
@@ -133,18 +138,31 @@ void ElementManager::CreateElement(float radius, int groupNum, int num) {
 	// 回転を作成する
 	DirectX::SimpleMath::Quaternion quaternion = DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(axis, Math::PI2 / groupNum);
 	
+	// 同時に生成するエレメントが近くなりすぎないように場所を記憶する
+	std::vector<DirectX::SimpleMath::Vector3> create_pos(num - 1);
+	DirectX::SimpleMath::Vector3 rand_pos;
+	auto near_check = [&](const DirectX::SimpleMath::Vector3& c_pos) {
+		return DirectX::SimpleMath::Vector3::DistanceSquared(c_pos, rand_pos) < min_distance*min_distance; };
 	// エレメントを生成する
 	for (int i = 0; i < groupNum; ++i) {
 		// エレメントをランダムに決める
-		int rand = RandMt::GetRand(static_cast<int>(ElementID::Num));
+		int rand_kind = RandMt::GetRand(static_cast<int>(ElementID::Num));
 		for (int j = 0; j < num; j++) {
 			// 出現位置をランダムで決める
-			DirectX::SimpleMath::Vector3 pos = m_center + DirectX::SimpleMath::Vector3(
-				dir.x*(radius-10.0f)+RandMt::GetRange(-3.0f,3.0f),
-				dir.y*(radius-10.0f)+RandMt::GetRange(-2.0f,2.0f),
-				dir.z*(radius-10.0f)+RandMt::GetRange(-3.0f,3.0f)
+			rand_pos = m_center + DirectX::SimpleMath::Vector3(
+				dir.x*(radius-10.0f)+RandMt::GetRange(-appear_area.x,appear_area.x)*0.5f,
+				dir.y*(radius-10.0f)+RandMt::GetRange(-appear_area.y,appear_area.y)*0.5f,
+				dir.z*(radius-10.0f)+RandMt::GetRange(-appear_area.z,appear_area.z)*0.5f
 			);
-			Element* created_element = m_elementFactory->Create(static_cast<ElementID>(rand), pos);
+			// 同時に生成するエレメントが近くにないかチェックする
+			if (create_pos.end() != std::find_if(create_pos.end() - j, create_pos.end(), near_check)) {
+				--j;
+				continue;
+			}
+			// 生成した位置を記憶する
+			create_pos[std::max(num - j - 2, 0)] = rand_pos;
+
+			Element* created_element = m_elementFactory->Create(static_cast<ElementID>(rand_kind), rand_pos);
 			// 未使用のオブジェクトを探す
 			std::vector<Element*>::iterator itr = LamdaUtils::FindIf(m_elements, LamdaUtils::IsNull());
 			if (itr != m_elements.end()) {
@@ -153,7 +171,7 @@ void ElementManager::CreateElement(float radius, int groupNum, int num) {
 				(*itr)->SetBetweenFieldRadius(fied_data->fieldCenter, fied_data->fieldRadius);
 			}
 			// エレメントを変更する
-			rand = (rand + 1) % static_cast<int>(ElementID::Num);
+			rand_kind = (rand_kind + 1) % static_cast<int>(ElementID::Num);
 		}
 		dir = DirectX::SimpleMath::Vector3::Transform(dir, quaternion);
 	}

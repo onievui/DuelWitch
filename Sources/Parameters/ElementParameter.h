@@ -23,10 +23,13 @@ private:
 	bool LoadData();
 
 public:
-	int maxNum;
-	float alphaRate;
-	float radius;
-	float creationInterval;
+	int maxNum;	                             // エレメントの最大出現数
+	float alphaRate;	                     // エレメントの不透明度
+	float radius;                            // エレメントの半径
+	float creationInterval;                  // エレメントの生成間隔
+	DirectX::SimpleMath::Vector3 appearArea; // エレメントのランダム出現範囲
+	float minDistance;                       // 同時に生成するエレメントの最小間隔
+
 };
 
 

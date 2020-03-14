@@ -23,7 +23,12 @@ enum class PlayerID;
 /// プレイヤークラス
 /// </summary>
 class Player : public IObject {
+	// プレイヤーのプライベートなメンバにアクセスできるようにする
 	friend class Command;
+
+public:
+	// エレメント所持上限
+	static constexpr int HAVE_ELEMENT_MAX = 10;
 
 public:
 	// コンストラクタ

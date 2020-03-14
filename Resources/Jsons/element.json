@@ -1,6 +1,8 @@
 {
-  "MaxNum"   : 30,
-  "AlphaRate": 0.8,
+  "MaxNum"   : 24,
+  "AlphaRate": 1.0,
   "Radius": 0.75,
-  "CreationInterval": 10.0
+  "CreationInterval": 10.0,
+  "AppearArea" : [6.0, 4.0, 6.0],
+  "MinDistance": 3.0
 }

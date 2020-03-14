@@ -79,7 +79,9 @@ void Element::Render(const DirectX::SimpleMath::Matrix& view, const DirectX::Sim
 	m_pBasicEffect->SetWorld(m_world);
 	m_pBasicEffect->SetView(view);
 	m_pBasicEffect->SetProjection(proj);
-	m_pBasicEffect->SetDiffuseColor(DirectX::Colors::AntiqueWhite);
+	DirectX::SimpleMath::Color color = DirectX::Colors::AntiqueWhite;
+	color.w = ServiceLocater<PlayParameterLoader>::Get()->GetElementParameter()->alphaRate;
+	m_pBasicEffect->SetDiffuseColor(color);
 	m_pBasicEffect->SetTexture(texture->GetResource(static_cast<int>(m_id)).Get());
 
 	// テクスチャが半透明なため、先に背面から描画する

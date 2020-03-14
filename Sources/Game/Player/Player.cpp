@@ -261,7 +261,10 @@ float Player::GetMagicPowerRate(ElementID elementId) const {
 /// </summary>
 /// <param name="elementId">エレメントID</param>
 void Player::GetElement(ElementID elementId) {
-	m_haveElements.push_back(elementId);
+	// エレメントをこれ以上持てない場合は取得しない
+	if (m_haveElements.size() < HAVE_ELEMENT_MAX) {
+		m_haveElements.push_back(elementId);
+	}
 	// エレメント取得音を鳴らす
 	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::GetElement);
 }

@@ -72,6 +72,8 @@ bool ElementParameter::LoadData() {
 	alphaRate        = root["AlphaRate"].GetNumF();
 	radius           = root["Radius"].GetNumF();
 	creationInterval = root["CreationInterval"].GetNumF();
+	appearArea       = root["AppearArea"].GetVector3();
+	minDistance      = root["MinDistance"].GetNumF();
 
 	return true;
 }
