@@ -13,21 +13,24 @@ enum class PlayerID;
 struct MagicInfo {
 	// コンストラクタ
 	MagicInfo() {}
-	MagicInfo(MagicID _id, PlayerID _playerId, int _level, float _powerRate) 
+	MagicInfo(MagicID _id, PlayerID _playerId, int _level, float _powerRate, int _lockOnPlayerId) 
 		: id(_id)
 		, playerId(_playerId)
 		, level(_level)
-		, powerRate(_powerRate)	{
+		, powerRate(_powerRate)
+		, lockOnPlayerId(_lockOnPlayerId) {
 	}
 
 	// 魔法ID
-	MagicID           id;
-	// プレイヤーID
-	PlayerID          playerId;
-	// 魔法レベル
-	int               level;
-	// ダメージ倍率
-	float             powerRate;
+	MagicID                 id;
+	// プレイヤーID	         
+	PlayerID                playerId;
+	// 魔法レベル	    	 	    
+	int                     level;
+	// ダメージ倍率	         
+	float                   powerRate;
+	// 追尾するプレイヤーのID
+	int                     lockOnPlayerId;
 };
 
 #endif // !MAGIC_INFO_DEFINED

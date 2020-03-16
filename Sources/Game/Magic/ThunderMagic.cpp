@@ -9,6 +9,7 @@
 #include "MagicFactory.h"
 #include "MagicManager.h"
 #include <Game\Collision\SphereCollider.h>
+#include <Game\Player\PlayerData.h>
 
 
 /// <summary>
@@ -69,6 +70,22 @@ void ThunderMagic::Update(const DX::StepTimer& timer) {
 	}
 	
 	DirectX::SimpleMath::Vector3 pos = m_transform.GetLocalPosition();
+	// ロックオン中は追尾させる
+	if (m_info.lockOnPlayerId != -1 && m_lockOnTimer > 0.0f) {
+		m_lockOnTimer -= elapsed_time;
+		DirectX::SimpleMath::Vector3 target_pos = ServiceLocater<PlayerData>::Get()->transforms[m_info.lockOnPlayerId]->GetPosition();
+		DirectX::SimpleMath::Vector3 target_dir = target_pos - pos;
+		// 90°以上なら追尾を終了させる
+		if (m_vel.Dot(target_dir) >= 0.0f) {
+			float angle = Math::BetweenAngle(m_vel, target_dir);
+			const float rotate_speed = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam.lockOnRotateSpeed;
+			m_vel = DirectX::SimpleMath::Vector3::Transform(
+				m_vel, DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(m_vel.Cross(target_dir), std::min(angle, rotate_speed*elapsed_time)));
+		}
+		else {
+			m_lockOnTimer = 0.0f;
+		}
+	}
 	pos += m_vel*elapsed_time;	
 	m_transform.SetPosition(pos);
 

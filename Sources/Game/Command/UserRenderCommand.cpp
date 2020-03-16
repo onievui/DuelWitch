@@ -5,6 +5,7 @@
 #include <Utils\MathUtils.h>
 #include <Utils\MouseWrapper.h>
 #include <Game\Camera\TargetCamera.h>
+#include <Game\Player\PlayerID.h>
 
 
 /// <summary>
@@ -314,7 +315,7 @@ void UserRenderCommand::RenderSpBar(const Player& player, DirectX::SpriteBatch* 
 /// <param name="spriteBatch">スプライトバッチ</param>
 void UserRenderCommand::RenderAiming(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
 	// ロックオン中なら照準の色を変える
-	bool lock_on = (GetStatus(player).lockOnPlayerID != -1);
+	bool lock_on = (GetStatus(player).lockOnPlayerID != static_cast<int>(PlayerID::None));
 
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicAiming);
 	spriteBatch->Draw(texture->GetResource(lock_on ? 1 : 0).Get(),

@@ -41,6 +41,8 @@ public:
 private:
 	// 通常魔法のエフェクト
 	IEffectEmitter* m_pEffect;
+	// ロックオン用タイマー
+	float           m_lockOnTimer;
 
 };
 

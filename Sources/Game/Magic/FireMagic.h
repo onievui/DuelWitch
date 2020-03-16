@@ -15,6 +15,10 @@ class IEffectEmitter;
 /// </summary>
 class FireMagic : public Magic {
 public:
+	// ロックオン時の追尾をしない時間
+	static constexpr float LOCKON_DISABLE_TIME = 0.25f;
+
+public:
 	// コンストラクタ
 	FireMagic();
 	// デストラクタ
@@ -41,6 +45,8 @@ public:
 private:
 	// 炎魔法エフェクト
 	IEffectEmitter* m_pEffect;
+	// ロックオン用タイマー
+	float           m_lockOnTimer;
 
 };
 

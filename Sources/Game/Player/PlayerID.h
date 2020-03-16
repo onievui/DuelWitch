@@ -7,6 +7,8 @@
 /// ƒvƒŒƒCƒ„[ID
 /// </summary>
 enum class PlayerID {
+	None = -1,
+
 	Player1,
 	Player2,
 	Player3,

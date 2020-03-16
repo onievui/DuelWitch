@@ -9,6 +9,7 @@
 #include <Game\Collision\SphereCollider.h>
 #include <Game\Effect\EffectManager.h>
 #include <Game\Effect\IEffectEmitter.h>
+#include <Game\Player\PlayerData.h>
 
 
 /// <summary>
@@ -41,6 +42,7 @@ void FireMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Ve
 	static_cast<SphereCollider*>(m_collider.get())->SetRadius(parameter.radius);
 	m_color = DirectX::Colors::Red;
 	m_vel = dir * parameter.moveSpeed;
+	m_lockOnTimer = parameter.lockOnTime;
 	m_lifeTime = parameter.lifeTime;
 
 	// 方向ベクトルを元に円錐の回転角度を求める
@@ -58,11 +60,34 @@ void FireMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::Ve
 /// <param name="timer">ステップタイマー</param>
 void FireMagic::Update(const DX::StepTimer& timer) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	const MagicParameter::fire_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam;
+
 	m_lifeTime -= elapsed_time;
 	if (m_lifeTime < 0) {
 		m_isUsed = false;
 	}
+
 	DirectX::SimpleMath::Vector3 pos = m_transform.GetLocalPosition();
+	// ロックオン中は追尾させる
+	if (m_info.lockOnPlayerId != -1 && m_lockOnTimer > 0.0f ) {
+		m_lockOnTimer -= elapsed_time;
+		// 拡散させるためにはじめは追尾しない
+		if (m_lockOnTimer < parameter.lockOnTime - LOCKON_DISABLE_TIME) {
+			DirectX::SimpleMath::Vector3 target_pos = ServiceLocater<PlayerData>::Get()->transforms[m_info.lockOnPlayerId]->GetPosition();
+			DirectX::SimpleMath::Vector3 target_dir = target_pos - pos;
+			target_dir.Normalize();
+			// 135°以上なら追尾を終了させる
+			if (m_vel.Dot(target_dir) >= std::cosf(Math::QuarterPI*3)) {
+				float angle = Math::BetweenAngle(m_vel, target_dir);
+				const float rotate_speed = parameter.lockOnRotateSpeed;
+				m_vel = DirectX::SimpleMath::Vector3::Transform(
+					m_vel, DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(m_vel.Cross(target_dir), std::min(angle, rotate_speed*elapsed_time)));
+			}
+			else {
+				m_lockOnTimer = 0.0f;
+			}
+		}
+	}
 	pos += m_vel*elapsed_time;
 	m_transform.SetPosition(pos);
 

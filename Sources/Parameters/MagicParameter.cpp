@@ -90,39 +90,46 @@ bool MagicParameter::LoadData() {
 
 	{
 		JsonWrapper::value normal(root["Normal"]);
-		normalParam.power     = normal["Power"].GetNumF();
-		normalParam.radius    = normal["Radius"].GetNumF();
-		normalParam.moveSpeed = normal["MoveSpeed"].GetNumF();
-		normalParam.lifeTime  = normal["LifeTime"].GetNumF();
+		normalParam.power             = normal["Power"].GetNumF();
+		normalParam.radius            = normal["Radius"].GetNumF();
+		normalParam.moveSpeed         = normal["MoveSpeed"].GetNumF();
+		normalParam.lockOnRotateSpeed = Math::Deg2Rad(normal["LockOnRotateSpeed_Deg"].GetNumF());
+		normalParam.lockOnTime        = normal["LockOnTime"].GetNumF();
+		normalParam.lifeTime          = normal["LifeTime"].GetNumF();
 	}
 	{
 		JsonWrapper::value fire(root["Fire"]);
-		fireParam.power     = fire["Power"].GetNumF();
-		fireParam.wayAngle  = Math::Deg2Rad(fire["WayAngle_Deg"].GetNumF());
-		fireParam.radius    = fire["Radius"].GetNumF();
-		fireParam.height    = fire["Height"].GetNumF();
-		fireParam.moveSpeed = fire["MoveSpeed"].GetNumF();
-		fireParam.lifeTime  = fire["LifeTime"].GetNumF();
+		fireParam.power             = fire["Power"].GetNumF();
+		fireParam.wayAngle          = Math::Deg2Rad(fire["WayAngle_Deg"].GetNumF());
+		fireParam.radius            = fire["Radius"].GetNumF();
+		fireParam.height            = fire["Height"].GetNumF();
+		fireParam.moveSpeed         = fire["MoveSpeed"].GetNumF();
+		fireParam.lockOnRotateSpeed = Math::Deg2Rad(fire["LockOnRotateSpeed_Deg"].GetNumF());
+		fireParam.lockOnTime        = fire["LockOnTime"].GetNumF();
+		fireParam.lifeTime          = fire["LifeTime"].GetNumF();
 	}
 	{
 		JsonWrapper::value freeze(root["Freeze"]);
-		freezeParam.power        = freeze["Power"].GetNumF();
-		freezeParam.radius       = freeze["Radius"].GetNumF();
-		freezeParam.lifeTime     = freeze["LifeTime"].GetNumF();
-		freezeParam.rotateSpeed  = Math::Deg2Rad(freeze["RotateSpeed_Deg"].GetNumF());
-		freezeParam.rotateRadius = freeze["RotateRadius"].GetNumF();
+		freezeParam.power             = freeze["Power"].GetNumF();
+		freezeParam.radius            = freeze["Radius"].GetNumF();
+		freezeParam.rotateSpeed       = Math::Deg2Rad(freeze["RotateSpeed_Deg"].GetNumF());
+		freezeParam.rotateRadius      = freeze["RotateRadius"].GetNumF();
+		freezeParam.lifeTime          = freeze["LifeTime"].GetNumF();
+		
 	}
 	{
 		JsonWrapper::value thunder(root["Thunder"]);
-		thunderParam.power            = thunder["Power"].GetNumF();
-		thunderParam.radius           = thunder["Radius"].GetNumF();
-		thunderParam.colliderRadius   = thunder["ColliderRadius"].GetNumF();
-		thunderParam.moveSpeed        = thunder["MoveSpeed"].GetNumF();
-		thunderParam.chaseSpeed       = thunder["ChaseSpeed"].GetNumF();
-		thunderParam.chaseEndDistance = thunder["ChaseEndDistance"].GetNumF();
-		thunderParam.chaseLerpSpeed   = thunder["ChaseLerpSpeed"].GetNumF();
-		thunderParam.chaseEndTime     = thunder["ChaseEndTime"].GetNumF();
-		thunderParam.lifeTime         = thunder["LifeTime"].GetNumF();
+		thunderParam.power             = thunder["Power"].GetNumF();
+		thunderParam.radius            = thunder["Radius"].GetNumF();
+		thunderParam.colliderRadius    = thunder["ColliderRadius"].GetNumF();
+		thunderParam.moveSpeed         = thunder["MoveSpeed"].GetNumF();
+		thunderParam.chaseSpeed        = thunder["ChaseSpeed"].GetNumF();
+		thunderParam.chaseEndDistance  = thunder["ChaseEndDistance"].GetNumF();
+		thunderParam.chaseLerpSpeed    = thunder["ChaseLerpSpeed"].GetNumF();
+		thunderParam.chaseEndTime      = thunder["ChaseEndTime"].GetNumF();
+		thunderParam.lockOnRotateSpeed = Math::Deg2Rad(thunder["LockOnRotateSpeed_Deg"].GetNumF());
+		thunderParam.lockOnTime        = thunder["LockOnTime"].GetNumF();
+		thunderParam.lifeTime          = thunder["LifeTime"].GetNumF();
 	}
 	{
 		JsonWrapper::value thunder_strike(root["ThunderStrike"]);

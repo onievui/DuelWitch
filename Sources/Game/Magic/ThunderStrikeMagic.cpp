@@ -132,5 +132,6 @@ void ThunderStrikeMagic::HitMagic(const IMagic* other) {
 		m_vel = direction * m_vel.Length();
 		//’µ‚Ë•Ô‚èŒã‚Í‘ŠŽè‚Ì–‚–@ˆµ‚¢‚É‚È‚é
 		m_info.playerId = other->GetPlayerID();
+		m_info.powerRate = other->GetInfo().powerRate;
 	}
 }

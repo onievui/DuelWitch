@@ -41,10 +41,13 @@ public:
 private:
 	// 魔法マネージャへのポインタ
 	MagicManager*                                m_pMagicManager;
+	// ロックオン用タイマー
+	float                                        m_lockOnTimer;
 	// 落雷生成用タイマー作動フラグ
 	bool                                         m_startTimer;
 	// 落雷生成用タイマー
 	float                                        m_time;
+
 };
 
 

@@ -80,15 +80,19 @@ void CastMagicCommand::ExecuteIdle(Player& player, const DX::StepTimer& timer) {
 				PlayerStatus& ref_status = GetStatus(player);
 				if (ref_status.sp >= ref_status.normalMagicSpCost) {
 					ref_status.sp -= ref_status.normalMagicSpCost;
-					GetMagicManager(player).CreateMagic(MagicInfo(MagicID::Normal, player.GetPlayerID(), 0, 1.0f), player_pos, direction);
+					GetMagicManager(player).CreateMagic(
+						MagicInfo(MagicID::Normal, player.GetPlayerID(), 0, 1.0f, ref_status.lockOnPlayerID),
+						player_pos, direction);
 				}
 			}
 			// ƒGƒŒƒƒ“ƒg‚ğÁ”ï‚µ‚Ä”­Ë‚·‚é
 			else {
 				ElementID element_id = ref_have_elements.front();
 				ref_have_elements.pop_front();
-				GetMagicManager(player).CreateMagic(element_id, MagicInfo(MagicID::Num,
-					player.GetPlayerID(), 0, player.GetMagicPowerRate(element_id)), player_pos, direction);
+				GetMagicManager(player).CreateMagic(
+					element_id,
+					MagicInfo(MagicID::Num, player.GetPlayerID(), 0, player.GetMagicPowerRate(element_id), GetStatus(player).lockOnPlayerID),
+					player_pos, direction);
 			}
 		}
 	}
@@ -145,8 +149,10 @@ void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& time
 				ref_have_elements.pop_front();
 			}
 			// –‚–@‚ğ¶¬‚·‚é
-			GetMagicManager(player).CreateMagic(element_id, MagicInfo(MagicID::Num,
-				player.GetPlayerID(), ref_status.chargeLevel, player.GetMagicPowerRate(element_id)), player_pos, direction);
+			GetMagicManager(player).CreateMagic(
+				element_id,
+				MagicInfo(MagicID::Num, player.GetPlayerID(), ref_status.chargeLevel, player.GetMagicPowerRate(element_id), GetStatus(player).lockOnPlayerID),
+				player_pos, direction);
 			ref_status.isCharging = false;
 			ref_status.chargeLevel = 0;
 			m_chargingTime = 0.0f;

@@ -2,12 +2,14 @@
 #include <Framework/DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\MathUtils.h>
 #include <Parameters\MagicParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
 #include "MagicID.h"
 #include <Game\Collision\SphereCollider.h>
 #include <Game\Effect\EffectManager.h>
 #include <Game\Effect\IEffectEmitter.h>
+#include <Game\Player\PlayerData.h>
 
 
 /// <summary>
@@ -39,6 +41,7 @@ void NormalMagic::Create(const MagicInfo& magicInfo, const DirectX::SimpleMath::
 	static_cast<SphereCollider*>(m_collider.get())->SetRadius(parameter.radius);
 	m_color = DirectX::Colors::White;
 	m_vel = dir * parameter.moveSpeed;
+	m_lockOnTimer = parameter.lockOnTime;
 	m_lifeTime = parameter.lifeTime;
 
 	// 魔法のエフェクトを生成する
@@ -57,6 +60,22 @@ void NormalMagic::Update(const DX::StepTimer& timer) {
 		m_isUsed = false;
 	}
 	DirectX::SimpleMath::Vector3 pos = m_transform.GetLocalPosition();
+	// ロックオン中は追尾させる
+	if (m_info.lockOnPlayerId != -1 && m_lockOnTimer > 0.0f) {
+		m_lockOnTimer -= elapsed_time;
+		DirectX::SimpleMath::Vector3 target_pos = ServiceLocater<PlayerData>::Get()->transforms[m_info.lockOnPlayerId]->GetPosition();
+		DirectX::SimpleMath::Vector3 target_dir = target_pos - pos;
+		// 90°以上なら追尾を終了させる
+		if (m_vel.Dot(target_dir) >= 0.0f) {
+			float angle = Math::BetweenAngle(m_vel, target_dir);
+			const float rotate_speed = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->fireParam.lockOnRotateSpeed;
+			m_vel = DirectX::SimpleMath::Vector3::Transform(
+				m_vel, DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(m_vel.Cross(target_dir), std::min(angle, rotate_speed*elapsed_time)));
+		}
+		else {
+			m_lockOnTimer = 0.0f;
+		}
+	}
 	pos += m_vel*elapsed_time;
 	m_transform.SetPosition(pos);
 

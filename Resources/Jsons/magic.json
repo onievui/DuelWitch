@@ -6,6 +6,8 @@
     "Power": 5.0,
     "Radius": 0.4,
     "MoveSpeed": 60.0,
+    "LockOnRotateSpeed_Deg": 30.0,
+    "LockOnTime": 2.0,
     "LifeTime": 6.0
   },
   "Fire": {
@@ -14,14 +16,16 @@
     "Radius": 0.5,
     "Height": 1.6,
     "MoveSpeed": 60.0,
+    "LockOnRotateSpeed_Deg": 50.0,
+    "LockOnTime": 2.0,
     "LifeTime": 6.0
   },
   "Freeze": {
     "Power": 10.0,
     "Radius": 1.0,
-    "LifeTime": 6.0,
     "RotateSpeed_Deg": 360.0,
-    "RotateRadius": 3.0
+    "RotateRadius": 3.0,
+    "LifeTime": 6.0
   },
   "Thunder": {
     "Power": 0.0,
@@ -32,6 +36,8 @@
     "ChaseEndDistance": 3.0,
     "ChaseLerpSpeed": 0.5,
     "ChaseEndTime": 0.5,
+    "LockOnRotateSpeed_Deg": 30.0,
+    "LockOnTime": 2.0,
     "LifeTime": 3.0
   },
   "ThunderStrike": {

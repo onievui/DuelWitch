@@ -54,17 +54,21 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 	// エレメントがないなら通常魔法を発射する
 	if (ref_have_elements.empty()) {
 		// SPに余裕があるか判定する
-		PlayerStatus& status = GetStatus(player);
-		if (status.sp >= status.maxSp*0.9f) {
-			status.sp -= status.normalMagicSpCost;
-			GetMagicManager(player).CreateMagic(MagicInfo(MagicID::Normal,player.GetPlayerID(),0,1.0f), pos, direction);
+		PlayerStatus& ref_status = GetStatus(player);
+		if (ref_status.sp >= ref_status.maxSp*0.9f) {
+			ref_status.sp -= ref_status.normalMagicSpCost;
+			GetMagicManager(player).CreateMagic(
+				MagicInfo(MagicID::Normal, player.GetPlayerID(), 0, 1.0f, ref_status.lockOnPlayerID),
+				pos, direction);
 		}
 	}
 	else {
 		ElementID element_id = GetHaveElements(player).front();
 		GetHaveElements(player).pop_front();
-		GetMagicManager(player).CreateMagic(element_id, MagicInfo(MagicID::Normal,
-			player.GetPlayerID(), 0, player.GetMagicPowerRate(element_id)), pos, direction);
+		GetMagicManager(player).CreateMagic(
+			element_id,
+			MagicInfo(MagicID::Normal, player.GetPlayerID(), 0, player.GetMagicPowerRate(element_id), GetStatus(player).lockOnPlayerID),
+			pos, direction);
 	}
 
 	const float cast_delay = parameter.castDelay;
