@@ -313,9 +313,11 @@ void UserRenderCommand::RenderSpBar(const Player& player, DirectX::SpriteBatch* 
 /// /// <param name="player">プレイヤー</param>
 /// <param name="spriteBatch">スプライトバッチ</param>
 void UserRenderCommand::RenderAiming(const Player& player, DirectX::SpriteBatch* spriteBatch) const {
-	player;
+	// ロックオン中なら照準の色を変える
+	bool lock_on = (GetStatus(player).lockOnPlayerID != -1);
+
 	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::MagicAiming);
-	spriteBatch->Draw(texture->GetResource().Get(),
+	spriteBatch->Draw(texture->GetResource(lock_on ? 1 : 0).Get(),
 		m_aimingPos, nullptr, DirectX::SimpleMath::Color(1, 1, 1, 0.8f), m_aimigRotation,
 		texture->GetCenter(), DirectX::SimpleMath::Vector2(0.25f, 0.25f));
 }

@@ -29,6 +29,12 @@ class Player : public IObject {
 public:
 	// エレメント所持上限
 	static constexpr int HAVE_ELEMENT_MAX = 10;
+	// 当たり判定半径
+	static constexpr float COLLIDER_RADIUS = 0.75f;
+	// 当たり判定座標オフセット
+	static constexpr float COLLIDER_OFFSET_Y = 0.65f;
+	// ロックオン用当たり判定半径
+	static constexpr float LOCKON_COLLIDER_RADIUS = 3.0f;
 
 public:
 	// コンストラクタ
@@ -50,6 +56,8 @@ public:
 	const DirectX::SimpleMath::Matrix& GetMatrix() const override;
 	// プレイヤーの当たり判定を取得する
 	const Collider* GetCollider() const override;
+	// ロックオン用当たり判定を取得する
+	const Collider* GetLockOnCollider() const;
 	// プレイヤーIDを取得する
 	PlayerID GetPlayerID() const;
 	// 他のプレイヤーを設定する
@@ -88,6 +96,8 @@ private:
 	Transform                              m_transform;
 	// 球当たり判定
 	SphereCollider                         m_sphereCollider;
+	// ロックオン用当たり判定
+	SphereCollider                         m_lockOnCollider;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix            m_world;
 	// 移動コマンド

@@ -79,7 +79,8 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::MagicIcon,       TextureResource(L"Protected/element1.png"));
 		textureResourceManager->AddResource(TextureID::MagicIcon,		    L"Protected/element2.png");
 		textureResourceManager->AddResource(TextureID::MagicIcon,           L"Protected/element3.png");
-		textureResourceManager->AddResource(TextureID::MagicAiming,     TextureResource(L"Protected/magic_aiming.png"));
+		textureResourceManager->AddResource(TextureID::MagicAiming,     TextureResource(L"Protected/magic_aiming1.png"));
+		textureResourceManager->AddResource(TextureID::MagicAiming,         L"Protected/magic_aiming2.png");
 		textureResourceManager->AddResource(TextureID::CharaIcon,       TextureResource(L"Protected/chara_icon1.png"));
 		textureResourceManager->AddResource(TextureID::CharaIcon,           L"Protected/chara_icon2.png");
 		textureResourceManager->AddResource(TextureID::CharaIcon,           L"Protected/chara_icon3.png");

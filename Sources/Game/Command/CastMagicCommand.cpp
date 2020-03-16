@@ -22,25 +22,12 @@ CastMagicCommand::CastMagicCommand()
 /// </summary>
 /// <param name="player">プレイヤー</param>
 /// <param name="timer">タイマー</param>
-void CastMagicCommand::Execute(Player& player, const DX::StepTimer&  timer) {
-	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
-	elapsedTime;
+void CastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
+	// 照準を操作する
+	ControlAim(player, timer);
 
-	const InputManager* input_manager = ServiceLocater<InputManager>::Get();
-	MouseWrapper* mouse_wrapper = ServiceLocater<MouseWrapper>::Get();
-
-	// パッド接続時は右スティックでマウスカーソルを動かせるようにする
-	if (input_manager->IsPadConnected()) {
-		DirectX::GamePad::ThumbSticks thumb = ServiceLocater<DirectX::GamePad::ButtonStateTracker>::Get()->GetLastState().thumbSticks;
-		DirectX::SimpleMath::Vector2 axis(thumb.rightX, -thumb.rightY);
-		// 速度が1以上なら正規化する
-		if (axis.LengthSquared() > 1.0f) {
-			axis.Normalize();
-		}
-		// マウスの座標に右スティックの移動量を足して反映する
-		DirectX::SimpleMath::Vector2 mouse_pos = mouse_wrapper->GetPos() + axis * CURSOR_SENSITIVITY*elapsedTime;
-		mouse_wrapper->SetPos(mouse_pos);
-	}
+	// 照準に敵プレイヤーが重なっているか判定する
+	LockOnOtherPlayer(player);
 
 	// 状態に応じた処理を行う
 	switch (m_state) {
@@ -67,7 +54,6 @@ void CastMagicCommand::ExecuteIdle(Player& player, const DX::StepTimer& timer) {
 	timer;
 
 	Transform& ref_transform = GetTransform(player);
-	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
 
 	// ボタンを押して魔法を発射する
 	if (ServiceLocater<InputManager>::Get()->IsPressed(InputID::Shot)) {
@@ -79,15 +65,13 @@ void CastMagicCommand::ExecuteIdle(Player& player, const DX::StepTimer& timer) {
 			return;
 		}
 
-		// レイの作成
-		DirectX::SimpleMath::Ray ray = GetCamera(player).ScreenPointToRay(DirectX::SimpleMath::Vector3(mouse_pos.x, mouse_pos.y, 0));
 		// 平面の作成
 		DirectX::SimpleMath::Plane plane = CreatePlaneForMagic(ref_transform);
 		float distance;
-		if (ray.Intersects(plane, distance)) {
-			DirectX::SimpleMath::Vector3 ray_pos = ray.position + ray.direction * distance;
+		if (m_shotRay.Intersects(plane, distance)) {
+			DirectX::SimpleMath::Vector3 hit_pos = m_shotRay.position + m_shotRay.direction * distance;
 			const DirectX::SimpleMath::Vector3& player_pos = ref_transform.GetLocalPosition();
-			DirectX::SimpleMath::Vector3 direction = ray_pos - player_pos;
+			DirectX::SimpleMath::Vector3 direction = hit_pos - player_pos;
 			direction.Normalize();
 			std::list<ElementID>& ref_have_elements = GetHaveElements(player);
 			// エレメントがないなら通常魔法を発射する
@@ -118,7 +102,6 @@ void CastMagicCommand::ExecuteIdle(Player& player, const DX::StepTimer& timer) {
 void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& timer) {
 	Transform& ref_transform = GetTransform(player);
 	PlayerStatus& ref_status = GetStatus(player);
-	const DirectX::SimpleMath::Vector2& mouse_pos = ServiceLocater<MouseWrapper>::Get()->GetPos();
 
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 
@@ -147,15 +130,13 @@ void CastMagicCommand::ExecuteCharging(Player& player, const DX::StepTimer& time
 	}
 	// ボタンを離して魔法を発射する
 	else if (ServiceLocater<InputManager>::Get()->IsUp(InputID::Shot)) {
-		// レイの作成
-		DirectX::SimpleMath::Ray ray = GetCamera(player).ScreenPointToRay(DirectX::SimpleMath::Vector3(mouse_pos.x, mouse_pos.y, 0));
 		// 平面の作成
 		DirectX::SimpleMath::Plane plane = CreatePlaneForMagic(ref_transform);
 		float distance;
-		if (ray.Intersects(plane, distance)) {
-			DirectX::SimpleMath::Vector3 ray_pos = ray.position + ray.direction * distance;
+		if (m_shotRay.Intersects(plane, distance)) {
+			DirectX::SimpleMath::Vector3 hit_pos = m_shotRay.position + m_shotRay.direction * distance;
 			const DirectX::SimpleMath::Vector3& player_pos = ref_transform.GetLocalPosition();
-			DirectX::SimpleMath::Vector3 direction = ray_pos - player_pos;
+			DirectX::SimpleMath::Vector3 direction = hit_pos - player_pos;
 			direction.Normalize();
 			std::list<ElementID>& ref_have_elements = GetHaveElements(player);
 			ElementID element_id = ref_have_elements.front();
@@ -198,6 +179,88 @@ int CastMagicCommand::ChargeAllowedLevel(const std::list<ElementID>& elements) {
 		++itr;
 	}
 	return level;
+}
+
+/// <summary>
+/// 照準を操作する
+/// </summary>
+/// <param name="player">プレイヤー/param>
+/// <param name="timer">ステップタイマー</param>
+void CastMagicCommand::ControlAim(Player& player, const DX::StepTimer& timer) {
+	float elapsedTime = static_cast<float>(timer.GetElapsedSeconds());
+
+	const InputManager* input_manager = ServiceLocater<InputManager>::Get();
+	MouseWrapper* mouse_wrapper = ServiceLocater<MouseWrapper>::Get();
+
+	// パッド未接続時はマウス操作する
+
+	// パッド接続時は右スティックでマウスカーソルを動かせるようにする
+	if (input_manager->IsPadConnected()) {
+		DirectX::GamePad::ThumbSticks thumb = ServiceLocater<DirectX::GamePad::ButtonStateTracker>::Get()->GetLastState().thumbSticks;
+		DirectX::SimpleMath::Vector2 axis(thumb.rightX, -thumb.rightY);
+		// 速度が1以上なら正規化する
+		if (axis.LengthSquared() > 1.0f) {
+			axis.Normalize();
+		}
+		// マウスの座標に右スティックの移動量を足して反映する
+		DirectX::SimpleMath::Vector2 mouse_pos = mouse_wrapper->GetPos() + axis * CURSOR_SENSITIVITY*elapsedTime;
+		mouse_wrapper->SetPos(mouse_pos);
+	}
+
+	// カメラから照準へのレイを生成する
+	const DirectX::SimpleMath::Vector2& mouse_pos = mouse_wrapper->GetPos();
+	m_shotRay = GetCamera(player).ScreenPointToRay(DirectX::SimpleMath::Vector3(mouse_pos.x, mouse_pos.y, 0.0f));
+}
+
+/// <summary>
+/// 照準に敵プレイヤーが重なっているか判定する
+/// </summary>
+/// <param name="player">プレイヤー</param>
+/// <returns>
+/// true : 重なっている
+/// false : 重なっていない
+/// </returns>
+bool CastMagicCommand::LockOnOtherPlayer(Player& player) {
+	const std::vector<Player*>& other_players = GetOtherPlayers(player);
+	PlayerStatus& ref_status = GetStatus(player);
+	const Camera& camera = GetCamera(player);
+	float min_distance = 1000000.0f;
+
+	for (std::vector<Player*>::const_iterator itr = other_players.begin(); itr != other_players.end(); ++itr) {
+		// 敵プレイヤーの当たり判定を変換する
+		const SphereCollider* other_collider = dynamic_cast<const SphereCollider*>((*itr)->GetLockOnCollider());
+		// 念のため形チェック
+		if (!other_collider) {
+			continue;
+		}
+		DirectX::BoundingSphere ray_target(other_collider->GetPos(), other_collider->GetRadius());
+
+		// 衝突判定をする
+		float distance;
+		if (!m_shotRay.Intersects(ray_target, distance)) {
+			continue;
+		}
+		// 当たり判定の中心が画面に写っているか判定する
+		float fov = camera.GetFov();
+		DirectX::SimpleMath::Vector3 target_dir = ray_target.Center - camera.GetEyePosition();
+		target_dir.Normalize();
+		if (camera.GetEyeVector().Dot(target_dir) < std::cosf(fov*0.5f)) {
+			continue;
+		}
+
+		// 最も近いならプレイヤーIDを記憶する
+		if (distance < min_distance) {
+			min_distance = distance;
+			ref_status.lockOnPlayerID = static_cast<int>((*itr)->GetPlayerID());
+		}
+	}
+
+	// 衝突しなかった場合は無効な値を入れる
+	if (min_distance >= 990000.0f) {
+		ref_status.lockOnPlayerID = -1;
+	}
+
+	return false;
 }
 
 /// <summary>

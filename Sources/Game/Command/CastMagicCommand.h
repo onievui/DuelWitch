@@ -31,7 +31,10 @@ private:
 	void ExecuteCharging(Player& player, const DX::StepTimer& timer);
 	// チャージショットが出来る段階を調べる
 	int ChargeAllowedLevel(const std::list<ElementID>& elements);
-
+	// 照準を操作する
+	void ControlAim(Player& player, const DX::StepTimer& timer);
+	// 照準に敵プレイヤーが重なっているか判定する
+	bool LockOnOtherPlayer(Player& player);
 	// 魔法のためのレイ用平面の作成
 	DirectX::SimpleMath::Plane CreatePlaneForMagic(const Transform& transform);
 
@@ -44,13 +47,15 @@ private:
 
 private:
 	// 現在のステート
-	ChargeState          m_state;
+	ChargeState              m_state;
+	// カメラから照準へのレイ
+	DirectX::SimpleMath::Ray m_shotRay;
 	// チャージ時間
-	float                m_chargingTime;
+	float                    m_chargingTime;
 	// チャージ可能な段階
-	int                  m_chargeAllowedLevel;
+	int                      m_chargeAllowedLevel;
 	// チャージ効果音用タイマー
-	float                m_chargingSoundTime;
+	float                    m_chargingSoundTime;
 };
 
 

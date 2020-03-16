@@ -38,7 +38,8 @@ Player::Player(PlayerID id, const DirectX::SimpleMath::Vector3& pos)
 	, m_status()
 	, m_haveElements()
 	, m_transform(pos)
-	, m_sphereCollider(&m_transform, 0.75f, DirectX::SimpleMath::Vector3(0,0.65f,0)) 
+	, m_sphereCollider(&m_transform, COLLIDER_RADIUS, DirectX::SimpleMath::Vector3(0,COLLIDER_OFFSET_Y,0))
+	, m_lockOnCollider(&m_transform, LOCKON_COLLIDER_RADIUS, DirectX::SimpleMath::Vector3(0,COLLIDER_OFFSET_Y,0))
 	, m_pMagicManager()
 	, m_pCamera() {
 
@@ -187,6 +188,16 @@ const DirectX::SimpleMath::Matrix& Player::GetMatrix() const {
 /// </returns>
 const Collider* Player::GetCollider() const {
 	return &m_sphereCollider;
+}
+
+/// <summary>
+/// ロックオン用当たり判定を取得する
+/// </summary>
+/// <returns>
+/// ロックオン用当たり判定
+/// </returns>
+const Collider* Player::GetLockOnCollider() const {
+	return &m_lockOnCollider;
 }
 
 /// <summary>
@@ -356,6 +367,7 @@ void Player::InitializeStatus() {
 	m_status.damageTimer     = 0.0f;
 	m_status.spDecreaseTimer = 0.0f;
 	m_status.isBoosting      = false;
+	m_status.lockOnPlayerID  = -1;
 	m_status.isCharging      = false;
 	m_status.chargeLevel     = 0;
 	m_status.canCast         = true;

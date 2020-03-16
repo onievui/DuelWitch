@@ -3,7 +3,6 @@
 #define PLAYER_STATUS_DEFINED
 
 
-
 /// <summary>
 /// プレイヤーステータス
 /// </summary>
@@ -53,6 +52,8 @@ struct PlayerStatus {
 	float                             spDecreaseTimer;
 	// ブースト中かどうか
 	bool                              isBoosting;
+	// ロックオンしているプレイヤーのID
+	int                               lockOnPlayerID;
 	// チャージ中かどうか
 	bool                              isCharging;
 	// チャージ段階
