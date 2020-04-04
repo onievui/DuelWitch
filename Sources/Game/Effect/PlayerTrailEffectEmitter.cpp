@@ -46,7 +46,7 @@ void PlayerTrailEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, c
 	m_createDir = dir;
 
 	const float delay_interval = parameter.lifeTime / m_effects.size();
-	float interval = 0.0f;
+	float interval = 0.1f;
 	for (std::vector<std::unique_ptr<PlayerTrailEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
@@ -141,6 +141,11 @@ void PlayerTrailEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::M
 			(*itr)->GetPos(), (*itr)->GetColor(),
 			DirectX::SimpleMath::Vector2((*itr)->GetScale()*1.0f, 0.0f) // xがスケール yがZ回転
 		));
+	}
+
+	// 最初の一瞬だけ処理しない
+	if (vertex.size() == 0) {
+		return;
 	}
 
 	// テクスチャを割り当てる
