@@ -5,11 +5,11 @@
 #include <Utils\MathUtils.h>
 #include <Parameters\MagicParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
-#include "MagicID.h"
 #include <Game\Collision\SphereCollider.h>
 #include <Game\Effect\EffectManager.h>
-#include <Game\Effect\IEffectEmitter.h>
+#include <Game\Effect\EffectiveEffectEmitter.h>
 #include <Game\Player\PlayerData.h>
+#include "MagicID.h"
 
 
 /// <summary>
@@ -148,5 +148,12 @@ void FireMagic::HitMagic(const IMagic* other) {
 	// 落雷魔法と衝突したら消える
 	if (other_id == MagicID::ThunderStrike) {
 		m_isUsed = false;
+		// 打ち消し・反射エフェクトを生成する
+		IEffectEmitter* effect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::Effective,
+			m_transform.GetPosition(), m_vel);
+		EffectiveEffectEmitter* effective_effect = dynamic_cast<EffectiveEffectEmitter*>(effect);
+		if (effective_effect) {
+			effective_effect->SetColorID(m_info.id);
+		}
 	}
 }

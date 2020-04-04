@@ -11,6 +11,7 @@ class SphereCollider;
 enum class MagicID;
 enum class PlayerID;
 struct MagicInfo;
+class Transform;
 
 
 /// <summary>
@@ -37,6 +38,8 @@ public:
 	virtual PlayerID GetPlayerID() const = 0;
 	// 魔法情報を取得する
 	virtual const MagicInfo& GetInfo() const = 0;
+	// 姿勢を取得する
+	virtual const Transform& GetTransform() const = 0;
 	// ダメージを取得する
 	virtual float GetPower() const = 0;
 	// プレイヤーとの衝突処理

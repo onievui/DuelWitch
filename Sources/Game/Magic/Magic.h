@@ -54,6 +54,8 @@ public:
 	PlayerID GetPlayerID() const                         { return m_info.playerId; }
 	// 魔法情報を取得する
 	const MagicInfo& GetInfo() const                     { return m_info; }
+	// 姿勢を取得する
+	virtual const Transform& GetTransform() const        { return m_transform; }
 	// ダメージを取得する
 	virtual float GetPower() const                       { return m_info.powerRate; }
 	// プレイヤーとの衝突処理

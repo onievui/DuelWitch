@@ -80,17 +80,28 @@ bool EffectParameter::Load() {
 	{
 		JsonWrapper::value thunder_strike_magic(root["ThunderStrikeMagic"]);
 		thunderStrikeMagicParam.particleNum = thunder_strike_magic["ParticleNum"].GetNumI();
-		thunderStrikeMagicParam.scale = thunder_strike_magic["Scale"].GetNumF();
+		thunderStrikeMagicParam.scale       = thunder_strike_magic["Scale"].GetNumF();
+	}
+	{
+		JsonWrapper::value effective(root["Effective"]);
+		effectiveParam.particleNum    = effective["ParticleNum"].GetNumI();
+		effectiveParam.lifeTime       = effective["LifeTime"].GetNumF();
+		effectiveParam.maxRotateSpeed = effective["MaxRotateSpeed"].GetNumF();
+		effectiveParam.minRotateSpeed = effective["MinRotateSpeed"].GetNumF();
+		effectiveParam.maxScale       = effective["MaxScale"].GetNumF();
+		effectiveParam.minScale       = effective["MinScale"].GetNumF();
+		effectiveParam.maxSpeed       = effective["MaxSpeed"].GetNumF();
+		effectiveParam.minSpeed       = effective["MinSpeed"].GetNumF();
 	}
 	{
 		JsonWrapper::value death(root["Death"]);
 		deathParam.particleNum = death["ParticleNum"].GetNumI();
-		deathParam.lifeTime = death["LifeTime"].GetNumF();
-		deathParam.maxScale = death["MaxScale"].GetNumF();
-		deathParam.minScale = death["MinScale"].GetNumF();
-		deathParam.maxSpeed = death["MaxSpeed"].GetNumF();
-		deathParam.minSpeed = death["MinSpeed"].GetNumF();
-		deathParam.blinkSpeed = death["BlinkSpeed"].GetNumF();
+		deathParam.lifeTime    = death["LifeTime"].GetNumF();
+		deathParam.maxScale    = death["MaxScale"].GetNumF();
+		deathParam.minScale    = death["MinScale"].GetNumF();
+		deathParam.maxSpeed    = death["MaxSpeed"].GetNumF();
+		deathParam.minSpeed    = death["MinSpeed"].GetNumF();
+		deathParam.blinkSpeed  = death["BlinkSpeed"].GetNumF();
 	}
 
 	return true;

@@ -51,6 +51,7 @@ enum class TextureID {
 	FireMagicEffect,
 	Ice,
 	ThunderStrikeMagicEffect,
+	EffectiveEffect,
 
 	BoostEffect,
 
@@ -92,11 +93,13 @@ enum class SoundID {
 	Decision,
 	Ready,
 	Pause,
+
 	NormalMagic,
 	FireMagic,
 	FreezeMagic,
 	ThunderMagic,
 	ThunderStrikeMagic,
+	Effective,
 	Charge,
 	Damage,
 	Boost,

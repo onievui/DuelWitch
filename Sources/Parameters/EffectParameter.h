@@ -107,15 +107,28 @@ public:
 	};
 	thunder_strike_param thunderStrikeMagicParam;
 
+	// 打ち消し・反射エフェクト
+	struct effective_param {
+		int particleNum;        // パーティクル数
+		float lifeTime;         // パーティクルが出現してから消えるまでの時間
+		float maxRotateSpeed;	// パーティクルの最大回転速度
+		float minRotateSpeed;	// パーティクルの最小回転速度
+		float maxScale;	        // パーティクルの最大サイズ
+		float minScale;	        // パーティクルの最小サイズ
+		float maxSpeed;         // パーティクルの最大速度
+		float minSpeed;         // パーティクルの最小速度
+	};
+	effective_param effectiveParam;
+
 	// 撃破エフェクト
 	struct death_param {
-		int particleNum;                                // パーティクル数
-		float lifeTime;                                 // パーティクルが出現してから消えるまでの時間
-		float maxScale;	                                // パーティクルの最大サイズ
-		float minScale;	                                // パーティクルの最小サイズ
-		float maxSpeed;                                 // パーティクルの最大速度
-		float minSpeed;                                 // パーティクルの最小速度
-		float blinkSpeed;                               // パーティクルの点滅速度
+		int particleNum;	// パーティクル数
+		float lifeTime;		// パーティクルが出現してから消えるまでの時間
+		float maxScale;		// パーティクルの最大サイズ
+		float minScale;		// パーティクルの最小サイズ
+		float maxSpeed;		// パーティクルの最大速度
+		float minSpeed;		// パーティクルの最小速度
+		float blinkSpeed;	// パーティクルの点滅速度
 	};
 	death_param deathParam;
 };

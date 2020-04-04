@@ -3,20 +3,25 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
+#include <Utils\LamdaUtils.h>
+#include <Utils\IfIterator.h>
 #include <Parameters\MagicParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
 #include <Game\Collision\CapsuleCollider.h>
-#include "MagicID.h"
 #include <Game\Effect\EffectManager.h>
-#include <Game\Effect\IEffectEmitter.h>
+#include <Game\Effect\EffectiveEffectEmitter.h>
 #include <Game\Player\PlayerData.h>
+#include "MagicID.h"
+#include "MagicManager.h"
 
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
-ThunderStrikeMagic::ThunderStrikeMagic()
-	: Magic() {
+/// <param name="pMagicManager">魔法マネージャへのポインタ</param>
+ThunderStrikeMagic::ThunderStrikeMagic(MagicManager* pMagicManager)
+	: Magic()
+	, m_pMagicManager(pMagicManager) {
 	const MagicParameter::thunder_strike_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetMagicParameter()->thunderStrikeParam;
 	m_collider = std::make_unique<CapsuleCollider>(&m_transform, parameter.radius,
 		DirectX::SimpleMath::Vector3(0, parameter.height*0.5f, 0), DirectX::SimpleMath::Vector3(0, -parameter.height*0.5f, 0));
@@ -51,6 +56,8 @@ void ThunderStrikeMagic::Create(const MagicInfo& magicInfo, const DirectX::Simpl
 	// 魔法のエフェクトを生成する
 	m_pEffect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::ThunderStrikeMagic, pos, dir);
 	m_pEffect->SetParent(&m_transform);
+
+	m_refrectCount = 0;
 }
 
 /// <summary>
@@ -64,6 +71,22 @@ void ThunderStrikeMagic::Update(const DX::StepTimer& timer) {
 		m_isUsed = false;
 	}
 	DirectX::SimpleMath::Vector3 pos = m_transform.GetLocalPosition();
+
+	// 近くに氷魔法があれば、引き寄せられる
+	std::vector<IMagic*>* magics = m_pMagicManager->GetMagics();
+	if (m_refrectCount == 0) {
+		for (IfIterator<std::vector<IMagic*>> itr(*magics, LamdaUtils::NotNull()); itr != magics->end(); ++itr) {
+			if ((*itr)->GetID() != MagicID::Freeze) {
+				continue;
+			}
+			const DirectX::SimpleMath::Vector3& other_pos = (*itr)->GetTransform().GetLocalPosition();
+			DirectX::SimpleMath::Vector3 vec(other_pos.x - pos.x, 0, other_pos.z - pos.z);
+			if (vec.Length() <= ATTRACTED_RADIUS && other_pos.y < pos.y) {
+				pos += vec * ATTRACTED_SPEED;
+			}
+		}
+	}
+
 	pos += m_vel * elapsed_time;;
 	m_transform.SetPosition(pos);
 
@@ -133,5 +156,14 @@ void ThunderStrikeMagic::HitMagic(const IMagic* other) {
 		//跳ね返り後は相手の魔法扱いになる
 		m_info.playerId = other->GetPlayerID();
 		m_info.powerRate = other->GetInfo().powerRate;
+		++m_refrectCount;
+
+		// 打ち消し・反射エフェクトを生成する
+		IEffectEmitter* effect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::Effective,
+			m_transform.GetPosition(), m_vel);
+		EffectiveEffectEmitter* effective_effect = dynamic_cast<EffectiveEffectEmitter*>(effect);
+		if (effective_effect) {
+			effective_effect->SetColorID(m_info.id);
+		}
 	}
 }

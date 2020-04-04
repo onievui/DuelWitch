@@ -1,26 +1,28 @@
-#include "DeathEffectEmitter.h"
+#include "EffectiveEffectEmitter.h"
 #include <Framework\DirectX11.h>
 #include <Utils\ServiceLocater.h>
 #include <Utils\MathUtils.h>
 #include <Utils\RandMt.h>
 #include <Utils\ResourceManager.h>
+#include <Utils\AudioManager.h>
 #include <Utils\ConstBuffer.h>
 #include <Parameters\EffectParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
 #include <Game\Camera\Camera.h>
-#include "DeathEffect.h"
+#include <Game\Magic\MagicID.h>
+#include "EffectiveEffect.h"
 
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
-DeathEffectEmitter::DeathEffectEmitter() {
+EffectiveEffectEmitter::EffectiveEffectEmitter() {
 	// メモリを確保しておく
-	m_effects.resize(ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->deathParam.particleNum);
-	for (std::vector<std::unique_ptr<DeathEffect>>::iterator itr = m_effects.begin();
+	m_effects.resize(ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->effectiveParam.particleNum);
+	for (std::vector<std::unique_ptr<EffectiveEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
-		*itr = std::make_unique<DeathEffect>();
+		*itr = std::make_unique<EffectiveEffect>();
 	}
 
 	// 定数バッファの作成
@@ -40,15 +42,15 @@ DeathEffectEmitter::DeathEffectEmitter() {
 /// </summary>
 /// <param name="pos">座標</param>
 /// <param name="dir">向き</param>
-void DeathEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
-	const EffectParameter::death_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->deathParam;
+void EffectiveEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, const DirectX::SimpleMath::Vector3& dir) {
+	const EffectParameter::effective_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->effectiveParam;
 
 	m_transform.SetPosition(pos);
 	m_lifeTime = parameter.lifeTime;
 
 	DirectX::SimpleMath::Quaternion rotation = Math::CreateQuaternionFromVector3(DirectX::SimpleMath::Vector3::UnitX, dir);
 
-	for (std::vector<std::unique_ptr<DeathEffect>>::iterator itr = m_effects.begin();
+	for (std::vector<std::unique_ptr<EffectiveEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
 		// 放射状にランダムな方向を決める
@@ -64,6 +66,9 @@ void DeathEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, const D
 
 		(*itr)->Initialize(parameter.lifeTime, direction * 0.2f, direction*speed);
 	}
+
+	// 効果音を鳴らす
+	ServiceLocater<AudioManager>::Get()->PlaySound(SoundID::Effective);
 }
 
 /// <summary>
@@ -71,7 +76,7 @@ void DeathEffectEmitter::Create(const DirectX::SimpleMath::Vector3& pos, const D
 /// </summary>
 /// <param name="timer">ステップタイマー</param>
 /// <param name="camera">カメラ</param>
-void DeathEffectEmitter::Update(const DX::StepTimer& timer, const Camera* camera) {
+void EffectiveEffectEmitter::Update(const DX::StepTimer& timer, const Camera* camera) {
 	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
 
 	// 視線ベクトルを取得する
@@ -85,7 +90,7 @@ void DeathEffectEmitter::Update(const DX::StepTimer& timer, const Camera* camera
 	}
 
 	// エフェクトを更新する
-	for (std::vector<std::unique_ptr<DeathEffect>>::iterator itr = m_effects.begin();
+	for (std::vector<std::unique_ptr<EffectiveEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
 		(*itr)->Update(timer);
@@ -98,7 +103,7 @@ void DeathEffectEmitter::Update(const DX::StepTimer& timer, const Camera* camera
 /// <param name="batch">プリミティブバッチ</param>
 /// <param name="view">ビュー行列</param>
 /// <param name="proj">射影行列</param>
-void DeathEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
+void EffectiveEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& proj) {
 	const EffectParameter::death_param& parameter = ServiceLocater<PlayParameterLoader>::Get()->GetEffectParameter()->deathParam;
 	ID3D11DeviceContext* context = ServiceLocater<DirectX11>::Get()->GetContext().Get();
 	DirectX::CommonStates* states = ServiceLocater<DirectX::CommonStates>::Get();
@@ -147,24 +152,23 @@ void DeathEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Matrix&
 	// 終了が近いときはアルファを小さくする
 	float t = 1.0f - (m_lifeTime / parameter.lifeTime);
 	float alpha = (t < 0.8f ? 1 : 1 - (t - 0.8f) / 0.2f);
-	DirectX::SimpleMath::Color color;
+	DirectX::SimpleMath::Color color = m_color;
+	color.w *= alpha;
 
 	// 頂点情報を作成する
 	std::vector<DirectX::VertexPositionColorTexture> vertex;
 	vertex.reserve(m_effects.size());
-	for (std::vector<std::unique_ptr<DeathEffect>>::iterator itr = m_effects.begin();
+	for (std::vector<std::unique_ptr<EffectiveEffect>>::iterator itr = m_effects.begin();
 		itr != m_effects.end();
 		++itr) {
-		color = m_color * (*itr)->GetColorPower();
-		color.w = alpha;
 		vertex.emplace_back(DirectX::VertexPositionColorTexture(
 			(*itr)->GetPos(), color,
-			DirectX::SimpleMath::Vector2((*itr)->GetScale(), 0.0f) // xがスケール yがZ回転
+			DirectX::SimpleMath::Vector2((*itr)->GetScale(), (*itr)->GetAngle()) // xがスケール yがZ回転
 		));
 	}
 
 	// テクスチャを割り当てる
-	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::Particle);
+	const TextureResource* texture = ServiceLocater<ResourceManager<TextureResource>>::Get()->GetResource(TextureID::EffectiveEffect);
 	context->PSSetShaderResources(0, 1, texture->GetResource().GetAddressOf());
 
 	// エフェクトを描画する
@@ -174,22 +178,26 @@ void DeathEffectEmitter::Render(Batch* batch, const DirectX::SimpleMath::Matrix&
 }
 
 /// <summary>
-/// エフェクトの色番号を設定する
+/// 魔法IDでエフェクトの色を設定する
 /// </summary>
-/// <param name="id">色番号</param>
-void DeathEffectEmitter::SetColorID(int id) {
+/// <param name="id">魔法ID</param>
+void EffectiveEffectEmitter::SetColorID(MagicID id) {
 	switch (id) {
-	case 0:
-		m_color = DirectX::SimpleMath::Color(1.0f, 1.0f, 0.0f, 1.0f);
+	case MagicID::Normal:
+		m_color = DirectX::SimpleMath::Color(1.0f, 1.0f, 1.0f, 1.0f);
 		break;
-	case 1:
+	case MagicID::Fire:
 		m_color = DirectX::SimpleMath::Color(1.0f, 0.0f, 0.0f, 1.0f);
 		break;
-	case 2:
+	case MagicID::Freeze:
 		m_color = DirectX::SimpleMath::Color(0.0f, 1.0f, 1.0f, 1.0f);
 		break;
+	case MagicID::Thunder:
+	case MagicID::ThunderStrike:
+		m_color = DirectX::SimpleMath::Color(1.0f, 1.0f, 0.0f, 1.0f);
+		break;
 	default:
-		ErrorMessage(L"エフェクトの色番号の設定で不正な値が渡されました");
+		ErrorMessage(L"エフェクトの色の設定で不正な値が渡されました");
 		break;
 	}
 }

@@ -101,6 +101,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike12.png");
 		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike13.png");
 		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike14.png");
+		textureResourceManager->AddResource(TextureID::EffectiveEffect,          TextureResource(L"Protected/effective_effect2.png"));
 		textureResourceManager->AddResource(TextureID::BoostEffect,              TextureResource(L"Protected/boost_effect.png"));
 		// ログで使うテクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::EventLogFrame, TextureResource(L"Protected/log_frame.png"));
@@ -136,6 +137,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		soundResourceManager->AddResource(SoundID::FreezeMagic,        SoundResource(L"Protected/freeze_magic.wav",         audioEngine));
 		soundResourceManager->AddResource(SoundID::ThunderMagic,       SoundResource(L"Protected/thunder_magic.wav",        audioEngine));
 		soundResourceManager->AddResource(SoundID::ThunderStrikeMagic, SoundResource(L"Protected/thunder_strike_magic.wav", audioEngine));
+		soundResourceManager->AddResource(SoundID::Effective,          SoundResource(L"Protected/effective.wav",            audioEngine));
 		soundResourceManager->AddResource(SoundID::Charge,             SoundResource(L"Protected/charge.wav",               audioEngine));
 		soundResourceManager->AddResource(SoundID::Damage,             SoundResource(L"Protected/damage.wav",               audioEngine));
 		soundResourceManager->AddResource(SoundID::Boost,              SoundResource(L"Protected/boost.wav",                audioEngine));

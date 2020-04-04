@@ -48,7 +48,7 @@ void MagicFactory::Initialize(MagicManager* magicManager) {
 	InitializeMagic<NormalMagic>(MagicID::Normal);
 	InitializeMagic<FireMagic>(MagicID::Fire);
 	InitializeMagic<ThunderMagic>(MagicID::Thunder, magicManager);
-	InitializeMagic<ThunderStrikeMagic>(MagicID::ThunderStrike);
+	InitializeMagic<ThunderStrikeMagic>(MagicID::ThunderStrike, magicManager);
 	InitializeMagic<FreezeMagic>(MagicID::Freeze);
 }
 

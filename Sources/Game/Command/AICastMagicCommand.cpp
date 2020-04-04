@@ -58,7 +58,7 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		if (ref_status.sp >= ref_status.maxSp*0.9f) {
 			ref_status.sp -= ref_status.normalMagicSpCost;
 			GetMagicManager(player).CreateMagic(
-				MagicInfo(MagicID::Normal, player.GetPlayerID(), 0, 1.0f, ref_status.lockOnPlayerID),
+				MagicInfo(MagicID::Freeze, player.GetPlayerID(), 0, 1.0f, ref_status.lockOnPlayerID),
 				pos, direction);
 		}
 	}
@@ -66,7 +66,7 @@ void AICastMagicCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		ElementID element_id = GetHaveElements(player).front();
 		GetHaveElements(player).pop_front();
 		GetMagicManager(player).CreateMagic(
-			element_id,
+			ElementID(2),
 			MagicInfo(MagicID::Normal, player.GetPlayerID(), 0, player.GetMagicPowerRate(element_id), GetStatus(player).lockOnPlayerID),
 			pos, direction);
 	}

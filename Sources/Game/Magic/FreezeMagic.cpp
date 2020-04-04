@@ -3,13 +3,15 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\ResourceManager.h>
 #include <Utils\MathUtils.h>
+#include <Utils\ConstBuffer.h>
 #include <Parameters\MagicParameter.h>
 #include <Game\Load\PlayParameterLoader.h>
-#include "MagicID.h"
 #include <Game\Collision\SphereCollider.h>
-
-#include <Utils\ConstBuffer.h>
+#include <Game\Effect\EffectManager.h>
+#include <Game\Effect\EffectiveEffectEmitter.h>
 #include <Game\Camera\TargetCamera.h>
+#include "MagicID.h"
+
 
 /// <summary>
 /// コンストラクタ
@@ -210,5 +212,12 @@ void FreezeMagic::HitMagic(const IMagic* other) {
 	// 炎魔法と衝突したら消える
 	if (other_id == MagicID::Fire) {
 		m_isUsed = false;
+		// 打ち消し・反射エフェクトを生成する
+		IEffectEmitter* effect = ServiceLocater<EffectManager>::Get()->CreateEffect(EffectID::Effective,
+			m_transform.GetPosition(), m_vel);
+		EffectiveEffectEmitter* effective_effect = dynamic_cast<EffectiveEffectEmitter*>(effect);
+		if (effective_effect) {
+			effective_effect->SetColorID(m_info.id);
+		}
 	}
 }

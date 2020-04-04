@@ -7,6 +7,7 @@
 #include "Magic.h"
 
 
+class MagicManager;
 class IEffectEmitter;
 
 
@@ -15,8 +16,14 @@ class IEffectEmitter;
 /// </summary>
 class ThunderStrikeMagic : public Magic {
 public:
+	// 氷魔法に引き寄せられる領域の半径
+	static constexpr float ATTRACTED_RADIUS = 5.0f;
+	// 氷魔法に引き寄せられる速度
+	static constexpr float ATTRACTED_SPEED = 0.5f;
+
+public:
 	// コンストラクタ
-	ThunderStrikeMagic();
+	ThunderStrikeMagic(MagicManager* pMagicManager);
 	// デストラクタ
 	~ThunderStrikeMagic();
 
@@ -39,8 +46,12 @@ public:
 	void HitMagic(const IMagic* other) override;
 
 private:
+	// 魔法マネージャへのポインタ
+	MagicManager*   m_pMagicManager;
 	// 落雷魔法エフェクト
 	IEffectEmitter* m_pEffect;
+	// 跳ね返った回数
+	int             m_refrectCount;
 
 };
 

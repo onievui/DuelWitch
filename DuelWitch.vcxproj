@@ -206,8 +206,10 @@
     <ClCompile Include="Sources\Game\Command\UserRenderCommand.cpp" />
     <ClCompile Include="Sources\Game\Effect\DeathEffect.cpp" />
     <ClCompile Include="Sources\Game\Effect\DeathEffectEmitter.cpp" />
+    <ClCompile Include="Sources\Game\Effect\EffcetiveEffectEmitter.cpp" />
     <ClCompile Include="Sources\Game\Effect\Effect.cpp" />
     <ClCompile Include="Sources\Game\Effect\EffectFactory.cpp" />
+    <ClCompile Include="Sources\Game\Effect\EffectiveEffect.cpp" />
     <ClCompile Include="Sources\Game\Effect\EffectManager.cpp" />
     <ClCompile Include="Sources\Game\Effect\FieldShieldEffect.cpp" />
     <ClCompile Include="Sources\Game\Effect\FieldShieldEffectEmitter.cpp" />
@@ -318,6 +320,8 @@
     <ClInclude Include="Sources\Game\Effect\EffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\EffectFactory.h" />
     <ClInclude Include="Sources\Game\Effect\EffectID.h" />
+    <ClInclude Include="Sources\Game\Effect\EffectiveEffect.h" />
+    <ClInclude Include="Sources\Game\Effect\EffectiveEffectEmitter.h" />
     <ClInclude Include="Sources\Game\Effect\EffectManager.h" />
     <ClInclude Include="Sources\Game\Effect\FieldShieldEffect.h" />
     <ClInclude Include="Sources\Game\Effect\FieldShieldEffectEmitter.h" />

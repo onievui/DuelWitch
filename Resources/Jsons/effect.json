@@ -1,6 +1,6 @@
 {
-  "MaxNum": [ 3, 3, 3, 20, 30, 30, 10, 3 ],
-  "_MaxNum_Size": 8,
+  "MaxNum": [ 3, 3, 3, 20, 30, 30, 10, 15, 3 ],
+  "_MaxNum_Size": 9,
 
   "PlayerTrail": {
     "ParticleNum": 40,
@@ -23,8 +23,8 @@
     "MaxScale": 2.0,
     "MinScale": 0.0,
     "ColorCharge0": [ 255, 255, 255, 200 ],
-    "ColorCharge1": [ 255, 160, 0,   200 ],
-    "ColorCharge2": [ 255, 50,  0,   200 ]
+    "ColorCharge1": [ 255, 160, 0, 200 ],
+    "ColorCharge2": [ 255, 50, 0, 200 ]
   },
   "FieldShield": {
     "ParticleNum": 20,
@@ -62,6 +62,16 @@
   "ThunderStrikeMagic": {
     "ParticleNum": 1,
     "Scale": 70.0
+  },
+  "Effective": {
+    "ParticleNum": 5,
+    "LifeTime": 1.5,
+    "MaxRotateSpeed": 2.0,
+    "MinRotateSpeed": 0.5,
+    "MaxScale": 3.0,
+    "MinScale": 1.5,
+    "MaxSpeed": 10.0,
+    "MinSpeed": 6.0
   },
   "Death": {
     "ParticleNum": 30,

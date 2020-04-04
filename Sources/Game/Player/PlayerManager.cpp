@@ -64,7 +64,7 @@ void PlayerManager::Initialize(MagicManager* pMagicManager, Camera* camera) {
 	// シェーダ用定数の初期化
 	m_player1EffectBuffer.time = DirectX::SimpleMath::Vector4(0, 0, 0, 0);
 }
-#include <Utils\InputManager.h>
+
 /// <summary>
 /// プレイヤーマネージャを更新する
 /// </summary>
