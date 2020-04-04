@@ -102,6 +102,12 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike13.png");
 		textureResourceManager->AddResource(TextureID::ThunderStrikeMagicEffect,	L"Protected/thunder_strike14.png");
 		textureResourceManager->AddResource(TextureID::BoostEffect,              TextureResource(L"Protected/boost_effect.png"));
+		// ログで使うテクスチャの読み込み
+		textureResourceManager->AddResource(TextureID::EventLogFrame, TextureResource(L"Protected/log_frame.png"));
+		textureResourceManager->AddResource(TextureID::EventLog,      TextureResource(L"Protected/log_text1.png"));
+		textureResourceManager->AddResource(TextureID::EventLog,		L"Protected/log_text2.png");
+		textureResourceManager->AddResource(TextureID::EventLog,		L"Protected/log_text3.png");
+		textureResourceManager->AddResource(TextureID::EventLog,		L"Protected/log_text4.png");
 		// ポーズシーンで使うテクスチャも読みこんでおく
 		textureResourceManager->AddResource(TextureID::Fade,    TextureResource(L"Protected/fade_texture1280.png"));
 		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));

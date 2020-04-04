@@ -261,6 +261,7 @@
     <ClCompile Include="Sources\Game\Scene\WinResultScene.cpp" />
     <ClCompile Include="Sources\Game\UI\CharaIcon.cpp" />
     <ClCompile Include="Sources\Game\UI\CharaSelectMarker.cpp" />
+    <ClCompile Include="Sources\Game\UI\EventLogger.cpp" />
     <ClCompile Include="Sources\Game\UI\Fade.cpp" />
     <ClCompile Include="Sources\Game\UI\MenuUI.cpp" />
     <ClCompile Include="Sources\Parameters\FuzzyParameter.cpp" />
@@ -387,6 +388,8 @@
     <ClInclude Include="Sources\Game\Scene\WinResultScene.h" />
     <ClInclude Include="Sources\Game\UI\CharaIcon.h" />
     <ClInclude Include="Sources\Game\UI\CharaSelectMarker.h" />
+    <ClInclude Include="Sources\Game\UI\EventLogger.h" />
+    <ClInclude Include="Sources\Game\UI\EventLogID.h" />
     <ClInclude Include="Sources\Game\UI\Fade.h" />
     <ClInclude Include="Sources\Game\UI\MenuUI.h" />
     <ClInclude Include="Sources\Parameters\FuzzyParameter.h" />

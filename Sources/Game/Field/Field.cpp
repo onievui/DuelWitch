@@ -10,6 +10,7 @@
 #include <Game\Effect\EffectManager.h>
 #include <Game\Effect\EffectID.h>
 #include <Game\Effect\FieldShieldEffectEmitter.h>
+#include <Game\UI\EventLogger.h>
 
 
 /// <summary>
@@ -89,6 +90,10 @@ void Field::Update(const DX::StepTimer& timer) {
 	if (m_time > parameter->startScaleDownTime) {
 		m_radius = std::max(m_radius - elapsed_time * parameter->scaleDownSpeed, parameter->minScale);
 		m_fieldData.fieldRadius = m_radius;
+		// 小さくなり始めるタイミングで、イベントログで通知する
+		if (m_time - elapsed_time <= parameter->startScaleDownTime) {
+			ServiceLocater<EventLogger>::Get()->Log(EventLogID::FieldScaleDown);
+		}
 	}
 }
 

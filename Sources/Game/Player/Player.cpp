@@ -23,6 +23,7 @@
 #include <Game\Effect\DeathEffectEmitter.h>
 #include <Game\Camera\Camera.h>
 #include <Game\Field\FieldData.h>
+#include <Game\UI\EventLogger.h>
 #include "PlayerID.h"
 #include "PlayerData.h"
 
@@ -323,7 +324,9 @@ void Player::HitMagic(const IMagic* magic) {
 			if (death_effect) {
 				death_effect->SetColorID(m_status.charaId);
 			}
-
+			// イベントログで通知する
+			int log_id = static_cast<int>(EventLogID::Player1Dead) + static_cast<int>(m_id);
+			ServiceLocater<EventLogger>::Get()->Log(static_cast<EventLogID>(log_id));
 		}
 	}
 

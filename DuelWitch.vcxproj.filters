@@ -150,9 +150,6 @@
     <ClCompile Include="Sources\Parameters\MagicParameter.cpp">
       <Filter>Game\Parameters</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Utils\MouseWrapper.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Utils\Subject.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
@@ -411,6 +408,12 @@
     <ClCompile Include="Sources\Game\UI\MenuUI.cpp">
       <Filter>Game\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Game\UI\EventLogger.cpp">
+      <Filter>Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utils\MouseWrapper.cpp">
+      <Filter>Utils\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\pch\pch.h">
@@ -487,9 +490,6 @@
     </ClInclude>
     <ClInclude Include="Sources\Parameters\MagicParameter.h">
       <Filter>Game\Parameters</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Utils\MouseWrapper.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Utils\Subject.h">
       <Filter>Utils\UI</Filter>
@@ -841,6 +841,15 @@
     </ClInclude>
     <ClInclude Include="Sources\Game\Player\PlayerData.h">
       <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\UI\EventLogger.h">
+      <Filter>Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game\UI\EventLogID.h">
+      <Filter>Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utils\MouseWrapper.h">
+      <Filter>Utils\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

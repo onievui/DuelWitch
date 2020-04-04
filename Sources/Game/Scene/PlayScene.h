@@ -22,6 +22,7 @@ class TargetCamera;
 class Field;
 class CollisionManager;
 class Fade;
+class EventLogger;
 enum class SceneID;
 
 
@@ -61,6 +62,8 @@ private:
 
 	// パラメータ読み込みクラス
 	std::unique_ptr<PlayParameterLoader>     m_parameterLoader;
+	// イベントロガー
+	std::unique_ptr<EventLogger>             m_eventLogger;
 
 	// デバッグカメラ
 	std::unique_ptr<DebugCamera>             m_debugCamera;

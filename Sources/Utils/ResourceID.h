@@ -54,6 +54,9 @@ enum class TextureID {
 
 	BoostEffect,
 
+	EventLogFrame,
+	EventLog,
+
 	Num
 };
 

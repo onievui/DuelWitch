@@ -16,15 +16,14 @@
 #include <Game\Player\Player.h>
 #include <Game\Player\PlayerID.h>
 #include <Game\Player\PlayerManager.h>
-#include <Game\Element\Element.h>
 #include <Game\Element\ElementManager.h>
-#include <Game\Magic\IMagic.h>
 #include <Game\Magic\MagicManager.h>
 #include <Game\Effect\EffectManager.h>
 #include <Game\Field\Field.h>
 #include <Game\Field\GridFloor.h>
 #include <Game\Collision\CollisionManager.h>
 #include <Game\UI\Fade.h>
+#include <Game\UI\EventLogger.h>
 #include <Parameters\OptionParameter.h>
 
 
@@ -110,6 +109,10 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_fade = std::make_unique<Fade>();
 	m_fade->Initialize(Fade::State::FadeIn, 1.0f, 0.0f);
 
+	// イベントロガーを生成する
+	m_eventLogger = std::make_unique<EventLogger>();
+	ServiceLocater<EventLogger>::Register(m_eventLogger.get());
+
 	// BGMを再生する
 	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::Battle);
 	// BGMをフェードインさせる
@@ -179,12 +182,15 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	// 当たり判定を行う
 	DetectCollision();
 
-	// フィールドの更新
+	// フィールドを更新する
 	m_field->Update(timer);
 
-	// デバッグカメラの更新
+	// イベントロガーを更新する
+	m_eventLogger->Update(timer);
+
+	// デバッグカメラを更新する
 	m_debugCamera->Update();
-	// ターゲットカメラの更新
+	// ターゲットカメラを更新する
 	m_targetCamera->Update();
 	
 }
@@ -217,6 +223,9 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	// エフェクトを描画する
 	m_effectManager->Render(view, projection);
 
+	// イベントログを描画する
+	m_eventLogger->Render(spriteBatch);
+
 	// シーンの最初と終わりでフェードイン・フェードアウトする
 	m_fade->Render(spriteBatch);
 
@@ -242,6 +251,8 @@ void PlayScene::Finalize() {
 	ServiceLocater<PlayParameterLoader>::Unregister();
 	// エフェクトマネージャをサービスロケータから解除する
 	ServiceLocater<EffectManager>::Unregister();
+	// イベントロガーを開放する
+	ServiceLocater<EventLogger>::Unregister();
 }
 
 /// <summary>
