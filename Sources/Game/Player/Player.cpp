@@ -60,6 +60,7 @@ Player::Player(PlayerID id, const DirectX::SimpleMath::Vector3& pos)
 /// デストラクタ
 /// </summary>
 Player::~Player() {
+	ServiceLocater<PlayerData>::Get()->transforms[static_cast<int>(m_id)] = nullptr;
 }
 
 /// <summary>

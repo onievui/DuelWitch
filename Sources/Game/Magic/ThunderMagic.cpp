@@ -73,8 +73,9 @@ void ThunderMagic::Update(const DX::StepTimer& timer) {
 	// ロックオン中は追尾させる
 	if (m_info.lockOnPlayerId != -1 && m_lockOnTimer > 0.0f) {
 		m_lockOnTimer -= elapsed_time;
-		DirectX::SimpleMath::Vector3 target_pos = ServiceLocater<PlayerData>::Get()->transforms[m_info.lockOnPlayerId]->GetPosition();
-		DirectX::SimpleMath::Vector3 target_dir = target_pos - pos;
+		const Transform* target = ServiceLocater<PlayerData>::Get()->transforms[m_info.lockOnPlayerId];
+		// ターゲットが存在しない場合は角度が180°になるような値を入れる
+		DirectX::SimpleMath::Vector3 target_dir = (target ? target->GetPosition() - pos : -m_vel);
 		// 90°以上なら追尾を終了させる
 		if (m_vel.Dot(target_dir) >= 0.0f) {
 			float angle = Math::BetweenAngle(m_vel, target_dir);

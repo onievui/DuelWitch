@@ -73,8 +73,9 @@ void FireMagic::Update(const DX::StepTimer& timer) {
 		m_lockOnTimer -= elapsed_time;
 		// ŠgŽU‚³‚¹‚é‚½‚ß‚É‚Í‚¶‚ß‚Í’Ç”ö‚µ‚È‚¢
 		if (m_lockOnTimer < parameter.lockOnTime - LOCKON_DISABLE_TIME) {
-			DirectX::SimpleMath::Vector3 target_pos = ServiceLocater<PlayerData>::Get()->transforms[m_info.lockOnPlayerId]->GetPosition();
-			DirectX::SimpleMath::Vector3 target_dir = target_pos - pos;
+			const Transform* target = ServiceLocater<PlayerData>::Get()->transforms[m_info.lockOnPlayerId];
+			// ƒ^[ƒQƒbƒg‚ª‘¶Ý‚µ‚È‚¢ê‡‚ÍŠp“x‚ª180‹‚É‚È‚é‚æ‚¤‚È’l‚ð“ü‚ê‚é
+			DirectX::SimpleMath::Vector3 target_dir = (target ? target->GetPosition() - pos : -m_vel);
 			target_dir.Normalize();
 			// 135‹ˆÈã‚È‚ç’Ç”ö‚ðI—¹‚³‚¹‚é
 			if (m_vel.Dot(target_dir) >= std::cosf(Math::QuarterPI*3)) {
