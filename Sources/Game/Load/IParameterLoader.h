@@ -12,7 +12,7 @@ public:
 	virtual void Load() = 0;
 	// パラメータを再読み込みする
 	virtual void Reload() = 0;
-	// パラメータを開放する
+	// パラメータを解法する
 	virtual void Dispose() = 0;
 };
 

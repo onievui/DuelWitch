@@ -17,13 +17,13 @@
 /// </returns>
 bool Collision::HitCheck(const Collider* collider1, const Collider* collider2) {
 	// 可能な当たり判定のパターンの定義
-	constexpr unsigned int sphere2sphere = static_cast<unsigned int>(Collider::Type::Sphere);
-	constexpr unsigned int sphere2capsule = static_cast<unsigned int>(Collider::Type::Sphere) |
-		static_cast<unsigned int>(Collider::Type::Capsule);
-	constexpr unsigned int capsule2capsule = static_cast<unsigned int>(Collider::Type::Capsule);
+	constexpr byte sphere2sphere = static_cast<byte>(Collider::Type::Sphere);
+	constexpr byte sphere2capsule = static_cast<byte>(Collider::Type::Sphere) |
+		static_cast<byte>(Collider::Type::Capsule);
+	constexpr byte capsule2capsule = static_cast<byte>(Collider::Type::Capsule);
 	
 	// 適用するパターンを計算する
-	unsigned int collision_type = static_cast<unsigned int>(collider1->m_type) | static_cast<unsigned int>(collider2->m_type);
+	byte collision_type = static_cast<byte>(collider1->m_type) | static_cast<byte>(collider2->m_type);
 
 	switch (collision_type) {
 	// 球同士の当たり判定

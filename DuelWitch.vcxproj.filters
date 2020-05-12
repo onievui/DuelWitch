@@ -467,9 +467,6 @@
     <ClInclude Include="Sources\Utils\ResourceID.h">
       <Filter>Utils\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Utils\picojson.h">
-      <Filter>Utils\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Utils\JsonWrapper.h">
       <Filter>Utils\Json</Filter>
     </ClInclude>
@@ -906,7 +903,6 @@
     <None Include="Resources\Jsons\fuzzy.json">
       <Filter>Assets\Jsons</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
     <None Include="Assets\Shaders\Default.hlsli">
       <Filter>Assets\Shader</Filter>
     </None>

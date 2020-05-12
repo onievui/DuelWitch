@@ -14,7 +14,7 @@ class Collider {
 	friend class Collision;
 public:
 	// “–‚½‚è”»’è‚ÌŽí—Þ
-	enum class Type : unsigned int {
+	enum class Type : byte {
 		Box     = 1 << 0,
 		Sphere  = 1 << 1,
 		Capsule = 1 << 2,
