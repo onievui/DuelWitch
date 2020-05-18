@@ -68,7 +68,7 @@ void LoadDataManager::Reload(LoadDataID id) {
 }
 
 /// <summary>
-/// データを開放する
+/// データを解放する
 /// </summary>
 /// <param name="id">ID</param>
 void LoadDataManager::Dispose(LoadDataID id) {

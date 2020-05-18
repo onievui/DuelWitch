@@ -11,7 +11,6 @@
 #include <Game\Load\PlayParameterLoader.h>
 #include <Game\Load\ResourceLoader.h>
 #include "ISceneRequest.h"
-#include <Game\Camera\DebugCamera.h>
 #include <Game\Camera\TargetCamera.h>
 #include <Game\Player\Player.h>
 #include <Game\Player\PlayerID.h>
@@ -20,7 +19,6 @@
 #include <Game\Magic\MagicManager.h>
 #include <Game\Effect\EffectManager.h>
 #include <Game\Field\Field.h>
-#include <Game\Field\GridFloor.h>
 #include <Game\Collision\CollisionManager.h>
 #include <Game\UI\Fade.h>
 #include <Game\UI\EventLogger.h>
@@ -84,10 +82,7 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_magicManager = std::make_unique<MagicManager>();
 	m_magicManager->Initialize();
 	
-	//デバッグカメラを生成する
-	m_debugCamera = std::make_unique<DebugCamera>(directX->GetWidth(), directX->GetHeight());
 	//ターゲットカメラを生成する
-	//DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f)
 	//m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 2.0f, -5.0f),
 	m_targetCamera = std::make_unique<TargetCamera>(nullptr, DirectX::SimpleMath::Vector3(0.0f, 3.0f, -7.0f),
 		DirectX::SimpleMath::Vector3(0.0f, 0.0f, 10.0f), DirectX::SimpleMath::Vector3::UnitY,
@@ -101,9 +96,6 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 
 	// 当たり判定処理クラスを生成する
 	m_collisionManager = std::make_unique<CollisionManager>();
-
-	//グリッド床を生成する
-	m_gridFloor = std::make_unique<GridFloor>(ServiceLocater<DirectX::CommonStates>::Get(), 200.0f, 100);
 	
 	// フェードを生成する
 	m_fade = std::make_unique<Fade>();
@@ -188,8 +180,6 @@ void PlayScene::Update(const DX::StepTimer& timer) {
 	// イベントロガーを更新する
 	m_eventLogger->Update(timer);
 
-	// デバッグカメラを更新する
-	m_debugCamera->Update();
 	// ターゲットカメラを更新する
 	m_targetCamera->Update();
 	
@@ -207,8 +197,6 @@ void PlayScene::Render(DirectX::SpriteBatch* spriteBatch) {
 	// 射影行列を取得する
 	DirectX::SimpleMath::Matrix projection = m_targetCamera->GetProjectionMatrix();
 
-	//グリッド床を描画する
-	//m_gridFloor->Render(view, projection);
 	// フィールドを描画する
 	m_field->Render(view, projection);
 
@@ -246,12 +234,12 @@ void PlayScene::Finalize() {
 	ServiceLocater<MouseWrapper>::Get()->ClipToWindow(false);
 	// リソースを解放する
 	ResourceLoader::Release(ResourceLoaderID::PlayScene);
-	// パラメータを開放する
+	// パラメータを解放する
 	m_parameterLoader->Dispose();
 	ServiceLocater<PlayParameterLoader>::Unregister();
 	// エフェクトマネージャをサービスロケータから解除する
 	ServiceLocater<EffectManager>::Unregister();
-	// イベントロガーを開放する
+	// イベントロガーを解放する
 	ServiceLocater<EventLogger>::Unregister();
 }
 

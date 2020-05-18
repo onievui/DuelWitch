@@ -146,7 +146,7 @@ SoundResource::SoundResource(const std::wstring& fileName, DirectX::AudioEngine*
 /// デストラクタ
 /// </summary>
 SoundResource::~SoundResource() {
-	// 先にSoundEffectInstanceを開放する
+	// 先にSoundEffectInstanceを解放する
 	for (std::vector<std::unique_ptr<DirectX::SoundEffectInstance>>::iterator itr = m_instances.begin(); itr != m_instances.end(); ++itr) {
 		if (*itr) {
 			itr->reset();
@@ -190,7 +190,7 @@ BgmResource::BgmResource(const std::wstring& fileName, DirectX::AudioEngine* aud
 /// デストラクタ
 /// </summary>
 BgmResource::~BgmResource() {
-	// 先にSoundEffectInstanceを開放する
+	// 先にSoundEffectInstanceを解放する
 	for (std::vector<std::unique_ptr<DirectX::SoundEffectInstance>>::iterator itr = m_instances.begin(); itr != m_instances.end(); ++itr) {
 		if (*itr) {
 			itr->reset();

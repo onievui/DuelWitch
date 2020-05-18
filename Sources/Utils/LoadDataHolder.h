@@ -43,7 +43,7 @@ private:
 		return m_data->Reload();
 	}
 
-	// データを開放する
+	// データを解放する
 	void Dispose() override {
 		m_data.reset();
 	}

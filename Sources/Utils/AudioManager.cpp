@@ -93,14 +93,7 @@ void AudioManager::PlaySound(SoundID id, int index) {
 	if (!sound->IsValid(index)) {
 		return;
 	}
-	//DirectX::SoundEffectInstance* sound_effect_instance = sound->GetInstance(index);
-	//if (!sound_effect_instance) {
-	//	return;
-	//}
-	//if (sound_effect_instance->GetState() != DirectX::SoundState::STOPPED) {
-	//	sound_effect_instance->Stop();
-	//}
-
+	
 	// インスタンスを配列に登録して管理する
 	std::unique_ptr<DirectX::SoundEffectInstance> instance = sound->GetResource(index)->CreateInstance();
 	instance->Play();
@@ -235,16 +228,6 @@ void AudioManager::FadeBgm(BgmID id, int index, float time, float startVolume, f
 /// </summary>
 void AudioManager::StopAll() {
 	// 全てのサウンドを止める
-	//std::vector<std::unique_ptr<SoundResource>>& sounds = ServiceLocater<ResourceManager<SoundResource>>::Get()->GetRawAllResources();
-	//for (std::vector<std::unique_ptr<SoundResource>>::iterator itr = sounds.begin(); itr != sounds.end(); ++itr) {
-	//	int num = (*itr)->GetAllResources().size();
-	//	for (int i = 0; i < num; ++i) {
-	//		if ((*itr)->IsValid(i)) {
-	//			(*itr)->GetInstance(i)->Stop();
-	//		}
-	//	}
-	//}
-
 	for (std::vector<std::unique_ptr<DirectX::SoundEffectInstance>>::iterator itr = m_playingSounds.begin(); itr != m_playingSounds.end(); ++itr) {
 		if (*itr) {
 			(*itr)->Stop();

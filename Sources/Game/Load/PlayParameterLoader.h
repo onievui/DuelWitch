@@ -31,7 +31,7 @@ public:
 	void Load() override;
 	// パラメータを再読み込みする
 	void Reload() override;
-	// パラメータを開放する
+	// パラメータを解放する
 	void Dispose() override;
 
 public:

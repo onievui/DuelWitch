@@ -26,7 +26,7 @@ public:
 	static void Release(ResourceLoaderID id);
 
 private:
-	// 音声リソースを開放する
+	// 音声リソースを解放する
 	static void ReleaseAudio();
 };
 

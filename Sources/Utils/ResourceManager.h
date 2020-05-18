@@ -60,7 +60,7 @@ public:
 		return true;
 	}
 
-	// リソースを開放する
+	// リソースを解放する
 	void Release() {
 		m_resources.clear();
 		m_resources.shrink_to_fit();

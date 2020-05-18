@@ -132,9 +132,6 @@
     <ClCompile Include="Sources\Utils\Resource.cpp">
       <Filter>Utils\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Utils\ResourceManager.cpp">
-      <Filter>Utils\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Utils\JsonWrapper.cpp">
       <Filter>Utils\Json</Filter>
     </ClCompile>

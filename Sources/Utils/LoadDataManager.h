@@ -31,7 +31,7 @@ public:
 	void Load(LoadDataID id);
 	// データを再読み込みする
 	void Reload(LoadDataID id);
-	// データを開放する
+	// データを解放する
 	void Dispose(LoadDataID id);
 
 private:

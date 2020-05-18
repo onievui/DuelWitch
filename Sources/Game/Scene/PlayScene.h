@@ -65,12 +65,8 @@ private:
 	// イベントロガー
 	std::unique_ptr<EventLogger>             m_eventLogger;
 
-	// デバッグカメラ
-	std::unique_ptr<DebugCamera>             m_debugCamera;
 	// ターゲットカメラ
 	std::unique_ptr<TargetCamera>            m_targetCamera;
-	// グリッド床
-	std::unique_ptr<GridFloor>               m_gridFloor;
 	// フィールド
 	std::unique_ptr<Field>                   m_field;
 	// プレイヤーマネージャ

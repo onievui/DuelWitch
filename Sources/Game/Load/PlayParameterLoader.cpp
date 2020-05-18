@@ -95,7 +95,7 @@ void PlayParameterLoader::Reload() {
 }
 
 /// <summary>
-/// パラメータを開放する
+/// パラメータを解放する
 /// </summary>
 void PlayParameterLoader::Dispose() {
 	LoadDataManager::GetIns()->Dispose(LoadDataID::PlayScene);

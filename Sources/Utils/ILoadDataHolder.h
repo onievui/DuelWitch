@@ -15,7 +15,7 @@ public:
 	virtual bool Load() = 0;
 	// データを再読み込みする
 	virtual bool Reload() = 0;
-	// データを開放する
+	// データを解放する
 	virtual void Dispose() = 0;
 	// 読み込みデータIDを取得する
 	virtual LoadDataID GetID() const = 0;

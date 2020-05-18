@@ -153,7 +153,7 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 }
 
 /// <summary>
-/// リソースを開放する
+/// リソースを解放する
 /// </summary>
 /// <param name="id">リソース読み込みID</param>
 void ResourceLoader::Release(ResourceLoaderID id) {
@@ -187,7 +187,7 @@ void ResourceLoader::Release(ResourceLoaderID id) {
 }
 
 /// <summary>
-/// 音声リソースを開放する
+/// 音声リソースを解放する
 /// </summary>
 void ResourceLoader::ReleaseAudio() {
 	ResourceManager<SoundResource>* soundResourceManager = ServiceLocater<ResourceManager<SoundResource>>::Get();
