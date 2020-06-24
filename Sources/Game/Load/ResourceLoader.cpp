@@ -39,7 +39,9 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 	case ResourceLoaderID::TitleScene:
 		// テクスチャの読み込み
 		textureResourceManager->AddResource(TextureID::Title,   TextureResource(L"Protected/title_bg.png"));
-		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
+		//textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
+		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/ui_frame1.png"));
+		textureResourceManager->AddResource(TextureID::UIFrame, L"Protected/ui_frame2.png");
 		textureResourceManager->AddResource(TextureID::Fade,    TextureResource(L"Protected/fade_texture1280.png"));
 		// サウンドの読み込み
 		soundResourceManager->AddResource(SoundID::Cursor,   SoundResource(L"Protected/cursor.wav", audioEngine));
@@ -54,7 +56,9 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::CharaManualText,       TextureResource(L"Protected/chara_manual_text1.png"));
 		textureResourceManager->AddResource(TextureID::CharaManualText,		      L"Protected/chara_manual_text2.png");
 		textureResourceManager->AddResource(TextureID::CharaSelectBackGround, TextureResource(L"Protected/chara_select1280.png"));
-		textureResourceManager->AddResource(TextureID::UIFrame,               TextureResource(L"Protected/title_ui_frame.png"));
+		//textureResourceManager->AddResource(TextureID::UIFrame,               TextureResource(L"Protected/title_ui_frame.png"));
+		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/ui_frame1.png"));
+		textureResourceManager->AddResource(TextureID::UIFrame, L"Protected/ui_frame2.png");
 		textureResourceManager->AddResource(TextureID::CharaPortrait,         TextureResource(L"Protected/portrait1.png"));
 		textureResourceManager->AddResource(TextureID::CharaPortrait,		      L"Protected/portrait2.png");
 		textureResourceManager->AddResource(TextureID::CharaPortrait,		      L"Protected/portrait3.png");
@@ -111,7 +115,9 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		textureResourceManager->AddResource(TextureID::EventLog,		L"Protected/log_text4.png");
 		// ポーズシーンで使うテクスチャも読みこんでおく
 		textureResourceManager->AddResource(TextureID::Fade,    TextureResource(L"Protected/fade_texture1280.png"));
-		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
+		//textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/title_ui_frame.png"));
+		textureResourceManager->AddResource(TextureID::UIFrame, TextureResource(L"Protected/ui_frame1.png"));
+		textureResourceManager->AddResource(TextureID::UIFrame, L"Protected/ui_frame2.png");
 		// リザルトシーンで使うテクスチャも読みこんでおく
 		textureResourceManager->AddResource(TextureID::Player1Win, TextureResource(L"Protected/player1_win.png"));
 		textureResourceManager->AddResource(TextureID::YouLose,    TextureResource(L"Protected/you_lose.png"));
@@ -145,6 +151,9 @@ void ResourceLoader::Load(ResourceLoaderID id) {
 		soundResourceManager->AddResource(SoundID::GetElement,         SoundResource(L"Protected/get_element.wav",          audioEngine));
 		// BGMの読み込み
 		bgmResourceManager->AddResource(BgmID::Battle, BgmResource(L"Protected/battle.wav", audioEngine));
+		// リザルトシーンで使うBGMも読みこんでおく
+		bgmResourceManager->AddResource(BgmID::Win,  BgmResource(L"Protected/win.wav", audioEngine));
+		bgmResourceManager->AddResource(BgmID::Lose, BgmResource(L"Protected/lose.wav", audioEngine));
 		break;
 	default:
 		ErrorMessage(L"リソースのロードで不正なIDが渡されました");

@@ -84,7 +84,8 @@ void AudioManager::Update(const DX::StepTimer& timer) {
 /// </summary>
 /// <param name="id">サウンドID</param>
 /// <param name="index">インデックス</param>
-void AudioManager::PlaySound(SoundID id, int index) {
+/// <param name="volume">音量</param>
+void AudioManager::PlaySound(SoundID id, int index, float volume) {
 	if (!ID_RANGE_CHECK(SoundID, id)) {
 		ErrorMessage(L"サウンドの再生で不正なIDが渡されました");
 	}
@@ -96,6 +97,7 @@ void AudioManager::PlaySound(SoundID id, int index) {
 	
 	// インスタンスを配列に登録して管理する
 	std::unique_ptr<DirectX::SoundEffectInstance> instance = sound->GetResource(index)->CreateInstance();
+	instance->SetVolume(volume);
 	instance->Play();
 	m_playingSounds.emplace_back(std::move(instance));
 
@@ -109,7 +111,8 @@ void AudioManager::PlaySound(SoundID id, int index) {
 /// </summary>
 /// <param name="id">BGMID</param>
 /// <param name="index">インデックス</param>
-void AudioManager::PlayBgm(BgmID id, int index) {
+/// <param name="volume">音量</param>
+void AudioManager::PlayBgm(BgmID id, int index, float volume) {
 	if (!ID_RANGE_CHECK(BgmID, id)) {
 		ErrorMessage(L"BGMの再生で不正なIDが渡されました");
 	}
@@ -120,6 +123,7 @@ void AudioManager::PlayBgm(BgmID id, int index) {
 	}
 	DirectX::SoundEffectInstance* sound_effect_instance = bgm->GetInstance(index);
 	if (sound_effect_instance) {
+		sound_effect_instance->SetVolume(volume);
 		sound_effect_instance->Play(true);
 	}
 }

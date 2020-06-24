@@ -106,9 +106,9 @@ void PlayScene::Initialize(ISceneRequest* pSceneRequest) {
 	ServiceLocater<EventLogger>::Register(m_eventLogger.get());
 
 	// BGMを再生する
-	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::Battle);
+	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::Battle, 0, 0.3f);
 	// BGMをフェードインさせる
-	ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Battle, 0, 0.9f, 0.0f, 1.0f);
+	ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Battle, 0, 0.9f, 0.3f, 1.0f);
 }
 
 /// <summary>

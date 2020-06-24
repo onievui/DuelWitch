@@ -57,6 +57,14 @@ void MenuUI::Update(const DX::StepTimer& timer) {
 void MenuUI::OnMouseEnter() {
 	// Œø‰Ê‰¹‚ğ–Â‚ç‚·
 	ServiceLocater<AudioManager>::Get()->PlaySound(m_onMouseEnterSoundId);
+	m_textureIndex = 1;
+}
+
+/// <summary>
+/// ƒ}ƒEƒX—£’Eˆ—
+/// </summary>
+void MenuUI::OnMouseExit() {
+	m_textureIndex = 0;
 }
 
 /// <summary>

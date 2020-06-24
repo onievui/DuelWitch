@@ -3,6 +3,7 @@
 #include <Utils\ServiceLocater.h>
 #include <Utils\InputManager.h>
 #include <Utils\ResourceManager.h>
+#include <utils\AudioManager.h>
 #include <Utils\MathUtils.h>
 #include <Utils\UIObserver.h>
 #include <Utils\MouseWrapper.h>
@@ -53,6 +54,11 @@ void LoseResultScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_fadeUIFinished = false;
 
 	m_wasSelected = false;
+
+	// BGMを再生する
+	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::Lose, 0, 0.0f);
+	// BGMをフェードインさせる
+	ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Lose, 0, 0.9f, 0.0f, 1.0f);
 }
 
 /// <summary>
@@ -113,12 +119,16 @@ void LoseResultScene::Update(const DX::StepTimer& timer) {
 				m_nextSceneID = SceneID::CharaSelect;
 				m_fadeScreen->Start();
 				m_wasSelected = true;
+				// BGMをフェードアウトさせる
+				ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Lose, 0, 0.9f, 1.0f, 0.0f);
 				break;
 				// タイトルに戻る
 			case UIEventID::Title:
 				m_nextSceneID = SceneID::Title;
 				m_fadeScreen->Start();
 				m_wasSelected = true;
+				// BGMをフェードアウトさせる
+				ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Lose, 0, 0.9f, 1.0f, 0.0f);
 				break;
 			default:
 				ErrorMessage(L"不正なUIイベントを取得しました");

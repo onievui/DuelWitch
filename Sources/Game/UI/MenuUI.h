@@ -27,6 +27,8 @@ public:
 protected:
 	// マウス侵入時処理
 	void OnMouseEnter() override;
+	// マウス離脱時処理
+	void OnMouseExit() override;
 	// クリック時処理
 	void OnClick() override;
 

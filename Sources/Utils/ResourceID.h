@@ -116,6 +116,8 @@ enum class BgmID {
 	Title,
 	CharaSelect,
 	Battle,
+	Win,
+	Lose,
 	Num
 };
 

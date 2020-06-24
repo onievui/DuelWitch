@@ -50,7 +50,7 @@ void TitleScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_fadeUIStep = 0;
 
 	// BGMを再生する
-	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::Title);
+	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::Title, 0, 0.0f);
 	// BGMをフェードインさせる
 	ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::Title, 0, 0.9f, 0.0f, 1.0f);
 }

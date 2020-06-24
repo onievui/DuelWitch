@@ -53,8 +53,12 @@ void UISubject::Update(const DX::StepTimer& timer) {
 		}
 	}
 	else {
+		// ƒ}ƒEƒX‚ª—£’E‚µ‚½‚©‚Ç‚¤‚©
+		if (m_onMouseOver) {
+			OnMouseExit();
+			m_onMouseOver = false;
+		}
 		OnIdle();
-		m_onMouseOver = false;
 	}
 }
 

@@ -64,6 +64,10 @@ void MoveCommand::Initialize(Player& player) {
 	DirectX::SimpleMath::Matrix rot_matrix = DirectX::SimpleMath::Matrix::CreateFromQuaternion(GetTransform(player).GetRotation());
 	m_euler.y = std::atan2f(-rot_matrix._31, rot_matrix._33);
 
+	// 前回の状態を初期化する
+	m_prePos = GetTransform(player).GetPosition();
+	m_preMove = DirectX::SimpleMath::Vector3::Zero;
+
 	// ロールに関する情報を初期化する
 	m_rollInfo.leftGraceTime = 0.0f;
 	m_rollInfo.rightGraceTime = 0.0f;
@@ -104,6 +108,10 @@ void MoveCommand::Initialize(Player& player) {
 /// <param name="player">プレイヤー</param>
 /// <param name="timer">ステップタイマー</param>
 void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
+	const Transform& transform = GetTransform(player);
+	// 補正後の前回位置
+	DirectX::SimpleMath::Vector3 pre_pos = transform.GetPosition();
+
 	// 状態によって処理を分ける
 	switch (m_state) {
 	// 通常移動
@@ -122,6 +130,11 @@ void MoveCommand::Execute(Player& player, const DX::StepTimer& timer) {
 		ErrorMessage(L"移動コマンドの状態が不正です");
 		break;
 	}
+
+	// 移動量を保存する
+	m_preMove = transform.GetPosition() - pre_pos;
+	// 座標を保存する
+	m_prePos = transform.GetPosition();
 
 	// チャージエフェクトの状態を更新する
 	const PlayerStatus& status = GetStatus(player);
@@ -161,6 +174,9 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 
 	Transform& ref_transform = GetTransform(player);
 	PlayerStatus& ref_status = GetStatus(player);
+
+	// 衝突時に向きを調整する
+	AdjustRotation(player, timer);
 
 	DirectX::SimpleMath::Vector3 pos = ref_transform.GetPosition();
 
@@ -208,7 +224,8 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	const bool use_boost = input_manager->IsDown(InputID::Boost);
 	const bool can_boost = ref_status.sp / ref_status.maxSp >= 0.1f;
 	if (use_boost && can_boost) {
-		pos += move * move_speed*elapsed_time*ref_status.boostSpeedRate;
+		move *= move_speed * elapsed_time*ref_status.boostSpeedRate;
+		pos += move;
 		// SPを減らす
 		ref_status.sp -= ref_status.boostSpCost*elapsed_time;
 		// ブースト開始直後なら効果音を鳴らす
@@ -219,9 +236,13 @@ void MoveCommand::ExcuteMove(Player& player, const DX::StepTimer& timer) {
 	}
 	// 通常移動
 	else {
-		pos += move * move_speed*elapsed_time;
+		move *= move_speed * elapsed_time;
+		pos += move;
 		ref_status.isBoosting = false;
 	}
+
+	// 移動量の保存
+	m_preMove = move;
 
 	// カメラのズームを制御する
 	Zoom(GetCamera(player), timer, ref_status.isBoosting);
@@ -543,5 +564,40 @@ void MoveCommand::AdjustCamera(TargetCamera* targetCamera) {
 
 	DirectX::SimpleMath::Matrix camera_matrix = DirectX::SimpleMath::Matrix::CreateFromYawPitchRoll(camera_rot.y, camera_rot.x, 0.0f);
 	targetCamera->SetMatrix(camera_matrix);
+}
+
+/// <summary>
+/// 衝突時に向きを調整する
+/// </summary>
+/// <param name="player">プレイヤー</param>
+/// <param name="timer">ステップタイマー</param>
+void MoveCommand::AdjustRotation(Player& player, const DX::StepTimer& timer) {
+	float elapsed_time = static_cast<float>(timer.GetElapsedSeconds());
+	Transform& ref_transform = GetTransform(player);
+
+	// 変化がないなら何もしない
+	if (DirectX::SimpleMath::Vector3::DistanceSquared(m_prePos, ref_transform.GetPosition()) < 0.01f) {
+		return;
+	}
+
+	// 本来の移動方向
+	DirectX::SimpleMath::Vector3 old_vec = m_preMove;
+	// 現在の移動方向
+	DirectX::SimpleMath::Vector3 new_vec = ref_transform.GetPosition() - (m_prePos - m_preMove);
+	// Y方向の移動は無視する
+	old_vec.y = 0;
+	if (old_vec.LengthSquared() <= Math::Epsilon) {
+		return;
+	}
+	old_vec.Normalize();
+	new_vec.y = 0;
+	if (new_vec.LengthSquared() <= Math::Epsilon) {
+		return;
+	}
+	new_vec.Normalize();
+	// 角度から回転量を求める
+	float angle = Math::BetweenAngle(old_vec, new_vec);
+	float power = angle*elapsed_time;
+	m_euler.y += power*(old_vec.Cross(new_vec).y > 0 ? 1 : -1);
 }
 

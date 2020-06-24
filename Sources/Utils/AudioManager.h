@@ -23,9 +23,9 @@ public:
 	// オーディオを更新する
 	void Update(const DX::StepTimer& timer);
 	// サウンドを再生する
-	void PlaySound(SoundID id, int index = 0);
+	void PlaySound(SoundID id, int index = 0, float volume = 1.0f);
 	// BGMを再生する
-	void PlayBgm(BgmID id, int index = 0);
+	void PlayBgm(BgmID id, int index = 0, float volume = 1.0f);
 	// サウンドの再生を止める
 	void StopSound(SoundID id, int index = 0);
 	// BGMの再生を止める

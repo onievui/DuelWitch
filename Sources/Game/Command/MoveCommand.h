@@ -44,6 +44,8 @@ private:
 	void Zoom(Camera& camera, const DX::StepTimer& timer, bool isBoosting);
 	// 照準によるカメラ向きを調整する
 	void AdjustCamera(TargetCamera* targetCamera);
+	// 衝突時に向きを調整する
+	void AdjustRotation(Player& player, const DX::StepTimer& timer);
 
 private:
 	// 移動コマンド用ステート
@@ -98,6 +100,10 @@ private:
 	float                                   m_defaultFov;
 	// オイラー角
 	DirectX::SimpleMath::Vector3            m_euler;
+	// 前回の座標
+	DirectX::SimpleMath::Vector3            m_prePos;
+	// 前回の移動量
+	DirectX::SimpleMath::Vector3            m_preMove;
 	//　プレイヤーの軌跡エフェクトへのポインタ
 	PlayerTrailEffectEmitter*               m_pTrailEffect;
 	// プレイヤーのチャージエフェクトへのポインタ

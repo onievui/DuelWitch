@@ -83,6 +83,8 @@ protected:
 	virtual void OnMouseEnter() {}
 	// マウスオーバー時処理
 	virtual void OnMouseOver() {}
+	// マウス離脱時処理
+	virtual void OnMouseExit() {}
 	// 待機時処理
 	virtual void OnIdle() {}
 

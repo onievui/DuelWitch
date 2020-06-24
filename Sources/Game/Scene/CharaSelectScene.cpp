@@ -52,7 +52,7 @@ void CharaSelectScene::Initialize(ISceneRequest* pSceneRequest) {
 	m_fade->Initialize(Fade::State::FadeIn, 1.0f, 0.0f);
 
 	// BGMを再生する
-	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::CharaSelect);
+	ServiceLocater<AudioManager>::Get()->PlayBgm(BgmID::CharaSelect, 0, 0.0f);
 	// BGMをフェードインさせる
 	ServiceLocater<AudioManager>::Get()->FadeBgm(BgmID::CharaSelect, 0, 0.9f, 0.0f, 1.0f);
 }
@@ -379,12 +379,12 @@ void CharaSelectScene::InitializeUI() {
 	{
 		// 進むボタン
 		std::unique_ptr<MenuUI> next = std::make_unique<MenuUI>(
-			UIEventID::Next, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.9f, screen_size.y*0.9f));
+			UIEventID::Next, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.84f, screen_size.y*0.9f));
 		next->SetText(L"Random");
 		m_menuUIs.emplace_back(std::move(next));
 		// 戻るボタン
 		std::unique_ptr<MenuUI> back = std::make_unique<MenuUI>(
-			UIEventID::Back, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.1f, screen_size.y*0.9f));
+			UIEventID::Back, 0, DirectX::SimpleMath::Vector2(screen_size.x*0.16f, screen_size.y*0.9f));
 		back->SetText(L"Back");
 		m_menuUIs.emplace_back(std::move(back));	
 		// ボタンの共通処理

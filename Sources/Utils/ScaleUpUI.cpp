@@ -40,7 +40,7 @@ void ScaleUpUI::Update(const DX::StepTimer& timer) {
 /// <param name="spriteBatch">スプライトバッチ</param>
 void ScaleUpUI::Render(DirectX::SpriteBatch* spriteBatch) const {
 	// マウスが乗っている間は拡大する
-	DirectX::SimpleMath::Vector2 scale = DirectX::SimpleMath::Vector2::One*(m_isScaleUp ? 1.25f : 1.0f);
+	DirectX::SimpleMath::Vector2 scale = DirectX::SimpleMath::Vector2::One*(m_isScaleUp ? 1.2f : 1.0f);
 	// マウスオーバー時は赤色、クリック時は灰色にする
 	DirectX::SimpleMath::Color color = DirectX::Colors::White;
 	if (m_isScaleUp) {
@@ -48,7 +48,7 @@ void ScaleUpUI::Render(DirectX::SpriteBatch* spriteBatch) const {
 			color = DirectX::Colors::Gray;
 		}
 		else {
-			color = DirectX::Colors::Red;
+			color = DirectX::Colors::White;
 		}
 	}
 	color.w *= m_alpha;
